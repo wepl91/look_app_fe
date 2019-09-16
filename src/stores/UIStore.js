@@ -15,6 +15,7 @@ export default class UIStore extends Store {
     super(adapter, appStore);
 
     // initialize static value lists
+    this.language = 'ESP'; 
   }
 
 

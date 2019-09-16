@@ -21,9 +21,9 @@ class UsersMenu extends Component {
     const path = this.props.match.path;
 
     return(
-      <LayoutMenuLinkGroup icon="users" label="Usuarios" basePath={ `${path}/users/` }>
-        <LayoutMenuLink icon="list" to={ `${path}/users/list`   }>Listado</LayoutMenuLink>
-        <LayoutMenuLink icon="plus" to={ `${path}/users/new`    }>Nuevo usuario</LayoutMenuLink>
+      <LayoutMenuLinkGroup label="Usuarios" basePath={ `${path}/users/` }>
+        <LayoutMenuLink to={ `${path}/users/list`   }>Listado</LayoutMenuLink>
+        <LayoutMenuLink to={ `${path}/users/new`    }>Nuevo usuario</LayoutMenuLink>
       </LayoutMenuLinkGroup> )
   };
 
