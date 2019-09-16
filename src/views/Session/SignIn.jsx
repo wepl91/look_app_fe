@@ -113,6 +113,7 @@ class SignIn extends Component {
             <Button size="xl" 
                     className="is-fullwidth mt-4 mb-2" 
                     isDefault
+                    kind="outline"
                     name="signIn"
                     onClick={ this.handleClick }>
                     Iniciar sesión
