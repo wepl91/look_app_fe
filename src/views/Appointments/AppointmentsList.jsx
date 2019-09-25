@@ -60,8 +60,8 @@ class AppointmentsList extends Component {
                 </Level>
                 {datesInWeeks.map(week => (
                     <Columns style={{ marginLeft: '16px' }}>
-                        {week.map(day => (
-                            <Panel style={{ width: '147px', height: '147px', margin: '8px', padding: '2px' }}>
+                        {week.map((day, index) => (
+                            <Panel style={{ width: '147px', height: '147px', margin: index == 6 ? '10px' : '8px', padding: '2px' }}>
                                 <Text weight="medium">{`${ startCase(day.format('ddd')) } ${ day.format('D') }`}</Text>
                             </Panel>))}
                     </Columns>))}
