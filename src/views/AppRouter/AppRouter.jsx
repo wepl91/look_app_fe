@@ -7,6 +7,7 @@ import withStore from '../../hocs/withStore';
 
 import { SignIn } from '../Session';
 import { UsersMenu } from '../Users'
+import { AppointmentsMenu, AppointmentsList } from '../Appointments';
 
 import LanguageDropdown from '../../components/LanguageDropdown/LanguageDropdown';
 
@@ -46,12 +47,14 @@ class AppRouter extends Component {
               </LayoutNavbarEnd>
             </LayoutNavbar>
             <LayoutMenu>
-              <UsersMenu />
+              <AppointmentsMenu />
+              <UsersMenu /> 
             </LayoutMenu>
             <LayoutContent>
               <Switch>
                 <Route exact path={`${this.props.match.path}/home`}  component={ FakeContent } />
                 <Route exact path={`${this.props.match.path}/users`} component={ FakeContent } />
+                <Route  path={`${this.props.match.path}/appointments`} component={ AppointmentsList } />
               </Switch>
             </LayoutContent>
           </Layout>
