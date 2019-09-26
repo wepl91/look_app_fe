@@ -47,7 +47,23 @@ class AppointmentCard extends Component {
   
 
   render() {
-    const turnos = [1,2]
+    const turnos = [
+      {
+        name: 'Marta',
+        hour: '13:00',
+        status: 'approved'
+      },
+      {
+        name: 'Juan',
+        hour: '15:00',
+        status: 'approved'
+      },
+      {
+        name: 'Ivan',
+        hour: '17:00',
+        status: 'cancelled'
+      }
+    ]
     return(
       <React.Fragment>
         <Panel className="appointment_card" key={ this.state.date }>
@@ -59,10 +75,9 @@ class AppointmentCard extends Component {
               <Text size="sm"className="appointment_card_see_more mr-1" onClick={ this.handleClick }>Ver mas</Text>
             </LevelRight>
           </Level>
-          { turnos.map( turno => <div className="appointment_card_appointment_approved"><Text size="xs">{ `Turno nro ${ turno }` }</Text></div>) }
-          <div className="appointment_card_appointment_cancelled"><Text size="xs">{ `Turno nro ${ 3 }` }</Text></div>
+          { turnos.map( turno => <div className={ turno.status == 'cancelled' ? 'appointment_card_appointment_cancelled' : 'appointment_card_appointment_approved'}><Text size="xs">{ `${ turno.name } a las ${ turno.hour }` }</Text></div>) }
           </Panel> 
-        { this.state.showModal && <AppointmentModal date={ this.state.date } onClose={ this.handleClick } /> }
+        { this.state.showModal && <AppointmentModal appointments={ turnos } date={ this.state.date } onClose={ this.handleClick } /> }
       </React.Fragment> )
   } 
 }

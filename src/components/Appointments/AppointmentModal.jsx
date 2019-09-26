@@ -9,7 +9,9 @@ import {
   ModalContent,
   ModalFooter,
   Title,
+  Text,
   Button,
+  Table
 } from 'shipnow-mercurio';
 
 import {
@@ -37,7 +39,18 @@ class AppointmentModal extends Component {
   }
 
   renderList() {
+    const columns = [
+      {
+       label: 'Cliente',
+       content: (data) => (<Text>{ data.name }</Text>)
+      },
+      {
+        label: 'Horario',
+        content: (data) => (<Text>{ `${ data.hour } hs` }</Text>)
+      }
+    ]
 
+    return(<Table columns={ columns } data={ this.props.appointments } striped={ false }/>)
   }
 
   render() {
@@ -73,11 +86,13 @@ class AppointmentModal extends Component {
 AppointmentModal.PropTypes = {
   date: PropTypes.object,
   onClose: PropTypes.func,
+  appointments: PropTypes.array
 }
 
 AppointmentModal.defaultProps = {
   date: null,
-  onClose: null
+  onClose: null,
+  appointments: []
 }
 
 export default AppointmentModal;
