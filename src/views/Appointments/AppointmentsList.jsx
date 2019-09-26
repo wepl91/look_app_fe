@@ -4,6 +4,8 @@ import {
     Text,
     Title
 } from 'shipnow-mercurio';
+import moment from 'moment';
+
 import {
     Columns,
     Column,
@@ -11,6 +13,7 @@ import {
     LevelLeft,
     LevelRight
 } from 'bloomer';
+    
 import moment from 'moment';
 
 import { AppointmentCalendar } from '../../components/Appointments';
