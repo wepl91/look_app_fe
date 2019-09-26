@@ -2,10 +2,14 @@ import React, { Component } from 'react';
 import { 
     Button,
     Text,
+    Title
 } from 'shipnow-mercurio';
 import {
     Columns,
     Column,
+    Level,
+    LevelLeft,
+    LevelRight
 } from 'bloomer';
 import moment from 'moment';
 
@@ -59,8 +63,13 @@ class AppointmentsList extends Component {
         if (!this.state) return null
         return (
             <React.Fragment key={ this.state.datesInWeeks }>
-                <br />
-                <br />
+                <Level className="pl-3 pr-3">
+                    <LevelLeft style={{ paddingRight: '6px' }}>
+                        <Title>Calendario de turnos</Title>
+                    </LevelLeft>
+                    <LevelRight></LevelRight>
+                </Level>
+                <hr />
                 <Columns className="pl-3 pr-4" isVCentered>
                     <Column className="has-text-left">
                         <Button onClick={ this.handleMonth } name="prev" kind="outline">{ `${ startCase(moment(this.state.date).subtract(1, 'months').format('MMMM')) }` }</Button>
