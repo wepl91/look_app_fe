@@ -1,0 +1,39 @@
+.appointment_card {
+  display: table;
+  width: 147px; 
+  height: 147px;
+  padding: 2px;
+  margin: 8px;
+}
+
+.appointment_card_appointment_approved {
+  width: 100%;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(4, 161, 4);
+  background-color: rgb(96, 202, 96);
+  border-radius: 5px;
+  height: 15px;
+  margin-bottom: 4px; 
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  justify-items: center;
+}
+
+.appointment_card_appointment_cancelled {
+  width: 100%;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(161, 4, 4);
+  background-color: rgb(202, 96, 96);
+  border-radius: 5px;
+  height: 15px;
+  margin-bottom: 4px; 
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  justify-items: center;
+}

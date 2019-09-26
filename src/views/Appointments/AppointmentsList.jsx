@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import { 
-    Panel, 
-    Text,
     Button,
+    Text,
 } from 'shipnow-mercurio';
-import moment from 'moment';
 import {
     Columns,
     Column,
-    Level,
-    LevelLeft,
-    LevelRight
 } from 'bloomer';
+import moment from 'moment';
+
+import { AppointmentCalendar } from '../../components/Appointments';
 
 import startCase from 'lodash/startCase';
 
@@ -19,52 +17,62 @@ class AppointmentsList extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            date: moment(),
-        }
-
+        this.getDatesInMonth = this.getDatesInMonth.bind(this);
+        this.chunk = this.chunk.bind(this);
         this.handleMonth = this.handleMonth.bind(this);
-    }
-
-    handleMonth(sender, value, name) {
 
     }
 
+    
+    componentDidMount() {
+        const date = moment()
+        const datesInMonth = this.getDatesInMonth(date)
+        
+        this.setState({
+            date: date,
+            datesInWeeks: this.chunk(datesInMonth, 7)
+
+        })
+    }
+
+    handleMonth( sender, value, name ) {
+        let newDate = name == 'next' ? moment(this.state.date).add(1, 'months') : moment(this.state.date).subtract(1, 'months')
+        const datesInMonth = this.getDatesInMonth(newDate);
+        debugger
+        this.setState({
+            date: newDate,
+            datesInWeeks: this.chunk(datesInMonth, 7)
+        })
+    }
+    /** 
+    * chunk => method that "cuts" the array into n arrays of size you want
+    */
+    chunk( arr, size ) {
+        return arr.reduce((acc, _, i) => (i % size) ? acc : [...acc, arr.slice(i, i + size)], []);
+    } 
+    
+    getDatesInMonth( date ) {
+        return Array.from({ length: date.daysInMonth() }, (x, i) => moment(date).startOf('month').add(i, 'days'))
+    }
 
     render() {
-        /** 
-        * chunk => method that "cuts" the array into n arrays of size you want
-        */
-        const chunk = (arr, size) => arr.reduce((acc, _, i) => (i % size) ? acc : [...acc, arr.slice(i, i + size)], []); 
-        
-        /** 
-         *  datesInMonth => get moment() date of all month of state date
-        */
-        const datesInMonth = Array.from({ length: this.state.date.daysInMonth() }, (x, i) => moment().startOf('month').add(i, 'days'));
-        
-        /**
-         * array of dates of month "cutted" into arrays of seven days (array of array of days of each week of month)
-         */
-        const datesInWeeks = chunk(datesInMonth, 7);
+        if (!this.state) return null
         return (
-            <React.Fragment>
+            <React.Fragment key={ this.state.datesInWeeks }>
                 <br />
                 <br />
-                <Level>
-                    <LevelLeft className="pl-3">
-                        <Button value={ moment(this.state.date).subtract(1, 'months') } kind="outline">{ `${ startCase(moment(this.state.date).subtract(1, 'months').format('MMMM')) }` }</Button>
-                    </LevelLeft>
-                    <LevelRight className="pr-3">
-                        <Button value={ moment(this.state.date).add(1, 'months') } kind="outline">{ `${ startCase(moment(this.state.date).add(1, 'months').format('MMMM')) }` }</Button>
-                    </LevelRight>
-                </Level>
-                {datesInWeeks.map(week => (
-                    <Columns style={{ marginLeft: '16px' }}>
-                        {week.map((day, index) => (
-                            <Panel style={{ width: '147px', height: '147px', margin: index == 6 ? '10px' : '8px', padding: '2px' }}>
-                                <Text weight="medium">{`${ startCase(day.format('ddd')) } ${ day.format('D') }`}</Text>
-                            </Panel>))}
-                    </Columns>))}
+                <Columns className="pl-3 pr-4" isVCentered>
+                    <Column className="has-text-left">
+                        <Button onClick={ this.handleMonth } name="prev" kind="outline">{ `${ startCase(moment(this.state.date).subtract(1, 'months').format('MMMM')) }` }</Button>
+                    </Column>
+                    <Column className="has-text-centered">
+                        <Text weight="medium" size="xl" color="primaryDark">{ startCase(this.state.date.format('MMMM')) }</Text>
+                    </Column>
+                    <Column className="has-text-right" style={{ paddingRight: '2px' }}>
+                        <Button onClick={ this.handleMonth } name="next" kind="outline">{ `${ startCase(moment(this.state.date).add(1, 'months').format('MMMM')) }` }</Button>
+                    </Column>
+                </Columns>
+                <AppointmentCalendar key={ this.state.datesInWeeks } weeks={ this.state.datesInWeeks }/>
             </React.Fragment>)
     }
 }
