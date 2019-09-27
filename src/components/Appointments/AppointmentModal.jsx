@@ -17,8 +17,13 @@ import {
 import {
   Level,
   LevelLeft,
-  LevelRight
+  LevelRight,
+  Columns,
+  Column
 } from 'bloomer';
+
+import { faDownload, faEnvelopeOpenText, faTimes, faCalendarAlt, faTrash } from "@fortawesome/free-solid-svg-icons";
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
 class AppointmentModal extends Component {
   constructor(props) {
@@ -42,12 +47,55 @@ class AppointmentModal extends Component {
     const columns = [
       {
        label: 'Cliente',
-       content: (data) => (<Text>{ data.name }</Text>)
+       content: (data) => (<Text>{ data.name }</Text>),
+       size: 'is-2',
       },
       {
         label: 'Horario',
-        content: (data) => (<Text>{ `${ data.hour } hs` }</Text>)
+        content: (data) => (<Text>{ `${ data.hour } hs` }</Text>),
+        size: 'is-2'
+      },
+      {
+        label: 'Comprobante reserva',
+        content: (data) =>(
+          <Columns className="has-text-left">
+              <Button className="ml-1" kind="link">
+                <FontAwesomeIcon icon={ faEnvelopeOpenText }/>
+              </Button>
+              <Button kind="link">
+                <FontAwesomeIcon icon={ faDownload }/>
+              </Button>
+          </Columns> )
+      },
+      {
+        label: 'Comprobante cancelación',
+        content: (data) =>(
+          <Columns className="has-text-left">
+            <Button className="ml-1" kind="link">
+              <FontAwesomeIcon icon={ faEnvelopeOpenText }/>
+            </Button>
+            <Button kind="link">
+              <FontAwesomeIcon icon={ faDownload }/>
+            </Button>
+          </Columns> )
+      },
+      {
+        label: 'Comprobante pago',
+        content: (data) =>(
+          <Columns className="has-text-left">
+            <Button className="ml-1" kind="link">
+              <FontAwesomeIcon icon={ faEnvelopeOpenText }/>
+            </Button>
+            <Button kind="link">
+              <FontAwesomeIcon icon={ faDownload }/>
+            </Button>
+          </Columns> )
+      },
+      {
+        label: 'Acción',
+        content: (data) => (<Button kind="outline"><FontAwesomeIcon className="mr-1" icon={ faTrash }/> Cancelar</Button>)
       }
+
     ]
 
     return(<Table columns={ columns } data={ this.props.appointments } striped={ false }/>)
@@ -56,14 +104,16 @@ class AppointmentModal extends Component {
   render() {
     const { date } = this.props
     return(
-      <Modal show>
+      <Modal width="70%" show>
         <ModalHeader>
           <Level>
             <LevelLeft>
               <Title>{ this.state.renderCreate ? 'Nuevo turno' : `${ moment(date).format('LL') }` }</Title>
             </LevelLeft>
             <LevelRight>
-              <Button icon="plus" kind="link" onClick={ this.handleClose }>Cerrar</Button>
+            <Button icon="plus" kind="link" size="xl" onClick={ this.handleClose }>
+              <FontAwesomeIcon icon={ faTimes }/>
+            </Button>
             </LevelRight>
             </Level>
         </ModalHeader>
@@ -75,6 +125,7 @@ class AppointmentModal extends Component {
             <LevelLeft></LevelLeft>
             <LevelLeft>
               <Button kind="link" onClick={ () => (this.setState(prevState => ({ renderCreate: !prevState.renderCreate }))) }>
+                <FontAwesomeIcon className="mr-2" icon={ faCalendarAlt }/>
                 { this.state.renderCreate ? 'Ver los turnos de hoy' : 'Crear un turno para hoy' }
               </Button>
             </LevelLeft>

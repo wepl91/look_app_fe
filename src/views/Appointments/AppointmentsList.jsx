@@ -13,8 +13,6 @@ import {
     LevelLeft,
     LevelRight
 } from 'bloomer';
-    
-import moment from 'moment';
 
 import { AppointmentCalendar } from '../../components/Appointments';
 
