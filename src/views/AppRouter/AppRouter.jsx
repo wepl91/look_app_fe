@@ -12,12 +12,14 @@ import { AppointmentsMenu, AppointmentsList } from '../Appointments';
 import LanguageDropdown from '../../components/LanguageDropdown/LanguageDropdown';
 
 import { 
-    Layout, 
-    LayoutNavbar, 
-    LayoutContent, 
-    LayoutMenu,  
-    LayoutNavbarEnd,
-    LayoutNavbarStart } from 'shipnow-mercurio'
+  Layout, 
+  LayoutNavbar, 
+  LayoutContent, 
+  LayoutMenu,  
+  LayoutNavbarEnd,
+  LayoutNavbarStart,
+  Title 
+} from 'shipnow-mercurio'
 
 const FakeContent = withRouter( (props) => (
   <div>
@@ -52,9 +54,13 @@ class AppRouter extends Component {
             </LayoutMenu>
             <LayoutContent>
               <Switch>
-                <Route exact path={`${this.props.match.path}/home`}  component={ FakeContent } />
-                <Route exact path={`${this.props.match.path}/users`} component={ FakeContent } />
-                <Route  path={`${this.props.match.path}/appointments`} component={ AppointmentsList } />
+                <Route path={`${this.props.match.path}/home`}  component={ FakeContent } />
+
+                <Route path={`${this.props.match.path}/users`} component={ FakeContent } />
+
+                <Route exact path={`${this.props.match.path}/appointments/reports`} component={ FakeContent } />
+                <Route exact path={`${this.props.match.path}/appointments/list`}    component={ AppointmentsList } />
+                <Route exact path={`${this.props.match.path}/appointments`}         component={ AppointmentsList } />
               </Switch>
             </LayoutContent>
           </Layout>

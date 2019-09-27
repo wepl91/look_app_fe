@@ -11,7 +11,9 @@ import {
   Title,
   Text,
   Button,
-  Table
+  Table,
+  Select,
+  Field
 } from 'shipnow-mercurio';
 
 import {
@@ -24,6 +26,8 @@ import {
 
 import { faDownload, faEnvelopeOpenText, faTimes, faCalendarAlt, faTrash } from "@fortawesome/free-solid-svg-icons";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+
+import { ReactComponent as SvgDraw } from '../../assets/undraw_jewelry_iima.svg';
 
 class AppointmentModal extends Component {
   constructor(props) {
@@ -40,7 +44,23 @@ class AppointmentModal extends Component {
   }
 
   renderCreate() {
-
+    return(
+      <Columns>
+        <Column isSize={ 6 }>
+          <Field label="¿A cual de nuestras sucursales querés venir?" labelNote="Seleccioná una sucursal">
+            <Select />
+          </Field>
+          <Field label="¿Por quién querés ser atendido?" labelNote="Seleccioná un profesional">
+            <Select />
+          </Field>
+          <Field label="¿A que hora querés venir?" labelNote="Seleccioná un horario">
+            <Select />
+          </Field>
+        </Column>
+        <Column className="has-text-centered">
+          <SvgDraw style={{ height: '300px', width: '300px' }}/>
+        </Column>
+      </Columns> )
   }
 
   renderList() {
@@ -122,7 +142,7 @@ class AppointmentModal extends Component {
         </ModalContent>
         <ModalFooter>
           <Level>
-            <LevelLeft></LevelLeft>
+            <LevelLeft>{ this.state.renderCreate && <Button kind="outline">Reservar turno</Button> }</LevelLeft>
             <LevelLeft>
               <Button kind="link" onClick={ () => (this.setState(prevState => ({ renderCreate: !prevState.renderCreate }))) }>
                 <FontAwesomeIcon className="mr-2" icon={ faCalendarAlt }/>
