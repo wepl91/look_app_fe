@@ -17,12 +17,12 @@ class UsersRouter extends Component {
             classNames="sectionTransition">
               <section className="transition-wrapper">
                 <Switch location={ location }>
-                  <Route exact path ={ `${path}/users`         }  component={ null } />
-                  <Route exact path ={ `${path}/users/list`    }  component={ null } />
-                  <Route exact path ={ `${path}/users/new`     }  component={ null } />
-                  <Route exact path ={ `${path}/users/:id`     }  component={ null } />
+                  <Route path ={ `${path}/users`         }  component={ null } />
+                  <Route path ={ `${path}/users/list`    }  component={ null } />
+                  <Route path ={ `${path}/users/new`     }  component={ null } />
+                  <Route path ={ `${path}/users/:id`     }  component={ null } />
                   
-                  <Redirect to={`${this.props.match.path}/user`} component={ null } />
+                  <Redirect to={`${this.props.match.path}/users`} component={ null } />
                 </Switch>
             </section>
           </CSSTransition>

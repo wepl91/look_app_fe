@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import { TransitionGroup, CSSTransition } from "react-transition-group";
+import { Title } from 'shipnow-mercurio';
 
 import { AppointmentsList } from './';
 
 class AppointmentsRouter extends Component {
-
+  
   render() {
+   
     const path = this.props.match.path;
     const location = this.props.location;
     return(
@@ -18,10 +20,11 @@ class AppointmentsRouter extends Component {
             classNames="sectionTransition">
               <section className="transition-wrapper">
                 <Switch location={ location }>
-                  <Route exact path ={ `${path}/appointments`      }  component={ AppointmentsList } />
-                  <Route exact path ={ `${path}/appointments/list` }  component={ AppointmentsList } />
+                  <Route path ={ `${path}/appointments`         }  component={ null } />
+                  <Route path ={ `${path}/appointments/list`    }  component={ null } />
+                  <Route path ={ `${path}/appointments/reports` }  component={ null } />
                   
-                  <Redirect to={`${this.props.match.path}/user`} component={ AppointmentsList } />
+                  <Redirect to={`${this.props.match.path}/appointments`} component={ null } />
                 </Switch>
             </section>
           </CSSTransition>

@@ -25,8 +25,8 @@ class UsersMenu extends Component {
 
     return(
       <LayoutMenuLinkGroup label="Usuarios" basePath={ `${path}/users/` }>
-        <LayoutMenuLink to={ `${path}/users/list`   }><FontAwesomeIcon className="mr-2" icon={ faUsers }/>Listado</LayoutMenuLink>
-        <LayoutMenuLink to={ `${path}/users/new`    }><FontAwesomeIcon className="mr-2" icon={ faPlus }/>Nuevo usuario</LayoutMenuLink>
+        <LayoutMenuLink to={ `${path}/users/list` }><FontAwesomeIcon className="mr-2" icon={ faUsers }/>Listado</LayoutMenuLink>
+        <LayoutMenuLink to={ `${path}/users/new`  }><FontAwesomeIcon className="mr-2" icon={ faPlus }/>Nuevo usuario</LayoutMenuLink>
       </LayoutMenuLinkGroup> )
   };
 
