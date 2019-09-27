@@ -4,6 +4,9 @@ import { LayoutMenuLinkGroup, LayoutMenuLink } from 'shipnow-mercurio';
 import withStore from '../../hocs/withStore';
 import { withRouter } from 'react-router';
 
+import { faUsers, faPlus } from "@fortawesome/free-solid-svg-icons";
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+
 class UsersMenu extends Component {
 
   constructor(props) {
@@ -22,8 +25,8 @@ class UsersMenu extends Component {
 
     return(
       <LayoutMenuLinkGroup label="Usuarios" basePath={ `${path}/users/` }>
-        <LayoutMenuLink to={ `${path}/users/list`   }>Listado</LayoutMenuLink>
-        <LayoutMenuLink to={ `${path}/users/new`    }>Nuevo usuario</LayoutMenuLink>
+        <LayoutMenuLink to={ `${path}/users/list`   }><FontAwesomeIcon className="mr-2" icon={ faUsers }/>Listado</LayoutMenuLink>
+        <LayoutMenuLink to={ `${path}/users/new`    }><FontAwesomeIcon className="mr-2" icon={ faPlus }/>Nuevo usuario</LayoutMenuLink>
       </LayoutMenuLinkGroup> )
   };
 
