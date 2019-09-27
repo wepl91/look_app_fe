@@ -18,6 +18,9 @@ import { AppointmentCalendar } from '../../components/Appointments';
 
 import startCase from 'lodash/startCase';
 
+import {faChevronLeft, faChevronRight} from '@fortawesome/free-solid-svg-icons'
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+
 class AppointmentsList extends Component {
     constructor(props) {
         super(props);
@@ -25,7 +28,7 @@ class AppointmentsList extends Component {
         this.getDatesInMonth = this.getDatesInMonth.bind(this);
         this.chunk = this.chunk.bind(this);
         this.handleMonth = this.handleMonth.bind(this);
-
+        this.handleYear = this.handleYear.bind(this);
     }
 
     
@@ -49,6 +52,17 @@ class AppointmentsList extends Component {
             datesInWeeks: this.chunk(datesInMonth, 7)
         })
     }
+
+    handleYear( sender, value, name ) {
+        let newDate = name == 'next' ? moment(this.state.date).add(1, 'years') : moment(this.state.date).subtract(1, 'years')
+        const datesInMonth = this.getDatesInMonth(newDate);
+        debugger
+        this.setState({
+            date: newDate,
+            datesInWeeks: this.chunk(datesInMonth, 7)
+        })
+    }
+
     /** 
     * chunk => method that "cuts" the array into n arrays of size you want
     */
@@ -73,13 +87,15 @@ class AppointmentsList extends Component {
                 <hr />
                 <Columns className="pl-3 pr-4" isVCentered>
                     <Column className="has-text-left">
+                        <Button onClick={ this.handleYear } name="prev" kind="outline"><FontAwesomeIcon icon={ faChevronLeft }/></Button>
                         <Button onClick={ this.handleMonth } name="prev" kind="outline">{ `${ startCase(moment(this.state.date).subtract(1, 'months').format('MMMM')) }` }</Button>
                     </Column>
                     <Column className="has-text-centered">
-                        <Text weight="medium" size="xl" color="primaryDark">{ startCase(this.state.date.format('MMMM')) }</Text>
+                        <Text weight="medium" size="xl" color="primaryDark">{ startCase(this.state.date.format('MMMMYYYY')) }</Text>
                     </Column>
                     <Column className="has-text-right" style={{ paddingRight: '2px' }}>
                         <Button onClick={ this.handleMonth } name="next" kind="outline">{ `${ startCase(moment(this.state.date).add(1, 'months').format('MMMM')) }` }</Button>
+                        <Button onClick={ this.handleYear } name="next" kind="outline"><FontAwesomeIcon icon={ faChevronRight }/></Button>
                     </Column>
                 </Columns>
                 <AppointmentCalendar key={ this.state.datesInWeeks } weeks={ this.state.datesInWeeks }/>
