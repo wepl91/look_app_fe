@@ -18,9 +18,9 @@ class UsersRouter extends Component {
               <section className="transition-wrapper">
                 <Switch location={ location }>
                   <Route exact path ={ `${path}/users` } />
-                  <Route path ={ `${path}/users/list`  } />
-                  <Route path ={ `${path}/users/new`   } />
-                  <Route path ={ `${path}/users/:id`   } />
+                  <Route exact path ={ `${path}/users/list`  } />
+                  <Route exact path ={ `${path}/users/new`   } />
+                  <Route exact path ={ `${path}/users/:id`   } />
                 </Switch>
             </section>
           </CSSTransition>
