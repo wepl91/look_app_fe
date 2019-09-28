@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { withRouter } from 'react-router';
-
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
-class UsersRouter extends Component {
+import { ServicesList } from './'
 
+class ServicesRouter extends Component {
+  
   render() {
+   
     const path = this.props.match.path;
     const location = this.props.location;
     return(
@@ -17,10 +19,9 @@ class UsersRouter extends Component {
             classNames="sectionTransition">
               <section className="transition-wrapper">
                 <Switch location={ location }>
-                  <Route exact path ={ `${path}/users` } />
-                  <Route path ={ `${path}/users/list`  } />
-                  <Route path ={ `${path}/users/new`   } />
-                  <Route path ={ `${path}/users/:id`   } />
+                  <Route path ={ `${path}/services/list`    }  component={ ServicesList } />
+                  <Route path ={ `${path}/services/new`     }  component={ null } />
+                  <Route path ={ `${path}/services`         }  component={ ServicesList } />
                 </Switch>
             </section>
           </CSSTransition>
@@ -30,7 +31,7 @@ class UsersRouter extends Component {
 
 }
 
-export default withRouter(UsersRouter);
+export default withRouter(ServicesRouter);
 
 
 
