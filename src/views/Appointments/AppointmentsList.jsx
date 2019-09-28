@@ -18,7 +18,7 @@ import { AppointmentCalendar } from '../../components/Appointments';
 
 import startCase from 'lodash/startCase';
 
-import {faChevronLeft, faChevronRight} from '@fortawesome/free-solid-svg-icons'
+import {faChevronCircleLeft, faChevronCircleRight} from '@fortawesome/free-solid-svg-icons'
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
 class AppointmentsList extends Component {
@@ -85,17 +85,26 @@ class AppointmentsList extends Component {
                     <LevelRight></LevelRight>
                 </Level>
                 <hr />
+                <Columns className="is-gapless is-marginless" isVCentered>
+                    <Column className="has-text-right">
+                        <Button onClick={ this.handleYear } name="prev" kind="link"><FontAwesomeIcon icon={ faChevronCircleLeft } size="lg"/></Button>
+                    </Column>
+                    <Column className="has-text-centered" isSize={ 2 }>
+                        <Text weight="medium" size="xl" color="primaryDark">{ startCase(this.state.date.format('YYYY')) }</Text>
+                    </Column>
+                    <Column className="has-text-left">
+                        <Button onClick={ this.handleYear } name="next" kind="link"><FontAwesomeIcon icon={ faChevronCircleRight } size="lg"/></Button>
+                    </Column>
+                </Columns>
                 <Columns className="pl-3 pr-4" isVCentered>
                     <Column className="has-text-left">
-                        <Button onClick={ this.handleYear } name="prev" kind="outline"><FontAwesomeIcon icon={ faChevronLeft }/></Button>
                         <Button onClick={ this.handleMonth } name="prev" kind="outline">{ `${ startCase(moment(this.state.date).subtract(1, 'months').format('MMMM')) }` }</Button>
                     </Column>
-                    <Column className="has-text-centered">
-                        <Text weight="medium" size="xl" color="primaryDark">{ startCase(this.state.date.format('MMMMYYYY')) }</Text>
+                    <Column className="has-text-centered" isSize={ 2 }>
+                        <Text weight="medium" size="xl" color="primaryDark">{ startCase(this.state.date.format('MMMM')) }</Text>
                     </Column>
                     <Column className="has-text-right" style={{ paddingRight: '2px' }}>
                         <Button onClick={ this.handleMonth } name="next" kind="outline">{ `${ startCase(moment(this.state.date).add(1, 'months').format('MMMM')) }` }</Button>
-                        <Button onClick={ this.handleYear } name="next" kind="outline"><FontAwesomeIcon icon={ faChevronRight }/></Button>
                     </Column>
                 </Columns>
                 <AppointmentCalendar key={ this.state.datesInWeeks } weeks={ this.state.datesInWeeks }/>
