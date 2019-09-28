@@ -18,6 +18,9 @@ import { AppointmentCalendar } from '../../components/Appointments';
 
 import startCase from 'lodash/startCase';
 
+import {faChevronCircleLeft, faChevronCircleRight} from '@fortawesome/free-solid-svg-icons'
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+
 class AppointmentsList extends Component {
     constructor(props) {
         super(props);
@@ -25,7 +28,7 @@ class AppointmentsList extends Component {
         this.getDatesInMonth = this.getDatesInMonth.bind(this);
         this.chunk = this.chunk.bind(this);
         this.handleMonth = this.handleMonth.bind(this);
-
+        this.handleYear = this.handleYear.bind(this);
     }
 
     
@@ -49,6 +52,17 @@ class AppointmentsList extends Component {
             datesInWeeks: this.chunk(datesInMonth, 7)
         })
     }
+
+    handleYear( sender, value, name ) {
+        let newDate = name == 'next' ? moment(this.state.date).add(1, 'years') : moment(this.state.date).subtract(1, 'years')
+        const datesInMonth = this.getDatesInMonth(newDate);
+        debugger
+        this.setState({
+            date: newDate,
+            datesInWeeks: this.chunk(datesInMonth, 7)
+        })
+    }
+
     /** 
     * chunk => method that "cuts" the array into n arrays of size you want
     */
@@ -83,10 +97,11 @@ class AppointmentsList extends Component {
                     </Column>
                 </Columns>
                 <Columns className="pl-3" isVCentered>
+
                     <Column className="has-text-left">
                         <Button onClick={ this.handleMonth } name="prev" kind="outline">{ `${ startCase(moment(this.state.date).subtract(1, 'months').format('MMMM')) }` }</Button>
                     </Column>
-                    <Column className="has-text-centered">
+                    <Column className="has-text-centered" isSize={ 2 }>
                         <Text weight="medium" size="xl" color="primaryDark">{ startCase(this.state.date.format('MMMM')) }</Text>
                     </Column>
                     <Column className="has-text-right">

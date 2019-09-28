@@ -6,6 +6,8 @@ import { Title } from 'shipnow-mercurio';
 
 import { AppointmentsList, AppointmentCreation } from './';
 
+import '../../styles/styles.scss';
+
 class AppointmentsRouter extends Component {
   
   render() {
@@ -16,12 +18,11 @@ class AppointmentsRouter extends Component {
         <TransitionGroup className="transition-group">
           <CSSTransition 
             key={location.pathname}
-            timeout={300}          
+            timeout={700}          
             classNames="sectionTransition">
               <section className="transition-wrapper">
                 <Switch location={ location }>
-                  <Route path ={ `${path}/appointments`         }  component={ null } />
-                  <Route path ={ `${path}/appointments/list`    }  component={ null } />
+                  <Route path ={ `${path}/appointments/list`    }  component={ AppointmentsList } />
                   <Route path ={ `${path}/appointments/reports` }  component={ null } />
                   <Route path ={ `${path}/appointments/new`     }  component={ AppointmentCreation } />
                   <Route path ={ `${path}/appointments`         }  component={ AppointmentsList } />

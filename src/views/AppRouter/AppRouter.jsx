@@ -6,8 +6,9 @@ import { observer } from 'mobx-react';
 import withStore from '../../hocs/withStore';
 
 import { SignIn } from '../Session';
-import { UsersMenu } from '../Users'
-import { AppointmentsMenu, AppointmentsList } from '../Appointments';
+import { UsersMenu, UsersRouter } from '../Users'
+import { AppointmentsMenu, AppointmentsList, AppointmentsRouter } from '../Appointments';
+import { ServicesMenu, ServicesList, ServicesRouter } from '../Services'
 
 import LanguageDropdown from '../../components/LanguageDropdown/LanguageDropdown';
 
@@ -31,7 +32,6 @@ const FakeContent = withRouter( (props) => (
     <Title>{ props.location.pathname }</Title>
   </div>
 ));
-
 @observer
 class AppRouter extends Component {
   constructor(props) {
@@ -53,7 +53,7 @@ class AppRouter extends Component {
 
               </LayoutNavbarStart>
               <LayoutNavbarEnd>
-                <LanguageDropdown />
+               {/* <LanguageDropdown /> */}
               </LayoutNavbarEnd>
             </LayoutNavbar>
             <LayoutMenu>
@@ -63,17 +63,12 @@ class AppRouter extends Component {
               <div className={ this.state.expanded ? 'menu_button_expanded' : 'menu_button' }>
                 <Button kind="link" key={ this.state.expanded } invert size="lg" onClick={ () => (this.setState(preState => ({expanded: !preState.expanded})))} icon={ this.state.expanded ? faChevronCircleRight : faChevronCircleLeft }/>
               </div> 
+              <UsersMenu /> 
             </LayoutMenu>
             <LayoutContent>
-              <Switch>
-                <Route path={`${this.props.match.path}/home`}  component={ FakeContent } />
-
-                <Route path={`${this.props.match.path}/users`} component={ FakeContent } />
-
-                <Route exact path={`${this.props.match.path}/appointments/reports`} component={ FakeContent } />
-                <Route exact path={`${this.props.match.path}/appointments/list`}    component={ AppointmentsList } />
-                <Route exact path={`${this.props.match.path}/appointments`}         component={ AppointmentsList } />
-              </Switch>
+                <ServicesRouter     />
+                <UsersRouter        />
+                <AppointmentsRouter />
             </LayoutContent>
           </Layout>
         </React.Fragment> )

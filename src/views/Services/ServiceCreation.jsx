@@ -22,7 +22,6 @@ import {
 
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
-
 import { ReactComponent as SvgDraw } from '../../assets/undraw_barber_3uel.svg';
 
 class ServiceCreation extends Component {
