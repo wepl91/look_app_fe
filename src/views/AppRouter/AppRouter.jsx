@@ -18,8 +18,13 @@ import {
   LayoutMenu,  
   LayoutNavbarEnd,
   LayoutNavbarStart,
-  Title 
+  Title,
+  Button
 } from 'shipnow-mercurio'
+
+import { faChevronCircleLeft, faChevronCircleRight } from "@fortawesome/free-solid-svg-icons";
+
+import './style.css'
 
 const FakeContent = withRouter( (props) => (
   <div>
@@ -32,6 +37,9 @@ class AppRouter extends Component {
   constructor(props) {
     super(props)
 
+    this.state = {
+      expanded: false
+    } 
   }
 
   render() {
@@ -39,7 +47,7 @@ class AppRouter extends Component {
      if (true) {
       return(
         <React.Fragment>
-          <Layout>
+          <Layout expandedMenu={ this.state.expanded }>
             <LayoutNavbar logo="https://thumbs.dreamstime.com/z/logotipo-de-la-barber%C3%ADa-en-c%C3%ADrculo-74419610.jpg">
               <LayoutNavbarStart>
 
@@ -50,7 +58,11 @@ class AppRouter extends Component {
             </LayoutNavbar>
             <LayoutMenu>
               <AppointmentsMenu />
-              <UsersMenu /> 
+              <ServicesMenu />
+              <UsersMenu />
+              <div className={ this.state.expanded ? 'menu_button_expanded' : 'menu_button' }>
+                <Button kind="link" key={ this.state.expanded } invert size="lg" onClick={ () => (this.setState(preState => ({expanded: !preState.expanded})))} icon={ this.state.expanded ? faChevronCircleRight : faChevronCircleLeft }/>
+              </div> 
             </LayoutMenu>
             <LayoutContent>
               <Switch>

@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { Title } from 'shipnow-mercurio';
 
-import { AppointmentsList } from './';
+import { AppointmentsList, AppointmentCreation } from './';
 
 class AppointmentsRouter extends Component {
   
@@ -23,8 +23,8 @@ class AppointmentsRouter extends Component {
                   <Route path ={ `${path}/appointments`         }  component={ null } />
                   <Route path ={ `${path}/appointments/list`    }  component={ null } />
                   <Route path ={ `${path}/appointments/reports` }  component={ null } />
-                  
-                  <Redirect to={`${this.props.match.path}/appointments`} component={ null } />
+                  <Route path ={ `${path}/appointments/new`     }  component={ AppointmentCreation } />
+                  <Route path ={ `${path}/appointments`         }  component={ AppointmentsList } />
                 </Switch>
             </section>
           </CSSTransition>

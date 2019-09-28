@@ -1,7 +1,7 @@
 .appointment_card {
   display: table;
-  width: 147px; 
-  height: 147px;
+  width: 14%; 
+  height: 150px;
   padding: 2px;
   margin: 8px;
 }

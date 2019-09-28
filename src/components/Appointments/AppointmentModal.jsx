@@ -24,7 +24,7 @@ import {
   Column
 } from 'bloomer';
 
-import { faDownload, faEnvelopeOpenText, faTimes, faCalendarAlt, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faDownload, faEnvelopeOpenText, faTimes, faCalendarAlt, faTrash, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
 import { ReactComponent as SvgDraw } from '../../assets/undraw_jewelry_iima.svg';
@@ -48,13 +48,13 @@ class AppointmentModal extends Component {
       <Columns>
         <Column isSize={ 6 }>
           <Field label="¿A cual de nuestras sucursales querés venir?" labelNote="Seleccioná una sucursal">
-            <Select />
+            <Select placeholder="Sucursales" borderless icon={ faChevronDown } />
           </Field>
           <Field label="¿Por quién querés ser atendido?" labelNote="Seleccioná un profesional">
-            <Select />
+            <Select placeholder="Profesionales" borderless icon={ faChevronDown } />
           </Field>
           <Field label="¿A que hora querés venir?" labelNote="Seleccioná un horario">
-            <Select />
+            <Select placeholder="Horarios" borderless icon={ faChevronDown } />
           </Field>
         </Column>
         <Column className="has-text-centered">
