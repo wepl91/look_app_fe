@@ -4,6 +4,7 @@ import { withRouter } from 'react-router';
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 import { ServicesList, ServiceCreation } from './'
+import '../../styles/styles.scss';
 
 class ServicesRouter extends Component {
   
@@ -15,13 +16,13 @@ class ServicesRouter extends Component {
         <TransitionGroup className="transition-group">
           <CSSTransition 
             key={location.pathname}
-            timeout={300}          
+            timeout={700}          
             classNames="sectionTransition">
               <section className="transition-wrapper">
                 <Switch location={ location }>
-                  <Route path ={ `${path}/services/list` }  component={ ServicesList    }    />
+                  <Route path ={ `${path}/services/list` }  component={ ServicesList    } />
                   <Route path ={ `${path}/services/new`  }  component={ ServiceCreation } />
-                  <Route path ={ `${path}/services`      }  component={ ServicesList    }    />
+                  <Route path ={ `${path}/services`      }  component={ ServicesList    } />
                 </Switch>
             </section>
           </CSSTransition>

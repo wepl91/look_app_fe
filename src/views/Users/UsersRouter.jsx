@@ -4,6 +4,7 @@ import { withRouter } from 'react-router';
 
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
+import '../../styles/styles.scss';
 class UsersRouter extends Component {
 
   render() {
@@ -13,7 +14,7 @@ class UsersRouter extends Component {
         <TransitionGroup className="transition-group">
           <CSSTransition 
             key={location.pathname}
-            timeout={300}          
+            timeout={700}          
             classNames="sectionTransition">
               <section className="transition-wrapper">
                 <Switch location={ location }>

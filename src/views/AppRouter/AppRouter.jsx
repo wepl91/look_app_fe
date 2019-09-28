@@ -58,7 +58,6 @@ class AppRouter extends Component {
                 <ServicesRouter     />
                 <UsersRouter        />
                 <AppointmentsRouter />
-                <Redirect to={ `${ this.props.match.path }/appointments/list` }/>
             </LayoutContent>
           </Layout>
         </React.Fragment> )

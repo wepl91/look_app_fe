@@ -44,6 +44,7 @@ class ServiceCreation extends Component {
   }
 
   render() {
+    const priceRegex = /[a-zA-Z]/
     return(
       <React.Fragment>
         <Level>
@@ -64,6 +65,11 @@ class ServiceCreation extends Component {
                          value={ this.state.price } 
                          validate={ (value) => (!priceRegex.test(value)) } name="price" onChange={ this.handleChange }/>
             </Field>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <Button className="ml-5" kind="outline">Crear servicio</Button>
           </Column>
           <Column>
           <SvgDraw style={{ height: '300px', width: '400px', marginTop: '-50px' }}/>

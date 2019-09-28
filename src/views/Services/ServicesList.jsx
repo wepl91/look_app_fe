@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 import {
   Title,
   Button,
+  Table,
+  SelectableIcon,
+  Text
 } from 'shipnow-mercurio';
 
 import {
@@ -12,6 +15,8 @@ import {
   LevelLeft,
   LevelRight
 } from 'bloomer';
+
+import { faCut, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 
 import { ServiceCreationModal } from '../../components/Services';
 
@@ -32,6 +37,53 @@ class ServicesList extends Component {
     }))
   }
 
+  renderTable() {
+    const data = [
+      {
+        name: 'Corte',
+        price: '200'
+      },
+      {
+        name: 'Tintura',
+        price: '250'
+      },
+      {
+        name: 'Shock keratina',
+        price: '450'
+      },
+      {
+        name: 'Brushing',
+        price: '300'
+      },
+    ];
+
+    const columns = [
+      {
+        label: '',
+        content: (data) => (<SelectableIcon  className="ml-2" icon={ faCut } readOnly/>),
+        size: 'is-2',
+      },
+      {
+        label: 'Servicio',
+        content: (data) => (<Text>{ data.name }</Text>),
+        size: 'is-3'
+      },
+      {
+        label: 'Precio',
+        content: (data) => (<Text>{ `$${ data.price }` }</Text>),
+        size: 'is-3'
+      },
+      {
+        label: '',
+        content: (data) => (<Button icon={ faPencilAlt } kind="link"/>),
+        size: 'is-3',
+        align: 'right'
+      },
+    ]
+
+    return <Table columns={ columns } data={ data } striped={ false }/>
+  }
+
   render() {
     return(
       <React.Fragment>
@@ -39,11 +91,8 @@ class ServicesList extends Component {
           <LevelLeft>
             <Title>Lista de servicios</Title>
           </LevelLeft>
-          <LevelRight>
-            <Button kind="outline" onClick={ this.handleModal }>Crear servicio</Button>
-          </LevelRight>
         </Level>
-        { this.state.showCreationModal && <ServiceCreationModal onClose={ this.handleModal }/> }
+        { this.renderTable() }
       </React.Fragment> )
   }
 

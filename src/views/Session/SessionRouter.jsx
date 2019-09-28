@@ -11,6 +11,8 @@ import { SignIn } from './';
 
 import AppRouter from '../AppRouter/AppRouter';
 
+import '../../styles/styles.scss';
+
 @observer
 class SessionRouter extends Component {
 
