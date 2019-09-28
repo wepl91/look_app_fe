@@ -96,14 +96,15 @@ class AppointmentsList extends Component {
                         <Button onClick={ this.handleYear } name="next" kind="link"><FontAwesomeIcon icon={ faChevronCircleRight } size="lg"/></Button>
                     </Column>
                 </Columns>
-                <Columns className="pl-3 pr-4" isVCentered>
+                <Columns className="pl-3" isVCentered>
+
                     <Column className="has-text-left">
                         <Button onClick={ this.handleMonth } name="prev" kind="outline">{ `${ startCase(moment(this.state.date).subtract(1, 'months').format('MMMM')) }` }</Button>
                     </Column>
                     <Column className="has-text-centered" isSize={ 2 }>
                         <Text weight="medium" size="xl" color="primaryDark">{ startCase(this.state.date.format('MMMM')) }</Text>
                     </Column>
-                    <Column className="has-text-right" style={{ paddingRight: '2px' }}>
+                    <Column className="has-text-right">
                         <Button onClick={ this.handleMonth } name="next" kind="outline">{ `${ startCase(moment(this.state.date).add(1, 'months').format('MMMM')) }` }</Button>
                     </Column>
                 </Columns>

@@ -20,6 +20,8 @@ import {
   Title
 } from 'shipnow-mercurio';
 
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+
 import { ReactComponent as SvgDraw } from '../../assets/undraw_barber_3uel.svg';
 
 class ServiceCreation extends Component {
@@ -52,10 +54,11 @@ class ServiceCreation extends Component {
             <Title>Nuevo servicio</Title>
           </LevelLeft>
         </Level>
+        <hr/>
         <Columns>
           <Column className="pl-5 pr-5">
             <Field className="pl-5 pr-5" label="¿En cual sucursal querés ofrecer este servicio">
-              <Select className="is-fullwidth" />
+              <Select className="is-fullwidth" icon={ faChevronDown } borderless placeholder="Sucursales"/>
             </Field>
             <Field className="pl-5 pr-5" label="¿Como se llama el servicio que querés ofrecer?">
               <TextInput className="is-fullwidth" />

@@ -92,6 +92,7 @@ class ServicesList extends Component {
             <Title>Lista de servicios</Title>
           </LevelLeft>
         </Level>
+        <hr/>
         { this.renderTable() }
       </React.Fragment> )
   }

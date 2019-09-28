@@ -4,7 +4,7 @@ import { LayoutMenuLinkGroup, LayoutMenuLink } from 'shipnow-mercurio';
 import withStore from '../../hocs/withStore';
 import { withRouter } from 'react-router';
 
-import { faCalendarAlt, faChartBar } from "@fortawesome/free-solid-svg-icons";
+import { faCalendarAlt, faChartBar, faPlus } from "@fortawesome/free-solid-svg-icons";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
 class AppointmentsMenu extends Component {
@@ -24,9 +24,10 @@ class AppointmentsMenu extends Component {
     const path = this.props.match.path;
 
     return(
-      <LayoutMenuLinkGroup label="Turnos" basePath={ `${path}/appointments` }>
-        <LayoutMenuLink to={ `${path}/appointments/list`   }><FontAwesomeIcon className="mr-2" icon={ faCalendarAlt }/>Listado</LayoutMenuLink>
-        <LayoutMenuLink to={ `${path}/appointments/reports`   }><FontAwesomeIcon className="mr-2" icon={ faChartBar }/>Reportes</LayoutMenuLink>
+      <LayoutMenuLinkGroup icon={ faCalendarAlt } label="Turnos" basePath={ `${path}/appointments` }>
+        <LayoutMenuLink icon={ faCalendarAlt } to={ `${path}/appointments/list`   }>Listado</LayoutMenuLink>
+        <LayoutMenuLink icon={ faPlus } to={ `${path}/appointments/new`           }>Nuevo turno</LayoutMenuLink>
+        <LayoutMenuLink icon={ faChartBar } to={ `${path}/appointments/reports`   }>Reportes</LayoutMenuLink>
       </LayoutMenuLinkGroup> )
   };
 

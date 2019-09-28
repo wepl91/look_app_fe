@@ -23,9 +23,9 @@ class ServicesMenu extends Component {
     const path = this.props.match.path;
 
     return(
-      <LayoutMenuLinkGroup label="Servicios" basePath={ `${path}/services` }>
-        <LayoutMenuLink to={ `${path}/services/list`  }><FontAwesomeIcon className="mr-2" icon={ faCut }/>Listado</LayoutMenuLink>
-        <LayoutMenuLink to={ `${path}/services/new`   }><FontAwesomeIcon className="mr-2" icon={ faPlus }/>Nuevo servicio</LayoutMenuLink>
+      <LayoutMenuLinkGroup icon={ faCut } label="Servicios" basePath={ `${path}/services` }>
+        <LayoutMenuLink icon={ faCut } to={ `${path}/services/list`  }>Listado</LayoutMenuLink>
+        <LayoutMenuLink icon={ faPlus } to={ `${path}/services/new`   }>Nuevo servicio</LayoutMenuLink>
       </LayoutMenuLinkGroup> )
   };
 
