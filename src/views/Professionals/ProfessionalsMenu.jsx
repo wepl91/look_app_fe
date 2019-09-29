@@ -4,7 +4,7 @@ import { LayoutMenuLinkGroup, LayoutMenuLink } from 'shipnow-mercurio';
 import withStore from '../../hocs/withStore';
 import { withRouter } from 'react-router';
 
-import { faCut, faPlus, faBriefcase } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faBriefcase } from "@fortawesome/free-solid-svg-icons";
 
 class ProfessionalsMenu extends Component {
 

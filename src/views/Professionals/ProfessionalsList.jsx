@@ -2,21 +2,17 @@ import React, { Component } from 'react';
 
 import {
   Title,
-  Button,
   Table,
   SelectableIcon,
   Text
 } from 'shipnow-mercurio';
 
 import {
-  Columns,
-  Column,
   Level,
-  LevelLeft,
-  LevelRight
+  LevelLeft
 } from 'bloomer';
 
-import { faCut, faPencilAlt, faSuitcase } from "@fortawesome/free-solid-svg-icons";
+import { faSuitcase } from "@fortawesome/free-solid-svg-icons";
 
 import { profesionales} from '../../lib/Mocks';
 
