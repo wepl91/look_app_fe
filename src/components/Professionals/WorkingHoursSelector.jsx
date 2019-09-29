@@ -20,22 +20,43 @@ class WorkingHoursSelector extends Component {
     super(props)
   
     this.state = {
-      startingDate: this.props.startingDate,
-      finishingDate: this.props.finishingDate
+      startingDate: '',
+      finishingDate: '',
+      buttonDisabled: false
     }
+
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.startingDate != this.props.startingDate) {
-      this.setState(prevState => ({
-        reload: !prevState
-      }))
+  handleChange( sender, value, name, valid ) {
+
+    if (name == 'starting') {
+      this.setState({
+        startingDate: value
+      })
     }
-    if (prevProps.finishingDate != this.props.finishingDate) {
-      this.setState(prevState => ({
-        reload: !prevState
-      }))
+    if (name == 'finishing') {
+      this.setState({
+        finishingDate: value
+      })
     }
+
+    console.log("************************************")
+    console.log(this.state.startingDate)
+    console.log(this.state.finishingDate)
+  }
+
+  hoursBetweenDates(startDate, endDate) {
+    let dates = [];
+  
+    let currDate = moment(startDate).startOf('minute');
+    let lastDate = moment(endDate).startOf('minute');
+  
+    while(currDate.add(30, 'minutes').diff(lastDate, 'minutes') < 0) {
+        dates.push(currDate.clone().format('HH:mm'));
+    }
+  
+    return dates;
   }
 
   render() {
@@ -43,31 +64,26 @@ class WorkingHoursSelector extends Component {
       <React.Fragment>
         <Columns>
           <Column isSize="1/2">
-            <Select placeholder="Entrada" borderless icon={ faChevronDown } options={ hoursBetweenDates(this.state.startingDate, this.state.finishingDate) } />
+            <Select placeholder="Entrada" 
+                    borderless icon={ faChevronDown } 
+                    value = {this.state.startingDate}
+                    validate={ (value) => (moment(value, 'HH:mm').isBefore(moment(this.state.finishingDate, 'HH:mm'))) }
+                    name="starting" onChange={ this.handleChange } options={ this.hoursBetweenDates(this.props.startingDate, this.props.finishingDate) } />
           </Column>
           <Column>
             <Text>a</Text>
           </Column>
           <Column isSize="1/2">
-            <Select placeholder="Salida" borderless icon={ faChevronDown } options={ hoursBetweenDates(this.state.startingDate, this.state.finishingDate) } />
+            <Select placeholder="Salida"
+                    borderless icon={ faChevronDown }
+                    value = {this.state.finishingDate}
+                    validate={ (value) => (moment(value, 'HH:mm').isAfter(moment(this.state.startingDate, 'HH:mm'))) }
+                    name="finishing" onChange={ this.handleChange } options={ this.hoursBetweenDates(this.props.startingDate, this.props.finishingDate) } />
           </Column>
         </Columns>
       </React.Fragment>)
   }
 }
-
-function hoursBetweenDates(startDate, endDate) {
-  let dates = [];
-
-  let currDate = moment(startDate).startOf('minute').subtract(30, 'minutes');
-  let lastDate = moment(endDate).startOf('minute').add(30, 'minutes');
-
-  while(currDate.add(30, 'minutes').diff(lastDate, 'minutes') < 0) {
-      dates.push(currDate.clone().format('HH:mm'));
-  }
-
-  return dates;
-};
 
 WorkingHoursSelector.PropTypes = {
   startingDate: PropTypes.object,
