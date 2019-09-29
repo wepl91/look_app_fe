@@ -59,8 +59,8 @@ class WorkingHoursSelector extends Component {
 function hoursBetweenDates(startDate, endDate) {
   let dates = [];
 
-  let currDate = moment(startDate).startOf('minute');
-  let lastDate = moment(endDate).startOf('minute');
+  let currDate = moment(startDate).startOf('minute').subtract(30, 'minutes');
+  let lastDate = moment(endDate).startOf('minute').add(30, 'minutes');
 
   while(currDate.add(30, 'minutes').diff(lastDate, 'minutes') < 0) {
       dates.push(currDate.clone().format('HH:mm'));
