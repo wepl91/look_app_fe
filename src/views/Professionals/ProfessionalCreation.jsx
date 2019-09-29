@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 
-import moment from 'moment';
-
 import {
   Column,
   Columns,
   Level,
   LevelLeft,
-  LevelRight,
   Checkbox
 } from 'bloomer';
 
@@ -17,40 +14,24 @@ import {
   Field,
   TextInput,
   Title,
-  Text,
-  DateTimePicker,
-  Time
+  Text
 } from 'shipnow-mercurio';
 
-import { faChevronDown, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { WorkingHoursSelector } from '../../components/Professionals';
+
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 import { sucursales, servicios } from '../../lib/Mocks';
 
 import { ReactComponent as SvgDraw } from '../../assets/undraw_online_cv_qy9w.svg';
+import moment from 'moment';
 
 class ProfessionalCreation extends Component {
   constructor(props) {
     super(props);
-
-    // this.state = {
-    //   price: '',
-    //   buttonDisabled: false,
-    // }
-
-    // this.handleChange = this.handleChange.bind(this);
   }
 
-  // handleChange( sender, value, name, valid ) {
-  //   if (name == 'price') {
-  //     this.setState({
-  //       price: value,
-  //       buttonDisabled: valid.type == 'error',
-  //     })
-  //   }
-  // }
-
   render() {
-    // const priceRegex = /[a-zA-Z]/
     return(
       <React.Fragment>
         <Level>
@@ -75,6 +56,9 @@ class ProfessionalCreation extends Component {
             </Field>
             <Field className="pl-5 pr-5" label="¿En qué sucursal va a atender?" labelNote="Seleccioná una sucursal">
               <Select className="is-fullwidth" placeholder="Sucursales" borderless icon={ faChevronDown } options={ sucursales().map(sucursal => ({key: sucursal.address, value: sucursal.id})) } />
+            </Field>
+            <Field className="pl-5 pr-5" label="Horarios de trabajo" labelNote="Seleccioná los horarios semanales">
+              <WorkingHoursSelector startingDate={ moment('05-17-2018 02:30 PM', 'MM-DD-YYYY hh:mm A') } finishingDate={ moment('05-17-2018 06:00 PM', 'MM-DD-YYYY hh:mm A') }/>
             </Field>
             <Field className="pl-5 pr-5" label="¿Qué servicios ofrece?" labelNote="Seleccioná los servicios">
               {servicios().map((servicio, index) => (
