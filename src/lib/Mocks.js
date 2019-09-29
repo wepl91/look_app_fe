@@ -23,14 +23,29 @@ export const profesionales = () => {
     {
       id: 1,
       name: 'Nicolas',
+      surname: 'González',
+      phone: '1115426425',
+      mail: 'nicog@gmail.com',
+      branch: 'Sucursal nro 1',
+      services: 'Corte'
     },
     {
       id: 2,
       name: 'Julieta',
+      surname: 'Rodríguez',
+      phone: '1175145216',
+      mail: 'julietar@gmail.com',
+      branch: 'Sucursal nro 2',
+      services: ['Corte', 'Tintura']
     },
     {
       id: 3,
       name: 'Mariana',
+      surname: 'Pérez',
+      phone: '1142654265',
+      mail: 'marianap@gmail.com',
+      branch: 'Sucursal nro 3',
+      services: ['Brushing', 'Tintura']
     },
   ]
 }
