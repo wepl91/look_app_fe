@@ -67,6 +67,21 @@ export const horarios = () => {
   ]
 }
 
+export const horariosFormateados = () => {
+  return [
+    {
+      id: 1,
+      hour: '05-17-2018 02:30 PM',
+      format: 'MM-DD-YYYY hh:mm A'
+    },
+    {
+      id: 2,
+      hour: '05-17-2018 06:00 PM',
+      format: 'MM-DD-YYYY hh:mm A'
+    },
+  ]
+}
+
 export const servicios = () => {
   return [
     {
