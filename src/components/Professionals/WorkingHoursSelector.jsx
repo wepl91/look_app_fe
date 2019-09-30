@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 
 import {
   Columns,
-  Column
+  Column,
+  Level,
+  LevelLeft,
+  LevelRight
 } from 'bloomer';
 
 import {
@@ -14,6 +17,7 @@ import {
 import moment from 'moment';
 
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { LevelItem } from 'bloomer/lib/components/Level/LevelItem';
  
 class WorkingHoursSelector extends Component {
   constructor(props) {
@@ -63,17 +67,17 @@ class WorkingHoursSelector extends Component {
     let hourList = this.hoursBetweenDates(this.props.startingDate, this.props.finishingDate)
     return(
       <React.Fragment>
-        <Columns>
-          <Column isSize="1/2">
+        <Columns className="is-gapless is-marginless" isVCentered isCentered>
+          <Column isSize={3}>
             <Select placeholder="Entrada" 
                     borderless icon={ faChevronDown } 
                     value = {this.state.startingDate}
                     name="starting" onChange={ this.handleChange } options={ hourList } />
           </Column>
-          <Column>
+          <Column isSize={1}>
             <Text>a</Text>
           </Column>
-          <Column isSize="1/2">
+          <Column isSize={3}>
             <Select placeholder="Salida"
                     borderless icon={ faChevronDown }
                     value = {this.state.finishingDate}
@@ -87,13 +91,15 @@ class WorkingHoursSelector extends Component {
 WorkingHoursSelector.PropTypes = {
   startingDate: PropTypes.object,
   finishingDate: PropTypes.object,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  validate: PropTypes.func
 }
 
 WorkingHoursSelector.defaultProps = {
   startingDate: null,
   finishingDate: null,
-  onChange: null
+  onChange: null,
+  validate: null
 }
 
 export default WorkingHoursSelector;
