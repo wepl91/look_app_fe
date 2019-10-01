@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { observer } from 'mobx-react';
 import { 
     Button,
     Text,
@@ -14,13 +15,15 @@ import {
     LevelRight
 } from 'bloomer';
 
+import { withStore } from '../../hocs'
+
 import { AppointmentCalendar } from '../../components/Appointments';
 
 import startCase from 'lodash/startCase';
 
 import {faChevronCircleLeft, faChevronCircleRight} from '@fortawesome/free-solid-svg-icons'
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
-
+@observer
 class AppointmentsList extends Component {
     constructor(props) {
         super(props);
@@ -33,20 +36,18 @@ class AppointmentsList extends Component {
 
     
     componentDidMount() {
+        
         const date = moment()
         const datesInMonth = this.getDatesInMonth(date)
-        
         this.setState({
             date: date,
-            datesInWeeks: this.chunk(datesInMonth, 7)
-
+            datesInWeeks: this.chunk(datesInMonth, 7),
         })
     }
 
     handleMonth( sender, value, name ) {
         let newDate = name == 'next' ? moment(this.state.date).add(1, 'months') : moment(this.state.date).subtract(1, 'months')
         const datesInMonth = this.getDatesInMonth(newDate);
-        debugger
         this.setState({
             date: newDate,
             datesInWeeks: this.chunk(datesInMonth, 7)
@@ -56,7 +57,6 @@ class AppointmentsList extends Component {
     handleYear( sender, value, name ) {
         let newDate = name == 'next' ? moment(this.state.date).add(1, 'years') : moment(this.state.date).subtract(1, 'years')
         const datesInMonth = this.getDatesInMonth(newDate);
-        debugger
         this.setState({
             date: newDate,
             datesInWeeks: this.chunk(datesInMonth, 7)
@@ -113,4 +113,4 @@ class AppointmentsList extends Component {
     }
 }
 
-export default AppointmentsList;
+export default withStore(AppointmentsList);

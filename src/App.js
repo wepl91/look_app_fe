@@ -11,6 +11,7 @@ const SessionRouter = lazy( () => import('./views/Session/SessionRouter'));
 const loader = <Loader className="fullscreen" label="Cargando aplicación..." icon="cog" animation="spin"  /> ;
 
 
+@observer
 class App extends Component {
   constructor(props) {
     super(props);

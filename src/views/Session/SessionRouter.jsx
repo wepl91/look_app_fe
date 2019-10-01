@@ -22,8 +22,7 @@ class SessionRouter extends Component {
 
   render() {
     // not logged in or confirmation page
-    if ((!this.props.store.isLoggedIn && !this.props.store.isLoggingIn) || this.props.location.pathname.includes('confirmation')) {
-      const isSignUp = this.props.location.pathname.includes('signUp') || this.props.location.pathname.includes('signup');
+    if (!this.props.store.isLoggedIn && !this.props.store.isLoggingIn) {
 
       return (
         <Columns isVCentered isCentered isMobile style={{ height: '100vh' }}>

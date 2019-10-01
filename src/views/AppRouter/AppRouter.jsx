@@ -43,8 +43,7 @@ class AppRouter extends Component {
   }
 
   render() {
-   // if (this.props.store.loggedInUser) {
-     if (true) {
+   if (this.props.store.loggedInUser) {
       return(
         <React.Fragment>
           <Layout expandedMenu={ this.state.expanded }>
