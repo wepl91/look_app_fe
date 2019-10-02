@@ -11,7 +11,7 @@ import {
 
 import {
   Select,
-  Text
+  Text,
 } from 'shipnow-mercurio';
 
 import moment from 'moment';
@@ -68,22 +68,24 @@ class WorkingHoursSelector extends Component {
     return(
       <React.Fragment>
         <Columns className="is-gapless is-marginless" isVCentered isCentered>
-          <Column isSize={3}>
+          <Column isSize={5}>
             <Select placeholder="Entrada" 
+                    className="is-fullwidth"
                     borderless icon={ faChevronDown } 
                     value = {this.state.startingDate}
                     name="starting" onChange={ this.handleChange } options={ hourList } />
           </Column>
-          <Column isSize={1}>
+          <Column isSize={2} className="has-text-centered">
             <Text>a</Text>
           </Column>
-          <Column isSize={3}>
+          <Column isSize={5}>
             <Select placeholder="Salida"
+                    className="is-fullwidth"
                     borderless icon={ faChevronDown }
                     value = {this.state.finishingDate}
                     name="finishing" onChange={ this.handleChange } options={ hourList } />
-          </Column>
-        </Columns>
+                    </Column>
+          </Columns>
       </React.Fragment>)
   }
 }
