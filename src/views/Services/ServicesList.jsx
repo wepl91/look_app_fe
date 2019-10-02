@@ -16,20 +16,35 @@ import {
   LevelRight
 } from 'bloomer';
 
+import withStore from '../../hocs/withStore';
+
+import { observer } from 'mobx-react';
+
 import { faCut, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 
 import { ServiceCreationModal } from '../../components/Services';
 
+import startCase from 'lodash/startCase';
+
+@observer
 class ServicesList extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       showCreationModal: false,
+      services: null
     }
 
     this.handleModal = this.handleModal.bind(this);
   }
+
+  componentDidMount() {
+    this.setState({
+      services: this.props.store.services.search({}),
+    })
+  }
+  
 
   handleModal() {
     this.setState(prevState => ({
@@ -38,24 +53,8 @@ class ServicesList extends Component {
   }
 
   renderTable() {
-    const data = [
-      {
-        name: 'Corte',
-        price: '200'
-      },
-      {
-        name: 'Tintura',
-        price: '250'
-      },
-      {
-        name: 'Shock keratina',
-        price: '450'
-      },
-      {
-        name: 'Brushing',
-        price: '300'
-      },
-    ];
+    debugger
+    const data = this.state.services.toArray();
 
     const columns = [
       {
@@ -65,19 +64,24 @@ class ServicesList extends Component {
       },
       {
         label: 'Servicio',
-        content: (data) => (<Text>{ data.name }</Text>),
+        content: (data) => (<Text>{ startCase(data.name) }</Text>),
         size: 'is-3'
       },
       {
         label: 'Precio',
-        content: (data) => (<Text>{ `$${ data.price }` }</Text>),
+        content: (data) => (<Text>{ `$${ data.cost }` }</Text>),
+        size: 'is-3'
+      },
+      {
+        label: 'Duración',
+        content: (data) => (<Text>{ `${ data.duration } minutos` }</Text>),
         size: 'is-3'
       },
       {
         label: '',
         content: (data) => (<Button icon={ faPencilAlt } kind="link"/>),
-        size: 'is-3',
-        align: 'right'
+        size: 'is-1',
+        align: 'left'
       },
     ]
 
@@ -85,6 +89,9 @@ class ServicesList extends Component {
   }
 
   render() {
+    if (!this.state.services || !this.state.services.isOk()) {
+      return 'Cargando servicios..';
+    }
     return(
       <React.Fragment>
         <Level>
@@ -99,4 +106,4 @@ class ServicesList extends Component {
 
 }
 
-export default ServicesList;
+export default withStore(ServicesList);

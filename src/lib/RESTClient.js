@@ -13,19 +13,16 @@ export default class RESTClient {
   }
 
   @action
-  authenticate( user, password, authPath = '/authenticate' ) {
-    // let credentials = Buffer(`${user}:${password}`).toString('base64');
-
-    // return this.sendRequest( authPath, 'POST', {}, false, {
-    //     'Authorization': `Basic ${credentials}`,
-    //   })
-    //   .then( res => {
-    //     this.token = res['results']['token'] || res['results'];
-    //     return res['results'];
-    //   },
-    //   err => {
-    //     return Promise.reject(err);
-    //   });
+  authenticate( user, password, authPath = '/login' ) {
+    let credentials = Buffer(`${user}:${password}`).toString('base64');
+    return this.sendRequest(authPath, 'POST', {username: user, password: password}, false)
+      .then( res => {
+        this.token = res['results']['token'] || res['results'];
+        return res.results;
+      })
+      .catch( error => {
+        return Promise.reject(error)
+      })
   }
 
   @action
@@ -80,7 +77,8 @@ export default class RESTClient {
     let headers = {
         'Content-Type': 'application/json',
         'pragma': 'no-cache',
-        'cache-control': 'no-cache',  
+        'cache-control': 'no-cache',
+        'mode': 'no-cors'
       };
 
     let request = {
@@ -88,30 +86,11 @@ export default class RESTClient {
         'headers': headers,
       };
 
-
-    if ( secure ) {
-      if ( this.token ) {
-        headers = Object.assign( 
-          headers, 
-          {
-            'Authorization': `Bearer ${this.token}`,
-          }, 
-          customHeaders);
-      }
-      else {
-        return Promise.reject(new Error('Not authenticated yet.'));
-      }
-    }
-    else {
-      headers = Object.assign( headers, customHeaders );
-    }
-
     if ( method != 'GET' && params != null ) {
       request = Object.assign( request, {
         body: JSON.stringify(params),
       });
     }
-
     return fetch( url, request )
       .then( res => {
         if ( res.ok ) {

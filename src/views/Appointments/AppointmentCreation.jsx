@@ -30,7 +30,6 @@ class AppointmentCreation extends Component {
   }
 
   render() {
-    debugger 
     return(
       <React.Fragment>
         <Level>

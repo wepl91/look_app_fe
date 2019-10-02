@@ -15,9 +15,7 @@ class SignIn extends Component {
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSignIn      = this.handleSignIn.bind(this);
     this.handleClick       = this.handleClick.bind(this);
-    this.signIn            = this.signIn.bind(this);
     this.logIn             = this.logIn.bind(this);
   }
 
@@ -42,25 +40,6 @@ class SignIn extends Component {
       });
   }
 
-  signIn(sender, formData) {
-    if (this.props.params && this.props.params.on_boarded && this.props.params.on_boarded == 'false') {
-      //here render onBoarding page
-      this.checkAuth().then(res => {
-        this.setState({
-          onBoarding: true,
-        })
-      }, err => {
-        this.setState({ 
-          signingIn: false,
-          signingError: err.response || err.toString(),
-        });
-      })
-    }
-    else {
-      this.logIn()
-    }
-  }
-
   handleInputChange(sender, value, name, valid, securityLevel) {
     if(value != '') {
       let newState = {};
@@ -69,12 +48,11 @@ class SignIn extends Component {
         this.insecure = false
       }
       this.setState(newState);
-
     }
   }
 
   handleClick( sender, value, name ) {
-    
+    this.logIn();
   }
 
   verifyPassword() {
@@ -109,19 +87,13 @@ class SignIn extends Component {
             <Panel color="error" className="mt-2" invert>
               <Text multiline>No se pudo iniciar sesión. ¿Estás seguro de haber puesto correctamente los datos?</Text>
             </Panel> }
-          { !this.state.signingIn ?
             <Button size="xl" 
                     className="is-fullwidth mt-4 mb-2" 
                     isDefault
                     kind="outline"
                     name="signIn"
                     onClick={ this.handleClick }>
-                    Iniciar sesión
-            </Button> :
-            <Button size="xl" 
-                    className="is-fullwidth mt-4 mb-2" 
-                    icon="spinner" pulse 
-                    disabled /> }
+                    Iniciar sesión</Button>
             <Level>
               <LevelLeft>
               <Button onClick={ this.handleClick }
