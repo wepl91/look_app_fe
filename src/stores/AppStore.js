@@ -1,7 +1,11 @@
 import { action, observable, computed } from 'mobx';
 import { RESTClient, LocalStorageClient } from '../lib';
 
-import { UIStore, UsersStore } from './';
+import { 
+  UIStore, 
+  UsersStore,
+  ServicesStore 
+} from './';
 
 export default class AppStore {
   @observable isLoading = true;
@@ -31,6 +35,7 @@ export default class AppStore {
 
     // Domain stores
     this.stores.set('users', new UsersStore(this.APIClient, this));
+    this.stores.set('services', new ServicesStore(this.APIClient, this));
    
     // UI stores
     this.stores.set('ui', new UIStore(this.localStorageClient, this));
