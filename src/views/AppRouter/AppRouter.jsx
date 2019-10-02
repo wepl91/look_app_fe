@@ -23,7 +23,7 @@ import {
   Button
 } from 'shipnow-mercurio'
 
-import { faChevronCircleLeft, faChevronCircleRight } from "@fortawesome/free-solid-svg-icons";
+import { faChevronCircleLeft, faChevronCircleRight, faBars } from "@fortawesome/free-solid-svg-icons";
 
 import './style.css'
 
@@ -60,7 +60,7 @@ class AppRouter extends Component {
               <ServicesMenu />
               <UsersMenu />
               <div className={ this.state.expanded ? 'menu_button_expanded' : 'menu_button' }>
-                <Button kind="link" key={ this.state.expanded } invert size="lg" onClick={ () => (this.setState(preState => ({expanded: !preState.expanded})))} icon={ this.state.expanded ? faChevronCircleRight : faChevronCircleLeft }/>
+                <Button kind="link" key={ this.state.expanded } invert size="lg" onClick={ () => (this.setState(preState => ({expanded: !preState.expanded})))} icon={ this.state.expanded ? faBars : faBars }/>
               </div>  
             </LayoutMenu>
             <LayoutContent>
