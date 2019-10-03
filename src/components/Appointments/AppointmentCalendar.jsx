@@ -26,7 +26,7 @@ class AppointmentCalendar extends Component {
     return(
       <React.Fragment>
       { weeks.map(week => (
-        <Columns className="ml-1">
+        <Columns className="ml-3">
             {week.map((day, index) => ( <AppointmentCard key={ day } date={ day }/> ))}
         </Columns>))}
         <br/>
