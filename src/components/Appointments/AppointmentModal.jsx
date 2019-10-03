@@ -29,6 +29,10 @@ import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
 import { ReactComponent as SvgDraw } from '../../assets/undraw_jewelry_iima.svg';
 
+import { PDFDownloadLink } from '@react-pdf/renderer'
+
+import { AppointmentScheduleTicket } from '../PDFDocuments';
+
 class AppointmentModal extends Component {
   constructor(props) {
     super(props);
@@ -76,40 +80,37 @@ class AppointmentModal extends Component {
         size: 'is-2'
       },
       {
+        align: 'center',
+        label: 'Comprobante pago',
+        content: (data) =>(
+          <Button kind="link">
+            <FontAwesomeIcon icon={ faDownload }/>
+          </Button>),
+        
+      },
+      { 
+        align: 'center',
+        label: 'Comprobante cancelación',
+        content: (data) =>(
+          <Button kind="link">
+            <FontAwesomeIcon icon={ faDownload }/>
+          </Button> )
+      },
+      { 
+        align: 'center',
         label: 'Comprobante reserva',
         content: (data) =>(
-          <Columns className="has-text-left">
-              <Button className="ml-1" kind="link">
-                <FontAwesomeIcon icon={ faEnvelopeOpenText }/>
-              </Button>
+          <PDFDownloadLink document={ <AppointmentScheduleTicket /> } fileName={`Reserva.pdf`}>
+            {({ blob, url, loading, error }) => (
+              loading ? 
+              <Button kind="link" disabled>
+                <FontAwesomeIcon icon={ faDownload }/>
+              </Button> : 
               <Button kind="link">
                 <FontAwesomeIcon icon={ faDownload }/>
               </Button>
-          </Columns> )
-      },
-      {
-        label: 'Comprobante cancelación',
-        content: (data) =>(
-          <Columns className="has-text-left">
-            <Button className="ml-1" kind="link">
-              <FontAwesomeIcon icon={ faEnvelopeOpenText }/>
-            </Button>
-            <Button kind="link">
-              <FontAwesomeIcon icon={ faDownload }/>
-            </Button>
-          </Columns> )
-      },
-      {
-        label: 'Comprobante pago',
-        content: (data) =>(
-          <Columns className="has-text-left">
-            <Button className="ml-1" kind="link">
-              <FontAwesomeIcon icon={ faEnvelopeOpenText }/>
-            </Button>
-            <Button kind="link">
-              <FontAwesomeIcon icon={ faDownload }/>
-            </Button>
-          </Columns> )
+              )}
+          </PDFDownloadLink>)
       },
       {
         label: 'Acción',

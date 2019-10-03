@@ -51,7 +51,6 @@ class AppRouter extends Component {
           <Layout expandedMenu={ this.state.expanded }>
             <LayoutNavbar>
               <LayoutNavbarStart>
-
               </LayoutNavbarStart>
               <LayoutNavbarEnd>
                {/* <LanguageDropdown /> */}

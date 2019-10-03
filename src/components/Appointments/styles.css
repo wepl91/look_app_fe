@@ -1,9 +1,13 @@
 .appointment_card {
-  display: table;
-  width: 14%; 
+  width: 180px; 
   height: 150px;
+  margin-right: 8px;
+  margin-top:8px
+}
+
+.appointment_card_panel {
   padding: 2px;
-  margin: 8px;
+  height: 100%;
 }
 
 .appointment_card_appointment_approved {
