@@ -53,7 +53,6 @@ class ServicesList extends Component {
   }
 
   renderTable() {
-    debugger
     const data = this.state.services.toArray();
 
     const columns = [

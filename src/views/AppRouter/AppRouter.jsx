@@ -12,6 +12,8 @@ import { ServicesMenu, ServicesList, ServicesRouter } from '../Services'
 
 import LanguageDropdown from '../../components/LanguageDropdown/LanguageDropdown';
 
+import { UserLoggedDropdown } from '../../components/Users';
+
 import { 
   Layout, 
   LayoutNavbar, 
@@ -47,12 +49,13 @@ class AppRouter extends Component {
       return(
         <React.Fragment>
           <Layout expandedMenu={ this.state.expanded }>
-            <LayoutNavbar logo="https://thumbs.dreamstime.com/z/logotipo-de-la-barber%C3%ADa-en-c%C3%ADrculo-74419610.jpg">
+            <LayoutNavbar>
               <LayoutNavbarStart>
 
               </LayoutNavbarStart>
               <LayoutNavbarEnd>
                {/* <LanguageDropdown /> */}
+               <UserLoggedDropdown user={ this.props.store.loggedInUser }/>
               </LayoutNavbarEnd>
             </LayoutNavbar>
             <LayoutMenu>

@@ -225,7 +225,6 @@ export default class Store {
     model.beginUpdate();
 
     if ( model.isNew ) {
-      debugger
       this.adapter.post( apiPath || this.modelRoot, model )
         .then(
           (res) => {
