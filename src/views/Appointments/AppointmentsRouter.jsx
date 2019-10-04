@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { withRouter } from 'react-router';
-
 import { TransitionGroup, CSSTransition } from "react-transition-group";
+import { Title } from 'shipnow-mercurio';
+
+import { AppointmentsList, AppointmentCreation } from './';
 
 import '../../styles/styles.scss';
-class UsersRouter extends Component {
 
+class AppointmentsRouter extends Component {
+  
   render() {
+   
     const path = this.props.match.path;
     const location = this.props.location;
     return(
@@ -18,10 +22,10 @@ class UsersRouter extends Component {
             classNames="sectionTransition">
               <section className="transition-wrapper">
                 <Switch location={ location }>
-                  <Route exact path ={ `${path}/users` } />
-                  <Route exact path ={ `${path}/users/list`  } />
-                  <Route exact path ={ `${path}/users/new`   } />
-                  <Route exact path ={ `${path}/users/:id`   } />
+                  <Route path ={ `${path}/appointments/list`    }  component={ AppointmentsList } />
+                  <Route path ={ `${path}/appointments/reports` }  component={ null } />
+                  <Route path ={ `${path}/appointments/new`     }  component={ AppointmentCreation } />
+                  <Route path ={ `${path}/appointments`         }  component={ AppointmentsList } />
                 </Switch>
             </section>
           </CSSTransition>
@@ -31,7 +35,7 @@ class UsersRouter extends Component {
 
 }
 
-export default withRouter(UsersRouter);
+export default withRouter(AppointmentsRouter);
 
 
 
