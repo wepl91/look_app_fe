@@ -22,7 +22,7 @@ import { observer } from 'mobx-react';
 
 import { faCut, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 
-import { ServiceCreationModal } from '../../components/Services';
+import { ServicesEditModal } from '../../components/Services';
 
 import startCase from 'lodash/startCase';
 
@@ -32,11 +32,11 @@ class ServicesList extends Component {
     super(props);
 
     this.state = {
-      showCreationModal: false,
-      services: null
+      showModal: false,
+      services: null,
+      serviceToEdit: null,
     }
 
-    this.handleModal = this.handleModal.bind(this);
   }
 
   componentDidMount() {
@@ -46,9 +46,10 @@ class ServicesList extends Component {
   }
   
 
-  handleModal() {
+  handleModal( service ) {
     this.setState(prevState => ({
-      showCreationModal: !prevState.showCreationModal,
+      showModal: !prevState.showModal,
+      serviceToEdit: service,
     }))
   }
 
@@ -78,7 +79,7 @@ class ServicesList extends Component {
       },
       {
         label: '',
-        content: (data) => (<Button icon={ faPencilAlt } kind="link"/>),
+        content: (data) => (<Button icon={ faPencilAlt } kind="link" onClick={ () => (this.handleModal(data)) }/>),
         size: 'is-1',
         align: 'left'
       },
@@ -100,6 +101,7 @@ class ServicesList extends Component {
         </Level>
         <hr/>
         { this.renderTable() }
+        { this.state.showModal && <ServicesEditModal service={ this.state.serviceToEdit } onClose={ () => ( this.handleModal(null) ) }/> }
       </React.Fragment> )
   }
 

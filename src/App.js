@@ -2,6 +2,7 @@ import React, { lazy,Component, Suspense } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { ThemeProvider } from 'react-jss';
+import { ToastProvider } from 'react-toast-notifications';
 
 import { AppStore } from './stores';
 import AppContext from './AppContext';
@@ -21,6 +22,9 @@ class App extends Component {
   }
   render() {
     return (
+      <ToastProvider
+        autoDismissTimeout={6000}
+        placement="bottom-right" >
       <div>
         <AppContext.Provider value={ this.appStore }>
           <ThemeProvider theme={ this.appStore.getCurrentTheme() }>
@@ -40,7 +44,8 @@ class App extends Component {
             </React.Fragment>
           </ThemeProvider>
         </AppContext.Provider> 
-        </div> );
+        </div> 
+        </ToastProvider>);
   }
 }
 

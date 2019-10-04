@@ -5,24 +5,18 @@ import {
   Columns,
   Level,
   LevelLeft,
-  LevelRight
 } from 'bloomer';
 
 import {
-  Modal,
-  ModalHeader,
-  ModalContent,
-  ModalFooter,
   Button,
-  Select,
-  Field,
-  TextInput,
   Title
 } from 'shipnow-mercurio';
 
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { ServicesForm } from '../../components/Services';
 
 import { ReactComponent as SvgDraw } from '../../assets/undraw_barber_3uel.svg';
+
+import { withToastManager } from 'react-toast-notifications';
 
 import withStore from '../../hocs/withStore';
 
@@ -44,6 +38,7 @@ class ServiceCreation extends Component {
   }
 
   handleClick() {
+    const { toastManager } = this.props;
     const service = new Service({}, this.props.store.services);
     service.name = this.state.name;
     service.cost = this.state.cost;
@@ -54,12 +49,16 @@ class ServiceCreation extends Component {
 
       }
       else {
-        alert("Se creo todo!")
+        toastManager.add("Los cambios se han guardado exitosamente!", {
+          appearance: 'success',
+          autoDismiss: true,
+          pauseOnHover: false,
+        })
       }
     })
   }
 
-  handleChange( sender, value, name, valid ) {
+  handleChange( name, value, valid ) {
     if (name == 'cost') {
       this.setState({
         cost: value,
@@ -74,7 +73,6 @@ class ServiceCreation extends Component {
   }
 
   render() {
-    const priceRegex = /[a-zA-Z]/
     return(
       <React.Fragment>
         <Level>
@@ -85,27 +83,12 @@ class ServiceCreation extends Component {
         <hr/>
         <Columns>
           <Column className="pl-5 pr-5">
-            <Field className="pl-5 pr-5" label="¿En cual sucursal querés ofrecer este servicio">
-              <Select className="is-fullwidth" icon={ faChevronDown } borderless placeholder="Sucursales"/>
-            </Field>
-            <Field className="pl-5 pr-5" label="¿Como se llama el servicio que querés ofrecer?">
-              <TextInput name="name" className="is-fullwidth" onChange={ this.handleChange }/>
-            </Field>
-            <Field className="pl-5 pr-5" label="¿Cuanto deseas cobrar por el servicio">
-              <TextInput className="is-fullwidth"
-                         value={ this.state.price } 
-                         validate={ (value) => (!priceRegex.test(value)) } name="cost" onChange={ this.handleChange }/>
-            </Field>
-            <Field className="pl-5 pr-5" label="¿Cuanto tiempo toma el servicio">
-              <TextInput className="is-fullwidth"
-                         value={ this.state.price } 
-                         name="duration" onChange={ this.handleChange }/>
-            </Field>
+            <ServicesForm onChange={ this.handleChange } />
             <br/>
             <br/>
             <br/>
             <br/>
-            <Button onClick={ this.handleClick } className="ml-5" kind="outline">Crear servicio</Button>
+            <Button onClick={ this.handleClick } className="ml-5" kind="outline" disabled={ this.state.buttonDisabled }>Crear servicio</Button>
           </Column>
           <Column>
           <SvgDraw style={{ height: '300px', width: '400px', marginTop: '-50px' }}/>
@@ -115,4 +98,6 @@ class ServiceCreation extends Component {
   }
 }
 
-export default withStore(ServiceCreation);
+ServiceCreation.Proptype
+
+export default withToastManager(withStore(ServiceCreation));
