@@ -7,9 +7,10 @@ import { ToastProvider } from 'react-toast-notifications';
 import { AppStore } from './stores';
 import AppContext from './AppContext';
 import { Loader } from 'shipnow-mercurio';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 const AppRouter = lazy( () => import('./views/AppRouter/AppRouter')) 
 const SessionRouter = lazy( () => import('./views/Session/SessionRouter'));
-const loader = <Loader className="fullscreen" label="Cargando aplicación..." icon="cog" animation="spin"  /> ;
+const loader = <Loader icon={ faSpinner } className="fullscreen" label="Cargando aplicación..." animation="spin"  /> ;
 
 
 @observer
