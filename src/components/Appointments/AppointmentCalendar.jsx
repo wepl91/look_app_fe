@@ -27,7 +27,7 @@ class AppointmentCalendar extends Component {
       <React.Fragment>
       { weeks.map(week => (
         <Columns className="ml-3">
-            {week.map((day, index) => ( <AppointmentCard key={ day } date={ day }/> ))}
+            {week.map((day, index) => ( <AppointmentCard key={ day } date={ day } appointments={ this.props.appointments } /> ))}
         </Columns>))}
         <br/>
       </React.Fragment>)
@@ -36,10 +36,12 @@ class AppointmentCalendar extends Component {
 
 AppointmentCalendar.PropTypes = {
   weeks: PropTypes.array,
+  appointments: PropTypes.array,
 }
 
 AppointmentCalendar.defaultProps = {
   weeks: [],
+  appointments: null
 }
 
 export default AppointmentCalendar;
