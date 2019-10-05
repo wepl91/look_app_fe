@@ -68,7 +68,7 @@ class ProfessionalCreation extends Component {
         </Level>
         <hr/>
         <Columns>
-          <Column className="pl-5 pr-5" isSize={6}>
+          <Column className="pl-5 pr-5" isSize={5}>
             <Field className="pl-5 pr-5" label="Nombre">
               <TextInput className="is-fullwidth" />
             </Field>
@@ -99,8 +99,8 @@ class ProfessionalCreation extends Component {
             <br/>
             <Button className="ml-5" kind="outline" disabled={!this.state.validTimeRange}>Agregar profesional</Button>
           </Column>
-          <Column isSize={6}>
-            <SvgDraw style={{ height: '100%', width: '100%'}}/>
+          <Column>
+            <SvgDraw style={{ height: '85%', width: '85%'}}/>
           </Column>
         </Columns>
       </React.Fragment> )
