@@ -9,6 +9,7 @@ import { SignIn } from '../Session';
 import { UsersMenu, UsersRouter } from '../Users'
 import { AppointmentsMenu, AppointmentsList, AppointmentsRouter } from '../Appointments';
 import { ServicesMenu, ServicesList, ServicesRouter } from '../Services'
+import { ProfessionalsMenu, ProfessionalsList, ProfessionalsRouter } from '../Professionals'
 
 import LanguageDropdown from '../../components/LanguageDropdown/LanguageDropdown';
 
@@ -58,17 +59,19 @@ class AppRouter extends Component {
               </LayoutNavbarEnd>
             </LayoutNavbar>
             <LayoutMenu>
-              <AppointmentsMenu />
-              <ServicesMenu />
-              <UsersMenu />
+              <AppointmentsMenu  />
+              <ServicesMenu      />
+              <ProfessionalsMenu />
+              <UsersMenu         />
               <div className={ this.state.expanded ? 'menu_button_expanded' : 'menu_button' }>
                 <Button kind="link" key={ this.state.expanded } invert size="lg" onClick={ () => (this.setState(preState => ({expanded: !preState.expanded})))} icon={ this.state.expanded ? faBars : faBars }/>
               </div>  
             </LayoutMenu>
             <LayoutContent>
-                <ServicesRouter     />
-                <UsersRouter        />
-                <AppointmentsRouter />
+                <AppointmentsRouter  />
+                <ServicesRouter      />
+                <ProfessionalsRouter />
+                <UsersRouter         />
             </LayoutContent>
           </Layout>
         </React.Fragment> )
