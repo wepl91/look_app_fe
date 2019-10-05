@@ -14,7 +14,8 @@ import {
   Field,
   TextInput,
   Title,
-  Text
+  Text,
+  Panel
 } from 'shipnow-mercurio';
 
 import { WorkingHoursSelector } from '../../components/Professionals';
@@ -33,7 +34,7 @@ class ProfessionalCreation extends Component {
     this.state = {
       startingTime: '',
       finishingTime: '',
-      validTimeRange: false
+      validTimeRange: true
     }
     this.handleChange = this.handleChange.bind(this);
   }
@@ -49,6 +50,14 @@ class ProfessionalCreation extends Component {
     }
   }
 
+  isValidHour() {
+    const { startingTime, finishingTime, validTimeRange } = this.state;
+    if (startingTime === '' || finishingTime === '') {
+      return true;
+    }
+    return validTimeRange;
+  }
+
   render() {
     return(
       <React.Fragment>
@@ -59,7 +68,7 @@ class ProfessionalCreation extends Component {
         </Level>
         <hr/>
         <Columns>
-          <Column className="pl-5 pr-5" isSize={5}>
+          <Column className="pl-5 pr-5" isSize={6}>
             <Field className="pl-5 pr-5" label="Nombre">
               <TextInput className="is-fullwidth" />
             </Field>
@@ -77,6 +86,7 @@ class ProfessionalCreation extends Component {
             </Field>
             <Field className="pl-5 pr-5" label="Horarios de trabajo" labelNote="Seleccioná los horarios semanales">
               <WorkingHoursSelector onChange={ this.handleChange } name="hours" startingDate={ moment('05-17-2018 02:30 PM', 'MM-DD-YYYY hh:mm A') } finishingDate={ moment('05-17-2018 06:00 PM', 'MM-DD-YYYY hh:mm A') }/>
+              { !this.isValidHour() && <Panel color="error" invert ><Text className="has-text-centered">Los horarios ingresados son incorrectos</Text></Panel> }
             </Field>
             <Field className="pl-5 pr-5" label="¿Qué servicios ofrece?" labelNote="Seleccioná los servicios">
               {servicios().map((servicio, index) => (
@@ -89,8 +99,8 @@ class ProfessionalCreation extends Component {
             <br/>
             <Button className="ml-5" kind="outline" disabled={!this.state.validTimeRange}>Agregar profesional</Button>
           </Column>
-          <Column>
-            <SvgDraw style={{ height: '85%', width: '85%' }}/>
+          <Column isSize={6}>
+            <SvgDraw style={{ height: '100%', width: '100%'}}/>
           </Column>
         </Columns>
       </React.Fragment> )
