@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { withRouter } from 'react-router';
 
 import { TransitionGroup, CSSTransition } from "react-transition-group";
-
+import { UsersList } from './'
 import '../../styles/styles.scss';
 class UsersRouter extends Component {
 
@@ -19,7 +19,7 @@ class UsersRouter extends Component {
               <section className="transition-wrapper">
                 <Switch location={ location }>
                   <Route exact path ={ `${path}/users` } />
-                  <Route exact path ={ `${path}/users/list`  } />
+                  <Route exact path ={ `${path}/users/list`  } component={ UsersList }/>
                   <Route exact path ={ `${path}/users/new`   } />
                   <Route exact path ={ `${path}/users/:id`   } />
                 </Switch>
