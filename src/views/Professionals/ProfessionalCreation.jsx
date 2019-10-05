@@ -100,7 +100,7 @@ class ProfessionalCreation extends Component {
             <Button className="ml-5" kind="outline" disabled={!this.state.validTimeRange}>Agregar profesional</Button>
           </Column>
           <Column>
-            <SvgDraw style={{ height: '85%', width: '85%'}}/>
+            <SvgDraw style={{ height: '75%', width: '75%'}}/>
           </Column>
         </Columns>
       </React.Fragment> )
