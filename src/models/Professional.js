@@ -7,12 +7,11 @@ import {
   toJS
 } from 'mobx'
 
-export default class User extends Model {
+export default class Professional extends Model {
   constructor( attributes, store ) {
 
     let defaultAttributes = {
-      username: '',
-      fullName: '',
+      phone: '',
       email: '',
     };
 
@@ -22,7 +21,17 @@ export default class User extends Model {
   }
 
   @computed
-  get userRole() {
-    return this.roles[0].name;
+  get fullName() {
+    return this.name + " " + this.lastName;
+  }
+
+  @computed
+  get professionalStatus() {
+    return this.status.name;
+  }
+
+  @computed
+  get professionalServices() {
+    return this.services[0].name;
   }
 }

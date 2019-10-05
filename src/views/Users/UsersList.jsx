@@ -63,7 +63,7 @@ class UsersList extends Component {
       },
       {
         label: 'Rol',
-        content: (data) => (<Text>{ `${ data.roles[0].name }` }</Text>),
+        content: (data) => (<Text>{ `${ data.userRole }` }</Text>),
         size: 'is-2',
       },
       {

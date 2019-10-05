@@ -12,16 +12,32 @@ import {
   LevelLeft
 } from 'bloomer';
 
+import withStore from '../../hocs/withStore';
+
+import { observer } from 'mobx-react';
+
 import { faSuitcase } from "@fortawesome/free-solid-svg-icons";
 
-import { profesionales} from '../../lib/Mocks';
+import startCase from 'lodash/startCase';
 
+@observer
 class ProfessionalsList extends Component {
   constructor(props) {
     super(props);
+    
+    this.state = {
+      professionals: null,
+    }
+  }
+
+  componentDidMount() {
+    this.setState({
+      professionals: this.props.store.professionals.search({}),
+    })
   }
 
   renderTable() {
+    const data = this.state.professionals.toArray();
     const columns = [
       {
         label: '',
@@ -30,7 +46,7 @@ class ProfessionalsList extends Component {
       },
       {
         label: 'Nombre',
-        content: (data) => (<Text>{ data.name + " " + data.surname}</Text>),
+        content: (data) => (<Text>{ startCase(`${ data.fullName }`)}</Text>),
         size: 'is-2'
       },
       {
@@ -40,25 +56,28 @@ class ProfessionalsList extends Component {
       },
       {
         label: 'Mail',
-        content: (data) => (<Text>{ `${ data.mail }` }</Text>),
+        content: (data) => (<Text>{ `${ data.email }` }</Text>),
         size: 'is-2'
       },
       {
-        label: 'Sucursal',
-        content: (data) => (<Text>{ `${ data.branch }` }</Text>),
+        label: 'Estado',
+        content: (data) => (<Text>{ `${ data.professionalStatus }` }</Text>),
         size: 'is-2'
       },
       {
         label: 'Servicios Ofrecidos',
-        content: (data) => (<Text>{ `${ data.services }` }</Text>),
+        content: (data) => (<Text>{ `${ data.professionalServices }` }</Text>),
         size: 'is-2'
       },
     ]
 
-    return <Table columns={ columns } data={ profesionales() } striped={ false }/>
+    return <Table columns={ columns } data={ data } striped={ false }/>
   }
 
   render() {
+    if (!this.state.professionals || !this.state.professionals.isOk()) {
+      return 'Cargando usuarios..';
+    }
     return(
       <React.Fragment>
         <Level>
@@ -73,4 +92,4 @@ class ProfessionalsList extends Component {
 
 }
 
-export default ProfessionalsList;
+export default withStore(ProfessionalsList);
