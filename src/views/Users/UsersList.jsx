@@ -4,7 +4,8 @@ import {
   Title,
   Table,
   SelectableIcon,
-  Text
+  Text,
+  Button
 } from 'shipnow-mercurio';
 
 import {
@@ -12,58 +13,79 @@ import {
   LevelLeft
 } from 'bloomer';
 
-import { faSuitcase } from "@fortawesome/free-solid-svg-icons";
+import withStore from '../../hocs/withStore';
 
-import { profesionales } from '../../lib/Mocks';
+import { observer } from 'mobx-react';
 
+import { faSuitcase, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+
+import startCase from 'lodash/startCase';
+
+@observer
 class UsersList extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      users: null,
+    }
+  }
+
+  componentDidMount() {
+    this.setState({
+      users: this.props.store.users.search({}),
+    })
   }
 
   renderTable() {
+    const data = this.state.users.toArray();
+
     const columns = [
       {
         label: '',
         content: (data) => (<SelectableIcon  className="ml-2" icon={ faSuitcase } readOnly/>),
-        size: 'is-1',
+        size: 'is-2',
       },
       {
         label: 'Nombre',
-        content: (data) => (<Text>{ data.name + " " + data.surname}</Text>),
+        content: (data) => (<Text>{ startCase(`${ data.fullName }`) }</Text>),
         size: 'is-2'
       },
       {
-        label: 'Teléfono',
-        content: (data) => (<Text>{ `${ data.phone }` }</Text>),
+        label: 'Nombre de usuario',
+        content: (data) => (<Text>{ `${ data.username }` }</Text>),
         size: 'is-2'
       },
       {
         label: 'Mail',
-        content: (data) => (<Text>{ `${ data.mail }` }</Text>),
+        content: (data) => (<Text>{ `${ data.email }` }</Text>),
         size: 'is-2'
       },
       {
-        label: 'Sucursal',
-        content: (data) => (<Text>{ `${ data.branch }` }</Text>),
-        size: 'is-2'
+        label: 'Rol',
+        content: (data) => (<Text>{ `${ data.roles[0].name }` }</Text>),
+        size: 'is-2',
       },
       {
-        label: 'Servicios Ofrecidos',
-        content: (data) => (<Text>{ `${ data.services }` }</Text>),
-        size: 'is-2'
+        label: '',
+        content: (data) => (<Button icon={ faPencilAlt } kind="link" />),
+        size: 'is-1',
+        align: 'right'
       },
     ]
 
-    return <Table columns={ columns } data={ profesionales() } striped={ false }/>
+    return <Table columns={ columns } data={ data } striped={ false }/>
   }
 
   render() {
+    if (!this.state.users || !this.state.users.isOk()) {
+      return 'Cargando usuarios..';
+    }
     return(
       <React.Fragment>
         <Level>
           <LevelLeft>
-            <Title>Lista de Users</Title>
+            <Title>Lista de Usuarios</Title>
           </LevelLeft>
         </Level>
         <hr/>
@@ -73,4 +95,4 @@ class UsersList extends Component {
 
 }
 
-export default UsersList;
+export default withStore(UsersList);

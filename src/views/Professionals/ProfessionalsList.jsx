@@ -26,7 +26,7 @@ class ProfessionalsList extends Component {
       {
         label: '',
         content: (data) => (<SelectableIcon  className="ml-2" icon={ faSuitcase } readOnly/>),
-        size: 'is-1',
+        size: 'is-2',
       },
       {
         label: 'Nombre',

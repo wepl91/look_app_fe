@@ -5,8 +5,8 @@ import { withRouter } from 'react-router';
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { UsersList } from './'
 import '../../styles/styles.scss';
-class UsersRouter extends Component {
 
+class UsersRouter extends Component {
   render() {
     const path = this.props.match.path;
     const location = this.props.location;
