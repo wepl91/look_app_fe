@@ -18,15 +18,18 @@ import {
   Panel
 } from 'shipnow-mercurio';
 
-import { WorkingHoursSelector } from '../../components/Professionals';
-
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-
-import { sucursales, servicios, horariosFormateados } from '../../lib/Mocks';
-
 import { ReactComponent as SvgDraw } from '../../assets/undraw_online_cv_qy9w.svg';
 import moment from 'moment';
+import { ProfessionalsForm } from '../../components/Professionals/';
 
+import { withToastManager } from 'react-toast-notifications';
+
+import withStore from '../../hocs/withStore';
+
+import { Professional } from '../../models';
+import { observer } from 'mobx-react';
+
+@observer
 class ProfessionalCreation extends Component {
   constructor(props) {
     super(props);
@@ -37,11 +40,44 @@ class ProfessionalCreation extends Component {
       validTimeRange: true
     }
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  handleChange(receivedTime){
-    this.setState({ startingTime:  receivedTime[0] });
-    this.setState({ finishingTime:  receivedTime[1] });
+  handleClick() {
+    const { toastManager } = this.props;
+    const professional = new Professional({}, this.props.store.professionals);
+    professional.name = this.state.name;
+    professional.lastName = this.state.lastName;
+    professional.phone = this.state.phone;
+    professional.email = this.state.email;
+/*     professional.services = this.state.services; */
+    
+    professional.save().andThen( (savedProfessional, responseError) => {
+      if (responseError) {
+
+      }
+      else {
+        toastManager.add("Los cambios se han guardado exitosamente!", {
+          appearance: 'success',
+          autoDismiss: true,
+          pauseOnHover: false,
+        })
+      }
+    })
+  }
+
+  handleChange( name, value, valid ) {
+    if (name == 'hours') {
+      this.setState({
+        startingTime: value[0],
+        finishingTime: value[1]
+      })
+    }
+    else {
+      this.setState({
+        [name]: value,
+      })
+    } 
   }
 
   componentDidUpdate(prevProps, prevState){
@@ -69,37 +105,15 @@ class ProfessionalCreation extends Component {
         <hr/>
         <Columns>
           <Column className="pl-5 pr-5" isSize={5}>
-            <Field className="pl-5 pr-5" label="Nombre">
-              <TextInput className="is-fullwidth" />
-            </Field>
-            <Field className="pl-5 pr-5" label="Apellido">
-              <TextInput className="is-fullwidth" />
-            </Field>
-            <Field className="pl-5 pr-5" label="Teléfono">
-              <TextInput className="is-fullwidth" />
-            </Field>
-            <Field className="pl-5 pr-5" label="Mail">
-              <TextInput className="is-fullwidth" />
-            </Field>
-            <Field className="pl-5 pr-5" label="¿En qué sucursal va a atender?" labelNote="Seleccioná una sucursal">
-              <Select className="is-fullwidth" placeholder="Sucursales" borderless icon={ faChevronDown } options={ sucursales().map(sucursal => ({key: sucursal.address, value: sucursal.id})) } />
-            </Field>
-            <Field className="pl-5 pr-5" label="Horarios de trabajo" labelNote="Seleccioná los horarios semanales">
-              <WorkingHoursSelector onChange={ this.handleChange } name="hours" startingDate={ moment('05-17-2018 02:30 PM', 'MM-DD-YYYY hh:mm A') } finishingDate={ moment('05-17-2018 06:00 PM', 'MM-DD-YYYY hh:mm A') }/>
-              { !this.isValidHour() && <Panel color="error" invert ><Text className="has-text-centered">Los horarios ingresados son incorrectos</Text></Panel> }
-            </Field>
-            <Field className="pl-5 pr-5" label="¿Qué servicios ofrece?" labelNote="Seleccioná los servicios">
-              {servicios().map((servicio, index) => (
-                <Checkbox className="pt-1" isFullWidth><Text className="pl-1">{servicio.name}</Text></Checkbox>
-              ))}
-            </Field>
+            <ProfessionalsForm onChange={ this.handleChange } />
+            { !this.isValidHour() && <Panel color="error" invert ><Text className="has-text-centered">Los horarios ingresados son incorrectos</Text></Panel> }
             <br/>
             <br/>
             <br/>
             <br/>
-            <Button className="ml-5" kind="outline" disabled={!this.state.validTimeRange}>Agregar profesional</Button>
+            <Button onClick={ this.handleClick } className="ml-5" kind="outline" disabled={!this.state.validTimeRange}>Agregar profesional</Button>
           </Column>
-          <Column>
+          <Column isSize={7}>
             <SvgDraw style={{ height: '75%', width: '75%'}}/>
           </Column>
         </Columns>
@@ -107,4 +121,6 @@ class ProfessionalCreation extends Component {
   }
 }
 
-export default ProfessionalCreation;
+ProfessionalCreation.Proptype
+
+export default withToastManager(withStore(ProfessionalCreation));

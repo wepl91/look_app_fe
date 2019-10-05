@@ -11,8 +11,13 @@ export default class Professional extends Model {
   constructor( attributes, store ) {
 
     let defaultAttributes = {
+      name: '',
+      lastName: '',
       phone: '',
       email: '',
+/*       branch: '',
+      workingHours: '', */
+      services: ''
     };
 
     let attrs = Object.assign( defaultAttributes, attributes );
