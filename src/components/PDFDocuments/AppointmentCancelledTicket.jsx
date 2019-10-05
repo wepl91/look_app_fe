@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { Document, Page, StyleSheet, View, Text } from '@react-pdf/renderer'
+import { Document, Page, View, Text } from '@react-pdf/renderer'
 import styles from './styles.js'
 
 class AppointmentCancelledTicket extends Component {
