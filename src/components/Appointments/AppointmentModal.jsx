@@ -31,7 +31,7 @@ import { ReactComponent as SvgDraw } from '../../assets/undraw_jewelry_iima.svg'
 
 import { PDFDownloadLink } from '@react-pdf/renderer'
 
-import { AppointmentScheduleTicket } from '../PDFDocuments';
+import { AppointmentScheduleTicket, AppointmentCancelledTicket, PaymentTicket } from '../PDFDocuments';
 
 class AppointmentModal extends Component {
   constructor(props) {
@@ -83,18 +83,34 @@ class AppointmentModal extends Component {
         align: 'center',
         label: 'Comprobante pago',
         content: (data) =>(
+        <PDFDownloadLink document={ <PaymentTicket /> } fileName={`ComprobanteDePago.pdf`}>
+        {({ blob, url, loading, error }) => (
+          loading ? 
+          <Button kind="link" disabled>
+            <FontAwesomeIcon icon={ faDownload }/>
+          </Button> : 
           <Button kind="link">
             <FontAwesomeIcon icon={ faDownload }/>
-          </Button>),
+          </Button>
+          )}
+      </PDFDownloadLink>),
         
       },
       { 
         align: 'center',
         label: 'Comprobante cancelación',
         content: (data) =>(
-          <Button kind="link">
-            <FontAwesomeIcon icon={ faDownload }/>
-          </Button> )
+          <PDFDownloadLink document={ <AppointmentCancelledTicket /> } fileName={`Cancelacion.pdf`}>
+            {({ blob, url, loading, error }) => (
+              loading ? 
+              <Button kind="link" disabled>
+                <FontAwesomeIcon icon={ faDownload }/>
+              </Button> : 
+              <Button kind="link">
+                <FontAwesomeIcon icon={ faDownload }/>
+              </Button>
+              )}
+          </PDFDownloadLink>)
       },
       { 
         align: 'center',
