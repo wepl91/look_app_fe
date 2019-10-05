@@ -9,20 +9,20 @@ import {
 
 import {
   Button,
-  Title
+  Title,
 } from 'shipnow-mercurio';
 
 import { ServicesForm } from '../../components/Services';
 
+import { withToastManager } from 'react-toast-notifications';
+import withStore from '../../hocs/withStore';
+import { withRouter } from 'react-router';
+
 import { ReactComponent as SvgDraw } from '../../assets/undraw_barber_3uel.svg';
 
-import { withToastManager } from 'react-toast-notifications';
-
-import withStore from '../../hocs/withStore';
-
 import { Service } from '../../models';
-
 import { observer } from 'mobx-react';
+
 @observer
 class ServiceCreation extends Component {
   constructor(props) {
@@ -46,14 +46,19 @@ class ServiceCreation extends Component {
     
     service.save().andThen( (savedService, responseError) => {
       if (responseError) {
-
+        toastManager.add("Ups! Parece que hubo un error al guardar los datos!", {
+          appearance: 'error',
+          autoDismiss: true,
+          pauseOnHover: true,
+        });
       }
       else {
         toastManager.add("Los cambios se han guardado exitosamente!", {
           appearance: 'success',
           autoDismiss: true,
-          pauseOnHover: false,
-        })
+          pauseOnHover: true,
+        });
+        this.props.history.push('services/list')
       }
     })
   }
@@ -72,6 +77,19 @@ class ServiceCreation extends Component {
     } 
   }
 
+  getDisabled() {
+    if (this.state.buttonDisabled) {
+      return false;
+    }
+
+    if (this.state.cost == '' || this.state.duration == '' || this.state.name == '') {
+      return false;
+    }
+
+    return true;
+  }
+
+
   render() {
     return(
       <React.Fragment>
@@ -88,10 +106,10 @@ class ServiceCreation extends Component {
             <br/>
             <br/>
             <br/>
-            <Button onClick={ this.handleClick } className="ml-5" kind="outline" disabled={ this.state.buttonDisabled }>Crear servicio</Button>
+            <Button onClick={ this.handleClick } className="ml-5" kind="outline" disabled={ !this.getDisabled() }>Crear servicio</Button>
           </Column>
           <Column>
-          <SvgDraw style={{ height: '300px', width: '400px', marginTop: '-50px' }}/>
+          <SvgDraw style={{ height: '300px', width: '400px', marginTop: '-10px' }}/>
           </Column>
         </Columns>
       </React.Fragment> )
@@ -100,4 +118,4 @@ class ServiceCreation extends Component {
 
 ServiceCreation.Proptype
 
-export default withToastManager(withStore(ServiceCreation));
+export default withToastManager(withStore(withRouter(ServiceCreation)));

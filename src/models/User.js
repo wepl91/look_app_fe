@@ -1,10 +1,8 @@
 import { Model } from '../lib';
 
 import {
-  observable,
   action,
   computed,
-  toJS
 } from 'mobx'
 
 export default class User extends Model {

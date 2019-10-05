@@ -13,4 +13,5 @@ export default class Service extends Model {
 
     super(attrs, store);
   }
+  
 }

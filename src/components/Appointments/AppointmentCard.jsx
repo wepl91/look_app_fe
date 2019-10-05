@@ -78,7 +78,7 @@ class AppointmentCard extends Component {
               <Button disabled={ turnos.length == 0 } icon={ faEllipsisH } kind="link" onClick={ this.handleClick }/>
             </LevelRight>
           </Level>
-          { turnos.map( (turno, index) => index < 3 && <div className={ turno.status == 'cancelled' ? 'appointment_card_appointment_cancelled' : 'appointment_card_appointment_approved'}><Text size="xs">{ `${ turno.name } a las ${ turno.hour }` }</Text></div>) }
+          { turnos.map( (turno, index) => index < 4 && <div className={ turno.status == 'cancelled' ? 'appointment_card_appointment_cancelled' : 'appointment_card_appointment_approved'}><Text size="xs">{ `${ turno.name } a las ${ turno.hour }` }</Text></div>) }
           </Panel> 
         { this.state.showModal && <AppointmentModal appointments={ turnos } date={ this.state.date } onClose={ this.handleClick } /> }
       </div> )

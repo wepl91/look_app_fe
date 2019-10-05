@@ -1,8 +1,10 @@
 import { Model } from '../lib';
 
 import {
+  action,
   computed,
 } from 'mobx'
+
 
 import moment from 'moment';
 
@@ -24,6 +26,20 @@ export default class Appointment extends Model {
     if (this.dayHour) {
       this.dayHour = moment(this.dayHour);
     }
+  }
+
+  @computed
+  get status() {
+    return this.appointmentStatus.name;
+  }
+
+
+  @action
+  setStatus( status ) {
+    this.beginUpdate()
+    this.appointmentStatus.name = status;
+    this.endUpdate()
+    return this;  
   }
 
 }

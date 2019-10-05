@@ -35,6 +35,7 @@ class ServicesEditModal extends Component {
 
     this.state = {
       buttonDisabled: false,
+      reload: true,
     }
   }
 
@@ -47,14 +48,19 @@ class ServicesEditModal extends Component {
     
     service.save().andThen( (savedService, responseError) => {
       if (responseError) {
-
+        toastManager.add("Ups! Parece que hubo un error al guardar los cambios!", {
+          appearance: 'error',
+          autoDismiss: true,
+          pauseOnHover: false,
+        });
+        this.handleClose();
       }
       else {
         toastManager.add("Los cambios se han guardado exitosamente!", {
           appearance: 'success',
           autoDismiss: true,
           pauseOnHover: false,
-        })
+        });
         this.handleClose();
       }
     })
@@ -65,16 +71,18 @@ class ServicesEditModal extends Component {
   }
 
   handleChange( name, value, valid ) {
+    const service = this.getService();
     if (name == 'cost') {
+      service.cost = value
       this.setState({
-        cost: value,
         buttonDisabled: valid.type == 'error',
       })
     }
     else {
-      this.setState({
-        [name]: value,
-      })
+      service[name] = value;
+      this.setState( prevState => ({
+        reload: !prevState.reload
+      }))
     } 
   }
 
@@ -88,6 +96,19 @@ class ServicesEditModal extends Component {
     }
   }
 
+  getDisabled() {
+    const service = this.getService();
+    if (this.state.buttonDisabled) {
+      return false;
+    }
+
+    if (service.cost == '' || service.duration == '' || service.name == '') {
+      return false;
+    }
+
+    return true;
+  }
+
   render() {
     const service = this.getService()
     return(
@@ -98,7 +119,7 @@ class ServicesEditModal extends Component {
               <Title>Modificar turno</Title>
             </LevelLeft>
             <LevelRight>
-              <Button kind="outline" icon={ faTimes } onClick={ this.handleClose } />
+              <Button kind="link" icon={ faTimes } onClick={ this.handleClose } />
             </LevelRight>
           </Level>
         </ModalHeader>
@@ -109,7 +130,7 @@ class ServicesEditModal extends Component {
           <Level>
             <LevelLeft></LevelLeft>
             <LevelRight>
-              <Button disabled={ this.state.buttonDisabled } onClick={ this.handleSave }>Guardar</Button>
+              <Button disabled={ !this.getDisabled() } onClick={ this.handleSave }>Guardar</Button>
               <Button kind="outline" onClick={ this.handleClose }>Cancelar</Button>
             </LevelRight>
           </Level>

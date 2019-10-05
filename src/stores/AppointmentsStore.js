@@ -2,7 +2,7 @@ import { Store } from '../lib';
 import { Appointment } from '../models'; 
 
 export default class AppointmentsStore extends Store {
-  urlRoot = '/turns';
+  urlRoot = '/appointments';
   model = Appointment;
 
   constructor(adapter, appStore) {
