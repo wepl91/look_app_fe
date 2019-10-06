@@ -35,9 +35,7 @@ class ProfessionalCreation extends Component {
     super(props);
 
     this.state = {
-      startingTime: '',
-      finishingTime: '',
-      validTimeRange: true
+      buttonDisabled: false
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -67,31 +65,16 @@ class ProfessionalCreation extends Component {
   }
 
   handleChange( name, value, valid ) {
-    if (name == 'hours') {
+    if(name == 'hours'){
       this.setState({
         startingTime: value[0],
-        finishingTime: value[1]
+        finishingTime: value[1],
+        buttonDisabled: valid,
       })
     }
-    else {
-      this.setState({
-        [name]: value,
-      })
-    } 
-  }
-
-  componentDidUpdate(prevProps, prevState){
-    if (this.state.startingTime != prevState.startingTime || this.state.finishingTime != prevState.finishingTime) {
-      this.setState({validTimeRange: moment(this.state.startingTime,'HH:mm').isBefore(moment(this.state.finishingTime,'HH:mm'))})
-    }
-  }
-
-  isValidHour() {
-    const { startingTime, finishingTime, validTimeRange } = this.state;
-    if (startingTime === '' || finishingTime === '') {
-      return true;
-    }
-    return validTimeRange;
+    this.setState({
+      [name]: value,
+    })
   }
 
   render() {
@@ -106,12 +89,11 @@ class ProfessionalCreation extends Component {
         <Columns>
           <Column className="pl-5 pr-5" isSize={5}>
             <ProfessionalsForm onChange={ this.handleChange } />
-            { !this.isValidHour() && <Panel color="error" invert ><Text className="has-text-centered">Los horarios ingresados son incorrectos</Text></Panel> }
             <br/>
             <br/>
             <br/>
             <br/>
-            <Button onClick={ this.handleClick } className="ml-5" kind="outline" disabled={!this.state.validTimeRange}>Agregar profesional</Button>
+            <Button onClick={ this.handleClick } className="ml-5" kind="outline" disabled={this.state.buttonDisabled}>Agregar profesional</Button>
           </Column>
           <Column isSize={7}>
             <SvgDraw style={{ height: '75%', width: '75%'}}/>
@@ -120,7 +102,5 @@ class ProfessionalCreation extends Component {
       </React.Fragment> )
   }
 }
-
-ProfessionalCreation.Proptype
 
 export default withToastManager(withStore(ProfessionalCreation));

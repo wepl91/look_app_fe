@@ -31,6 +31,11 @@ class ProfessionalsForm extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      startingTime: '',
+      finishingTime: '',
+      validTimeRange: true
+    }
     this.handleChange = this.handleChange.bind(this);
     this.handleHours = this.handleHours.bind(this);
   }
@@ -41,7 +46,26 @@ class ProfessionalsForm extends Component {
 
   handleHours(received, valid, name ){
     name = 'hours'
+      this.setState({
+        startingTime: received[0],
+        finishingTime: received[1]
+      }) 
+    valid = this.state.validTimeRange
     this.props.onChange && this.props.onChange(name, received, valid);
+  }
+
+  componentDidUpdate(prevProps, prevState){
+    if (this.state.startingTime != prevState.startingTime || this.state.finishingTime != prevState.finishingTime) {
+      this.setState({validTimeRange: moment(this.state.startingTime,'HH:mm').isBefore(moment(this.state.finishingTime,'HH:mm'))})
+    }
+  }
+
+  isValidHour() {
+    const { startingTime, finishingTime, validTimeRange } = this.state;
+    if (startingTime === '' || finishingTime === '') {
+      return true;
+    }
+    return validTimeRange;
   }
 
   render() {
@@ -65,6 +89,7 @@ class ProfessionalsForm extends Component {
             </Field>
             <Field className="pl-5 pr-5" label="Horarios de trabajo" labelNote="Seleccioná los horarios semanales">
               <WorkingHoursSelector name="hours" startingDate={ moment('05-17-2018 02:30 PM', 'MM-DD-YYYY hh:mm A') } finishingDate={ moment('05-17-2018 06:00 PM', 'MM-DD-YYYY hh:mm A') } onChange={ this.handleHours } />
+              { !this.isValidHour() && <Panel color="error" invert ><Text className="has-text-centered">Los horarios ingresados son incorrectos</Text></Panel> }
             </Field>
             <Field className="pl-5 pr-5" label="¿Qué servicios ofrece?" labelNote="Seleccioná los servicios">
               {servicios().map((servicio, index) => (
