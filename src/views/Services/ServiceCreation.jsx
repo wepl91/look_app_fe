@@ -29,7 +29,7 @@ class ServiceCreation extends Component {
     super(props);
 
     this.state = {
-      cost: '',
+      price: '',
       buttonDisabled: false,
     }
 
@@ -41,7 +41,7 @@ class ServiceCreation extends Component {
     const { toastManager } = this.props;
     const service = new Service({}, this.props.store.services);
     service.name = this.state.name;
-    service.cost = this.state.cost;
+    service.price = this.state.price;
     service.duration = this.state.duration;
     
     service.save().andThen( (savedService, responseError) => {
@@ -66,7 +66,7 @@ class ServiceCreation extends Component {
   handleChange( name, value, valid ) {
     if (name == 'cost') {
       this.setState({
-        cost: value,
+        price: value,
         buttonDisabled: valid.type == 'error',
       })
     }
@@ -82,7 +82,7 @@ class ServiceCreation extends Component {
       return false;
     }
 
-    if (this.state.cost == '' || this.state.duration == '' || this.state.name == '') {
+    if (this.state.price == '' || this.state.duration == '' || this.state.name == '') {
       return false;
     }
 

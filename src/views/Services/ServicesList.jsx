@@ -69,7 +69,7 @@ class ServicesList extends Component {
       },
       {
         label: 'Precio',
-        content: (data) => (<Text>{ `$${ data.cost }` }</Text>),
+        content: (data) => (<Text>{ `$${ data.price }` }</Text>),
         size: 'is-3'
       },
       {

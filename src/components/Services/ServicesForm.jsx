@@ -59,7 +59,7 @@ class ServicesForm extends Component {
           <TextInput value={ service && service.name } name="name" className="is-fullwidth" onChange={ this.handleChange }/>
         </Field>
         <Field className="pl-5 pr-5" label="¿Cuanto deseas cobrar por el servicio">
-          <TextInput value={ service && service.cost } className="is-fullwidth" validate={ (value) => (!priceRegex.test(value)) } name="cost" onChange={ this.handleChange }/>
+          <TextInput value={ service && service.price } className="is-fullwidth" validate={ (value) => (!priceRegex.test(value)) } name="cost" onChange={ this.handleChange }/>
         </Field>
         <Field className="pl-5 pr-5" label="¿Cuanto tiempo toma el servicio">
           <Select name="duration" className="is-fullwidth" value={ service && service.duration } onChange={ this.handleChange } options={ this.getDurationOptions() } icon={ faChevronDown } borderless placeholder="Horarios"/>

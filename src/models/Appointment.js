@@ -51,6 +51,17 @@ export default class Appointment extends Model {
   }
 
   @computed
+  get totalPrice() {
+    let total = 0;
+    if (!this.services || this.services.length == 0) {
+      return 0;
+    }
+
+    this.services.map( service => ( total += parseInt(service.price) ));
+
+  }
+
+  @computed
   get isOpen() {
     return this.appointmentStatus.name === 'OPEN';
   }

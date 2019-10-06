@@ -33,9 +33,11 @@ import {
   faTrash, 
   faChevronDown,
   faBan,
+  faCircle,
   faInfoCircle,
   faMoneyBill,
-  faUserSlash
+  faUserSlash,
+  faDotCircle
 } from "@fortawesome/free-solid-svg-icons";
 
 import { 
@@ -132,6 +134,7 @@ class AppointmentModal extends Component {
   renderDetails() {
     const { appointment } = this.state;
     const client = appointment.client;
+    const services = appointment.services;
     
     const paymentTicket = 
       <PDFDownloadLink document={ <PaymentTicket appointment={ appointment } /> } fileName={`ComprobanteDePago.pdf`}>
@@ -161,6 +164,15 @@ class AppointmentModal extends Component {
             <React.Fragment>
               <Title size="md">Cliente</Title>
               <Text weight="medium">{ appointment.clientFullName }</Text>
+            </React.Fragment> }
+          { services && 
+            <React.Fragment>
+              <Title size="md">Servicios</Title>
+              { services.map( service => ( 
+                <Text weight="medium" className="mb-2">
+                  <FontAwesomeIcon icon={ faDotCircle } size="xs" fixedWidth/>
+                  { ` ${ startCase(service.name) }` }
+                </Text> )) }
             </React.Fragment> }
         </Column>
         <Column isSize={ 4 }>
