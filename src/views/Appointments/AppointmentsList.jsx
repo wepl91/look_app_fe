@@ -3,7 +3,8 @@ import { observer } from 'mobx-react';
 import { 
     Button,
     Text,
-    Title
+    Title,
+    Loader,
 } from 'shipnow-mercurio';
 import moment from 'moment';
 
@@ -21,7 +22,7 @@ import { AppointmentCalendar } from '../../components/Appointments';
 
 import startCase from 'lodash/startCase';
 
-import {faChevronCircleLeft, faChevronCircleRight} from '@fortawesome/free-solid-svg-icons'
+import {faChevronCircleLeft, faChevronCircleRight, faSpinner} from '@fortawesome/free-solid-svg-icons'
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 @observer
 class AppointmentsList extends Component {
@@ -32,16 +33,20 @@ class AppointmentsList extends Component {
         this.chunk = this.chunk.bind(this);
         this.handleMonth = this.handleMonth.bind(this);
         this.handleYear = this.handleYear.bind(this);
+
+        this.state = {
+            appointments: null
+        }
     }
 
     
     componentDidMount() {
-        
         const date = moment()
         const datesInMonth = this.getDatesInMonth(date)
         this.setState({
             date: date,
             datesInWeeks: this.chunk(datesInMonth, 7),
+            appointments: this.props.store.appointments.search({ }),
         })
     }
 
@@ -75,7 +80,7 @@ class AppointmentsList extends Component {
     }
 
     render() {
-        if (!this.state) return null
+        if (!this.state.appointments || !this.state.appointments.isOk()) return <Loader icon={ faSpinner } label="Cargando los turnos.."  />     
         return (
             <React.Fragment key={ this.state.datesInWeeks }>
                 <Level className="pl-3 pr-3">
@@ -107,7 +112,7 @@ class AppointmentsList extends Component {
                         <Button onClick={ this.handleMonth } name="next" kind="outline">{ `${ startCase(moment(this.state.date).add(1, 'months').format('MMMM')) }` }</Button>
                     </Column>
                 </Columns>
-                <AppointmentCalendar key={ this.state.datesInWeeks } weeks={ this.state.datesInWeeks }/>
+                <AppointmentCalendar key={ this.state.datesInWeeks } weeks={ this.state.datesInWeeks } appointments={ this.state.appointments.toArray() } />
             </React.Fragment>)
     }
 }

@@ -10,12 +10,10 @@
   height: 100%;
 }
 
-.appointment_card_appointment_approved {
+.appointment_card_appointment {
   width: 100%;
   border-style: solid;
   border-width: 1px;
-  border-color: #BCF1CF;
-  background-color: #BCF1CF;
   border-radius: 5px;
   height: 15px;
   margin-bottom: 4px; 
@@ -24,20 +22,22 @@
   align-content: center;
   align-items: center;
   justify-items: center;
+}
+#approved {
+ background-color: #BCF1CF;
+  border-color: #BCF1CF;
+}
+  
+#open {
+  border-color: #BBE1F9;
+  background-color: #BBE1F9;
 }
 
-.appointment_card_appointment_cancelled {
-  width: 100%;
-  border-style: solid;
-  border-width: 1px;
+#cancelled {
   border-color: #FFC3CF;
   background-color: #FFC3CF;
-  border-radius: 5px;
-  height: 15px;
-  margin-bottom: 4px; 
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  align-items: center;
-  justify-items: center;
 }
+
+
+
+

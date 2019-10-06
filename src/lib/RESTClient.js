@@ -15,7 +15,7 @@ export default class RESTClient {
   @action
   authenticate( user, password, authPath = '/login' ) {
     let credentials = Buffer(`${user}:${password}`).toString('base64');
-    return this.sendRequest(authPath, 'POST', {username: user, password: password}, false)
+    return this.sendRequest(authPath, 'POST', {email: user, password: password}, false)
       .then( res => {
         this.token = res['results']['token'] || res['results'];
         return res.results;

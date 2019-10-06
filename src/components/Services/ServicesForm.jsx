@@ -14,10 +14,37 @@ class ServicesForm extends Component {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
   }
 
   handleChange( sender, value, name, valid ) {
+    debugger
     this.props.onChange && this.props.onChange(name, value, valid);
+  }
+
+  handleSelect( value ) {
+    debugger
+  }
+
+  getDurationOptions() {
+    return([
+      {
+        key: '30',
+        value: '30',
+      },
+      {
+        key: '60',
+        value: '60',
+      },
+      {
+        key: '90',
+        value: '90',
+      },
+      {
+        key: '120',
+        value: '120',
+      }
+    ])
   }
 
   render() {
@@ -35,7 +62,7 @@ class ServicesForm extends Component {
           <TextInput value={ service && service.cost } className="is-fullwidth" validate={ (value) => (!priceRegex.test(value)) } name="cost" onChange={ this.handleChange }/>
         </Field>
         <Field className="pl-5 pr-5" label="¿Cuanto tiempo toma el servicio">
-          <TextInput value={ service && service.duration } className="is-fullwidth" name="duration" onChange={ this.handleChange }/>
+          <Select name="duration" className="is-fullwidth" value={ service && service.duration } onChange={ this.handleChange } options={ this.getDurationOptions() } icon={ faChevronDown } borderless placeholder="Horarios"/>
         </Field>
       </React.Fragment> )
   }

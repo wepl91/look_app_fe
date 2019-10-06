@@ -22,6 +22,8 @@ import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 
 import moment from 'moment';
 
+import AppointmentCell from './AppointmentCell';
+
 class AppointmentCard extends Component {
   constructor(props) {
     super(props);
@@ -56,25 +58,16 @@ class AppointmentCard extends Component {
   isSunday( date ) {
     return moment(date).weekday() == 1;
   }
+
+  getTurnos() {
+    return this.props.appointments.filter( appointment => ( 
+      appointment.dayHour.isSame(this.state.date, 'day') && 
+      appointment.dayHour.isSame(this.state.date, 'month') && 
+      appointment.dayHour.isSame(this.state.date, 'year')))
+  }
   
   render() {
-    const turnos = [
-      {
-        name: 'Marta',
-        hour: '13:00',
-        status: 'approved'
-      },
-      {
-        name: 'Juan',
-        hour: '15:00',
-        status: 'approved'
-      },
-      {
-        name: 'Ivan',
-        hour: '17:00',
-        status: 'cancelled'
-      }
-    ]
+    const turnos = this.getTurnos();
     return(
       <div className="appointment_card">
         <Panel invert={ this.isToday(this.state.date) } className="appointment_card_panel" key={ this.state.date }>
@@ -83,10 +76,10 @@ class AppointmentCard extends Component {
               <Text className="ml-1" size="md" key={ this.state.reload } weight="medium" color="primaryDark">{`${ startCase(this.state.date.format('ddd')) } ${ this.state.date.format('D') }`}</Text>
             </LevelLeft>
             <LevelRight>
-              <Button icon={ faEllipsisH } kind="link" onClick={ this.handleClick }/>
+              <Button disabled={ turnos.length == 0 } icon={ faEllipsisH } kind="link" onClick={ this.handleClick }/>
             </LevelRight>
           </Level>
-          { turnos.map( turno => <div className={ turno.status == 'cancelled' ? 'appointment_card_appointment_cancelled' : 'appointment_card_appointment_approved'}><Text size="xs">{ `${ turno.name } a las ${ turno.hour }` }</Text></div>) }
+          { turnos.map( (turno, index) => index < 4 && <AppointmentCell appointment={ turno } />) }
           </Panel> 
         { this.state.showModal && <AppointmentModal appointments={ turnos } date={ this.state.date } onClose={ this.handleClick } /> }
       </div> )
@@ -95,10 +88,12 @@ class AppointmentCard extends Component {
 
 AppointmentCard.PropTypes = {
   date: PropTypes.object,
+  appointments: PropTypes.array,
 }
 
 AppointmentCard.defaultProps = {
-  date: null
+  date: null,
+  appointments: null,
 }
 
 export default AppointmentCard;
