@@ -60,7 +60,7 @@ class ServicesList extends Component {
       {
         label: '',
         content: (data) => (<SelectableIcon  className="ml-2" icon={ faCut } readOnly/>),
-        size: 'is-2',
+        size: 'is-1',
       },
       {
         label: 'Servicio',

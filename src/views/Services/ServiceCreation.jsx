@@ -116,6 +116,4 @@ class ServiceCreation extends Component {
   }
 }
 
-ServiceCreation.Proptype
-
 export default withToastManager(withStore(withRouter(ServiceCreation)));
