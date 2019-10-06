@@ -28,13 +28,14 @@ import {
 
 import { 
   faDownload, 
-  faEnvelopeOpenText, 
   faTimes, 
   faCalendarAlt, 
   faTrash, 
-  faChevronDown, 
-  faDotCircle,
-  faInfoCircle
+  faChevronDown,
+  faBan,
+  faInfoCircle,
+  faMoneyBill,
+  faUserSlash
 } from "@fortawesome/free-solid-svg-icons";
 
 import { 
@@ -128,39 +129,56 @@ class AppointmentModal extends Component {
       </Columns> )
   }
 
-  renderList() {
-    const paymentTicket = {
-      align: 'center',
-      label: 'Comprobante pago',
-      content: (data) => (
-      <PDFDownloadLink document={ <PaymentTicket /> } fileName={`ComprobanteDePago.pdf`}>
-      {({ blob, url, loading, error }) => ( loading ? 
-        <Button kind="link" icon={ faDownload } disabled /> : 
-        <Button kind="link" icon={ faDownload } /> )}
-      </PDFDownloadLink> ),
-    }
-    const cancelationTicket = { 
-      align: 'center',
-      label: 'Comprobante cancelación',
-      content: (data) => (
-        <PDFDownloadLink document={ <AppointmentCancelledTicket /> } fileName={`Cancelacion.pdf`}>
-          {({ blob, url, loading, error }) => ( loading ? 
-            <Button kind="link" icon={ faDownload } disabled /> : 
-            <Button kind="link" icon={ faDownload } /> )}
-        </PDFDownloadLink> )
-    }
-    const appoinmentTicket = { 
-      size: 'is-2',
-      align: 'center',
-      label: 'Comprobante reserva',
-      content: (data) => (
-        <PDFDownloadLink document={ <AppointmentScheduleTicket /> } fileName={`Reserva.pdf`}>
-          {({ blob, url, loading, error }) => ( loading ? 
-            <Button kind="link" icon={ faDownload } disabled /> : 
-            <Button kind="link" icon={ faDownload } /> )}
-        </PDFDownloadLink> )
-    }
+  renderDetails() {
+    const { appointment } = this.state;
+    const client = appointment.client;
+    
+    const paymentTicket = 
+      <PDFDownloadLink document={ <PaymentTicket appointment={ appointment } /> } fileName={`ComprobanteDePago.pdf`}>
+      {({ loading }) => ( loading ? 
+        <Button className="mt-2" kind="link" icon={ faDownload } disabled>Comprobante de pago</Button> : 
+        <Button className="mt-2" kind="link" icon={ faDownload }>Comprobante de pago</Button> )}
+      </PDFDownloadLink>;
+    
+    const cancelationTicket = 
+        <PDFDownloadLink document={ <AppointmentCancelledTicket appointment={ appointment } /> } fileName={`Cancelacion.pdf`}>
+          {({ loading }) => ( loading ? 
+            <Button className="mt-2" kind="link" icon={ faDownload } disabled>Comprobante de cancelación</Button> : 
+            <Button className="mt-2" kind="link" icon={ faDownload }>Comprobante de cancelación</Button> )}
+        </PDFDownloadLink>;
 
+    const appoinmentTicket = 
+        <PDFDownloadLink document={ <AppointmentScheduleTicket appointment={ appointment } /> } fileName={`Reserva.pdf`}>
+          {({ loading }) => ( loading ? 
+            <Button kind="link" icon={ faDownload } disabled>Comprobante de reserva</Button> : 
+            <Button kind="link" icon={ faDownload }>Comprobante de reserva</Button> )}
+        </PDFDownloadLink> 
+
+    return(
+      <Columns>
+        <Column isSize={ 8 }>
+          { client &&
+            <React.Fragment>
+              <Title size="md">Cliente</Title>
+              <Text weight="medium">{ appointment.clientFullName }</Text>
+            </React.Fragment> }
+        </Column>
+        <Column isSize={ 4 }>
+          <Title size="md">Comprobantes</Title>
+          { appoinmentTicket }
+          { paymentTicket }
+          { cancelationTicket } 
+          <Title className="mt-3" size="md">Acciones</Title>
+          <div className="appointment-accions">
+            <Text><Button kind="link" icon={ faBan       }>Cancelar turno     </Button></Text>
+            <Text><Button className="mt-2" kind="link" icon={ faMoneyBill }>Marcar como pagado </Button></Text>
+            <Text><Button className="mt-2" kind="link" icon={ faUserSlash }>Marcar como ausente</Button></Text>
+          </div>
+        </Column>
+      </Columns>)
+  }
+
+  renderList() {
     const cancellButton = {
       label: 'Acción',
       content: (data) => (<Button kind="link" icon={ faTrash }>Cancelar</Button>)
@@ -170,44 +188,36 @@ class AppointmentModal extends Component {
       {
         label: '',
         content: (data) => (<SelectableIcon icon={ faCalendarAlt } readOnly />),
-        size: 'is-1',
+        size: 'is-2',
+        align: 'center',
       },
       {
         label: 'Cliente',
-        content: (data) => (<Text>{ data.clientFullName }</Text>),
-        size: 'is-2',
+        content: (data) => (<Text>{ data.clientFullName != '' ? data.clientFullName : '- sin cliente -' }</Text>),
+        size: 'is-4',
+        align: 'center',
       },
       {
         label: 'Horario',
         content: (data) => (<Text>{ `${ data.hour } hs` }</Text>),
-        size: 'is-2'
+        size: 'is-4',
+        align: 'center',
       },
-      {
-        label: 'Servicios',
-        content: (data) => (
-          <Columns>
-            <Column>
-              { data.services.map( service => ( <Text>{ `- ${ startCase(service.name) }` }</Text> )) }
-            </Column>
-          </Columns> ),
-        size: 'is-2'
-      },
-      appoinmentTicket,
       {
         label: 'Detalles',
         content: (data) => (<Button kind="link" icon={ faInfoCircle } onClick={ () => ( this.handleShowDetails(data) ) }/>),
-        size: 'is-1',
+        size: 'is-2',
         align: 'center'
       }
     ];
 
-    return(<Table columns={ columns } data={ this.props.appointments } striped={ false }/>)
+    return(<Table className="ml-5 mr-5" columns={ columns } data={ this.props.appointments } striped={ false }/>)
   }
 
   render() {
     const { date } = this.props
     return(
-      <Modal width="70%" height="70%" show>
+      <Modal width="70%" height="80%" show>
         <ModalHeader>
           <Level>
             <LevelLeft>

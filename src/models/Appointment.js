@@ -44,6 +44,9 @@ export default class Appointment extends Model {
 
   @computed
   get clientFullName() {
+    if (!this.client) {
+      return '';
+    }
     return `${ startCase(this.client.name) } ${ startCase(this.client.surname) }`
   }
 

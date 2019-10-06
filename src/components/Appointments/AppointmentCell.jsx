@@ -8,10 +8,13 @@ class AppointmentCell extends Component {
   render() {
     const { appointment } = this.props;
     const client = appointment.client;
-    debugger
     return(
       <div className="appointment_card_appointment" id={ appointment.statusClassName }>
-        <Text size="xs">{ `${ startCase(client.name) } ${ startCase(client.surname) } a las ${ appointment.hour }` }</Text>
+        { client ?
+          <Text size="xs">{ `${ startCase(client.name) } ${ startCase(client.surname) } a las ${ appointment.hour }` }</Text> :
+          <Text size="xs">{ `Turno a las ${ appointment.hour }` }</Text>
+        }
+        
       </div> )
   }
 }

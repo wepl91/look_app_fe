@@ -80,8 +80,7 @@ class AppointmentsList extends Component {
     }
 
     render() {
-        if (!this.state.appointments || !this.state.appointments.isOk()) return <Loader icon={ faSpinner } label="Cargando los turnos.."  />
-        debugger
+        if (!this.state.appointments || !this.state.appointments.isOk()) return <Loader icon={ faSpinner } label="Cargando los turnos.."  />     
         return (
             <React.Fragment key={ this.state.datesInWeeks }>
                 <Level className="pl-3 pr-3">
