@@ -5,8 +5,8 @@ import {
   computed,
 } from 'mobx'
 
-
 import moment from 'moment';
+import startCase from 'lodash/startCase';
 
 export default class Appointment extends Model {
   constructor( attributes, store ) {
@@ -36,10 +36,41 @@ export default class Appointment extends Model {
 
   @action
   setStatus( status ) {
-    this.beginUpdate()
+    this.beginUpdate();
     this.appointmentStatus.name = status;
-    this.endUpdate()
+    this.endUpdate();
     return this;  
+  }
+
+  @computed
+  get clientFullName() {
+    return `${ startCase(this.client.name) } ${ startCase(this.client.surname) }`
+  }
+
+  @computed
+  get isOpen() {
+    return this.appointmentStatus.name === 'OPEN';
+  }
+
+  @computed
+  get isClosed() {
+    return this.appointmentStatus.name === 'CLOSE';
+  }
+
+  @computed
+  get statusClassName() {
+    const classNames = {
+      'OPEN': 'open',
+      'APPROVED': 'approved',
+      'CANCELLED': 'cancelled'
+    }
+
+    return classNames[this.status];
+  }
+
+  @computed
+  get hour() {
+    return this.dayHour.format("HH:mm");
   }
 
 }
