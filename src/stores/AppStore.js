@@ -5,6 +5,7 @@ import {
   UIStore, 
   UsersStore,
   ServicesStore,
+  ProfessionalsStore,
   AppointmentsStore
 } from './';
 
@@ -35,8 +36,9 @@ export default class AppStore {
     this.stores = new Map();
 
     // Domain stores
-    this.stores.set('users',        new UsersStore(this.APIClient, this));
-    this.stores.set('services',     new ServicesStore(this.APIClient, this));
+    this.stores.set('users', new UsersStore(this.APIClient, this));
+    this.stores.set('services', new ServicesStore(this.APIClient, this));
+    this.stores.set('professionals', new ProfessionalsStore(this.APIClient, this));
     this.stores.set('appointments', new AppointmentsStore(this.APIClient, this));
    
     // UI stores

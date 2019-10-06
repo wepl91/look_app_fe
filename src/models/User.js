@@ -9,7 +9,9 @@ export default class User extends Model {
   constructor( attributes, store ) {
 
     let defaultAttributes = {
-      
+      username: '',
+      fullName: '',
+      email: '',
     };
 
     let attrs = Object.assign( defaultAttributes, attributes );

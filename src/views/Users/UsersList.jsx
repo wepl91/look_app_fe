@@ -4,7 +4,8 @@ import {
   Title,
   Table,
   SelectableIcon,
-  Text
+  Text,
+  Button
 } from 'shipnow-mercurio';
 
 import {
@@ -16,28 +17,29 @@ import withStore from '../../hocs/withStore';
 
 import { observer } from 'mobx-react';
 
-import { faSuitcase } from "@fortawesome/free-solid-svg-icons";
+import { faSuitcase, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 
 import startCase from 'lodash/startCase';
 
 @observer
-class ProfessionalsList extends Component {
+class UsersList extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
-      professionals: null,
+      users: null,
     }
   }
 
   componentDidMount() {
     this.setState({
-      professionals: this.props.store.professionals.search({}),
+      users: this.props.store.users.search({}),
     })
   }
 
   renderTable() {
-    const data = this.state.professionals.toArray();
+    const data = this.state.users.toArray();
+
     const columns = [
       {
         label: '',
@@ -46,12 +48,12 @@ class ProfessionalsList extends Component {
       },
       {
         label: 'Nombre',
-        content: (data) => (<Text>{ startCase(`${ data.fullName }`)}</Text>),
+        content: (data) => (<Text>{ startCase(`${ data.fullName }`) }</Text>),
         size: 'is-2'
       },
       {
-        label: 'Teléfono',
-        content: (data) => (<Text>{ `${ data.phone }` }</Text>),
+        label: 'Nombre de usuario',
+        content: (data) => (<Text>{ `${ data.username }` }</Text>),
         size: 'is-2'
       },
       {
@@ -60,14 +62,15 @@ class ProfessionalsList extends Component {
         size: 'is-2'
       },
       {
-        label: 'Estado',
-        content: (data) => (<Text>{ `${ data.professionalStatus }` }</Text>),
-        size: 'is-2'
+        label: 'Rol',
+        content: (data) => (<Text>{ `${ data.userRole }` }</Text>),
+        size: 'is-2',
       },
       {
-        label: 'Servicios Ofrecidos',
-        content: (data) => (<Text>{ `${ data.professionalServices }` }</Text>),
-        size: 'is-2'
+        label: '',
+        content: (data) => (<Button icon={ faPencilAlt } kind="link" />),
+        size: 'is-1',
+        align: 'right'
       },
     ]
 
@@ -75,14 +78,14 @@ class ProfessionalsList extends Component {
   }
 
   render() {
-    if (!this.state.professionals || !this.state.professionals.isOk()) {
+    if (!this.state.users || !this.state.users.isOk()) {
       return 'Cargando usuarios..';
     }
     return(
       <React.Fragment>
         <Level>
           <LevelLeft>
-            <Title>Lista de profesionales</Title>
+            <Title>Lista de Usuarios</Title>
           </LevelLeft>
         </Level>
         <hr/>
@@ -92,4 +95,4 @@ class ProfessionalsList extends Component {
 
 }
 
-export default withStore(ProfessionalsList);
+export default withStore(UsersList);
