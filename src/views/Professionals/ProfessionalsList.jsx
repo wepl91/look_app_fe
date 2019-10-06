@@ -4,7 +4,8 @@ import {
   Title,
   Table,
   SelectableIcon,
-  Text
+  Text,
+  Button
 } from 'shipnow-mercurio';
 
 import {
@@ -16,7 +17,7 @@ import withStore from '../../hocs/withStore';
 
 import { observer } from 'mobx-react';
 
-import { faSuitcase } from "@fortawesome/free-solid-svg-icons";
+import { faSuitcase, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 
 import startCase from 'lodash/startCase';
 
@@ -42,7 +43,7 @@ class ProfessionalsList extends Component {
       {
         label: '',
         content: (data) => (<SelectableIcon  className="ml-2" icon={ faSuitcase } readOnly/>),
-        size: 'is-2',
+        size: 'is-1',
       },
       {
         label: 'Nombre',
@@ -68,6 +69,12 @@ class ProfessionalsList extends Component {
         label: 'Servicios Ofrecidos',
         content: (data) => (<Text>{ `${ data.professionalServices }` }</Text>),
         size: 'is-2'
+      },
+      {
+        label: '',
+        content: (data) => (<Button icon={ faPencilAlt } kind="link" onClick={ () => (this.handleModal(data)) }/>),
+        size: 'is-1',
+        align: 'left'
       },
     ]
 

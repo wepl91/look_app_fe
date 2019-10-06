@@ -44,27 +44,22 @@ class UsersList extends Component {
       {
         label: '',
         content: (data) => (<SelectableIcon  className="ml-2" icon={ faSuitcase } readOnly/>),
-        size: 'is-2',
+        size: 'is-1',
       },
       {
         label: 'Nombre',
         content: (data) => (<Text>{ startCase(`${ data.fullName }`) }</Text>),
-        size: 'is-2'
-      },
-      {
-        label: 'Nombre de usuario',
-        content: (data) => (<Text>{ `${ data.username }` }</Text>),
-        size: 'is-2'
+        size: 'is-3'
       },
       {
         label: 'Mail',
         content: (data) => (<Text>{ `${ data.email }` }</Text>),
-        size: 'is-2'
+        size: 'is-3'
       },
       {
         label: 'Rol',
         content: (data) => (<Text>{ `${ data.userRole }` }</Text>),
-        size: 'is-2',
+        size: 'is-3',
       },
       {
         label: '',
