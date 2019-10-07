@@ -45,4 +45,11 @@ export default class Professional extends Model {
     this.services.map( service => (ret.push(startCase(service.name))))
     return ret;
   }
+
+  @computed
+  get professionalServicesIds() {
+    const ret = [];
+    this.services.map( service => (ret.push(service.id)))
+    return ret;
+  }
 }

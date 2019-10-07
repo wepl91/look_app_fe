@@ -51,6 +51,11 @@ class ProfessionalsForm extends Component {
   }
 
   componentDidMount() {
+    if (this.props.professional && this.state.selectedServices.length == 0){
+      this.setState({
+        selectedServices: this.props.professional.professionalServicesIds
+      })
+    }
     this.setState({
       services: this.props.store.services.getAll(),
     })
@@ -126,17 +131,8 @@ class ProfessionalsForm extends Component {
             </Field> */}
             <Field className="pl-5 pr-5" label="¿Qué servicios ofrece?" labelNote="Seleccioná los servicios">
               {services.toArray().map(serv => (
-                <Checkbox className="pt-1" isFullWidth onClick={() =>this.handleServices(serv.id)} ><Text className="pl-1">{startCase(serv.name)}</Text></Checkbox>
+                <Checkbox className="pt-1" isFullWidth onClick={() => this.handleServices(serv.id)} defaultChecked={ professional && professional.professionalServicesIds.includes(serv.id)} ><Text className="pl-1">{startCase(serv.name)}</Text></Checkbox>
               ))}
-{/*               <Select 
-            placeholder="Profesionales" 
-            borderless 
-            icon={ faChevronDown } 
-            onChange={ this.handleProfessional }
-            options={ professionals.toArray().map( prof => ({ key: `${ startCase(prof.name) } ${ startCase(prof.lastName) }`, value: prof })) } /> */}
-
-
-
             </Field>
       </React.Fragment> )
   }
