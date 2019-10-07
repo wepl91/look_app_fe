@@ -53,16 +53,40 @@ export const profesionales = () => {
 export const horarios = () => {
   return [
     {
-      id: 1,
-      hour: '10.00hs a 11.00hs',
+      key: '09:00 hs',
+      value: '9',
     },
     {
-      id: 2,
-      hour: '12.00hs a 13.00hs',
+      key: '10:00 hs',
+      value: '10',
     },
     {
-      id: 3,
-      hour: '16.00hs a 17.00hs',
+      key: '11:00 hs',
+      value: '11',
+    },
+    {
+      key: '12:00 hs',
+      value: '12',
+    },
+    {
+      key: '13:00 hs',
+      value: '13',
+    },
+    {
+      key: '14:00 hs',
+      value: '14',
+    },
+    {
+      key: '15:00 hs',
+      value: '15',
+    },
+    {
+      key: '16:00 hs',
+      value: '16',
+    },
+    {
+      key: '17:00 hs',
+      value: '17',
     },
   ]
 }

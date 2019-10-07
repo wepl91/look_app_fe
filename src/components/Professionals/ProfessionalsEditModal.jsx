@@ -43,11 +43,6 @@ class ProfessionalsEditModal extends Component {
   handleSave() {
     const { toastManager } = this.props;
     const professional = this.getProfessional();
-    professional.name = this.state.name;
-    professional.lastName = this.state.lastName;
-    professional.phone = this.state.phone;
-    professional.email = this.state.email;
-    professional.status = 'ACTIVE';
     
     professional.save().andThen( (savedProfessional, responseError) => {
       if (responseError) {

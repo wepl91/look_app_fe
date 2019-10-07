@@ -38,6 +38,9 @@
   background-color: #FFC3CF;
 }
 
-
+.empty_draw {
+  height: 400px;
+  width: 100%;
+}
 
 

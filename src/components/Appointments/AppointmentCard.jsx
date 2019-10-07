@@ -76,7 +76,7 @@ class AppointmentCard extends Component {
               <Text className="ml-1" size="md" key={ this.state.reload } weight="medium" color="primaryDark">{`${ startCase(this.state.date.format('ddd')) } ${ this.state.date.format('D') }`}</Text>
             </LevelLeft>
             <LevelRight>
-              <Button disabled={ turnos.length == 0 } icon={ faEllipsisH } kind="link" onClick={ this.handleClick }/>
+              <Button icon={ faEllipsisH } kind="link" onClick={ this.handleClick }/>
             </LevelRight>
           </Level>
           { turnos.map( (turno, index) => index < 4 && <AppointmentCell appointment={ turno } />) }
