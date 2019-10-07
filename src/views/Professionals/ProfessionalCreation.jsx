@@ -26,7 +26,7 @@ import { withToastManager } from 'react-toast-notifications';
 
 import withStore from '../../hocs/withStore';
 
-import { Professional } from '../../models';
+import { Professional, Service } from '../../models';
 import { observer } from 'mobx-react';
 
 @observer
@@ -44,10 +44,12 @@ class ProfessionalCreation extends Component {
   handleClick() {
     const { toastManager } = this.props;
     const professional = new Professional({}, this.props.store.professionals);
+    // const service = new Service({}, this.props.store.services);
     professional.name = this.state.name;
     professional.lastName = this.state.lastName;
     professional.phone = this.state.phone;
     professional.email = this.state.email;
+    professional.status = 'ACTIVE';
 /*     professional.services = this.state.services; */
     
     professional.save().andThen( (savedProfessional, responseError) => {

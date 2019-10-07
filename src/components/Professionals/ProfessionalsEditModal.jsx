@@ -22,6 +22,7 @@ import {
   LevelRight,
 } from 'bloomer';
 
+
 class ProfessionalsEditModal extends Component {
   
   modifiedProfessional
@@ -43,8 +44,10 @@ class ProfessionalsEditModal extends Component {
     const { toastManager } = this.props;
     const professional = this.getProfessional();
     professional.name = this.state.name;
-    professional.cost = this.state.cost;
-    professional.duration = this.state.duration;
+    professional.lastName = this.state.lastName;
+    professional.phone = this.state.phone;
+    professional.email = this.state.email;
+    professional.status = 'ACTIVE';
     
     professional.save().andThen( (savedProfessional, responseError) => {
       if (responseError) {
@@ -72,18 +75,10 @@ class ProfessionalsEditModal extends Component {
 
   handleChange( name, value, valid ) {
     const professional = this.getProfessional();
-    if (name == 'cost') {
-      professional.cost = value
-      this.setState({
-        buttonDisabled: valid.type == 'error',
-      })
-    }
-    else {
-      professional[name] = value;
-      this.setState( prevState => ({
-        reload: !prevState.reload
-      }))
-    } 
+    professional[name] = value;
+    this.setState( prevState => ({
+      reload: !prevState.reload
+    }))
   }
 
   getProfessional() {
@@ -102,7 +97,8 @@ class ProfessionalsEditModal extends Component {
       return false;
     }
 
-    if (professional.services == '' || professional.name == '') {
+    // if (professional.services == '' || professional.name == '') {
+    if ( professional.name == '') {
       return false;
     }
 

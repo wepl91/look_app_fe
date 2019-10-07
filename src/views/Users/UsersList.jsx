@@ -48,12 +48,12 @@ class UsersList extends Component {
       },
       {
         label: 'Nombre',
-        content: (data) => (<Text>{ startCase(`${ data.fullName }`) }</Text>),
+        content: (data) => (<Text>{ startCase( data.fullName) || '- sin nombre -' }</Text>),
         size: 'is-3'
       },
       {
         label: 'Mail',
-        content: (data) => (<Text>{ `${ data.email }` }</Text>),
+        content: (data) => (<Text>{ data.email || '- sin email -' }</Text>),
         size: 'is-3'
       },
       {

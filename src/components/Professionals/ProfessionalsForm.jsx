@@ -84,14 +84,17 @@ class ProfessionalsForm extends Component {
             <Field className="pl-5 pr-5" label="Mail">
               <TextInput value={ professional && professional.email } name="email" className="is-fullwidth" onChange={ this.handleChange } />
             </Field>
-            <Field className="pl-5 pr-5" label="¿En qué sucursal va a atender?" labelNote="Seleccioná una sucursal">
+{/*             <Field className="pl-5 pr-5" label="¿En qué sucursal va a atender?" labelNote="Seleccioná una sucursal">
               <Select className="is-fullwidth" placeholder="Sucursales" borderless icon={ faChevronDown } options={ sucursales().map(sucursal => ({key: sucursal.address, value: sucursal.id})) } />
             </Field>
             <Field className="pl-5 pr-5" label="Horarios de trabajo" labelNote="Seleccioná los horarios semanales">
               <WorkingHoursSelector name="hours" startingDate={ moment('05-17-2018 02:30 PM', 'MM-DD-YYYY hh:mm A') } finishingDate={ moment('05-17-2018 06:00 PM', 'MM-DD-YYYY hh:mm A') } onChange={ this.handleHours } />
               { !this.isValidHour() && <Panel color="error" invert ><Text className="has-text-centered">Los horarios ingresados son incorrectos</Text></Panel> }
-            </Field>
+            </Field> */}
             <Field className="pl-5 pr-5" label="¿Qué servicios ofrece?" labelNote="Seleccioná los servicios">
+{/*             {service.map((service, index) => (
+                <Checkbox className="pt-1" isFullWidth><Text className="pl-1">{service.name}</Text></Checkbox>
+              ))} */}
               {servicios().map((servicio, index) => (
                 <Checkbox className="pt-1" isFullWidth><Text className="pl-1">{servicio.name}</Text></Checkbox>
               ))}

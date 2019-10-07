@@ -60,7 +60,7 @@ class ProfessionalsList extends Component {
       },
       {
         label: 'Nombre',
-        content: (data) => (<Text>{ startCase(`${ data.fullName }`)}</Text>),
+        content: (data) => (<Text>{ startCase( data.fullName || '- sin nombre -'  )}</Text>),
         size: 'is-2'
       },
       {
@@ -70,29 +70,24 @@ class ProfessionalsList extends Component {
       },
       {
         label: 'Mail',
-        content: (data) => (<Text>{ `${ data.email }` }</Text>),
+        content: (data) => (<Text>{ data.email || '- sin email -' }</Text>),
         size: 'is-2'
       },
-      {
+/*       {
         label: 'Estado',
         content: (data) => (<Text>{ `${ data.professionalStatus }` }</Text>),
         size: 'is-2'
-      },
+      }, */
       {
         label: 'Servicios Ofrecidos',
-/*         content: (data) => (<Text>{ `${ data.professionalServices }` }</Text>), */
-      content: (data) => (data.professionalServices.map(name => (<Text weight="medium" className="mb-2"><FontAwesomeIcon icon={ faDotCircle } size="xs" fixedWidth/>{ name }</Text>))),
-
-
-
-
+        content: (data) => (data.professionalServices.map(name => (<Text weight="medium" className="mb-2"><FontAwesomeIcon icon={ faDotCircle } size="xs" fixedWidth/>{ name }</Text>))),
         size: 'is-2'
       },
       {
         label: '',
         content: (data) => (<Button icon={ faPencilAlt } kind="link" onClick={ () => (this.handleModal(data)) }/>),
         size: 'is-1',
-        align: 'left'
+        align: 'right'
       },
     ]
 
