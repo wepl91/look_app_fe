@@ -25,6 +25,10 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 import { servicios, sucursales } from '../../lib/Mocks';
 
+import startCase from 'lodash/startCase';
+
+import { withStore } from '../../hocs';
+
 import moment from 'moment';
 
 class ProfessionalsForm extends Component {
@@ -34,10 +38,25 @@ class ProfessionalsForm extends Component {
     this.state = {
       startingTime: '',
       finishingTime: '',
+      services: null,
+      selectedServices: null,
       validTimeRange: true
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleHours = this.handleHours.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState({
+      services: this.props.store.services.getAll(),
+    })
+  }
+
+  handleServices( sender, value, name ) {
+    this.setState({
+      selectedServices: value,
+    });
+    this.props.onChange && this.props.onChange('selectedServices', value.id) //tendria que ser un array de ids, no value.id
   }
 
   handleChange( sender, value, name, valid ) {
@@ -69,7 +88,11 @@ class ProfessionalsForm extends Component {
   }
 
   render() {
-    const { professional } = this.props
+    if (!this.state.services || !this.state.services.isOk()) {
+      return 'Cargando profesionales..';
+    }
+    const { professional } = this.props;
+    const { services } = this.state; 
     return(
       <React.Fragment>
             <Field className="pl-5 pr-5" label="Nombre">
@@ -92,12 +115,18 @@ class ProfessionalsForm extends Component {
               { !this.isValidHour() && <Panel color="error" invert ><Text className="has-text-centered">Los horarios ingresados son incorrectos</Text></Panel> }
             </Field> */}
             <Field className="pl-5 pr-5" label="¿Qué servicios ofrece?" labelNote="Seleccioná los servicios">
-{/*             {service.map((service, index) => (
-                <Checkbox className="pt-1" isFullWidth><Text className="pl-1">{service.name}</Text></Checkbox>
-              ))} */}
-              {servicios().map((servicio, index) => (
-                <Checkbox className="pt-1" isFullWidth><Text className="pl-1">{servicio.name}</Text></Checkbox>
+              {services.toArray().map(servicio => (
+                <Checkbox className="pt-1" isFullWidth onClick={console.log("********")}><Text className="pl-1">{startCase(servicio.name)}</Text></Checkbox>
               ))}
+{/*               <Select 
+            placeholder="Profesionales" 
+            borderless 
+            icon={ faChevronDown } 
+            onChange={ this.handleProfessional }
+            options={ professionals.toArray().map( prof => ({ key: `${ startCase(prof.name) } ${ startCase(prof.lastName) }`, value: prof })) } /> */}
+
+
+
             </Field>
       </React.Fragment> )
   }
@@ -113,4 +142,5 @@ ProfessionalsForm.defaultProps = {
   professional : null,
 }
 
-export default ProfessionalsForm;
+export default withStore(ProfessionalsForm);
+// export default ProfessionalsForm;

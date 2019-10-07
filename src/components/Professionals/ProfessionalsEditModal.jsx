@@ -43,6 +43,7 @@ class ProfessionalsEditModal extends Component {
   handleSave() {
     const { toastManager } = this.props;
     const professional = this.getProfessional();
+    professional.status = 'ACTIVE';
     
     professional.save().andThen( (savedProfessional, responseError) => {
       if (responseError) {
@@ -92,8 +93,7 @@ class ProfessionalsEditModal extends Component {
       return false;
     }
 
-    // if (professional.services == '' || professional.name == '') {
-    if ( professional.name == '') {
+    if (professional.services == '' || professional.name == '') {
       return false;
     }
 
@@ -115,7 +115,7 @@ class ProfessionalsEditModal extends Component {
           </Level>
         </ModalHeader>
         <ModalContent>
-          <ProfessionalsForm onChange={ this.handleChange } professional={ professional }/>
+          <ProfessionalsForm onChange={ this.handleChange } professional={ professional } />
         </ModalContent>
         <ModalFooter>
           <Level>
