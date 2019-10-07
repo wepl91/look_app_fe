@@ -43,7 +43,7 @@ class ServicesEditModal extends Component {
     const { toastManager } = this.props;
     const service = this.getService();
     service.name = this.state.name;
-    service.cost = this.state.cost;
+    service.price = this.state.price;
     service.duration = this.state.duration;
     
     service.save().andThen( (savedService, responseError) => {
@@ -73,7 +73,7 @@ class ServicesEditModal extends Component {
   handleChange( name, value, valid ) {
     const service = this.getService();
     if (name == 'cost') {
-      service.cost = value
+      service.price = value
       this.setState({
         buttonDisabled: valid.type == 'error',
       })
@@ -102,7 +102,7 @@ class ServicesEditModal extends Component {
       return false;
     }
 
-    if (service.cost == '' || service.duration == '' || service.name == '') {
+    if (service.price == '' || service.duration == '' || service.name == '') {
       return false;
     }
 

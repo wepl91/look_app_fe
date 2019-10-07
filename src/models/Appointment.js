@@ -28,16 +28,10 @@ export default class Appointment extends Model {
     }
   }
 
-  @computed
-  get status() {
-    return this.appointmentStatus.name;
-  }
-
-
   @action
   setStatus( status ) {
     this.beginUpdate();
-    this.appointmentStatus.name = status;
+    this.status.name = status;
     this.endUpdate();
     return this;  
   }
@@ -51,24 +45,36 @@ export default class Appointment extends Model {
   }
 
   @computed
+  get totalPrice() {
+    let total = 0;
+    if (!this.services || this.services.length == 0) {
+      return 0;
+    }
+
+    this.services.map( service => ( total += parseInt(service.price) ));
+
+  }
+
+  @computed
   get isOpen() {
-    return this.appointmentStatus.name === 'OPEN';
+    return this.status.name === 'OPEN';
   }
 
   @computed
   get isClosed() {
-    return this.appointmentStatus.name === 'CLOSE';
+    return this.status.name === 'CLOSE';
   }
 
   @computed
   get statusClassName() {
     const classNames = {
       'OPEN': 'open',
-      'APPROVED': 'approved',
-      'CANCELLED': 'cancelled'
+      'PAID': 'approved',
+      'CANCELED': 'cancelled',
+      'EXPIRED': 'cancelled'
     }
 
-    return classNames[this.status];
+    return classNames[this.status.name];
   }
 
   @computed

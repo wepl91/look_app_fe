@@ -8,6 +8,7 @@ class AppointmentCell extends Component {
   render() {
     const { appointment } = this.props;
     const client = appointment.client;
+    debugger
     return(
       <div className="appointment_card_appointment" id={ appointment.statusClassName }>
         { client ?
