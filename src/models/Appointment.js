@@ -61,8 +61,18 @@ export default class Appointment extends Model {
   }
 
   @computed
-  get isClosed() {
-    return this.status.name === 'CLOSE';
+  get isPaid() {
+    return this.status.name === 'PAID';
+  }
+
+  @computed
+  get isCancelled() {
+    return this.status.name === 'CANCELED';
+  }
+
+  @computed
+  get isCancelled() {
+    return this.status.name === 'EXPIRED';
   }
 
   @computed

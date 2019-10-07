@@ -13,8 +13,6 @@ import {
   Text,
   Button,
   Table,
-  Select,
-  Field,
   SelectableIcon
 } from 'shipnow-mercurio';
 
@@ -46,14 +44,23 @@ import {
   PaymentTicket 
 } from '../PDFDocuments';
 
-import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+import { AppointmentsForm } from './';
 
-import { ReactComponent as SvgDraw } from '../../assets/undraw_jewelry_iima.svg';
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
 import { PDFDownloadLink } from '@react-pdf/renderer'
 
+import { ReactComponent as SvgDraw } from '../../assets/undraw_jewelry_iima.svg';
+import { ReactComponent as SvgDraw2 } from '../../assets/undraw_no_data_qbuo.svg';
+
+import { Appointment } from '../../models';
+
+import { withStore } from '../../hocs';
+
+import './styles.css';
 
 class AppointmentModal extends Component {
+  newAppointment
   constructor(props) {
     super(props);
 
@@ -80,6 +87,8 @@ class AppointmentModal extends Component {
   }
 
   handleCreate() {
+    this.newAppointment = new Appointment({}, this.props.store.appointments);
+    this.newAppointment.dayHour = moment();
     this.setState({
       renderCreate : true,
       renderList   : false,
@@ -97,9 +106,9 @@ class AppointmentModal extends Component {
 
   handleList() {
     this.setState({
-      renderList    : true,
-      renderCreate  : false,
-      renderDertails: false,
+      renderList   : true,
+      renderCreate : false,
+      renderDetails: false,
     })    
   }
 
@@ -115,15 +124,7 @@ class AppointmentModal extends Component {
     return(
       <Columns>
         <Column isSize={ 6 }>
-          <Field label="¿A cual de nuestras sucursales querés venir?" labelNote="Seleccioná una sucursal">
-            <Select placeholder="Sucursales" borderless icon={ faChevronDown } />
-          </Field>
-          <Field label="¿Por quién querés ser atendido?" labelNote="Seleccioná un profesional">
-            <Select placeholder="Profesionales" borderless icon={ faChevronDown } />
-          </Field>
-          <Field label="¿A que hora querés venir?" labelNote="Seleccioná un horario">
-            <Select placeholder="Horarios" borderless icon={ faChevronDown } />
-          </Field>
+          <AppointmentsForm withDate/>
         </Column>
         <Column className="has-text-centered">
           <SvgDraw style={{ height: '300px', width: '300px' }}/>
@@ -135,6 +136,7 @@ class AppointmentModal extends Component {
     const { appointment } = this.state;
     const client = appointment.client;
     const services = appointment.services;
+    const professional = appointment.professional;
     
     const paymentTicket = 
       <PDFDownloadLink document={ <PaymentTicket appointment={ appointment } /> } fileName={`ComprobanteDePago.pdf`}>
@@ -173,6 +175,11 @@ class AppointmentModal extends Component {
                   <FontAwesomeIcon icon={ faDotCircle } size="xs" fixedWidth/>
                   { ` ${ startCase(service.name) }` }
                 </Text> )) }
+            </React.Fragment> }
+          { professional && 
+            <React.Fragment>
+              <Title size="md">Cliente</Title>
+              <Text weight="medium">{ `${ startCase(professional.name) } ${ professional.lastName }` }</Text>
             </React.Fragment> }
         </Column>
         <Column isSize={ 4 }>
@@ -222,7 +229,15 @@ class AppointmentModal extends Component {
         align: 'center'
       }
     ];
-
+    if (this.props.appointments.length < 1) {
+      return(
+        <Columns className="has-text-centered">
+          <Column>
+            <Title size="md">No hay turnos para el dia de hoy</Title>
+            <SvgDraw2  className="empty_draw" />
+          </Column>
+        </Columns> )
+    }
     return(<Table className="ml-5 mr-5" columns={ columns } data={ this.props.appointments } striped={ false }/>)
   }
 
@@ -243,17 +258,17 @@ class AppointmentModal extends Component {
             </Level>
         </ModalHeader>
         <ModalContent>
-          { this.state.renderCreate && this.renderCreate() }
-          { this.state.renderList && this.renderList() }
+          { this.state.renderCreate  && this.renderCreate() }
+          { this.state.renderList    && this.renderList() }
           { this.state.renderDetails && this.renderDetails() }
           </ModalContent>
         <ModalFooter>
           <Level>
             <LevelLeft>{ this.state.renderCreate && <Button kind="outline">Reservar turno</Button> }</LevelLeft>
             <LevelLeft>
-              { this.state.renderCreate && 
+              { this.state.renderCreate || this.state.renderDetails ?
                 <Button kind="link" onClick={ this.handleList }>
-                  <FontAwesomeIcon className="mr-2" icon={ faCalendarAlt }/>Ver los turnos de hoy</Button> }
+                  <FontAwesomeIcon className="mr-2" icon={ faCalendarAlt }/>Ver los turnos de hoy</Button> : null }
               { this.state.renderList && 
                 <Button kind="link" onClick={ this.handleCreate }>
                   <FontAwesomeIcon className="mr-2" icon={ faCalendarAlt }/>Crear un turno para hoy</Button> }
@@ -275,4 +290,4 @@ AppointmentModal.defaultProps = {
   appointments: []
 }
 
-export default AppointmentModal;
+export default withStore(AppointmentModal);

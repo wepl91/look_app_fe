@@ -44,8 +44,6 @@ class ProfessionalsEditModal extends Component {
     const { toastManager } = this.props;
     const professional = this.getProfessional();
     professional.status = 'ACTIVE';
-    //para el create de professional
-    //seteo new professional en un componentdidmount seteo el professional vacio. despues hago lo mismo que aca/ handle change lo hago igual que aca
     
     professional.save().andThen( (savedProfessional, responseError) => {
       if (responseError) {

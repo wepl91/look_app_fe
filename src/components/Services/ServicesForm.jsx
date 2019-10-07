@@ -18,12 +18,10 @@ class ServicesForm extends Component {
   }
 
   handleChange( sender, value, name, valid ) {
-    debugger
     this.props.onChange && this.props.onChange(name, value, valid);
   }
 
   handleSelect( value ) {
-    debugger
   }
 
   getDurationOptions() {
