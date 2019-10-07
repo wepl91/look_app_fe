@@ -19,7 +19,7 @@ import {
 } from 'shipnow-mercurio';
 
 import { ReactComponent as SvgDraw } from '../../assets/undraw_online_cv_qy9w.svg';
-import moment from 'moment';
+
 import { ProfessionalsForm } from '../../components/Professionals/';
 
 import { withToastManager } from 'react-toast-notifications';
@@ -31,6 +31,9 @@ import { observer } from 'mobx-react';
 
 @observer
 class ProfessionalCreation extends Component {
+
+  newProfessional
+
   constructor(props) {
     super(props);
 
@@ -40,17 +43,15 @@ class ProfessionalCreation extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
+  componentDidMount(){
+    this.newProfessional = new Professional({}, this.props.store.professionals);
+  }
 
   handleClick() {
     const { toastManager } = this.props;
-    const professional = new Professional({}, this.props.store.professionals);
-    // const service = new Service({}, this.props.store.services);
-    professional.name = this.state.name;
-    professional.lastName = this.state.lastName;
-    professional.phone = this.state.phone;
-    professional.email = this.state.email;
+    const professional = this.getProfessional();
     professional.status = 'ACTIVE';
-/*     professional.services = this.state.services; */
+
     
     professional.save().andThen( (savedProfessional, responseError) => {
       if (responseError) {
@@ -71,16 +72,38 @@ class ProfessionalCreation extends Component {
   }
 
   handleChange( name, value, valid ) {
-    if(name == 'hours'){
+
+    if (name == 'cost') {
+      service.price = value
       this.setState({
-        startingTime: value[0],
-        finishingTime: value[1],
-        buttonDisabled: valid,
+        buttonDisabled: valid.type == 'error',
       })
     }
-    this.setState({
-      [name]: value,
-    })
+
+    const professional = this.getProfessional();
+    if(name == 'hours'){
+      service.startingTime = value[0],
+      service.finishingTime = value[1],
+      this.setState({
+        buttonDisabled: valid,
+      })
+    }else{
+      professional[name] = value;
+      this.setState( prevState => ({
+        reload: !prevState.reload
+      }))
+    }
+  }
+
+
+  getProfessional() {
+    if (this.newProfessional) {
+      return this.newProfessional;
+    }
+    else {
+      this.newProfessional = this.props.professional.clone();
+      return this.newProfessional;
+    }
   }
 
   render() {

@@ -18,6 +18,7 @@ export default class Professional extends Model {
       phone: '',
       email: '',
       status: '',
+      services: '',
 /*       branch: '',
       workingHours: '', 
       services: ''*/

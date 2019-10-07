@@ -43,11 +43,9 @@ class ProfessionalsEditModal extends Component {
   handleSave() {
     const { toastManager } = this.props;
     const professional = this.getProfessional();
-    professional.name = this.state.name;
-    professional.lastName = this.state.lastName;
-    professional.phone = this.state.phone;
-    professional.email = this.state.email;
     professional.status = 'ACTIVE';
+    //para el create de professional
+    //seteo new professional en un componentdidmount seteo el professional vacio. despues hago lo mismo que aca/ handle change lo hago igual que aca
     
     professional.save().andThen( (savedProfessional, responseError) => {
       if (responseError) {
@@ -97,8 +95,7 @@ class ProfessionalsEditModal extends Component {
       return false;
     }
 
-    // if (professional.services == '' || professional.name == '') {
-    if ( professional.name == '') {
+    if (professional.services == '' || professional.name == '') {
       return false;
     }
 
@@ -120,7 +117,7 @@ class ProfessionalsEditModal extends Component {
           </Level>
         </ModalHeader>
         <ModalContent>
-          <ProfessionalsForm onChange={ this.handleChange } professional={ professional }/>
+          <ProfessionalsForm onChange={ this.handleChange } professional={ professional } />
         </ModalContent>
         <ModalFooter>
           <Level>

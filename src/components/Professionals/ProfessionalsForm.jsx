@@ -35,6 +35,8 @@ class ProfessionalsForm extends Component {
       startingTime: '',
       finishingTime: '',
       validTimeRange: true
+      //meter services en null
+      //this.props.stores.services.getall en component did mount, ver si es ok, si es null. ver forumlario de appointments
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleHours = this.handleHours.bind(this);
