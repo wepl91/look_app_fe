@@ -31,6 +31,9 @@ import { withStore } from '../../hocs';
 
 import moment from 'moment';
 
+import { observer } from 'mobx-react';
+
+@observer
 class ProfessionalsForm extends Component {
   constructor(props) {
     super(props);
@@ -39,24 +42,18 @@ class ProfessionalsForm extends Component {
       startingTime: '',
       finishingTime: '',
       services: null,
-      selectedServices: null,
+      selectedServices: [],
       validTimeRange: true
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleHours = this.handleHours.bind(this);
+    this.handleServices = this.handleServices.bind(this);
   }
 
   componentDidMount() {
     this.setState({
       services: this.props.store.services.getAll(),
     })
-  }
-
-  handleServices( sender, value, name ) {
-    this.setState({
-      selectedServices: value,
-    });
-    this.props.onChange && this.props.onChange('selectedServices', value.id) //tendria que ser un array de ids, no value.id
   }
 
   handleChange( sender, value, name, valid ) {
@@ -87,6 +84,19 @@ class ProfessionalsForm extends Component {
     return validTimeRange;
   }
 
+  handleServices( value ) {
+    let newArray = Array.from(this.state.selectedServices)
+    if(newArray.includes(value)){
+      newArray.pop(value)
+    }else{
+      newArray.push(value)
+    }
+    this.setState({
+      selectedServices: newArray,
+    });
+    this.props.onChange && this.props.onChange('services', newArray)
+  }
+
   render() {
     if (!this.state.services || !this.state.services.isOk()) {
       return 'Cargando profesionales..';
@@ -115,8 +125,8 @@ class ProfessionalsForm extends Component {
               { !this.isValidHour() && <Panel color="error" invert ><Text className="has-text-centered">Los horarios ingresados son incorrectos</Text></Panel> }
             </Field> */}
             <Field className="pl-5 pr-5" label="¿Qué servicios ofrece?" labelNote="Seleccioná los servicios">
-              {services.toArray().map(servicio => (
-                <Checkbox className="pt-1" isFullWidth onClick={console.log("********")}><Text className="pl-1">{startCase(servicio.name)}</Text></Checkbox>
+              {services.toArray().map(serv => (
+                <Checkbox className="pt-1" isFullWidth onClick={() =>this.handleServices(serv.id)} ><Text className="pl-1">{startCase(serv.name)}</Text></Checkbox>
               ))}
 {/*               <Select 
             placeholder="Profesionales" 
@@ -143,4 +153,3 @@ ProfessionalsForm.defaultProps = {
 }
 
 export default withStore(ProfessionalsForm);
-// export default ProfessionalsForm;
