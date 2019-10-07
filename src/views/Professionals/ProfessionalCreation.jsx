@@ -52,7 +52,11 @@ class ProfessionalCreation extends Component {
     
     professional.save().andThen( (savedProfessional, responseError) => {
       if (responseError) {
-
+        toastManager.add("Ups! Parece que hubo un error al guardar!", {
+          appearance: 'error',
+          autoDismiss: true,
+          pauseOnHover: false,
+        });
       }
       else {
         toastManager.add("Los cambios se han guardado exitosamente!", {

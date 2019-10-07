@@ -7,6 +7,8 @@ import {
   toJS
 } from 'mobx'
 
+import startCase from 'lodash/startCase';
+
 export default class Professional extends Model {
   constructor( attributes, store ) {
 
@@ -27,7 +29,7 @@ export default class Professional extends Model {
 
   @computed
   get fullName() {
-    return this.name + " " + this.lastName;
+    return `${ this.name || '' } ${ this.lastName || '' }`;
   }
 
   @computed
@@ -37,6 +39,8 @@ export default class Professional extends Model {
 
   @computed
   get professionalServices() {
-    return this.services[0].name;
+    const ret = [];
+    this.services.map( service => (ret.push(startCase(service.name))))
+    return ret;
   }
 }

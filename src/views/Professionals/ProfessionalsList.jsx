@@ -17,7 +17,11 @@ import withStore from '../../hocs/withStore';
 
 import { observer } from 'mobx-react';
 
-import { faSuitcase, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import { faSuitcase, faPencilAlt, faDotCircle } from "@fortawesome/free-solid-svg-icons";
+
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+
+import { ProfessionalsEditModal } from '../../components/Professionals';
 
 import startCase from 'lodash/startCase';
 
@@ -27,7 +31,9 @@ class ProfessionalsList extends Component {
     super(props);
     
     this.state = {
+      showModal: false,
       professionals: null,
+      professionalToEdit: null,
     }
   }
 
@@ -35,6 +41,13 @@ class ProfessionalsList extends Component {
     this.setState({
       professionals: this.props.store.professionals.search({}),
     })
+  }
+
+  handleModal( professional ) {
+    this.setState(prevState => ({
+      showModal: !prevState.showModal,
+      professionalToEdit: professional,
+    }))
   }
 
   renderTable() {
@@ -52,7 +65,7 @@ class ProfessionalsList extends Component {
       },
       {
         label: 'Teléfono',
-        content: (data) => (<Text>{ `${ data.phone }` }</Text>),
+        content: (data) => (<Text>{ data.phone || '- sin teléfono -' }</Text>),
         size: 'is-2'
       },
       {
@@ -67,7 +80,12 @@ class ProfessionalsList extends Component {
       },
       {
         label: 'Servicios Ofrecidos',
-        content: (data) => (<Text>{ `${ data.professionalServices }` }</Text>),
+/*         content: (data) => (<Text>{ `${ data.professionalServices }` }</Text>), */
+      content: (data) => (data.professionalServices.map(name => (<Text weight="medium" className="mb-2"><FontAwesomeIcon icon={ faDotCircle } size="xs" fixedWidth/>{ name }</Text>))),
+
+
+
+
         size: 'is-2'
       },
       {
@@ -94,6 +112,7 @@ class ProfessionalsList extends Component {
         </Level>
         <hr/>
         { this.renderTable() }
+        { this.state.showModal && <ProfessionalsEditModal professional={ this.state.professionalToEdit } onClose={ () => ( this.handleModal(null) ) }/> }
       </React.Fragment> )
   }
 
