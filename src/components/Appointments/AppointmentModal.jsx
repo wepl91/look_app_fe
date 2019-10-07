@@ -59,6 +59,8 @@ import { Appointment } from '../../models';
 
 import { withStore } from '../../hocs';
 
+import { AppontmentForm } from './'
+
 import './styles.css';
 
 class AppointmentModal extends Component {
@@ -225,25 +227,7 @@ class AppointmentModal extends Component {
     return(
       <Columns>
         <Column isSize={ 8 }>
-          { client &&
-            <React.Fragment>
-              <Title size="md">Cliente</Title>
-              <Text weight="medium">{ appointment.clientFullName }</Text>
-            </React.Fragment> }
-          { services && 
-            <React.Fragment>
-              <Title size="md">Servicios</Title>
-              { services.map( service => ( 
-                <Text weight="medium" className="mb-2">
-                  <FontAwesomeIcon icon={ faDotCircle } size="xs" fixedWidth/>
-                  { ` ${ startCase(service.name) }` }
-                </Text> )) }
-            </React.Fragment> }
-          { professional && 
-            <React.Fragment>
-              <Title size="md">Cliente</Title>
-              <Text weight="medium">{ `${ startCase(professional.name) } ${ professional.lastName }` }</Text>
-            </React.Fragment> }
+          <AppointmentsForm appointment={ this.state.appointment } />
         </Column>
         <Column isSize={ 4 }>
           <Title size="md">Comprobantes</Title>
