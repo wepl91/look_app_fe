@@ -17,6 +17,8 @@ import startCase from 'lodash/startCase';
 
 import { horarios } from '../../lib/Mocks';
 
+import moment from 'moment';
+
 @observer
 class AppointmentsForm extends Component {
   constructor(props) {
@@ -31,6 +33,7 @@ class AppointmentsForm extends Component {
       professionals: null,
       professional: null,
       service: null,
+      date: moment()
     }
   }
 
@@ -45,6 +48,9 @@ class AppointmentsForm extends Component {
   }
 
   handleDate( sender, value, name ) {
+    this.setState({
+      date: value
+    })
     this.props.onChange && this.props.onChange('date', value);
   }
 
@@ -64,15 +70,16 @@ class AppointmentsForm extends Component {
   
 
   render() {
-    if (!this.state.professionals || !this.state.professionals.isOk()) {
+    if (!this.state.professionals || !this.state.professionals.isOk() || !this.props.appointment) {
       return null;
     }
     const { professionals } = this.state; 
+    const { appointment } = this.props;
     return(
       <React.Fragment>
         { !this.props.withDate &&
           <Field className="ml-5" label="¿Que día querés venir?" labelNote="Seleccioná ua fecha">
-            <DateTimePicker onChange={ this.handleDate }/>
+            <DateTimePicker key={ this.state.date } value={ this.state.date } onChange={ this.handleDate }/>
           </Field> }
         <Field className="ml-5" label="¿A cual de nuestras sucursales querés venir?" labelNote="Seleccioná una sucursal">
           <Select 
@@ -114,10 +121,12 @@ class AppointmentsForm extends Component {
 
 AppointmentsForm.PropTypes = {
   withDate: PropTypes.bool,
+  appointment: PropTypes.object,
 }
 
 AppointmentsForm.defaultProps = {
-  withDate: false
+  withDate: false,
+  appointment: null,
 }
 
 export default withStore(AppointmentsForm);

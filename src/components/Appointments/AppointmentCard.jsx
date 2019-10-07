@@ -45,10 +45,13 @@ class AppointmentCard extends Component {
     }
   }
 
-  handleClick() {
+  handleClick( reload ) {
     this.setState(prevState => ({
       showModal: !prevState.showModal
     }))
+    if (reload === true) {
+      window.location.reload();
+    }
   }
 
   isToday( date ) {

@@ -82,6 +82,28 @@ class AppointmentModal extends Component {
     this.handleClose       = this.handleClose.bind(this);
     this.handleList        = this.handleList.bind(this);
     this.handleSave        = this.handleSave.bind(this);
+
+    this.handlePay         = this.handlePay.bind(this);
+    this.handleCancel      = this.handleCancel.bind(this);
+    this.handleMiss        = this.handleMiss.bind(this);
+  }
+
+  handlePay() {
+    this.state.appointment.pay().then(() =>{
+      this.props.onClose && this.props.onClose(true)
+    });
+  }
+
+  handleCancel() {
+    this.state.appointment.cancel().then(() =>{
+      this.props.onClose && this.props.onClose(true)
+    });
+  }
+
+  handleMiss() {
+    this.state.appointment.miss().then(() =>{
+      this.props.onClose && this.props.onClose(true)
+    });
   }
 
   handleSave() {
@@ -98,7 +120,7 @@ class AppointmentModal extends Component {
           });
         }
         else {
-          toastManager.add("Ups! Parece que hubo un error al guardar los cambios!", {
+          toastManager.add("El turno se reservó existosamente!", {
             appearance: 'success',
             autoDismiss: true,
             pauseOnHover: false,
@@ -230,9 +252,9 @@ class AppointmentModal extends Component {
           { cancelationTicket } 
           <Title className="mt-3" size="md">Acciones</Title>
           <div className="appointment-accions">
-            <Text><Button kind="link" icon={ faBan       }>Cancelar turno     </Button></Text>
-            <Text><Button className="mt-2" kind="link" icon={ faMoneyBill }>Marcar como pagado </Button></Text>
-            <Text><Button className="mt-2" kind="link" icon={ faUserSlash }>Marcar como ausente</Button></Text>
+            { appointment.isOpen && <Text><Button kind="link" icon={ faBan } onClick={ this.handleCancel }>Cancelar turno</Button></Text> }
+            { appointment.isOpen && <Text><Button className="mt-2" kind="link" icon={ faMoneyBill } onClick={ this.handlePay }>Marcar como pagado </Button></Text> }
+            {/*<Text><Button className="mt-2" kind="link" icon={ faUserSlash } onClick={ this.handleMiss }>Marcar como ausente</Button></Text>*/}
           </div>
         </Column>
       </Columns>)

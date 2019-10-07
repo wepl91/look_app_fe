@@ -16,7 +16,7 @@ export default class Appointment extends Model {
       status: "OPEN",
       professional: '',
       client: null,
-      dayHour: '',
+      dayHour: moment(),
       services: [], 
     };
     
@@ -95,6 +95,45 @@ export default class Appointment extends Model {
   @computed
   get hour() {
     return this.dayHour.format("HH:mm");
+  }
+
+  @action
+  pay() {
+    this.beginUpdate()
+    return this.appStore.APIClient.sendRequest(`/appointments/${ this.id }/paid`, 'POST').then( (response) => {
+      this.state = response.results.status;
+    }, err => {
+      this.endUpdate();
+      return this;
+    })
+    this.endUpdate();
+    return this;
+  }
+
+  @action
+  cancel() {
+    this.beginUpdate()
+    return this.appStore.APIClient.sendRequest(`/appointments/${ this.id }/cancel`, 'POST').then( (response) => {
+      this.state = response.results.status;
+    }, err => {
+      this.endUpdate();
+      return this;
+    })
+    this.endUpdate();
+    return this;
+  }
+
+  @action
+  pay() {
+    this.beginUpdate()
+    return this.appStore.APIClient.sendRequest(`/appointments/${ this.id }/paid`, 'POST').then( (response) => {
+      this.state = response.results.status;
+    }, err => {
+      this.endUpdate();
+      return this;
+    })
+    this.endUpdate();
+    return this;
   }
 
 }
