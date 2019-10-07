@@ -52,7 +52,6 @@ class ProfessionalCreation extends Component {
     const professional = this.getProfessional();
     professional.status = 'ACTIVE';
 
-    
     professional.save().andThen( (savedProfessional, responseError) => {
       if (responseError) {
         toastManager.add("Ups! Parece que hubo un error al guardar!", {
