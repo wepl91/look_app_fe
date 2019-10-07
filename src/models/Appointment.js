@@ -12,7 +12,12 @@ export default class Appointment extends Model {
   constructor( attributes, store ) {
 
     let defaultAttributes = {
-      
+      local: 'casa',
+      status: "OPEN",
+      professional: '',
+      client: null,
+      dayHour: '',
+      services: [], 
     };
     
     let attrs = Object.assign( defaultAttributes, attributes );

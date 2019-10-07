@@ -25,6 +25,7 @@ class AppointmentsForm extends Component {
     this.handleProfessional = this.handleProfessional.bind(this);
     this.handleService      = this.handleService.bind(this);
     this.handleDate         = this.handleDate.bind(this);
+    this.handleHour         = this.handleHour.bind(this);
 
     this.state = {
       professionals: null,
@@ -37,6 +38,10 @@ class AppointmentsForm extends Component {
     this.setState({
       professionals: this.props.store.professionals.getAll(),
     })
+  }
+
+  handleHour( sender, value, name ) {
+    this.props.onChange && this.props.onChange('hour', value);
   }
 
   handleDate( sender, value, name ) {
@@ -54,7 +59,7 @@ class AppointmentsForm extends Component {
     this.setState({
       service: value,
     });
-    this.props.onChange && this.props.onChange('services'), value.id
+    this.props.onChange && this.props.onChange('services', value.id);
   }
   
 
@@ -95,7 +100,13 @@ class AppointmentsForm extends Component {
             options={ this.state.professional && this.state.professional.services.map( service => ( {key: `${ startCase(service.name) }`, value: service} )) } />
         </Field>
         <Field className="ml-5" label="¿A que hora querés venir?" labelNote="Seleccioná un horario">
-          <Select maxHeight="150px" placeholder="Horarios" borderless icon={ faChevronDown } options={ horarios() }/>
+          <Select 
+            maxHeight="150px" 
+            placeholder="Horarios" 
+            borderless 
+            icon={ faChevronDown }
+            onChange={ this.handleHour } 
+            options={ horarios() }/>
         </Field>
       </React.Fragment> )
   }

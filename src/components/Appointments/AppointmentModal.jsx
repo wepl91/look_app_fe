@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import startCase from 'lodash/startCase';
 
+import { withToastManager } from 'react-toast-notifications';
+
 import {
   Modal,
   ModalHeader,
@@ -60,11 +62,14 @@ import { withStore } from '../../hocs';
 import './styles.css';
 
 class AppointmentModal extends Component {
+  
   newAppointment
+  
   constructor(props) {
     super(props);
 
     this.state = {
+      isSaving: false,
       renderCreate : false,
       renderList   : true,
       renderDetails: false
@@ -72,9 +77,49 @@ class AppointmentModal extends Component {
     
     this.handleShowDetails = this.handleShowDetails.bind(this);
     this.handleDetails     = this.handleDetails.bind(this);
+    this.handleChange      = this.handleChange.bind(this);
     this.handleCreate      = this.handleCreate.bind(this);
     this.handleClose       = this.handleClose.bind(this);
     this.handleList        = this.handleList.bind(this);
+    this.handleSave        = this.handleSave.bind(this);
+  }
+
+  handleSave() {
+    const { toastManager } = this.props;
+    this.setState({
+      isSaving: true
+    }, () => {
+      this.newAppointment.save().andThen( (savedAppointment, responseError) => {
+        if (responseError) {
+          toastManager.add("Ups! Parece que hubo un error al guardar los cambios!", {
+            appearance: 'error',
+            autoDismiss: true,
+            pauseOnHover: false,
+          });
+        }
+        else {
+          toastManager.add("Ups! Parece que hubo un error al guardar los cambios!", {
+            appearance: 'success',
+            autoDismiss: true,
+            pauseOnHover: false,
+          });
+        }
+      })
+    })
+  }
+
+  handleChange( name, value ) {
+    if (name == 'hour') {
+      this.newAppointment.dayHour.hour(value);
+      this.newAppointment.dayHour.minute(0);
+      this.newAppointment.dayHour.second(0);
+    }
+    else if (name == 'services') {
+      this.newAppointment.services.push(value);
+    }
+    else {
+      this.newAppointment[name] = value
+    }
   }
 
   handleShowDetails( appointment ) {
@@ -116,15 +161,11 @@ class AppointmentModal extends Component {
     this.props.onClose && this.props.onClose()
   }
 
-  renderDetails() {
-    return("Detalles")
-  }
-
   renderCreate() {
     return(
       <Columns>
         <Column isSize={ 6 }>
-          <AppointmentsForm withDate/>
+          <AppointmentsForm onChange={ this.handleChange } withDate/>
         </Column>
         <Column className="has-text-centered">
           <SvgDraw style={{ height: '300px', width: '300px' }}/>
@@ -264,7 +305,8 @@ class AppointmentModal extends Component {
           </ModalContent>
         <ModalFooter>
           <Level>
-            <LevelLeft>{ this.state.renderCreate && <Button kind="outline">Reservar turno</Button> }</LevelLeft>
+            <LevelLeft>{ this.state.renderCreate && 
+              <Button kind="outline" onClick={ this.handleSave }>Reservar turno</Button>}</LevelLeft>
             <LevelLeft>
               { this.state.renderCreate || this.state.renderDetails ?
                 <Button kind="link" onClick={ this.handleList }>
@@ -290,4 +332,4 @@ AppointmentModal.defaultProps = {
   appointments: []
 }
 
-export default withStore(AppointmentModal);
+export default withToastManager(withStore(AppointmentModal));
