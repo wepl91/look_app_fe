@@ -70,7 +70,7 @@ class AppointmentsForm extends Component {
   
 
   render() {
-    if (!this.state.professionals || !this.state.professionals.isOk() || !this.props.appointment) {
+    if (!this.state.professionals || !this.state.professionals.isOk()) {
       return null;
     }
     const { professionals } = this.state; 

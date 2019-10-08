@@ -5,7 +5,7 @@ export default class Service extends Model {
 
     let defaultAttributes = {
       name: '',
-      cost: '',
+      price: '',
       duration: '',
     };
 
