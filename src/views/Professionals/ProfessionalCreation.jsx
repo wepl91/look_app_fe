@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router';
 
 import {
   Column,
@@ -65,7 +66,8 @@ class ProfessionalCreation extends Component {
           appearance: 'success',
           autoDismiss: true,
           pauseOnHover: false,
-        })
+        });
+        this.props.history.push('professionals/list');
       }
     })
   }
@@ -129,4 +131,4 @@ class ProfessionalCreation extends Component {
   }
 }
 
-export default withToastManager(withStore(ProfessionalCreation));
+export default withToastManager(withStore(withRouter(ProfessionalCreation)));

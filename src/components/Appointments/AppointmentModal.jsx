@@ -127,6 +127,7 @@ class AppointmentModal extends Component {
             autoDismiss: true,
             pauseOnHover: false,
           });
+          this.props.onClose && this.props.onClose(true)
         }
       })
     })
@@ -157,7 +158,7 @@ class AppointmentModal extends Component {
 
   handleCreate() {
     this.newAppointment = new Appointment({}, this.props.store.appointments);
-    this.newAppointment.dayHour = moment();
+    this.newAppointment.dayHour = this.props.date ? moment(this.props.date) : moment();
     this.setState({
       renderCreate : true,
       renderList   : false,
@@ -280,7 +281,7 @@ class AppointmentModal extends Component {
       return(
         <Columns className="has-text-centered">
           <Column>
-            <Title size="md">No hay turnos para el dia de hoy</Title>
+            <Title size="md">No hay turnos para la fecha</Title>
             <SvgDraw2  className="empty_draw" />
           </Column>
         </Columns> )
