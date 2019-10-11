@@ -39,13 +39,14 @@ class ProfessionalCreation extends Component {
     super(props);
 
     this.state = {
-      buttonDisabled: false
+      buttonDisabled: true
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
+
   componentDidMount(){
-    this.newProfessional = new Professional({}, this.props.store.professionals);
+    this.newProfessional = this.getProfessional();
   }
 
   handleClick() {
@@ -73,18 +74,18 @@ class ProfessionalCreation extends Component {
   }
 
   handleChange( name, value, valid ) {
-    if (name == 'cost') {
-      service.price = value
+    //chequear por que puedo habilitar el buttonDisabled poniendo bien los servicios despues de poner mal las horas, y visceversa
+    const professional = this.getProfessional();
+    if(name == 'services'){
       this.setState({
-        buttonDisabled: valid.type == 'error',
+        buttonDisabled: !valid,
       })
     }
-    const professional = this.getProfessional();
     if(name == 'hours'){
-      service.startingTime = value[0],
-      service.finishingTime = value[1],
+      professional.startingTime = value[0],
+      professional.finishingTime = value[1],
       this.setState({
-        buttonDisabled: valid,
+        buttonDisabled: !valid,
       })
     }else{
       professional[name] = value;
@@ -94,13 +95,27 @@ class ProfessionalCreation extends Component {
     }
   }
 
+  // getDisabled() {
+  //   const professional = this.getProfessional();
+  //   if (this.state.buttonDisabled) {
+  //     return this.state.buttonDisabled;
+  //   }
+  //   if (professional.services.length === 0 || professional.name == '') {
+  //     return true;
+  //   }
+
+  //   return false;
+  // }
 
   getProfessional() {
     if (this.newProfessional) {
       return this.newProfessional;
     }
-    else {
+    else if (this.props.professional){
       this.newProfessional = this.props.professional.clone();
+      return this.newProfessional;
+    }else{
+      this.newProfessional = new Professional({}, this.props.store.professionals);
       return this.newProfessional;
     }
   }
@@ -121,6 +136,7 @@ class ProfessionalCreation extends Component {
             <br/>
             <br/>
             <br/>
+            {/* <Button onClick={ this.handleClick } className="ml-5" kind="outline" disabled={this.getDisabled()}>Agregar profesional</Button> */}
             <Button onClick={ this.handleClick } className="ml-5" kind="outline" disabled={this.state.buttonDisabled}>Agregar profesional</Button>
           </Column>
           <Column isSize={7}>

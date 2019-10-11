@@ -71,7 +71,8 @@ class ProfessionalsForm extends Component {
         startingTime: received[0],
         finishingTime: received[1]
       }) 
-    valid = this.state.validTimeRange
+    // corregir esto para que use valid = this.isValidHour()
+    valid = moment(received[0],'HH:mm').isBefore(moment(received[1],'HH:mm'))
     this.props.onChange && this.props.onChange(name, received, valid);
   }
 
@@ -86,6 +87,12 @@ class ProfessionalsForm extends Component {
     if (startingTime === '' || finishingTime === '') {
       return true;
     }
+/*     if (startingTime && finishingTime === '') {
+      return false;
+    }
+    if (finishingTime && startingTime === '') {
+      return false;
+    } */
     return validTimeRange;
   }
 
@@ -99,12 +106,12 @@ class ProfessionalsForm extends Component {
     this.setState({
       selectedServices: newArray,
     });
-    this.props.onChange && this.props.onChange('services', newArray)
+    this.props.onChange && this.props.onChange('services', newArray, newArray.length !== 0)
   }
 
   render() {
     if (!this.state.services || !this.state.services.isOk()) {
-      return 'Cargando profesionales..';
+      return 'Cargando profesionales...';
     }
     const { professional } = this.props;
     const { services } = this.state; 
@@ -122,13 +129,13 @@ class ProfessionalsForm extends Component {
             <Field className="pl-5 pr-5" label="Mail">
               <TextInput value={ professional && professional.email } name="email" className="is-fullwidth" onChange={ this.handleChange } />
             </Field>
-{/*             <Field className="pl-5 pr-5" label="¿En qué sucursal va a atender?" labelNote="Seleccioná una sucursal">
+            <Field className="pl-5 pr-5" label="¿En qué sucursal va a atender?" labelNote="Seleccioná una sucursal">
               <Select className="is-fullwidth" placeholder="Sucursales" borderless icon={ faChevronDown } options={ sucursales().map(sucursal => ({key: sucursal.address, value: sucursal.id})) } />
             </Field>
             <Field className="pl-5 pr-5" label="Horarios de trabajo" labelNote="Seleccioná los horarios semanales">
               <WorkingHoursSelector name="hours" startingDate={ moment('05-17-2018 02:30 PM', 'MM-DD-YYYY hh:mm A') } finishingDate={ moment('05-17-2018 06:00 PM', 'MM-DD-YYYY hh:mm A') } onChange={ this.handleHours } />
               { !this.isValidHour() && <Panel color="error" invert ><Text className="has-text-centered">Los horarios ingresados son incorrectos</Text></Panel> }
-            </Field> */}
+            </Field>
             <Field className="pl-5 pr-5" label="¿Qué servicios ofrece?" labelNote="Seleccioná los servicios">
               {services.toArray().map(serv => (
                 <Checkbox className="pt-1" isFullWidth onClick={() => this.handleServices(serv.id)} defaultChecked={ professional && professional.professionalServicesIds.includes(serv.id)} ><Text className="pl-1">{startCase(serv.name)}</Text></Checkbox>
