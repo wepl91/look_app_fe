@@ -92,7 +92,7 @@ class ProfessionalsForm extends Component {
   handleServices( value ) {
     let newArray = Array.from(this.state.selectedServices)
     if(newArray.includes(value)){
-      newArray.pop(value)
+      newArray = newArray.filter(item => item !== value)
     }else{
       newArray.push(value)
     }
