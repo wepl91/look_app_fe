@@ -5,6 +5,8 @@ import {
     Text,
     Title,
     Loader,
+    Field,
+    Select,
 } from 'shipnow-mercurio';
 import moment from 'moment';
 
@@ -21,8 +23,7 @@ import { withStore } from '../../hocs'
 import { AppointmentCalendar } from '../../components/Appointments';
 
 import startCase from 'lodash/startCase';
-
-import {faChevronCircleLeft, faChevronCircleRight, faSpinner} from '@fortawesome/free-solid-svg-icons'
+import {faChevronCircleLeft, faChevronCircleRight, faSpinner, faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 @observer
 class AppointmentsList extends Component {
@@ -35,7 +36,9 @@ class AppointmentsList extends Component {
         this.handleYear = this.handleYear.bind(this);
 
         this.state = {
-            appointments: null
+            appointments: null,
+            professionals: null,
+            filterProf: 0,
         }
     }
 
@@ -46,7 +49,8 @@ class AppointmentsList extends Component {
         this.setState({
             date: date,
             datesInWeeks: this.chunk(datesInMonth, 7),
-            appointments: this.props.store.appointments.search({ }),
+            appointments: this.props.store.appointments.search({ }, 'appointment-list-view', true),
+            professionals: this.props.store.professionals.search({}, 'professional-list-appointment-view', true)
         })
     }
 
@@ -79,8 +83,18 @@ class AppointmentsList extends Component {
         return Array.from({ length: date.daysInMonth() }, (x, i) => moment(date).startOf('month').add(i, 'days'))
     }
 
+    getProfessionalList() {
+        const ret = [];
+        this.state.professionals.toArray().forEach(prof => {
+            ret.push({key: prof.fullName, value: prof.id})
+        });
+        return ret;
+    }
+
     render() {
-        if (!this.state.appointments || !this.state.appointments.isOk()) return <Loader icon={ faSpinner } label="Cargando los turnos.."  />     
+        const isAppointmentLoaded = this.state.appointments && this.state.appointments.isOk();
+        const isProfessionalsLoaded = this.state.professionals && this.state.professionals.isOk();
+        if (!isAppointmentLoaded || !isProfessionalsLoaded) return <Loader icon={ faSpinner } label="Cargando los turnos.." className="fullscreen" />     
         return (
             <React.Fragment key={ this.state.datesInWeeks }>
                 <Level className="pl-3 pr-3">
@@ -90,6 +104,19 @@ class AppointmentsList extends Component {
                     <LevelRight></LevelRight>
                 </Level>
                 <hr />
+                <Columns className="pl-4 pr-3">
+                    <Column isSize={ 3 } className="pl-2 pr-2">
+                        <Field label="¿Querés filtrar los tunos?" labelNote="Filtra por profesionales">
+                            <Select 
+                                value={ this.state.professionals && this.state.professionals.isOk() ? this.state.filterProf : null }
+                                placeholder="Profesionales" 
+                                borderless 
+                                icon={ faChevronDown } 
+                                loading={ !this.state.professionals || !this.state.professionals.isOk() }
+                                options={ this.state.professionals && this.state.professionals.isOk() && this.getProfessionalList() } />
+                        </Field>
+                    </Column>
+                </Columns>
                 <Columns className="is-gapless is-marginless" isVCentered>
                     <Column className="has-text-right">
                         <Button onClick={ this.handleYear } name="prev" kind="link"><FontAwesomeIcon icon={ faChevronCircleLeft } size="lg"/></Button>
