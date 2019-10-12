@@ -35,8 +35,9 @@ class ProfessionalsEditModal extends Component {
     this.handleChange = this.handleChange.bind(this);
 
     this.state = {
-      buttonDisabled: false,
       reload: true,
+      validServices: true,
+      validHours: true
     }
   }
 
@@ -71,10 +72,23 @@ class ProfessionalsEditModal extends Component {
 
   handleChange( name, value, valid ) {
     const professional = this.getProfessional();
-    professional[name] = value;
-    this.setState( prevState => ({
-      reload: !prevState.reload
-    }))
+    if(name == 'services'){
+      this.setState({
+        validServices: valid,
+      })
+    }
+    if(name == 'hours'){
+      professional.startingTime = value[0],
+      professional.finishingTime = value[1],
+      this.setState({
+        validHours: valid,
+      })
+    }else{
+      professional[name] = value;
+      this.setState( prevState => ({
+        reload: !prevState.reload
+      }))
+    }
   }
 
   getProfessional() {
@@ -89,15 +103,14 @@ class ProfessionalsEditModal extends Component {
 
   getDisabled() {
     const professional = this.getProfessional();
-    if (this.state.buttonDisabled) {
-      return false;
+    if (!this.state.validServices || !this.state.validHours) {
+      return true;
+    }
+    if (professional.name == '') {
+      return true;
     }
 
-    if (professional.services == '' || professional.name == '') {
-      return false;
-    }
-
-    return true;
+    return false;
   }
 
   render() {
@@ -121,7 +134,7 @@ class ProfessionalsEditModal extends Component {
           <Level>
             <LevelLeft></LevelLeft>
             <LevelRight>
-              <Button disabled={ !this.getDisabled() } onClick={ this.handleSave }>Guardar</Button>
+              <Button disabled={ this.getDisabled() } onClick={ this.handleSave }>Guardar</Button>
               <Button kind="outline" onClick={ this.handleClose }>Cancelar</Button>
             </LevelRight>
           </Level>
