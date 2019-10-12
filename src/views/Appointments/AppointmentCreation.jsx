@@ -51,6 +51,11 @@ class AppointmentCreation extends Component {
     })
   }
 
+  isProfessionalBusyMsj( responseError ) {
+    const errorMsj = responseError.message
+    return errorMsj && JSON.parse(errorMsj).message && JSON.parse(errorMsj).message == 'professional is busy';
+  }
+
   handleClick() {
     const { toastManager } = this.props;
     this.setState({
@@ -58,11 +63,20 @@ class AppointmentCreation extends Component {
     }, () => {
       this.newAppointment.save().andThen( (savedAppointment, responseError) => {
         if (responseError) {
-          toastManager.add("Ups! Parece que hubo un error al guardar los cambios!", {
-            appearance: 'error',
-            autoDismiss: true,
-            pauseOnHover: false,
-          });
+          if (this.isProfessionalBusyMsj(responseError)) {
+            toastManager.add("Ups! Parece que hubo problema! El profesional seleccionado se encuentra ocupado en el horario en el que se quiere crear el turno!", {
+              appearance: 'error',
+              autoDismiss: true,
+              pauseOnHover: false,
+            });
+          }
+          else {
+            toastManager.add("Ups! Parece que hubo un error al guardar los cambios!", {
+              appearance: 'error',
+              autoDismiss: true,
+              pauseOnHover: false,
+            });
+          } 
         }
         else {
           toastManager.add("El turno se reservó exitosamente!", {
