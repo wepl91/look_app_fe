@@ -4,15 +4,16 @@ import PropTypes from 'prop-types';
 import {
   Columns,
   Column,
-  Level,
-  LevelLeft,
-  LevelRight
+  Checkbox
 } from 'bloomer';
 
 import {
   Select,
   Text,
+  Field
 } from 'shipnow-mercurio';
+
+import startCase from 'lodash/startCase';
 
 import moment from 'moment';
 
@@ -25,7 +26,8 @@ class WorkingHoursSelector extends Component {
   
     this.state = {
       startingDate: '',
-      finishingDate: ''
+      finishingDate: '',
+      days: []
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -41,30 +43,58 @@ class WorkingHoursSelector extends Component {
       this.setState({
         finishingDate: value
       })
-    }
+    } 
+  }
+
+  handleDays( received ) {
+      let newArray = Array.from(this.state.days)
+      if(newArray.includes(received)){
+        newArray = newArray.filter(item => item !== received)
+      }else{
+        newArray.push(received)
+      }
+      this.setState({
+        days: newArray,
+      });
   }
 
   componentDidUpdate(prevProps, prevState){
-    if (this.state.startingDate != prevState.startingDate || this.state.finishingDate != prevState.finishingDate) {
-      this.props.onChange([this.state.startingDate, this.state.finishingDate]);
+    if (this.state.days != prevState.days || this.state.startingDate != prevState.startingDate || this.state.finishingDate != prevState.finishingDate) {
+      this.props.onChange([this.state.days , this.state.startingDate, this.state.finishingDate]);
     }
   }
 
+  //30 minutes intervals
+  // hoursBetweenDates(startDate, endDate) {
+  //   let dates = [];
+  
+  //   let currDate = moment(startDate).startOf('minute').subtract(30, 'minutes');
+  //   let lastDate = moment(endDate).startOf('minute').add(30, 'minutes');
+  
+  //   while(currDate.add(30, 'minutes').diff(lastDate, 'minutes') < 0) {
+  //       dates.push(currDate.clone().format('HH:mm'));
+  //   }
+  
+  //   return dates;
+  // }
+
+  //1 hour intervals
   hoursBetweenDates(startDate, endDate) {
-    let dates = [];
+    let hours = [];
   
-    let currDate = moment(startDate).startOf('minute').subtract(30, 'minutes');
-    let lastDate = moment(endDate).startOf('minute').add(30, 'minutes');
+    let currDate = moment(startDate).startOf('minute').subtract(60, 'minutes');
+    let lastDate = moment(endDate).startOf('minute').add(60, 'minutes');
   
-    while(currDate.add(30, 'minutes').diff(lastDate, 'minutes') < 0) {
-        dates.push(currDate.clone().format('HH:mm'));
+    while(currDate.add(60, 'minutes').diff(lastDate, 'minutes') < 0) {
+        hours.push(currDate.clone().format('HH:mm'));
     }
   
-    return dates;
+    return hours;
   }
 
   render() {
     let hourList = this.hoursBetweenDates(this.props.startingDate, this.props.finishingDate)
+    let daysList = this.props.days
     return(
       <React.Fragment>
         <Columns className="is-gapless is-marginless" isVCentered isCentered>
@@ -84,8 +114,13 @@ class WorkingHoursSelector extends Component {
                     borderless icon={ faChevronDown }
                     value = {this.state.finishingDate}
                     name="finishing" onChange={ this.handleChange } options={ hourList } />
-                    </Column>
-          </Columns>
+          </Column>
+          <Column>
+              {daysList.map(day => (
+                <Checkbox className="pt-1" name="day" isFullWidth onClick={() => this.handleDays(day)} ><Text className="pl-1">{startCase(day.toLowerCase())}</Text></Checkbox>
+              ))}
+          </Column>
+        </Columns>
       </React.Fragment>)
   }
 }
@@ -93,6 +128,7 @@ class WorkingHoursSelector extends Component {
 WorkingHoursSelector.PropTypes = {
   startingDate: PropTypes.object,
   finishingDate: PropTypes.object,
+  days: PropTypes.array,
   onChange: PropTypes.func,
   validate: PropTypes.func
 }
@@ -100,6 +136,7 @@ WorkingHoursSelector.PropTypes = {
 WorkingHoursSelector.defaultProps = {
   startingDate: null,
   finishingDate: null,
+  days: null,
   onChange: null,
   validate: null
 }

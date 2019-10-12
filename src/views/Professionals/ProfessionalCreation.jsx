@@ -82,8 +82,10 @@ class ProfessionalCreation extends Component {
       })
     }
     if(name == 'hours'){
-      professional.startingTime = value[0],
-      professional.finishingTime = value[1],
+      professional.workingHours = [value[0], value[1], value[2]]
+      // professional.days = value[0],
+      // professional.startingTime = value[1],
+      // professional.finishingTime = value[2],
       this.setState({
         validHours: valid,
       })
@@ -136,7 +138,6 @@ class ProfessionalCreation extends Component {
             <br/>
             <br/>
             <br/>
-            {/* <Button onClick={ this.handleClick } className="ml-5" kind="outline" disabled={this.getDisabled()}>Agregar profesional</Button> */}
             <Button onClick={ this.handleClick } className="ml-5" kind="outline" disabled={this.getDisabled()}>Agregar profesional</Button>
           </Column>
           <Column isSize={7}>
