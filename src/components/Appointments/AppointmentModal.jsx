@@ -139,9 +139,6 @@ class AppointmentModal extends Component {
       this.newAppointment.dayHour.minute(0);
       this.newAppointment.dayHour.second(0);
     }
-    else if (name == 'services') {
-      this.newAppointment.services.push(value);
-    }
     else {
       this.newAppointment[name] = value
     }

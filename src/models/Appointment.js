@@ -17,7 +17,7 @@ export default class Appointment extends Model {
       professional: '',
       client: null,
       dayHour: moment(),
-      services: [], 
+      services: '', 
     };
     
     let attrs = Object.assign( defaultAttributes, attributes );

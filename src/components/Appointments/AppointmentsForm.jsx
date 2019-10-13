@@ -2,9 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import {
+  Checkbox
+} from 'bloomer';
+
+import {
   Field,
   Select,
-  DateTimePicker
+  DateTimePicker,
+  Text
 } from 'shipnow-mercurio';
 
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
@@ -25,14 +30,14 @@ class AppointmentsForm extends Component {
     super(props);
 
     this.handleProfessional = this.handleProfessional.bind(this);
-    this.handleService      = this.handleService.bind(this);
+    this.handleServices      = this.handleServices.bind(this);
     this.handleDate         = this.handleDate.bind(this);
     this.handleHour         = this.handleHour.bind(this);
 
     this.state = {
       professionals: null,
       professional: null,
-      service: null,
+      services: [],
       date: moment()
     }
   }
@@ -61,11 +66,17 @@ class AppointmentsForm extends Component {
     this.props.onChange && this.props.onChange('professional', value.id)
   }
 
-  handleService( sender, value, name ) {
+  handleServices( value ) {
+    let newArray = Array.from(this.state.services)
+    if(newArray.includes(value)){
+      newArray = newArray.filter(item => item !== value)
+    }else{
+      newArray.push(value)
+    }
     this.setState({
-      service: value,
+      services: newArray,
     });
-    this.props.onChange && this.props.onChange('services', value.id);
+    this.props.onChange && this.props.onChange('services', newArray)
   }
   
 
@@ -97,16 +108,20 @@ class AppointmentsForm extends Component {
             onChange={ this.handleProfessional }
             options={ professionals.toArray().map( prof => ({ key: `${ startCase(prof.name) } ${ startCase(prof.lastName) }`, value: prof })) } />
         </Field>
-        <Field className="ml-5" label="¿Cual de nuestros servicios requeris?" labelNote="Seleccioná un servicio">
-          <Select 
+        <Field className="ml-5" label="¿Cuál de nuestros servicios precisas?" labelNote="Seleccioná un servicio">
+          {/* <Select 
             key={ this.state.professional }
             placeholder="Servicios" 
             borderless 
             icon={ faChevronDown } 
             onChange={ this.handleService  }
-            options={ this.state.professional && this.state.professional.services.map( service => ( {key: `${ startCase(service.name) }`, value: service} )) } />
+            options={ this.state.professional && this.state.professional.services.map( service => ( {key: `${ startCase(service.name) }`, value: service} )) } /> */}
+       
+            {this.state.professional && this.state.professional.services.map(serv => (
+                <Checkbox className="ml-2 pt-1" isFullWidth onClick={() => this.handleServices(serv.id)} ><Text className="pl-1">{startCase(serv.name)}</Text></Checkbox>
+              ))}
         </Field>
-        <Field className="ml-5" label="¿A que hora querés venir?" labelNote="Seleccioná un horario">
+        <Field className="ml-5" label="¿A qué hora querés venir?" labelNote="Seleccioná un horario">
           <Select 
             maxHeight="150px" 
             placeholder="Horarios" 
