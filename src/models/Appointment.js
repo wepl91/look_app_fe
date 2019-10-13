@@ -14,7 +14,7 @@ export default class Appointment extends Model {
     let defaultAttributes = {
       local: 'casa',
       status: "OPEN",
-      professional: '',
+      professional: null,
       client: null,
       dayHour: moment(),
       services: '', 
