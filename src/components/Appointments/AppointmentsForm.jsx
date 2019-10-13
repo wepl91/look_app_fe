@@ -109,16 +109,8 @@ class AppointmentsForm extends Component {
             options={ professionals.toArray().map( prof => ({ key: `${ startCase(prof.name) } ${ startCase(prof.lastName) }`, value: prof })) } />
         </Field>
         <Field className="ml-5" label="¿Cuál de nuestros servicios precisas?" labelNote="Seleccioná un servicio">
-          {/* <Select 
-            key={ this.state.professional }
-            placeholder="Servicios" 
-            borderless 
-            icon={ faChevronDown } 
-            onChange={ this.handleService  }
-            options={ this.state.professional && this.state.professional.services.map( service => ( {key: `${ startCase(service.name) }`, value: service} )) } /> */}
-       
             {this.state.professional && this.state.professional.services.map(serv => (
-                <Checkbox className="ml-2 pt-1" isFullWidth onClick={() => this.handleServices(serv.id)} ><Text className="pl-1">{startCase(serv.name)}</Text></Checkbox>
+                <Checkbox className="ml-2 pt-1" isFullWidth onClick={() => this.handleServices(serv.id)} ><Text className="pl-1">{`${ startCase(serv.name) } - $${ serv.price }`}</Text></Checkbox>
               ))}
         </Field>
         <Field className="ml-5" label="¿A qué hora querés venir?" labelNote="Seleccioná un horario">
