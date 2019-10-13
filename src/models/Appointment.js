@@ -84,7 +84,7 @@ export default class Appointment extends Model {
   }
 
   @computed
-  get isCancelled() {
+  get isExpired() {
     return this.status.name === 'EXPIRED';
   }
 

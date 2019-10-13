@@ -289,7 +289,7 @@ class AppointmentModal extends Component {
           { appointment.isOpen      && appoinmentTicket }
           { appointment.isPaid      && paymentTicket }
           { appointment.isCancelled && cancelationTicket } 
-          <Title className="mt-3" size="md">Acciones</Title>
+          { appointment.isOpen && <Title className="mt-3" size="md">Acciones</Title> }
           <div className="appointment-accions">
             { appointment.isOpen && 
                 <Text>
@@ -345,6 +345,7 @@ class AppointmentModal extends Component {
         align: 'center'
       }
     ];
+
     if (this.props.appointments.length < 1) {
       return(
         <Columns className="has-text-centered">
@@ -354,6 +355,7 @@ class AppointmentModal extends Component {
           </Column>
         </Columns> )
     }
+    
     return(<Table columns={ columns } data={ this.props.appointments } striped={ false }/>)
   }
 

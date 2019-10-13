@@ -4,8 +4,13 @@ import PropTypes from 'prop-types';
 import {
   Field,
   Select,
-  DateTimePicker
+  DateTimePicker,
+  Text
 } from 'shipnow-mercurio';
+
+import {
+  Checkbox
+} from 'bloomer';
 
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
@@ -31,8 +36,8 @@ class AppointmentsForm extends Component {
 
     this.state = {
       professionals: null,
-      professional: null,
-      service: null,
+      professional: this.props.appointment ? this.props.appointment.professional : 'null',
+      services: null,
       date: moment()
     }
   }
@@ -40,6 +45,7 @@ class AppointmentsForm extends Component {
   componentDidMount() {
     this.setState({
       professionals: this.props.store.professionals.getAll(),
+      services: this.props.store.services.getAll(),
     })
   }
 
@@ -55,10 +61,22 @@ class AppointmentsForm extends Component {
   }
 
   handleProfessional( sender, value, name ) {
-    this.setState({
-      professional: value,
-    });
-    this.props.onChange && this.props.onChange('professional', value.id)
+    if (value == 'null') {
+      this.setState({
+        professional: null,
+      });
+      this.props.onChange && this.props.onChange('professional', null);
+    }
+    else {
+      const professional = this.state.professionals.toArray().find( professional => {
+        return professional.id == value;
+      })
+      this.setState({
+        professional: professional,
+      });
+      debugger
+      this.props.onChange && this.props.onChange('professional', value);
+    }
   }
 
   handleService( sender, value, name ) {
@@ -67,13 +85,38 @@ class AppointmentsForm extends Component {
     });
     this.props.onChange && this.props.onChange('services', value.id);
   }
-  
+
+  getProfessionalList() {
+    const prof = [];
+    prof.push({key: '- Ninguno -', value: 'null'});
+
+    this.state.professionals.toArray().forEach(element => {
+      prof.push({ key: `${ startCase(element.name) } ${ startCase(element.lastName) }`, value: element.id })
+    });
+
+    return prof
+  }
+
+  renderServices() {
+    const { professional } = this.state;
+    const services = professional && professional != 'null' ?  professional.services : this.state.services.toArray();
+    return(
+      <Field className="ml-5" label="¿Cual de nuestros servicios requeris?" labelNote="Seleccioná un servicio">
+        { services.length > 0 ? 
+          services.map( service => ( <Checkbox key={ service.id } className="mt-1" isFullWidth defaultChecked={ false } >
+                                      <Text className="ml-1">{`${ startCase(service.name) } - $${ service.price }`}</Text>
+                                    </Checkbox> )) : 
+          <Text size="md" weight="medium" className="ml-2 mt-1">No hay servicios existentes para ofrecer.</Text> }
+      </Field> )
+  }
 
   render() {
-    if (!this.state.professionals || !this.state.professionals.isOk()) {
+    const professionalsLoaded = this.state.professionals && this.state.professionals.isOk();
+    const servicesLoaded = this.state.services && this.state.services.isOk()
+    if (!professionalsLoaded || !servicesLoaded) {
       return null;
     }
-    const { professionals } = this.state; 
+
     const { appointment } = this.props;
     return(
       <React.Fragment>
@@ -91,21 +134,15 @@ class AppointmentsForm extends Component {
         </Field>
         <Field className="ml-5" label="¿Por quién querés ser atendido?" labelNote="Seleccioná un profesional">
           <Select 
+            key={ this.state.professional }
+            value={ this.state.professional.id || this.state.professional }
             placeholder="Profesionales" 
             borderless 
             icon={ faChevronDown } 
             onChange={ this.handleProfessional }
-            options={ professionals.toArray().map( prof => ({ key: `${ startCase(prof.name) } ${ startCase(prof.lastName) }`, value: prof })) } />
+            options={ this.getProfessionalList() } />
         </Field>
-        <Field className="ml-5" label="¿Cual de nuestros servicios requeris?" labelNote="Seleccioná un servicio">
-          <Select 
-            key={ this.state.professional }
-            placeholder="Servicios" 
-            borderless 
-            icon={ faChevronDown } 
-            onChange={ this.handleService  }
-            options={ this.state.professional && this.state.professional.services.map( service => ( {key: `${ startCase(service.name) }`, value: service} )) } />
-        </Field>
+        { this.renderServices() } 
         <Field className="ml-5" label="¿A que hora querés venir?" labelNote="Seleccioná un horario">
           <Select 
             maxHeight="150px" 
