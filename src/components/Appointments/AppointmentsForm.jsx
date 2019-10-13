@@ -38,7 +38,7 @@ class AppointmentsForm extends Component {
     this.state = {
       professionals: null,
       professional: null,
-      services: [],
+      selectedServices: [],
       subtotal: 0,
       date: moment()
     }
@@ -47,6 +47,7 @@ class AppointmentsForm extends Component {
   componentDidMount() {
     this.setState({
       professionals: this.props.store.professionals.getAll(),
+      services: this.props.store.services.getAll(),
     })
   }
 
@@ -69,7 +70,7 @@ class AppointmentsForm extends Component {
   }
 
   handleServices( serviceId, servicePrice ) {
-    let newArray = Array.from(this.state.services)
+    let newArray = Array.from(this.state.selectedServices)
     if(newArray.includes(serviceId)){
       newArray = newArray.filter(item => item !== serviceId)
       this.setState({
@@ -82,7 +83,7 @@ class AppointmentsForm extends Component {
       });
     }
     this.setState({
-      services: newArray,
+      selectedServices: newArray,
     });
     this.props.onChange && this.props.onChange('services', newArray)
   }
@@ -92,7 +93,8 @@ class AppointmentsForm extends Component {
     if (!this.state.professionals || !this.state.professionals.isOk()) {
       return null;
     }
-    const { professionals } = this.state; 
+    const { professionals } = this.state;
+    const { services } = this.state; 
     const { appointment } = this.props;
     return(
       <React.Fragment>
@@ -117,9 +119,15 @@ class AppointmentsForm extends Component {
             options={ professionals.toArray().map( prof => ({ key: `${ startCase(prof.name) } ${ startCase(prof.lastName) }`, value: prof })) } />
         </Field>
         <Field className="ml-5" label="¿Cuál de nuestros servicios precisas?" labelNote="Seleccioná un servicio">
-            {this.state.professional && this.state.professional.services.map(serv => (
+            {this.state.professional ? 
+            this.state.professional.services.map(serv => (
               <Checkbox className="ml-2 pt-1" isFullWidth onClick={() => this.handleServices(serv.id, serv.price)} ><Text className="pl-1">{`${ startCase(serv.name) } - $${ serv.price }`}</Text></Checkbox>
-            ))}
+            ))
+            :
+            services.toArray().map(serv => (
+              <Checkbox className="ml-2 pt-1" isFullWidth onClick={() => this.handleServices(serv.id, serv.price)} ><Text className="pl-1">{`${ startCase(serv.name) } - $${ serv.price }`}</Text></Checkbox>
+            ))
+            }
             {this.state.subtotal !==0 && <Text className="has-text-centered ml-2" weight="medium" color="primaryDark"><hr id="subtotalLine"/>Subtotal: ${this.state.subtotal}</Text>}
         </Field>
         <Field className="ml-5" label="¿A qué hora querés venir?" labelNote="Seleccioná un horario">
