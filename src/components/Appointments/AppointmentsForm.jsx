@@ -3,10 +3,6 @@ import PropTypes from 'prop-types';
 import './styles.css'
 
 import {
-  Checkbox
-} from 'bloomer';
-
-import {
   Field,
   Select,
   DateTimePicker,
@@ -43,6 +39,8 @@ class AppointmentsForm extends Component {
       professionals: null,
       professional: this.props.appointment ? this.props.appointment.professional : 'null',
       services: null,
+      selectedServices: [],
+      subtotal: 0,
       date: moment()
     }
   }
@@ -118,12 +116,13 @@ class AppointmentsForm extends Component {
     const { professional } = this.state;
     const services = professional && professional != 'null' ?  professional.services : this.state.services.toArray();
     return(
-      <Field className="ml-5" label="¿Cual de nuestros servicios requeris?" labelNote="Seleccioná un servicio">
+      <Field className="ml-5" label="¿Cuál de nuestros servicios requerís?" labelNote="Seleccioná un servicio">
         { services.length > 0 ? 
-          services.map( service => ( <Checkbox key={ service.id } className="mt-1" isFullWidth defaultChecked={ false } >
-                                      <Text className="ml-1">{`${ startCase(service.name) } - $${ service.price }`}</Text>
+          services.map( service => ( <Checkbox key={ service.id } className="mt-1" isFullWidth defaultChecked={ false } onClick={() => this.handleServices(service.id, service.price)}>
+                                      <Text className="ml-2 pt-1">{`${ startCase(service.name) } - $${ service.price }`}</Text>
                                     </Checkbox> )) : 
           <Text size="md" weight="medium" className="ml-2 mt-1">No hay servicios existentes para ofrecer.</Text> }
+        {this.state.subtotal !==0 && <Text className="has-text-centered ml-2" weight="medium" color="primaryDark"><hr id="subtotalLine"/>Subtotal: ${this.state.subtotal}</Text>}
       </Field> )
   }
 
