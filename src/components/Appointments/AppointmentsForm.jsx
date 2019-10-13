@@ -77,7 +77,6 @@ class AppointmentsForm extends Component {
       this.setState({
         professional: professional,
       });
-      debugger
       this.props.onChange && this.props.onChange('professional', value);
     }
   }
@@ -151,7 +150,7 @@ class AppointmentsForm extends Component {
         <Field className="ml-5" label="¿Por quién querés ser atendido?" labelNote="Seleccioná un profesional">
           <Select 
             key={ this.state.professional }
-            value={ this.state.professional.id || this.state.professional }
+            value={ (this.state.professional && this.state.professional.id) || this.state.professional }
             placeholder="Profesionales" 
             borderless 
             icon={ faChevronDown } 
