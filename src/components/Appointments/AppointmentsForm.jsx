@@ -97,7 +97,7 @@ class AppointmentsForm extends Component {
     return(
       <React.Fragment>
         { !this.props.withDate &&
-          <Field className="ml-5" label="¿Que día querés venir?" labelNote="Seleccioná ua fecha">
+          <Field className="ml-5" label="¿Que día querés venir?" labelNote="Seleccioná una fecha">
             <DateTimePicker key={ this.state.date } value={ this.state.date } onChange={ this.handleDate }/>
           </Field> }
         <Field className="ml-5" label="¿A cual de nuestras sucursales querés venir?" labelNote="Seleccioná una sucursal">

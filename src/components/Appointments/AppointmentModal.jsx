@@ -224,9 +224,10 @@ class AppointmentModal extends Component {
 
     return(
       <Columns>
-        <Column isSize={ 8 }>
+        <Column isSize={ 6 }>
           <AppointmentsForm appointment={ this.state.appointment } />
         </Column>
+        <Column isSize={ 2 }></Column>
         <Column isSize={ 4 }>
           <Title size="md">Comprobantes</Title>
           { appoinmentTicket }
@@ -306,7 +307,7 @@ class AppointmentModal extends Component {
           { this.state.renderCreate  && this.renderCreate() }
           { this.state.renderList    && this.renderList() }
           { this.state.renderDetails && this.renderDetails() }
-          </ModalContent>
+        </ModalContent>
         <ModalFooter>
           <Level>
             <LevelLeft>{ this.state.renderCreate && 
