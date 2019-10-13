@@ -161,9 +161,6 @@ class AppointmentModal extends Component {
       this.newAppointment.dayHour.minute(0);
       this.newAppointment.dayHour.second(0);
     }
-    else if (name == 'services') {
-      this.newAppointment.services.push(value);
-    }
     else {
       this.newAppointment[name] = value
     }
@@ -281,9 +278,10 @@ class AppointmentModal extends Component {
 
     return(
       <Columns>
-        <Column isSize={ 8 }>
+        <Column isSize={ 6 }>
           <AppointmentsForm appointment={ this.state.appointment } />
         </Column>
+        <Column isSize={ 2 }></Column>
         <Column isSize={ 4 }>
           <Title size="md">Comprobantes</Title>
           { appointment.isOpen      && appoinmentTicket }

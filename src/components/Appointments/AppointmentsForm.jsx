@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import './styles.css'
+
+import {
+  Checkbox
+} from 'bloomer';
 
 import {
   Field,
@@ -30,7 +35,7 @@ class AppointmentsForm extends Component {
     super(props);
 
     this.handleProfessional = this.handleProfessional.bind(this);
-    this.handleService      = this.handleService.bind(this);
+    this.handleServices      = this.handleServices.bind(this);
     this.handleDate         = this.handleDate.bind(this);
     this.handleHour         = this.handleHour.bind(this);
 
@@ -79,11 +84,23 @@ class AppointmentsForm extends Component {
     }
   }
 
-  handleService( sender, value, name ) {
+  handleServices( serviceId, servicePrice ) {
+    let newArray = Array.from(this.state.selectedServices)
+    if(newArray.includes(serviceId)){
+      newArray = newArray.filter(item => item !== serviceId)
+      this.setState({
+        subtotal: this.state.subtotal - servicePrice,
+      });
+    }else{
+      newArray.push(serviceId)
+      this.setState({
+        subtotal: this.state.subtotal + servicePrice,
+      });
+    }
     this.setState({
-      service: value,
+      selectedServices: newArray,
     });
-    this.props.onChange && this.props.onChange('services', value.id);
+    this.props.onChange && this.props.onChange('services', newArray)
   }
 
   getProfessionalList() {
@@ -121,7 +138,7 @@ class AppointmentsForm extends Component {
     return(
       <React.Fragment>
         { !this.props.withDate &&
-          <Field className="ml-5" label="¿Que día querés venir?" labelNote="Seleccioná ua fecha">
+          <Field className="ml-5" label="¿Que día querés venir?" labelNote="Seleccioná una fecha">
             <DateTimePicker key={ this.state.date } value={ this.state.date } onChange={ this.handleDate }/>
           </Field> }
         <Field className="ml-5" label="¿A cual de nuestras sucursales querés venir?" labelNote="Seleccioná una sucursal">
