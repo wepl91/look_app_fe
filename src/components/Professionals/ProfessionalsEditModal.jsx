@@ -78,10 +78,7 @@ class ProfessionalsEditModal extends Component {
       })
     }
     if(name == 'hours'){
-      professional.workingHours = [value[0], value[1], value[2]]
-      // professional.days = value[0],
-      // professional.startingTime = value[1],
-      // professional.finishingTime = value[2],
+      professional.workingHours = value
       this.setState({
         validHours: valid,
       })
@@ -92,7 +89,6 @@ class ProfessionalsEditModal extends Component {
       }))
     }
   }
-
 
   getProfessional() {
     if (this.modifiedProfessional) {

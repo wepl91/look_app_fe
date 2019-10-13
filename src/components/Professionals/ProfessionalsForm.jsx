@@ -73,9 +73,24 @@ class ProfessionalsForm extends Component {
         startingTime: received[1],
         finishingTime: received[2]
       }) 
+    let ret = []
+
+    //hablar con los de back a ver si podemos hacer la request asi, que es mas prolijo. Avisarles que reciban las horas de entrada y salida en formato 14:00, o en timestamp en su defecto
+
+    // {received[0].map(day => (
+    //   ret.push([day, received[1], received[2]])
+    //   ))}
+
+    //este metodo es muy sucio, hablar con back para que podamos usar el de arriba
+    {received[0].map(day => (
+    ret.push({"days": day,
+    "beginHour": received[1].substring(0, 2),
+    "endHour":received[2].substring(0, 2)})
+    ))}
+          
     // corregir abajo para que use valid = this.isValidHour(), el problema era que no llegaba a actualizar el state para cuando lo pedia
     valid = (moment(received[1],'HH:mm').isBefore(moment(received[2],'HH:mm')) && received[0].length !== 0)
-    this.props.onChange && this.props.onChange(name, received, valid);
+    this.props.onChange && this.props.onChange(name, ret, valid);
   }
 
   componentDidUpdate(prevProps, prevState){

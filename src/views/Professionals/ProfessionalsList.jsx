@@ -84,6 +84,11 @@ class ProfessionalsList extends Component {
         size: 'is-2'
       },
       {
+        label: 'Horarios de trabajo',
+        content: (data) => (data.workingHours.map(day => (<Text weight="medium" className="mb-2"><FontAwesomeIcon icon={ faDotCircle } size="xs" fixedWidth/>{ day }</Text>))),
+        size: 'is-2'
+      },
+      {
         label: '',
         content: (data) => (<Button icon={ faPencilAlt } kind="link" onClick={ () => (this.handleModal(data)) }/>),
         size: 'is-1',

@@ -51,4 +51,11 @@ export default class Professional extends Model {
     this.services.map( service => (ret.push(service.id)))
     return ret;
   }
+
+  @computed
+  get workingHours() {
+    const ret = [];
+    // this.workingHours.map( day => (ret.push(`${ day.days.name } ${ day.beginHour } ${ day.endHour }`)))
+    return ret;
+  }
 }
