@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import './styles.css'
 
 import {
   Checkbox
@@ -38,6 +39,7 @@ class AppointmentsForm extends Component {
       professionals: null,
       professional: null,
       services: [],
+      subtotal: 0,
       date: moment()
     }
   }
@@ -66,12 +68,18 @@ class AppointmentsForm extends Component {
     this.props.onChange && this.props.onChange('professional', value.id)
   }
 
-  handleServices( value ) {
+  handleServices( serviceId, servicePrice ) {
     let newArray = Array.from(this.state.services)
-    if(newArray.includes(value)){
-      newArray = newArray.filter(item => item !== value)
+    if(newArray.includes(serviceId)){
+      newArray = newArray.filter(item => item !== serviceId)
+      this.setState({
+        subtotal: this.state.subtotal - servicePrice,
+      });
     }else{
-      newArray.push(value)
+      newArray.push(serviceId)
+      this.setState({
+        subtotal: this.state.subtotal + servicePrice,
+      });
     }
     this.setState({
       services: newArray,
@@ -110,8 +118,9 @@ class AppointmentsForm extends Component {
         </Field>
         <Field className="ml-5" label="¿Cuál de nuestros servicios precisas?" labelNote="Seleccioná un servicio">
             {this.state.professional && this.state.professional.services.map(serv => (
-                <Checkbox className="ml-2 pt-1" isFullWidth onClick={() => this.handleServices(serv.id)} ><Text className="pl-1">{`${ startCase(serv.name) } - $${ serv.price }`}</Text></Checkbox>
-              ))}
+              <Checkbox className="ml-2 pt-1" isFullWidth onClick={() => this.handleServices(serv.id, serv.price)} ><Text className="pl-1">{`${ startCase(serv.name) } - $${ serv.price }`}</Text></Checkbox>
+            ))}
+            {this.state.subtotal !==0 && <Text className="has-text-centered ml-2" weight="medium" color="primaryDark"><hr id="subtotalLine"/>Subtotal: ${this.state.subtotal}</Text>}
         </Field>
         <Field className="ml-5" label="¿A qué hora querés venir?" labelNote="Seleccioná un horario">
           <Select 
