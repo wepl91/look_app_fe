@@ -76,12 +76,19 @@ class AppointmentModal extends Component {
       renderList   : true,
       renderDetails: false,
       confirmation: false,
+      infoAdvice: false,
       confirmationData: {
         accept: null,
         cancel: null,
         title: null,
         content: null,
       },
+      infoAdviceData: {
+        accept: null,
+        cancel: null,
+        title: null,
+        content: null,
+      }
     }
     
     this.handleCancelConfirm = this.handleCancelConfirm.bind(this);
@@ -198,11 +205,31 @@ class AppointmentModal extends Component {
       renderList   : true,
       renderCreate : false,
       renderDetails: false,
+      infoAdvice: false,
     })    
+  }
+
+  handleInformationAdvice( action ) {
+    let data = {} 
+    if (action == 'list') {
+      data['accept']  = this.handleList;
+      data['cancel']  = this.handleCancelAdvice;
+      data['content'] = 'Al cambiar a la pantalla de visualización de turnos, vas a perder los datos que hayas cargado.';
+    }
+    this.setState({
+      infoAdvice: true,
+      infoAdviceData: data,
+    })
   }
 
   handleClose() {
     this.props.onClose && this.props.onClose()
+  }
+
+  handleCancelAdvice() {
+    this.setState({
+      infoAdvice: false
+    })
   }
 
   handleCancelConfirm() {
@@ -238,6 +265,15 @@ class AppointmentModal extends Component {
               content= { confirmationData.content } 
               onAccept={ confirmationData.accept  } 
               onCancel={ confirmationData.cancel  } />)
+  }
+
+  renderInformationAdvice() {
+    const { infoAdviceData } = this.state;
+    return(<ConfirmationModal 
+              title=   { infoAdviceData.title   }
+              content= { infoAdviceData.content } 
+              onAccept={ infoAdviceData.accept  } 
+              onCancel={ infoAdviceData.cancel  }/>)
   }
 
   renderCreate() {
@@ -361,7 +397,7 @@ class AppointmentModal extends Component {
     const { date } = this.props
     return(
       <React.Fragment>
-        <Modal width="70%" height="80%" show>
+        <Modal width="70%" height="90%" show>
           <ModalHeader>
             <Level>
               <LevelLeft>
@@ -385,7 +421,7 @@ class AppointmentModal extends Component {
                 <Button kind="outline" onClick={ this.handleSave }>Reservar turno</Button>}</LevelLeft>
               <LevelLeft>
                 { this.state.renderCreate || this.state.renderDetails ?
-                  <Button kind="link" onClick={ this.handleList }>
+                  <Button kind="link" onClick={ () => ( this.handleInformationAdvice('list') ) }>
                     <FontAwesomeIcon className="mr-2" icon={ faCalendarAlt }/>Ver los turnos de hoy</Button> : null }
                 { this.state.renderList && 
                   <Button kind="link" onClick={ this.handleCreate }>
@@ -395,6 +431,7 @@ class AppointmentModal extends Component {
           </ModalFooter>
         </Modal>
         { this.state.confirmation && this.renderConfirmationModal() }
+        { this.state.infoAdvice && this.renderInformationAdvice() }
       </React.Fragment>)
   }
 }

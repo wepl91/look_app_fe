@@ -51,7 +51,7 @@ class ProfessionalsForm extends Component {
   }
 
   componentDidMount() {
-    if (this.props.professional && this.state.selectedServices.length == 0){
+    if (this.props.professional && this.state.selectedServices.length == 0) {
       this.setState({
         selectedServices: this.props.professional.professionalServicesIds
       })
@@ -61,23 +61,23 @@ class ProfessionalsForm extends Component {
     })
   }
 
-  handleChange( sender, value, name, valid ) {
+  handleChange(sender, value, name, valid) {
     this.props.onChange && this.props.onChange(name, value, valid);
   }
 
-  handleHours(received, valid, name ){
+  handleHours(received, valid, name) {
     name = 'hours'
-      this.setState({
-        startingTime: received[0],
-        finishingTime: received[1]
-      }) 
+    this.setState({
+      startingTime: received[0],
+      finishingTime: received[1]
+    })
     valid = this.state.validTimeRange
     this.props.onChange && this.props.onChange(name, received, valid);
   }
 
-  componentDidUpdate(prevProps, prevState){
+  componentDidUpdate(prevProps, prevState) {
     if (this.state.startingTime != prevState.startingTime || this.state.finishingTime != prevState.finishingTime) {
-      this.setState({validTimeRange: moment(this.state.startingTime,'HH:mm').isBefore(moment(this.state.finishingTime,'HH:mm'))})
+      this.setState({ validTimeRange: moment(this.state.startingTime, 'HH:mm').isBefore(moment(this.state.finishingTime, 'HH:mm')) })
     }
   }
 
@@ -89,11 +89,11 @@ class ProfessionalsForm extends Component {
     return validTimeRange;
   }
 
-  handleServices( value ) {
+  handleServices(value) {
     let newArray = Array.from(this.state.selectedServices)
-    if(newArray.includes(value)){
+    if (newArray.includes(value)) {
       newArray = newArray.filter(item => item !== value)
-    }else{
+    } else {
       newArray.push(value)
     }
     this.setState({
@@ -102,50 +102,73 @@ class ProfessionalsForm extends Component {
     this.props.onChange && this.props.onChange('services', newArray)
   }
 
+  renderSkeleton() {
+    return (
+      <React.Fragment>
+        <Field className="pl-5 pr-5" label="Nombre">
+          <TextInput name="name" className="is-fullwidth" disabled />
+        </Field>
+        <Field className="pl-5 pr-5" label="Apellido">
+          <TextInput name="lastName" className="is-fullwidth" disabled />
+        </Field>
+        <Field className="pl-5 pr-5" label="Teléfono">
+          <TextInput name="phone" className="is-fullwidth" disabled />
+        </Field>
+        <Field className="pl-5 pr-5" label="Mail">
+          <TextInput name="email" className="is-fullwidth" disabled />
+        </Field>
+        <Field className="pl-5 pr-5" label="¿Qué servicios ofrece?" labelNote="Seleccioná los servicios">
+          <Checkbox className="pt-1" isFullWidth defaultChecked={ false } ><Text className="pl-1">...</Text></Checkbox>
+          <Checkbox className="pt-1" isFullWidth defaultChecked={ false } ><Text className="pl-1">...</Text></Checkbox>
+          <Checkbox className="pt-1" isFullWidth defaultChecked={ false } ><Text className="pl-1">...</Text></Checkbox>
+        </Field>
+      </React.Fragment>)
+  }
+
   render() {
     if (!this.state.services || !this.state.services.isOk()) {
-      return 'Cargando profesionales..';
+      return this.renderSkeleton()
     }
     const { professional } = this.props;
-    const { services } = this.state; 
-    return(
+    const { services } = this.state;
+    return (
       <React.Fragment>
-            <Field className="pl-5 pr-5" label="Nombre">
-              <TextInput value={ professional && professional.name } name="name" className="is-fullwidth" onChange={ this.handleChange } />
-            </Field>
-            <Field className="pl-5 pr-5" label="Apellido">
-              <TextInput value={ professional && professional.lastName } name="lastName" className="is-fullwidth" onChange={ this.handleChange } />
-            </Field>
-            <Field className="pl-5 pr-5" label="Teléfono">
-              <TextInput value={ professional && professional.phone } name="phone" className="is-fullwidth" onChange={ this.handleChange } />
-            </Field>
-            <Field className="pl-5 pr-5" label="Mail">
-              <TextInput value={ professional && professional.email } name="email" className="is-fullwidth" onChange={ this.handleChange } />
-            </Field>
-{/*             <Field className="pl-5 pr-5" label="¿En qué sucursal va a atender?" labelNote="Seleccioná una sucursal">
-              <Select className="is-fullwidth" placeholder="Sucursales" borderless icon={ faChevronDown } options={ sucursales().map(sucursal => ({key: sucursal.address, value: sucursal.id})) } />
-            </Field>
-            <Field className="pl-5 pr-5" label="Horarios de trabajo" labelNote="Seleccioná los horarios semanales">
-              <WorkingHoursSelector name="hours" startingDate={ moment('05-17-2018 02:30 PM', 'MM-DD-YYYY hh:mm A') } finishingDate={ moment('05-17-2018 06:00 PM', 'MM-DD-YYYY hh:mm A') } onChange={ this.handleHours } />
-              { !this.isValidHour() && <Panel color="error" invert ><Text className="has-text-centered">Los horarios ingresados son incorrectos</Text></Panel> }
-            </Field> */}
-            <Field className="pl-5 pr-5" label="¿Qué servicios ofrece?" labelNote="Seleccioná los servicios">
-              {services.toArray().map(serv => (
-                <Checkbox className="pt-1" isFullWidth onClick={() => this.handleServices(serv.id)} defaultChecked={ professional && professional.professionalServicesIds.includes(serv.id)} ><Text className="pl-1">{startCase(serv.name)}</Text></Checkbox>
-              ))}
-            </Field>
-      </React.Fragment> )
+        <Field className="pl-5 pr-5" label="Nombre">
+          <TextInput value={professional && professional.name} name="name" className="is-fullwidth" onChange={this.handleChange} />
+        </Field>
+        <Field className="pl-5 pr-5" label="Apellido">
+          <TextInput value={professional && professional.lastName} name="lastName" className="is-fullwidth" onChange={this.handleChange} />
+        </Field>
+        <Field className="pl-5 pr-5" label="Teléfono">
+          <TextInput value={professional && professional.phone} name="phone" className="is-fullwidth" onChange={this.handleChange} />
+        </Field>
+        <Field className="pl-5 pr-5" label="Mail">
+          <TextInput value={professional && professional.email} name="email" className="is-fullwidth" onChange={this.handleChange} />
+        </Field>
+        {/*           <Field className="pl-5 pr-5" label="¿En qué sucursal va a atender?" labelNote="Seleccioná una sucursal">
+          <Select className="is-fullwidth" placeholder="Sucursales" borderless icon={ faChevronDown } options={ sucursales().map(sucursal => ({key: sucursal.address, value: sucursal.id})) } />
+        </Field>
+        <Field className="pl-5 pr-5" label="Horarios de trabajo" labelNote="Seleccioná los horarios semanales">
+          <WorkingHoursSelector name="hours" startingDate={ moment('05-17-2018 02:30 PM', 'MM-DD-YYYY hh:mm A') } finishingDate={ moment('05-17-2018 06:00 PM', 'MM-DD-YYYY hh:mm A') } onChange={ this.handleHours } />
+          { !this.isValidHour() && <Panel color="error" invert ><Text className="has-text-centered">Los horarios ingresados son incorrectos</Text></Panel> }
+        </Field> */}
+        <Field className="pl-5 pr-5" label="¿Qué servicios ofrece?" labelNote="Seleccioná los servicios">
+          {services.toArray().map(serv => (
+            <Checkbox className="pt-1" isFullWidth onClick={() => this.handleServices(serv.id)} defaultChecked={professional && professional.professionalServicesIds.includes(serv.id)} ><Text className="pl-1">{startCase(serv.name)}</Text></Checkbox>
+          ))}
+        </Field>
+      </React.Fragment>)
   }
 }
 
 ProfessionalsForm.PropTypes = {
   onChange: PropTypes.func,
-  professional : PropTypes.object,
+  professional: PropTypes.object,
 }
 
 ProfessionalsForm.defaultProps = {
   onChange: null,
-  professional : null,
+  professional: null,
 }
 
 export default withStore(ProfessionalsForm);

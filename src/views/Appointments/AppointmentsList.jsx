@@ -30,10 +30,11 @@ class AppointmentsList extends Component {
     constructor(props) {
         super(props);
 
+        this.chunk           = this.chunk.bind(this);
+        this.handleYear      = this.handleYear.bind(this);
+        this.handleMonth     = this.handleMonth.bind(this);
+        this.handleReload    = this.handleReload.bind(this);
         this.getDatesInMonth = this.getDatesInMonth.bind(this);
-        this.chunk = this.chunk.bind(this);
-        this.handleMonth = this.handleMonth.bind(this);
-        this.handleYear = this.handleYear.bind(this);
 
         this.state = {
             appointments: null,
@@ -51,6 +52,12 @@ class AppointmentsList extends Component {
             datesInWeeks: this.chunk(datesInMonth, 7),
             appointments: this.props.store.appointments.search({ }, 'appointment-list-view', true),
             professionals: this.props.store.professionals.search({}, 'professional-list-appointment-view', true)
+        })
+    }
+
+    handleReload() {
+        this.setState({
+            appointments: this.props.store.appointments.search({ }, 'appointment-list-view-reload', true),
         })
     }
 
@@ -96,7 +103,7 @@ class AppointmentsList extends Component {
         const isProfessionalsLoaded = this.state.professionals && this.state.professionals.isOk();
         if (!isAppointmentLoaded || !isProfessionalsLoaded) return <Loader icon={ faSpinner } label="Cargando los turnos.." className="fullscreen" />     
         return (
-            <React.Fragment key={ this.state.datesInWeeks }>
+            <React.Fragment>
                 <Level className="pl-3 pr-3">
                     <LevelLeft style={{ paddingRight: '6px' }}>
                         <Title>Calendario de turnos</Title>
@@ -106,7 +113,7 @@ class AppointmentsList extends Component {
                 <hr />
                 <Columns className="pl-4 pr-3">
                     <Column isSize={ 3 } className="pl-2 pr-2">
-                        <Field label="¿Querés filtrar los tunos?" labelNote="Filtra por profesionales">
+                        <Field label="¿Querés ver los turnos de algun profesional en particular?" labelNote="Selecciona un profesional">
                             <Select 
                                 value={ this.state.professionals && this.state.professionals.isOk() ? this.state.filterProf : null }
                                 placeholder="Profesionales" 
@@ -139,7 +146,7 @@ class AppointmentsList extends Component {
                         <Button onClick={ this.handleMonth } name="next" kind="outline">{ `${ startCase(moment(this.state.date).add(1, 'months').format('MMMM')) }` }</Button>
                     </Column>
                 </Columns>
-                <AppointmentCalendar key={ this.state.datesInWeeks } weeks={ this.state.datesInWeeks } appointments={ this.state.appointments.toArray() } />
+                <AppointmentCalendar onReload={ this.handleReload } key={ this.state.datesInWeeks } weeks={ this.state.datesInWeeks } appointments={ this.state.appointments.toArray() } />
             </React.Fragment>)
     }
 }

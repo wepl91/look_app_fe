@@ -33,7 +33,6 @@ class ConfirmationModal extends Component {
   }
 
   render() {
-    debugger
     return(
       <Modal show>
         <ModalHeader>

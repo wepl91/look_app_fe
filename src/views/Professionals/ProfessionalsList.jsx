@@ -39,7 +39,7 @@ class ProfessionalsList extends Component {
 
   componentDidMount() {
     this.setState({
-      professionals: this.props.store.professionals.getAll(),
+      professionals: this.props.store.professionals.search({}, 'list-professionals-view', true),
     })
   }
 
@@ -80,7 +80,7 @@ class ProfessionalsList extends Component {
       }, */
       {
         label: 'Servicios Ofrecidos',
-        content: (data) => (data.professionalServices.map(name => (<Text weight="medium" className="mb-2"><FontAwesomeIcon icon={ faDotCircle } size="xs" fixedWidth/>{ name }</Text>))),
+        content: (data) => (data.professionalServices.map(name => (<Text weight="medium" className="mb-2"><FontAwesomeIcon className="mr-1"icon={ faDotCircle } size="xs" fixedWidth/>{ name }</Text>))),
         size: 'is-2'
       },
       {

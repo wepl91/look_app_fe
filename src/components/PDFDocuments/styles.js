@@ -4,11 +4,10 @@ const styles = StyleSheet.create({
 
    },
   section: { 
-    padding: '16pt',
-    textAlign: 'center', 
+    padding: '16pt', 
     margin: 30,
-    height: '10cm',
-    width: '15cm',
+    height: 'auto',
+    width: '12cm',
     borderTopStyle: 'solid',
     borderTopWidth: '2pt',
     borderTopColor: '#830d0d',
@@ -26,20 +25,38 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: '5pt',
     borderBottomRightRadius: '5pt',
   },
+  details: {
+    width: '100%',
+    height: 'auto',
+  },
+  service: {
+    fontSize: 12,
+    textAlign: 'left'
+  },  
   title: {
     marginTop: '8pt',
-    fontSize: 24,
-    textAlign: 'center',
+    fontSize: 16,
+    textAlign: 'left',
+  },
+  subtitle: {
+    marginTop: '8pt',
+    fontSize: 13,
+    textAlign: 'left',
   },
   description: {
-    marginTop: '32pt',
-    fontSize: 18,
-    textAlign: 'center',
+    marginTop: '10pt',
+    fontSize: 12,
+    textAlign: 'left',
+    marginBottom: '10pt',
   },
   brand: {
-    marginTop: '4cm',
+    position: 'absolute',
+    top: '0',
+    left: '16pt',
     fontSize: 20,
-    textAlign: 'center',
+    textAlign: 'left',
+    marginBottom: '24pt',
+    marginTop: '6pt',
   }
 });
 

@@ -49,8 +49,8 @@ class AppointmentCard extends Component {
     this.setState(prevState => ({
       showModal: !prevState.showModal
     }))
-    if (reload === true) {
-      window.location.reload();
+    if (reload == true) {
+      this.props.onReload && this.props.onReload()
     }
   }
 
@@ -92,11 +92,13 @@ class AppointmentCard extends Component {
 AppointmentCard.PropTypes = {
   date: PropTypes.object,
   appointments: PropTypes.array,
+  onReload: PropTypes.func,
 }
 
 AppointmentCard.defaultProps = {
   date: null,
   appointments: null,
+  onReload: null
 }
 
 export default AppointmentCard;
