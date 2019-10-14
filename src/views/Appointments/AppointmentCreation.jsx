@@ -85,7 +85,7 @@ class AppointmentCreation extends Component {
             pauseOnHover: false,
           });
         }
-        this.props.history.push('appointments/list');
+        this.props.history.push('list');
       })
     })
   }

@@ -23,7 +23,6 @@ import { WorkingHoursSelector } from './';
 
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
-import { servicios, sucursales } from '../../lib/Mocks';
 
 import startCase from 'lodash/startCase';
 

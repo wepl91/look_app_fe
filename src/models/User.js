@@ -12,6 +12,9 @@ export default class User extends Model {
       username: '',
       fullName: '',
       email: '',
+      roles: [],
+      name: '',
+      lastname: '',
     };
 
     let attrs = Object.assign( defaultAttributes, attributes );
@@ -20,7 +23,22 @@ export default class User extends Model {
   }
 
   @computed
+  get cookedName() {
+    return (this.fullName && this.fullName.split(" ")[0]) || this.name;
+  }
+
+  @computed
+  get cookedLastname() {
+    return (this.fullName && this.fullName.split(" ")[1]) || this.lastname;
+  }
+
+  @computed
   get userRole() {
-    return this.roles[0].name;
+    return this.roles[0] && this.roles[0].name;
+  }
+
+  @computed
+  get roleID() {
+    return (this.roles[0] && this.roles[0].id) || this.roles[0];
   }
 }
