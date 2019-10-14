@@ -73,12 +73,6 @@ class ProfessionalCreation extends Component {
   }
 
   handleChange( name, value, valid ) {
-    if (name == 'cost') {
-      service.price = value
-      this.setState({
-        buttonDisabled: valid.type == 'error',
-      })
-    }
     const professional = this.getProfessional();
     if(name == 'hours'){
       service.startingTime = value[0],

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import './styles.css'
 
 import {
   Field,
@@ -31,7 +32,7 @@ class AppointmentsForm extends Component {
     super(props);
 
     this.handleProfessional = this.handleProfessional.bind(this);
-    this.handleService      = this.handleService.bind(this);
+    this.handleServices      = this.handleServices.bind(this);
     this.handleDate         = this.handleDate.bind(this);
     this.handleHour         = this.handleHour.bind(this);
 
@@ -40,6 +41,8 @@ class AppointmentsForm extends Component {
       professional: this.props.appointment ? this.props.appointment.professional : 'null',
       services: null,
       date: this.props.appointment ? this.props.appointment.dayHour : moment()
+      selectedServices: [],
+      subtotal: 0,
     }
   }
 
@@ -79,11 +82,23 @@ class AppointmentsForm extends Component {
     }
   }
 
-  handleService( service ) {
+  handleServices( serviceId, servicePrice ) {
+    let newArray = Array.from(this.state.selectedServices)
+    if(newArray.includes(serviceId)){
+      newArray = newArray.filter(item => item !== serviceId)
+      this.setState({
+        subtotal: this.state.subtotal - servicePrice,
+      });
+    }else{
+      newArray.push(serviceId)
+      this.setState({
+        subtotal: this.state.subtotal + servicePrice,
+      });
+    }
     this.setState({
-      service: service,
+      selectedServices: newArray,
     });
-    this.props.onChange && this.props.onChange('services', service.id);
+    this.props.onChange && this.props.onChange('services', newArray)
   }
 
   getProfessionalList() {
@@ -115,12 +130,13 @@ class AppointmentsForm extends Component {
     const { professional } = this.state;
     const services = professional && professional != 'null' ?  professional.services : this.state.services.toArray();
     return(
-      <Field className="ml-5" label="¿Cual de nuestros servicios requeris?" labelNote="Seleccioná un servicio">
+      <Field className="ml-5" label="¿Cuál de nuestros servicios requerís?" labelNote="Seleccioná un servicio">
         { services.length > 0 ? 
-          services.map( service => ( <Checkbox key={ service.id } onClick={ () => ( this.handleService(service) )}className="mt-1" isFullWidth defaultChecked={ this.isServiceInAppointment(service.id) } >
-                                      <Text className="ml-1">{`${ startCase(service.name) } - $${ service.price }`}</Text>
+          services.map( service => ( <Checkbox key={ service.id } className="mt-1" isFullWidth defaultChecked={ false } onClick={() => this.handleServices(service.id, service.price)}>
+                                      <Text className="ml-2 pt-1">{`${ startCase(service.name) } - $${ service.price }`}</Text>
                                     </Checkbox> )) : 
           <Text size="md" weight="medium" className="ml-2 mt-1">No hay servicios existentes para ofrecer.</Text> }
+        {this.state.subtotal !==0 && <Text className="has-text-centered ml-2" weight="medium" color="primaryDark"><hr id="subtotalLine"/>Subtotal: ${this.state.subtotal}</Text>}
       </Field> )
   }
 
