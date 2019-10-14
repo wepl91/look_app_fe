@@ -79,11 +79,11 @@ class AppointmentsForm extends Component {
     }
   }
 
-  handleService( sender, value, name ) {
+  handleService( service ) {
     this.setState({
-      service: value,
+      service: service,
     });
-    this.props.onChange && this.props.onChange('services', value.id);
+    this.props.onChange && this.props.onChange('services', service.id);
   }
 
   getProfessionalList() {
@@ -97,13 +97,27 @@ class AppointmentsForm extends Component {
     return prof
   }
 
+  isServiceInAppointment( serviceID ) {
+    const { appointment } = this.props;
+    let ret = false;
+    if (!appointment) {
+      return ret;
+    }
+    appointment.services.forEach( service => {
+      if (service.id == serviceID) {
+        ret = true;
+      }
+    });
+    return ret;
+  }
+
   renderServices() {
     const { professional } = this.state;
     const services = professional && professional != 'null' ?  professional.services : this.state.services.toArray();
     return(
       <Field className="ml-5" label="¿Cual de nuestros servicios requeris?" labelNote="Seleccioná un servicio">
         { services.length > 0 ? 
-          services.map( service => ( <Checkbox key={ service.id } className="mt-1" isFullWidth defaultChecked={ false } >
+          services.map( service => ( <Checkbox key={ service.id } onClick={ () => ( this.handleService(service) )}className="mt-1" isFullWidth defaultChecked={ this.isServiceInAppointment(service.id) } >
                                       <Text className="ml-1">{`${ startCase(service.name) } - $${ service.price }`}</Text>
                                     </Checkbox> )) : 
           <Text size="md" weight="medium" className="ml-2 mt-1">No hay servicios existentes para ofrecer.</Text> }
@@ -135,7 +149,7 @@ class AppointmentsForm extends Component {
         <Field className="ml-5" label="¿Por quién querés ser atendido?" labelNote="Seleccioná un profesional">
           <Select 
             key={ this.state.professional }
-            value={ this.state.professional.id || this.state.professional }
+            value={ this.state.professional ? this.state.professional.id : 'null' }
             placeholder="Profesionales" 
             borderless 
             icon={ faChevronDown } 
