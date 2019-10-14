@@ -5,7 +5,8 @@ import {
   Field,
   Select,
   DateTimePicker,
-  Text
+  Text,
+  Panel,
 } from 'shipnow-mercurio';
 
 import {
@@ -38,7 +39,7 @@ class AppointmentsForm extends Component {
       professionals: null,
       professional: this.props.appointment ? this.props.appointment.professional : 'null',
       services: null,
-      date: moment()
+      date: this.props.appointment ? this.props.appointment.dayHour : moment()
     }
   }
 
@@ -74,7 +75,6 @@ class AppointmentsForm extends Component {
       this.setState({
         professional: professional,
       });
-      debugger
       this.props.onChange && this.props.onChange('professional', value);
     }
   }
@@ -124,6 +124,13 @@ class AppointmentsForm extends Component {
       </Field> )
   }
 
+  renderAdvise() {
+    return(
+      <Panel className="has-text-centered mr-3 mt-1" invert color="error" style={{ padding: '2px' }}>
+        <Text size="sm" weight="medium">La fecha seleccionada es un día no laboral.</Text>
+      </Panel> )
+  }
+
   render() {
     const professionalsLoaded = this.state.professionals && this.state.professionals.isOk();
     const servicesLoaded = this.state.services && this.state.services.isOk()
@@ -136,7 +143,12 @@ class AppointmentsForm extends Component {
       <React.Fragment>
         { !this.props.withDate &&
           <Field className="ml-5" label="¿Que día querés venir?" labelNote="Seleccioná ua fecha">
-            <DateTimePicker key={ this.state.date } value={ this.state.date } onChange={ this.handleDate }/>
+            <DateTimePicker 
+              className="is-fullwidth"
+              key={ this.state.date } 
+              value={ this.state.date } 
+              onChange={ this.handleDate }/>
+            { this.state.date.isoWeekday() == 7 && this.renderAdvise() }
           </Field> }
         <Field className="ml-5" label="¿A cual de nuestras sucursales querés venir?" labelNote="Seleccioná una sucursal">
           <Select 
@@ -159,7 +171,7 @@ class AppointmentsForm extends Component {
         { this.renderServices() } 
         <Field className="ml-5" label="¿A que hora querés venir?" labelNote="Seleccioná un horario">
           <Select 
-            maxHeight="150px" 
+            maxHeight="120px" 
             placeholder="Horarios" 
             borderless 
             icon={ faChevronDown }
