@@ -52,10 +52,10 @@ export default class Professional extends Model {
     return ret;
   }
 
-  @computed
+/*   @computed
   get workingHours() {
     const ret = [];
-    // this.workingHours.map( day => (ret.push(`${ day.days.name } ${ day.beginHour } ${ day.endHour }`)))
+    this.workingHours.map( day => (ret.push(`${ day.days.name } ${ day.beginHour } ${ day.endHour }`)))
     return ret;
-  }
+  } */
 }

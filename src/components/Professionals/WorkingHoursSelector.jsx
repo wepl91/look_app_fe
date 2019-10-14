@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import {
   Columns,
   Column,
-  Checkbox
+  Checkbox,
+  Control
 } from 'bloomer';
 
 import {
@@ -98,6 +99,11 @@ class WorkingHoursSelector extends Component {
     return(
       <React.Fragment>
         <Columns className="is-gapless is-marginless" isVCentered isCentered>
+        {daysList.map(day => (
+                  <Checkbox className="pr-1 pb-2" name="day" isFullWidth onClick={() => this.handleDays(day)} ><Text className="pl-1">{startCase(day.toLowerCase())}</Text></Checkbox>
+                ))}
+        </Columns>
+        <Columns className="is-gapless is-marginless" isVCentered isCentered>
           <Column isSize={5}>
             <Select placeholder="Entrada" 
                     className="is-fullwidth"
@@ -114,11 +120,6 @@ class WorkingHoursSelector extends Component {
                     borderless icon={ faChevronDown }
                     value = {this.state.finishingDate}
                     name="finishing" onChange={ this.handleChange } options={ hourList } />
-          </Column>
-          <Column>
-              {daysList.map(day => (
-                <Checkbox className="pt-1" name="day" isFullWidth onClick={() => this.handleDays(day)} ><Text className="pl-1">{startCase(day.toLowerCase())}</Text></Checkbox>
-              ))}
           </Column>
         </Columns>
       </React.Fragment>)
