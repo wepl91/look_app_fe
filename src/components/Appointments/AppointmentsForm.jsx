@@ -131,11 +131,58 @@ class AppointmentsForm extends Component {
       </Panel> )
   }
 
+  renderSkeleton() {
+    return(
+    <React.Fragment>
+      <Field className="ml-5" label="¿Que día querés venir?" labelNote="Seleccioná ua fecha">
+        <DateTimePicker className="is-fullwidth" disabled/>
+      </Field>
+      <Field className="ml-5" label="¿A cual de nuestras sucursales querés venir?" labelNote="Seleccioná una sucursal">
+        <Select 
+          disabled
+          placeholder="Sucursales" 
+          borderless 
+          icon={ faChevronDown } 
+          disabled
+          loading />
+      </Field>
+      <Field className="ml-5" label="¿Por quién querés ser atendido?" labelNote="Seleccioná un profesional">
+        <Select 
+          placeholder="Profesionales" 
+          borderless 
+          icon={ faChevronDown } 
+          disabled
+          loading />
+      </Field>
+      <Field className="ml-5" label="¿Cual de nuestros servicios requeris?" labelNote="Seleccioná un servicio">
+        <Checkbox className="mt-1" isFullWidth defaultChecked={ false } >
+          <Text className="ml-1">...</Text>
+        </Checkbox>
+        <Checkbox className="mt-1" isFullWidth defaultChecked={ false } >
+          <Text className="ml-1">...</Text>
+        </Checkbox>
+        <Checkbox className="mt-1" isFullWidth defaultChecked={ false } >
+          <Text className="ml-1">...</Text>
+        </Checkbox> 
+      </Field>
+      <Field className="ml-5" label="¿A que hora querés venir?" labelNote="Seleccioná un horario">
+        <Select 
+          maxHeight="120px" 
+          placeholder="Horarios" 
+          borderless 
+          icon={ faChevronDown }
+          disabled
+          loading/>
+      </Field>
+    </React.Fragment>)
+  }
+
   render() {
     const professionalsLoaded = this.state.professionals && this.state.professionals.isOk();
     const servicesLoaded = this.state.services && this.state.services.isOk()
+    
     if (!professionalsLoaded || !servicesLoaded) {
-      return null;
+      return this.renderSkeleton();
     }
 
     const { appointment } = this.props;

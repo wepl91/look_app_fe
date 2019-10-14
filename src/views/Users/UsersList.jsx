@@ -33,7 +33,7 @@ class UsersList extends Component {
 
   componentDidMount() {
     this.setState({
-      users: this.props.store.users.search({}),
+      users: this.props.store.users.search({}, 'users-list-view', true),
     })
   }
 
