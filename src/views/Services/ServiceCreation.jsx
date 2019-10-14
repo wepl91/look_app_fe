@@ -58,7 +58,7 @@ class ServiceCreation extends Component {
           autoDismiss: true,
           pauseOnHover: true,
         });
-        this.props.history.push('services/list')
+        this.props.history.push('list')
       }
     })
   }

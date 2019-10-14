@@ -40,7 +40,7 @@ class AppointmentsForm extends Component {
       professionals: null,
       professional: this.props.appointment ? this.props.appointment.professional : 'null',
       services: null,
-      date: this.props.appointment ? this.props.appointment.dayHour : moment()
+      date: this.props.appointment ? this.props.appointment.dayHour : moment(),
       selectedServices: [],
       subtotal: 0,
     }
