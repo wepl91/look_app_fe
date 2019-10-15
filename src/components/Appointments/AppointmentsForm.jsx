@@ -234,6 +234,7 @@ class AppointmentsForm extends Component {
         { this.renderServices() } 
         <Field className="ml-5" label="¿A que hora querés venir?" labelNote="Seleccioná un horario">
           <Select 
+            key={ this.state }
             maxHeight="120px" 
             placeholder="Horarios" 
             borderless 
