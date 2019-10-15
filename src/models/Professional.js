@@ -52,10 +52,16 @@ export default class Professional extends Model {
     return ret;
   }
 
-/*   @computed
-  get workingHours() {
+  @computed
+  get cookedWorkingHours() {
     const ret = [];
-    this.workingHours.map( day => (ret.push(`${ day.days.name } ${ day.beginHour } ${ day.endHour }`)))
+    const cookedDays = {
+      'SUNDAY': 'Domingo',
+      'SATURDAY': 'Sábado',
+      'MONDAY': 'Lunes',
+    }
+    this.workingHours.map( day => (ret.push(`${ cookedDays[day.days.name] } ${ day.beginHour } ${ day.endHour }`)))
+    debugger
     return ret;
-  } */
+  }
 }

@@ -98,11 +98,11 @@ class WorkingHoursSelector extends Component {
     let daysList = this.props.days
     return(
       <React.Fragment>
-        <Columns className="is-gapless is-marginless" isVCentered isCentered>
+
         {daysList.map(day => (
                   <Checkbox className="pr-1 pb-2" name="day" isFullWidth onClick={() => this.handleDays(day)} ><Text className="pl-1">{startCase(day.toLowerCase())}</Text></Checkbox>
                 ))}
-        </Columns>
+
         <Columns className="is-gapless is-marginless" isVCentered isCentered>
           <Column isSize={5}>
             <Select placeholder="Entrada" 
