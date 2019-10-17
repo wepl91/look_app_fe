@@ -16,6 +16,7 @@ import {
 } from 'bloomer';
 
 import withStore from '../../hocs/withStore';
+import { withToastManager } from 'react-toast-notifications';
 
 import { observer } from 'mobx-react';
 
@@ -25,6 +26,8 @@ import startCase from 'lodash/startCase';
 
 import { UsersEditModal } from '../../components/Users';
 
+import { ConfirmationModal } from '../../components/ConfirmationModal';
+
 @observer
 class UsersList extends Component {
   constructor(props) {
@@ -33,11 +36,81 @@ class UsersList extends Component {
     this.state = {
       users: null,
       showModal: false,
-      editUser: null
+      editUser: null,
+      showToggleConfirmation: false,
+      toggle: null,
+      user: null,
     }
 
-    this.handleHideModal = this.handleHideModal.bind(this);
-    this.handleSaved     = this.handleSaved.bind(this);
+    this.handleHideModal  = this.handleHideModal.bind(this);
+    this.handleToggle     = this.handleToggle.bind(this);
+    this.handleSaved      = this.handleSaved.bind(this);
+    this.handleActivate   = this.handleActivate.bind(this);
+    this.handleInactivate = this.handleInactivate.bind(this);
+  }
+
+  handleToggle( user ) {
+    this.setState({
+      showToggleConfirmation: true,
+      toggle: user.isActive ? 'inactive' : 'active',
+      user: user
+    });
+  }
+
+  handleActivate() {
+    const { user } = this.state;
+    const { toastManager } = this.props;
+    user.activate().andThen( (savedUser, responseError) => {
+      if (responseError) {
+        toastManager.add("Ups! Parece que hubo un error al activar el usuario!", {
+          appearance: 'error',
+          autoDismiss: true,
+          pauseOnHover: false,
+        });
+        this.setState({
+          showToggleConfirmation: false,
+        });
+      }
+      else {
+        toastManager.add("El usuario ha sido activado exitosamente!", {
+          appearance: 'success',
+          autoDismiss: true,
+          pauseOnHover: false,
+        });
+        this.setState({
+          users: this.props.store.users.search({}, 'users-list-view', true),
+          showToggleConfirmation: false
+        });
+      }
+    })
+  }
+
+  handleInactivate() {
+    const { user } = this.state;
+    const { toastManager } = this.props;
+    user.deactivate().andThen( (savedUser, responseError) => {
+      if (responseError) {
+        toastManager.add("Ups! Parece que hubo un error al desactivar el usuario!", {
+          appearance: 'error',
+          autoDismiss: true,
+          pauseOnHover: false,
+        });
+        this.setState({
+          showToggleConfirmation: false,
+        });
+      }
+      else {
+        toastManager.add("El usuario ha sido desactivado exitosamente!", {
+          appearance: 'success',
+          autoDismiss: true,
+          pauseOnHover: false,
+        });
+        this.setState({
+          users: this.props.store.users.search({}, 'users-list-view', true),
+          showToggleConfirmation: false
+        });
+      }
+    })
   }
 
   handleShowModal( user ) {
@@ -104,7 +177,7 @@ class UsersList extends Component {
       },
       {
         label: 'Activo',
-        content: (data) => (<Toggle checked={ data.active || true } checkedColor="success" unCheckedColor="delete"/>),
+        content: (data) => (<Toggle key={ this.state } checked={ data.isActive } checkedColor="success" unCheckedColor="delete" onChange={ () => (this.handleToggle(data)) }/>),
         size: 'is-1',
         align: 'left'
       },
@@ -126,7 +199,17 @@ class UsersList extends Component {
   }
 
   renderModal() {
-    return(<UsersEditModal user={ this.state.editUser } onClose={ this.handleHideModal } onSave={ this.handleSaved }/>)
+    return( <UsersEditModal user={ this.state.editUser } onClose={ this.handleHideModal } onSave={ this.handleSaved }/> )
+  }
+
+  renderConfirmationModal() {
+    const { user } = this.state;
+    return( 
+      <ConfirmationModal 
+        title={ user.isActive ? 'Inactivar usuario' : 'Activar usuario' }
+        content={ user.isActive ? `¿Estás seguro de querer inactivar el ususario ${ user.cookedFullName }?` : `¿Estás seguro de querer activar el ususario ${ user.cookedFullName }?` }
+        onAccept={ user.isActive ? this.handleInactivate : this.handleActivate }
+        onCancel={ () => ( this.setState({ showToggleConfirmation: false, toggle: null, user: null }) ) } /> )
   }
 
   render() {
@@ -143,9 +226,10 @@ class UsersList extends Component {
         <hr/>
         { this.renderTable() }
         { this.state.showModal && this.renderModal() }
+        { this.state.showToggleConfirmation && this.renderConfirmationModal() }
       </React.Fragment> )
   }
 
 }
 
-export default withStore(UsersList);
+export default withToastManager(withStore(UsersList));
