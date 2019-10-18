@@ -51,6 +51,13 @@ export default class Professional extends Model {
   }
 
   @computed
+  get rawWorkingDays() {
+    const ret = [];
+    this.workingHours.map( day => (ret.push(day.days.name)))
+    return ret;
+  }
+
+  @computed
   get cookedWorkingDays() {
     const ret = [];
     const cookedDays = {
@@ -81,16 +88,9 @@ export default class Professional extends Model {
   }
 
   @computed
-  get rawWorkingDays() {
-    const ret = [];
-    this.workingHours.map( day => (ret.push(day.days.name)))
-    return ret;
-  }
-
-  @computed
   get cookedWorkingHours() { //Refactorizar
     let ret = []
-    this.workingHours.map( day => (ret.push(` ${ day.beginHour } a ${ day.endHour }`)))
+    this.workingHours.map( day => (ret.push(` ${ moment(day.beginHour.toString(),"LT").format("HH:mm") } a ${ moment(day.endHour.toString(),"LT").format("HH:mm") }`)))
     return ret[0]
   }
 
