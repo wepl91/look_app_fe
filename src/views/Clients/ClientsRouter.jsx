@@ -5,7 +5,7 @@ import { withRouter } from 'react-router';
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import '../../styles/styles.scss';
 
-import { ClientsList } from './'
+import { ClientsList, ClientCreation } from './'
 
 class ClientsRouter extends Component {
   render() {
@@ -21,7 +21,7 @@ class ClientsRouter extends Component {
                 <Switch location={ location }>
                   <Route exact path ={ `${path}/clients` } />
                   <Route exact path ={ `${path}/clients/list`  } component={ ClientsList } />
-                  <Route exact path ={ `${path}/clients/new`   } component={ null } />
+                  <Route exact path ={ `${path}/clients/new`   } component={ ClientCreation } />
                   <Route exact path ={ `${path}/clients/:id`   } />
                 </Switch>
             </section>

@@ -21,7 +21,6 @@ import {
 class ClientsForm extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       clientCategory: this.props.client.status.name || this.props.client.status,
     }
@@ -44,17 +43,24 @@ class ClientsForm extends Component {
     const { client } = this.props
     return(
       <React.Fragment>
-        <Field label="Nombre" labelNote="¿Cómo se llama el nuevo cliente?">
-          <TextInput name="name" value={ client.name } className="is-fullwidth" />
+        <Field label="Nombre y Apellido" labelNote="¿Cómo se llama el nuevo cliente?">
+          <Columns>
+            <Column>
+              <TextInput placeholder="Nombre.." onChange={ this.handleChange } name="name" value={ client.name } className="is-fullwidth" />
+            </Column>
+            <Column>
+              <TextInput placeholder="Apellido.." onChange={ this.handleChange } name="lastName" value={ client.lastName } className="is-fullwidth" />
+            </Column>
+          </Columns>
         </Field>
         <Field label="Documento" labelNote="¿Cuál es el dni del nuevo cliente?">
-          <TextInput name="DNI" value={ client.DNI } className="is-fullwidth" />
+          <TextInput onChange={ this.handleChange } name="DNI" value={ client.DNI } className="is-fullwidth" />
         </Field>
         <Field label="Teléfono principal" labelNote="¿Cuál es el nro de teléfono del cliente?">
-          <TextInput name="primaryPhone" value={ client.primaryPhone } className="is-fullwidth" />
+          <TextInput onChange={ this.handleChange } name="primaryPhone" value={ client.primaryPhone } className="is-fullwidth" />
         </Field>
         <Field label="Teléfono secundario" labelNote="Es necesario una segunda opción de comunicación">
-          <TextInput name="secondPhone" value={ client.secondPhone } className="is-fullwidth" />
+          <TextInput onChange={ this.handleChange } name="secondPhone" value={ client.secondPhone } className="is-fullwidth" />
         </Field>
         <Field label="Categoría" labelNote="¿Dentro de qué categoría se encuentra el cliente?">
           <Text className="ml-1" size="md" weight="medium">

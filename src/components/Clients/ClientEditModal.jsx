@@ -109,8 +109,8 @@ class ClientEditModal extends Component {
         </ModalHeader>
         <ModalContent>
           <Columns>
-            <Column isSize={ 2 }></Column>
-            <Column isSize={ 8 }> 
+            <Column isSize={ 1 }></Column>
+            <Column isSize={ 10 }> 
               <ClientsForm client={ client } onChange={ this.handleChange } />
             </Column>
           </Columns>

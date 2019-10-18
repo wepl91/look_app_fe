@@ -78,7 +78,7 @@ class ClientsList extends Component {
       },
       {
         label: 'Nombre',
-        content: (data) => (<Text>{ startCase( data.name) || '- sin nombre -' }</Text>),
+        content: (data) => (<Text>{ startCase( data.fullName) || '- sin nombre -' }</Text>),
         size: 'is-2'
       },
       {
