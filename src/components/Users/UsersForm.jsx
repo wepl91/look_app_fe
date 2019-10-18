@@ -5,6 +5,8 @@ import { observer } from 'mobx-react';
 
 import { withStore } from '../../hocs';
 
+import { nameRegex, mailRegex } from '../../lib/Regex'
+
 import {
   Field,
   TextInput,
@@ -36,13 +38,8 @@ class UsersForm extends Component {
     })    
   }
 
-  handleChange( sender, value, name ) {
-    if (name == 'role') {
-      this.props.onChange && this.props.onChange(name, value); 
-    }
-    else {
-      this.props.onChange && this.props.onChange(name, value);
-    }
+  handleChange( sender, value, name, valid ) {
+    this.props.onChange && this.props.onChange(name, value, valid);
   }
 
   getRolesList() {
@@ -65,7 +62,7 @@ class UsersForm extends Component {
                 <TextInput name="name" placeholder="Nombre.." disabled />
             </Column>
             <Column>
-                <TextInput name="lastname" placeholder="Apellido.." disbaled />
+                <TextInput name="lastName" placeholder="Apellido.." disbaled />
             </Column>
           </Columns>
         </Field>
@@ -94,15 +91,15 @@ class UsersForm extends Component {
         <Field label="Nombre y Apellido" labelNote="¿Cómo se llama el nuevo usuario?">
           <Columns isGapless isMarginless>
             <Column>
-                <TextInput value={ user && user.cookedName } name="name" placeholder="Nombre.." onChange={ this.handleChange } />
+                <TextInput value={ user && user.cookedName } validate={ (value) => (nameRegex.test(value)) } name="name" placeholder="Nombre" onChange={ this.handleChange } />
             </Column>
             <Column>
-                <TextInput value={ user && user.cookedLastname } name="lastname" placeholder="Apellido.." onChange={ this.handleChange } />
+                <TextInput value={ user && user.cookedLastname } validate={ (value) => (nameRegex.test(value)) } name="lastName" placeholder="Apellido" onChange={ this.handleChange } />
             </Column>
           </Columns>
         </Field>
         <Field label="Email">
-          <TextInput value={ user && user.email } name="email" placeholder="user@gmail.com" onChange={ this.handleChange } />
+          <TextInput value={ user && user.email } name="email" validate={ (value) => (mailRegex.test(value)) } placeholder="user@gmail.com" onChange={ this.handleChange } />
         </Field>
         <Field label="Rol">
         <Select 

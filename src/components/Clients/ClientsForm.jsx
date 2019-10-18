@@ -5,6 +5,8 @@ import { observer } from 'mobx-react';
 
 import { withStore } from '../../hocs';
 
+import { nameRegex, dniRegex, phoneRegex } from '../../lib/Regex'
+
 import {
   Columns,
   Column
@@ -39,9 +41,6 @@ class ClientsForm extends Component {
   }
 
   render() {
-    const nameRegex = /^[a-zA-Z]+$/
-    const dniRegex = /^[0-9]*\.?[0-9]*\.?[0-9]*$/ 
-    const phoneRegex = /^\d+$/
     const { client } = this.props
     return(
       <React.Fragment>
@@ -61,7 +60,7 @@ class ClientsForm extends Component {
         <Field label="Teléfono principal" labelNote="¿Cuál es el nro de teléfono del cliente?">
           <TextInput onChange={ this.handleChange } name="primaryPhone" validate={ (value) => (phoneRegex.test(value)) } value={ client.primaryPhone } className="is-fullwidth" />
         </Field>
-        <Field label="Teléfono secundario" labelNote="Es útil una segunda opción de comunicación">
+        <Field label="Teléfono secundario" labelNote="Es necesario una segunda opción de comunicación">
           <TextInput onChange={ this.handleChange } name="secondPhone" validate={ (value) => (phoneRegex.test(value)) } value={ client.secondPhone } className="is-fullwidth" />
         </Field>
         <Field label="Categoría" labelNote="¿Dentro de qué categoría se encuentra el cliente?">

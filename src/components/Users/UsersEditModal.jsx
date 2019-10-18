@@ -35,7 +35,10 @@ class UsersEditModal extends Component {
     super(props);
 
     this.state = {
-      isSaving: false
+      isSaving: false,
+      validName: true,
+      validLastName: true,
+      validMail: true,
     }
 
     this.handleSave   = this.handleSave.bind(this);
@@ -77,7 +80,7 @@ class UsersEditModal extends Component {
     })
   }
 
-  handleChange(name, value) {
+  handleChange(name, value, valid) {
     const user = this.getUser();
     if (name == 'role') {
       user.roles[0] = value;
@@ -85,6 +88,25 @@ class UsersEditModal extends Component {
     else {
       user[name] = value;
     }
+    if(name=='name'){
+      this.setState({
+        validName: valid.type == 'success',
+      })
+    } else
+    if(name=='lastName'){
+      this.setState({
+        validLastName: valid.type == 'success',
+      })
+    } else
+    if(name=='email'){
+      this.setState({
+        validMail: valid.type == 'success',
+      })
+    }
+  }
+
+  getDisabled() {
+    return !(this.state.validName && this.state.validLastName && this.state.validMail && this.modifiedUser.roles.length > 0)
   }
 
   getUser() {
@@ -120,7 +142,7 @@ class UsersEditModal extends Component {
             <LevelRight>
               { this.state.isSaving ? 
                 <Button kind="outline" disabled pulse icon={ faSpinner }>Guardando..</Button> :
-                <Button kind="outline" onClick={ this.handleSave } >Guardar</Button> }
+                <Button kind="outline" onClick={ this.handleSave } disabled={ this.getDisabled() }>Guardar</Button> }
               <Button kind="link" onClick={ this.handleClose }>Cancelar</Button>
             </LevelRight>
           </Level>
