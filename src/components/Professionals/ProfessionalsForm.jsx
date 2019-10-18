@@ -140,11 +140,11 @@ class ProfessionalsForm extends Component {
             <Field className="pl-5 pr-5" label="Mail">
               <TextInput value={ professional && professional.email } name="email" className="is-fullwidth" onChange={ this.handleChange } />
             </Field>
-            <Field className="pl-5 pr-5" label="¿En qué sucursal va a atender?" labelNote="Seleccioná una sucursal">
+            {/* <Field className="pl-5 pr-5" label="¿En qué sucursal va a atender?" labelNote="Seleccioná una sucursal">
               <Select className="is-fullwidth" placeholder="Sucursales" borderless icon={ faChevronDown } options={ sucursales().map(sucursal => ({key: sucursal.address, value: sucursal.id})) } />
-            </Field>
+            </Field> */}
             <Field className="pl-5 pr-5" label="¿En qué días y horarios va a trabajar?" labelNote="Seleccioná los horarios semanales">
-              <WorkingHoursSelector name="hours" startingDate={ moment('05-17-2018 09:00 AM', 'MM-DD-YYYY hh:mm A') } finishingDate={ moment('05-17-2018 06:00 PM', 'MM-DD-YYYY hh:mm A') } days={['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY']} onChange={ this.handleHours } />
+              <WorkingHoursSelector name="hours" defaultProfessional={professional} startingDate={ moment('05-17-2018 09:00 AM', 'MM-DD-YYYY hh:mm A') } finishingDate={ moment('05-17-2018 06:00 PM', 'MM-DD-YYYY hh:mm A') } days={['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY']} onChange={ this.handleHours } />
               { !this.isValidHour() && <Panel className="mt-1" color="error" invert style={{padding: '2px'}}><Text className="has-text-centered">Los días y/o los horarios ingresados son incorrectos</Text></Panel> }
             </Field>
             <Field className="pl-5 pr-5" label="¿Qué servicios ofrece?" labelNote="Seleccioná los servicios">

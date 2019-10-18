@@ -1,13 +1,11 @@
 import { Model } from '../lib';
 
 import {
-  observable,
-  action,
-  computed,
-  toJS
+  computed
 } from 'mobx'
 
 import startCase from 'lodash/startCase';
+import moment from 'moment';
 
 export default class Professional extends Model {
   constructor( attributes, store ) {
@@ -83,10 +81,23 @@ export default class Professional extends Model {
   }
 
   @computed
-  get cookedWorkingHours() {
-    //Consultar con Walter, no logré hacer this.workingHours[0]
+  get cookedWorkingHours() { //Refactorizar
     let ret = []
     this.workingHours.map( day => (ret.push(` ${ day.beginHour } a ${ day.endHour }`)))
     return ret[0]
+  }
+
+  @computed
+  get beginHour() { //Refactorizar
+    let ret = []
+    this.workingHours.map( day => (ret.push(day.beginHour)))
+    return moment(ret[0].toString(),"LT").format("HH:mm")
+  }
+
+  @computed
+  get endHour() { //Refactorizar
+    let ret = []
+    this.workingHours.map( day => (ret.push(day.endHour)))
+    return moment(ret[0].toString(),"LT").format("HH:mm")
   }
 }

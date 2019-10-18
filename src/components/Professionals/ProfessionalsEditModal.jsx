@@ -7,6 +7,8 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 import { withToastManager } from 'react-toast-notifications';
 
+import { observer } from 'mobx-react';
+
 import {
   Modal,
   ModalContent,
@@ -22,7 +24,7 @@ import {
   LevelRight,
 } from 'bloomer';
 
-
+@observer
 class ProfessionalsEditModal extends Component {
   
   modifiedProfessional
@@ -111,6 +113,7 @@ class ProfessionalsEditModal extends Component {
 
     return false;
   }
+  
 
   render() {
     const professional = this.getProfessional()

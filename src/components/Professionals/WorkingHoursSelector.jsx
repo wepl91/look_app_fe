@@ -4,22 +4,17 @@ import PropTypes from 'prop-types';
 import {
   Columns,
   Column,
-  Checkbox,
-  Control
+  Checkbox
 } from 'bloomer';
 
 import {
   Select,
-  Text,
-  Field
+  Text
 } from 'shipnow-mercurio';
 
-import startCase from 'lodash/startCase';
-
 import moment from 'moment';
-
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import { LevelItem } from 'bloomer/lib/components/Level/LevelItem';
+
  
 class WorkingHoursSelector extends Component {
   constructor(props) {
@@ -96,24 +91,36 @@ class WorkingHoursSelector extends Component {
   render() {
     let hourList = this.hoursBetweenDates(this.props.startingDate, this.props.finishingDate)
     let daysList = this.props.days
+    const translatedDays = {
+      'MONDAY': 'Lunes',
+      'TUESDAY': 'Martes',
+      'WEDNESDAY': 'Miércoles',
+      'THURSDAY': 'Jueves',
+      'FRIDAY': 'Viernes',
+      'SATURDAY': 'Sábado',
+      'SUNDAY': 'Domingo'
+    }
+
     return(
       <React.Fragment>
         <Columns className="is-gapless is-marginless" isCentered isVCentered>
           <Column isSize={6}>
           {daysList.map(day => (
-                    <Checkbox className="pr-1 pb-2" name="day" isFullWidth onClick={() => this.handleDays(day)} ><Text className="pl-1">{startCase(day.toLowerCase())}</Text></Checkbox>
+                    <Checkbox className="pr-1 pb-2" name="day" isFullWidth defaultChecked={ this.props.defaultProfessional && this.props.defaultProfessional.cookedWorkingDays.includes(translatedDays[day])} onClick={() => this.handleDays(day)} ><Text className="pl-1">{translatedDays[day]}</Text></Checkbox>
                   ))}
           </Column>
           <Column isSize={6}>
             <Select placeholder="Entrada" 
                     className="is-fullwidth"
                     borderless icon={ faChevronDown } 
-                    value = {this.state.startingDate}
+                    // value = {this.state.startingDate}
+                    // value = {this.props.defaultProfessional && this.props.defaultProfessional.beginHour}
                     name="starting" onChange={ this.handleChange } options={ hourList } />
             <Select placeholder="Salida"
                     className="is-fullwidth"
                     borderless icon={ faChevronDown }
-                    value = {this.state.finishingDate}
+                    // value = {this.state.finishingDate}
+                    // value = {this.props.defaultProfessional && this.props.defaultProfessional.endHour}
                     name="finishing" onChange={ this.handleChange } options={ hourList } />
           </Column>
         </Columns>
@@ -125,6 +132,7 @@ WorkingHoursSelector.PropTypes = {
   startingDate: PropTypes.object,
   finishingDate: PropTypes.object,
   days: PropTypes.array,
+  defaultProfessional: PropTypes.object,
   onChange: PropTypes.func,
   validate: PropTypes.func
 }

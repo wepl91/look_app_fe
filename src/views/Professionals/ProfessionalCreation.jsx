@@ -5,18 +5,12 @@ import {
   Column,
   Columns,
   Level,
-  LevelLeft,
-  Checkbox
+  LevelLeft
 } from 'bloomer';
 
 import {
   Button,
-  Select,
-  Field,
-  TextInput,
-  Title,
-  Text,
-  Panel
+  Title
 } from 'shipnow-mercurio';
 
 import { ReactComponent as SvgDraw } from '../../assets/undraw_online_cv_qy9w.svg';
@@ -27,7 +21,7 @@ import { withToastManager } from 'react-toast-notifications';
 
 import withStore from '../../hocs/withStore';
 
-import { Professional, Service } from '../../models';
+import { Professional } from '../../models';
 import { observer } from 'mobx-react';
 
 @observer
