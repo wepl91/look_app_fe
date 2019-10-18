@@ -33,7 +33,8 @@ class WorkingHoursSelector extends Component {
     if(this.props.defaultProfessional !== null &&  this.props.defaultProfessional  !== null){
       this.setState({
         startingDate: this.props.defaultProfessional.beginHour,
-        finishingDate: this.props.defaultProfessional.endHour
+        finishingDate: this.props.defaultProfessional.endHour,
+        days: this.props.defaultProfessional.rawWorkingDays
       })
     }
   }
