@@ -8,8 +8,7 @@ import {
   Column,
   Columns,
   Level,
-  LevelLeft,
-  Checkbox
+  LevelLeft
 } from 'bloomer';
 
 import {
@@ -38,6 +37,11 @@ class ClientCreation extends Component {
     this.state = {
       isSaving: false,
       loaded: false,
+      validName: false,
+      validLastName: false,
+      validDni: false,
+      validPrimaryPhone: false,
+      validSecondaryPhone: false
     }
 
     this.handleSave   = this.handleSave.bind(this);
@@ -52,8 +56,33 @@ class ClientCreation extends Component {
     })
   }
 
-  handleChange( name, value ) {
+  handleChange( name, value, valid ) {
     this.newClient[name] = value;
+    if(name=='name'){
+      this.setState({
+        validName: valid.type == 'success',
+      })
+    } else
+    if(name=='lastName'){
+      this.setState({
+        validLastName: valid.type == 'success',
+      })
+    } else
+    if(name=='DNI'){
+      this.setState({
+        validDni: valid.type == 'success',
+      })
+    } else
+    if(name=='primaryPhone'){
+      this.setState({
+        validPrimaryPhone: valid.type == 'success',
+      })
+    } else
+    if(name=='secondPhone'){
+      this.setState({
+        validSecondaryPhone: valid.type == 'success',
+      })
+    }
   }
 
   handleSave() {
@@ -85,6 +114,11 @@ class ClientCreation extends Component {
     });
   }
 
+  getDisabled() {
+    return !(this.state.validName && this.state.validLastName && this.state.validDni && this.state.validPrimaryPhone && this.state.validSecondaryPhone && this.newClient.status !== '')
+  }
+
+
   render() {
     if (!this.newClient) return null
     return(
@@ -104,7 +138,7 @@ class ClientCreation extends Component {
             <br/>
             { this.state.isSaving ? 
               <Button kind="outline" className="mt-5" disabled pulse icon={ faSpinner }>Creando..</Button> :
-              <Button kind="outline" className="mt-5" onClick={ this.handleSave } >Crear cliente</Button> }
+              <Button kind="outline" className="mt-5" onClick={ this.handleSave } disabled={ this.getDisabled() }>Crear cliente</Button> }
           </Column>
           <Column isSize={7}>
             <SvgDraw style={{ height: '75%', width: '75%'}}/>
