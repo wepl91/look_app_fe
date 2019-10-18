@@ -4,6 +4,7 @@ import { RESTClient, LocalStorageClient } from '../lib';
 import { 
   UIStore, 
   UsersStore,
+  RolesStore,
   ServicesStore,
   ProfessionalsStore,
   AppointmentsStore
@@ -37,6 +38,7 @@ export default class AppStore {
 
     // Domain stores
     this.stores.set('users', new UsersStore(this.APIClient, this));
+    this.stores.set('roles', new RolesStore(this.APIClient, this));
     this.stores.set('services', new ServicesStore(this.APIClient, this));
     this.stores.set('professionals', new ProfessionalsStore(this.APIClient, this));
     this.stores.set('appointments', new AppointmentsStore(this.APIClient, this));

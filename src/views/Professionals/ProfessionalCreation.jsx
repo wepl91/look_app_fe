@@ -63,7 +63,7 @@ class ProfessionalCreation extends Component {
           autoDismiss: true,
           pauseOnHover: false,
         });
-        this.props.history.push('professionals/list');
+        this.props.history.push('list');
       }
     })
   }

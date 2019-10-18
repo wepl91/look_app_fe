@@ -14,10 +14,10 @@ export default class Appointment extends Model {
     let defaultAttributes = {
       local: 'casa',
       status: "OPEN",
-      professional: '',
+      professional: null,
       client: null,
       dayHour: moment(),
-      services: [], 
+      services: '', 
     };
     
     let attrs = Object.assign( defaultAttributes, attributes );
@@ -50,6 +50,14 @@ export default class Appointment extends Model {
   }
 
   @computed
+  get professionalFullName() {
+    if (!this.professional) {
+      return '';
+    }
+    return `${ startCase(this.professional.name) } ${ startCase(this.professional.lastName) }`;
+  }
+
+  @computed
   get totalPrice() {
     let total = 0;
     if (!this.services || this.services.length == 0) {
@@ -57,7 +65,7 @@ export default class Appointment extends Model {
     }
 
     this.services.map( service => ( total += parseInt(service.price) ));
-
+    return total;
   }
 
   @computed
@@ -76,7 +84,7 @@ export default class Appointment extends Model {
   }
 
   @computed
-  get isCancelled() {
+  get isExpired() {
     return this.status.name === 'EXPIRED';
   }
 
@@ -88,13 +96,7 @@ export default class Appointment extends Model {
       'CANCELED': 'cancelled',
       'EXPIRED': 'cancelled'
     }
-
     return classNames[this.status.name];
-  }
-
-  @computed
-  get hour() {
-    return this.dayHour.format("HH:mm");
   }
 
   @action
@@ -134,6 +136,30 @@ export default class Appointment extends Model {
     })
     this.endUpdate();
     return this;
+  }
+
+  @computed
+  get cookedStatus() {
+    const statuses = {
+      'OPEN': 'Activo',
+      'PAID': 'Pagado',
+      'CANCELED': 'Cancelado',
+      'EXPIRED': 'Ausente'
+    }
+    return statuses[this.status.name];
+  }
+
+  @computed
+  get beginingTime() {
+    return this.dayHour.format("HH:mm")
+  }
+
+  @computed
+  get finishTime() {
+    let totalDuration = 0;
+    this.services.map( service => (totalDuration += service.duration));
+
+    return moment(this.dayHour).add(totalDuration, 'minutes').format("HH:mm");
   }
 
 }

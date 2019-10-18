@@ -39,7 +39,7 @@ class ProfessionalsList extends Component {
 
   componentDidMount() {
     this.setState({
-      professionals: this.props.store.professionals.getAll(),
+      professionals: this.props.store.professionals.search({}, 'list-professionals-view', true),
     })
   }
 

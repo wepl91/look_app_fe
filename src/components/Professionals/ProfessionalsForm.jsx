@@ -23,7 +23,6 @@ import { WorkingHoursSelector } from './';
 
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
-import { servicios, sucursales } from '../../lib/Mocks';
 
 import startCase from 'lodash/startCase';
 
@@ -52,7 +51,7 @@ class ProfessionalsForm extends Component {
   }
 
   componentDidMount() {
-    if (this.props.professional && this.state.selectedServices.length == 0){
+    if (this.props.professional && this.state.selectedServices.length == 0) {
       this.setState({
         selectedServices: this.props.professional.professionalServicesIds
       })
@@ -62,7 +61,7 @@ class ProfessionalsForm extends Component {
     })
   }
 
-  handleChange( sender, value, name, valid ) {
+  handleChange(sender, value, name, valid) {
     this.props.onChange && this.props.onChange(name, value, valid);
   }
 
@@ -107,11 +106,11 @@ class ProfessionalsForm extends Component {
     return validTimeRange;
   }
 
-  handleServices( value ) {
+  handleServices(value) {
     let newArray = Array.from(this.state.selectedServices)
-    if(newArray.includes(value)){
+    if (newArray.includes(value)) {
       newArray = newArray.filter(item => item !== value)
-    }else{
+    } else {
       newArray.push(value)
     }
     this.setState({
@@ -120,13 +119,36 @@ class ProfessionalsForm extends Component {
     this.props.onChange && this.props.onChange('services', newArray, newArray.length !== 0)
   }
 
+  renderSkeleton() {
+    return (
+      <React.Fragment>
+        <Field className="pl-5 pr-5" label="Nombre">
+          <TextInput name="name" className="is-fullwidth" disabled />
+        </Field>
+        <Field className="pl-5 pr-5" label="Apellido">
+          <TextInput name="lastName" className="is-fullwidth" disabled />
+        </Field>
+        <Field className="pl-5 pr-5" label="Teléfono">
+          <TextInput name="phone" className="is-fullwidth" disabled />
+        </Field>
+        <Field className="pl-5 pr-5" label="Mail">
+          <TextInput name="email" className="is-fullwidth" disabled />
+        </Field>
+        <Field className="pl-5 pr-5" label="¿Qué servicios ofrece?" labelNote="Seleccioná los servicios">
+          <Checkbox className="pt-1" isFullWidth defaultChecked={ false } ><Text className="pl-1">...</Text></Checkbox>
+          <Checkbox className="pt-1" isFullWidth defaultChecked={ false } ><Text className="pl-1">...</Text></Checkbox>
+          <Checkbox className="pt-1" isFullWidth defaultChecked={ false } ><Text className="pl-1">...</Text></Checkbox>
+        </Field>
+      </React.Fragment>)
+  }
+
   render() {
     if (!this.state.services || !this.state.services.isOk()) {
-      return 'Cargando profesionales...';
+      return this.renderSkeleton()
     }
     const { professional } = this.props;
-    const { services } = this.state; 
-    return(
+    const { services } = this.state;
+    return (
       <React.Fragment>
             <Field className="pl-5 pr-5" label="Nombre">
               <TextInput value={ professional && professional.name } name="name" className="is-fullwidth" onChange={ this.handleChange } />
@@ -158,12 +180,12 @@ class ProfessionalsForm extends Component {
 
 ProfessionalsForm.PropTypes = {
   onChange: PropTypes.func,
-  professional : PropTypes.object,
+  professional: PropTypes.object,
 }
 
 ProfessionalsForm.defaultProps = {
   onChange: null,
-  professional : null,
+  professional: null,
 }
 
 export default withStore(ProfessionalsForm);

@@ -41,7 +41,7 @@ class ServicesList extends Component {
 
   componentDidMount() {
     this.setState({
-      services: this.props.store.services.search({}),
+      services: this.props.store.services.search({}, 'services-list-view', true),
     })
   }
   
