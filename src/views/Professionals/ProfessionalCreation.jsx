@@ -5,18 +5,12 @@ import {
   Column,
   Columns,
   Level,
-  LevelLeft,
-  Checkbox
+  LevelLeft
 } from 'bloomer';
 
 import {
   Button,
-  Select,
-  Field,
-  TextInput,
-  Title,
-  Text,
-  Panel
+  Title
 } from 'shipnow-mercurio';
 
 import { ReactComponent as SvgDraw } from '../../assets/undraw_online_cv_qy9w.svg';
@@ -27,7 +21,7 @@ import { withToastManager } from 'react-toast-notifications';
 
 import withStore from '../../hocs/withStore';
 
-import { Professional, Service } from '../../models';
+import { Professional } from '../../models';
 import { observer } from 'mobx-react';
 
 @observer
@@ -39,13 +33,15 @@ class ProfessionalCreation extends Component {
     super(props);
 
     this.state = {
-      buttonDisabled: false
+      validServices: false,
+      validHours: false
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
+
   componentDidMount(){
-    this.newProfessional = new Professional({}, this.props.store.professionals);
+    this.newProfessional = this.getProfessional();
   }
 
   handleClick() {
@@ -74,11 +70,15 @@ class ProfessionalCreation extends Component {
 
   handleChange( name, value, valid ) {
     const professional = this.getProfessional();
-    if(name == 'hours'){
-      service.startingTime = value[0],
-      service.finishingTime = value[1],
+    if(name == 'services'){
       this.setState({
-        buttonDisabled: valid,
+        validServices: valid,
+      })
+    }
+    if(name == 'hours'){
+      professional.workingHours = value
+      this.setState({
+        validHours: valid,
       })
     }else{
       professional[name] = value;
@@ -88,13 +88,27 @@ class ProfessionalCreation extends Component {
     }
   }
 
+  getDisabled() {
+    const professional = this.getProfessional();
+    if (!this.state.validServices || !this.state.validHours) {
+      return true;
+    }
+    if (professional.name == '') {
+      return true;
+    }
+
+    return false;
+  }
 
   getProfessional() {
     if (this.newProfessional) {
       return this.newProfessional;
     }
-    else {
+    else if (this.props.professional){
       this.newProfessional = this.props.professional.clone();
+      return this.newProfessional;
+    }else{
+      this.newProfessional = new Professional({}, this.props.store.professionals);
       return this.newProfessional;
     }
   }
@@ -115,7 +129,7 @@ class ProfessionalCreation extends Component {
             <br/>
             <br/>
             <br/>
-            <Button onClick={ this.handleClick } className="ml-5" kind="outline" disabled={this.state.buttonDisabled}>Agregar profesional</Button>
+            <Button onClick={ this.handleClick } className="ml-5" kind="outline" disabled={this.getDisabled()}>Agregar profesional</Button>
           </Column>
           <Column isSize={7}>
             <SvgDraw style={{ height: '75%', width: '75%'}}/>

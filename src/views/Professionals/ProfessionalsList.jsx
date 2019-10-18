@@ -61,33 +61,32 @@ class ProfessionalsList extends Component {
       {
         label: 'Nombre',
         content: (data) => (<Text>{ startCase( data.fullName || '- sin nombre -'  )}</Text>),
-        size: 'is-2'
       },
       {
         label: 'Teléfono',
         content: (data) => (<Text>{ data.phone || '- sin teléfono -' }</Text>),
-        size: 'is-2'
       },
       {
         label: 'Mail',
         content: (data) => (<Text>{ data.email || '- sin email -' }</Text>),
-        size: 'is-2'
       },
-/*       {
-        label: 'Estado',
-        content: (data) => (<Text>{ `${ data.professionalStatus }` }</Text>),
-        size: 'is-2'
-      }, */
       {
         label: 'Servicios Ofrecidos',
-        content: (data) => (data.professionalServices.map(name => (<Text weight="medium" className="mb-2"><FontAwesomeIcon className="mr-1"icon={ faDotCircle } size="xs" fixedWidth/>{ name }</Text>))),
-        size: 'is-2'
+        content: (data) => (data.professionalServices.map(name => (<Text weight="medium" className="mb-2"><FontAwesomeIcon icon={ faDotCircle } size="xs" fixedWidth/>{ name }</Text>))),
+      },
+      {
+        label: 'Horario de trabajo',
+        content: (data) => (<Text weight="medium" className="mb-2">{ data.cookedWorkingHours }</Text>),
+      },
+      {
+        label: 'Días de trabajo',
+        content: (data) => (data.cookedWorkingDays.map(day => (<Text weight="medium" className="mb-2 mt-2"><FontAwesomeIcon icon={ faDotCircle } size="xs" fixedWidth/>{ day }</Text>))),
       },
       {
         label: '',
         content: (data) => (<Button icon={ faPencilAlt } kind="link" onClick={ () => (this.handleModal(data)) }/>),
         size: 'is-1',
-        align: 'right'
+        align: 'left'
       },
     ]
 
