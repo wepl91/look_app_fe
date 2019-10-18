@@ -1,13 +1,11 @@
 import { Model } from '../lib';
 
 import {
-  observable,
-  action,
-  computed,
-  toJS
+  computed
 } from 'mobx'
 
 import startCase from 'lodash/startCase';
+import moment from 'moment';
 
 export default class Professional extends Model {
   constructor( attributes, store ) {
@@ -19,9 +17,8 @@ export default class Professional extends Model {
       email: '',
       status: '',
       services: '',
-/*       branch: '',
-      workingHours: '', 
-      services: ''*/
+      workingHours: ''
+      // branch: ''
     };
 
     let attrs = Object.assign( defaultAttributes, attributes );
@@ -51,5 +48,63 @@ export default class Professional extends Model {
     const ret = [];
     this.services.map( service => (ret.push(service.id)))
     return ret;
+  }
+
+  @computed
+  get rawWorkingDays() {
+    const ret = [];
+    this.workingHours.map( day => (ret.push(day.days.name)))
+    return ret;
+  }
+
+  @computed
+  get cookedWorkingDays() {
+    const ret = [];
+    const cookedDays = {
+      'MONDAY': 'Lunes',
+      'TUESDAY': 'Martes',
+      'WEDNESDAY': 'Miércoles',
+      'THURSDAY': 'Jueves',
+      'FRIDAY': 'Viernes',
+      'SATURDAY': 'Sábado',
+      'SUNDAY': 'Domingo'
+    }
+    const sorter = {
+      "lunes": 1,
+      "martes": 2,
+      "miércoles": 3,
+      "jueves": 4,
+      "viernes": 5,
+      "sábado": 6,
+      "domingo": 7
+    }
+    this.workingHours.map( day => (ret.push(cookedDays[day.days.name])))
+    ret.sort(function sortByDay(a, b) {
+      let day1 = a.toLowerCase();
+      let day2 = b.toLowerCase();
+      return sorter[day1] - sorter[day2];
+    });
+    return ret;
+  }
+
+  @computed
+  get cookedWorkingHours() { //Refactorizar
+    let ret = []
+    this.workingHours.map( day => (ret.push(` ${ moment(day.beginHour.toString(),"LT").format("HH:mm") } a ${ moment(day.endHour.toString(),"LT").format("HH:mm") }`)))
+    return ret[0]
+  }
+
+  @computed
+  get beginHour() { //Refactorizar
+    let ret = []
+    this.workingHours.map( day => (ret.push(day.beginHour)))
+    return moment(ret[0].toString(),"LT").format("HH:mm")
+  }
+
+  @computed
+  get endHour() { //Refactorizar
+    let ret = []
+    this.workingHours.map( day => (ret.push(day.endHour)))
+    return moment(ret[0].toString(),"LT").format("HH:mm")
   }
 }

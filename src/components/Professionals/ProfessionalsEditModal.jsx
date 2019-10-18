@@ -7,6 +7,8 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 import { withToastManager } from 'react-toast-notifications';
 
+import { observer } from 'mobx-react';
+
 import {
   Modal,
   ModalContent,
@@ -22,6 +24,7 @@ import {
   LevelRight,
 } from 'bloomer';
 
+@observer
 class ProfessionalsEditModal extends Component {
   
   modifiedProfessional
@@ -34,8 +37,9 @@ class ProfessionalsEditModal extends Component {
     this.handleChange = this.handleChange.bind(this);
 
     this.state = {
-      buttonDisabled: false,
       reload: true,
+      validServices: true,
+      validHours: true
     }
   }
 
@@ -70,10 +74,22 @@ class ProfessionalsEditModal extends Component {
 
   handleChange( name, value, valid ) {
     const professional = this.getProfessional();
-    professional[name] = value;
-    this.setState( prevState => ({
-      reload: !prevState.reload
-    }))
+    if(name == 'services'){
+      this.setState({
+        validServices: valid,
+      })
+    }
+    if(name == 'hours'){
+      professional.workingHours = value
+      this.setState({
+        validHours: valid,
+      })
+    }else{
+      professional[name] = value;
+      this.setState( prevState => ({
+        reload: !prevState.reload
+      }))
+    }
   }
 
   getProfessional() {
@@ -88,16 +104,16 @@ class ProfessionalsEditModal extends Component {
 
   getDisabled() {
     const professional = this.getProfessional();
-    if (this.state.buttonDisabled) {
-      return false;
+    if (!this.state.validServices || !this.state.validHours) {
+      return true;
+    }
+    if (professional.name == '') {
+      return true;
     }
 
-    if (professional.services == '' || professional.name == '') {
-      return false;
-    }
-
-    return true;
+    return false;
   }
+  
 
   render() {
     const professional = this.getProfessional()

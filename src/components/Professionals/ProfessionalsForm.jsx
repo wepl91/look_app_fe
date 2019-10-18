@@ -38,6 +38,7 @@ class ProfessionalsForm extends Component {
     super(props);
 
     this.state = {
+      selectedDays: [],
       startingTime: '',
       finishingTime: '',
       services: null,
@@ -64,19 +65,30 @@ class ProfessionalsForm extends Component {
     this.props.onChange && this.props.onChange(name, value, valid);
   }
 
-  handleHours(received, valid, name) {
+  handleHours(received, valid, name ) {
     name = 'hours'
-    this.setState({
-      startingTime: received[0],
-      finishingTime: received[1]
-    })
-    valid = this.state.validTimeRange
-    this.props.onChange && this.props.onChange(name, received, valid);
+      this.setState({
+        selectedDays: received[0],
+        startingTime: received[1],
+        finishingTime: received[2]
+      }) 
+    let ret = []
+
+    //Así tiene el formato correspondiente a la REQUEST que espera el back
+    {received[0].map(day => (
+    ret.push({"days": day,
+    "beginHour": received[1].substring(0, 2),
+    "endHour":received[2].substring(0, 2)})
+    ))}
+          
+    valid = (moment(received[1],'HH:mm').isBefore(moment(received[2],'HH:mm')) && received[0].length !== 0)
+    this.props.onChange && this.props.onChange(name, ret, valid);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.startingTime != prevState.startingTime || this.state.finishingTime != prevState.finishingTime) {
-      this.setState({ validTimeRange: moment(this.state.startingTime, 'HH:mm').isBefore(moment(this.state.finishingTime, 'HH:mm')) })
+  componentDidUpdate(prevProps, prevState){
+    //Extraer los !== a un metodo aparte
+    if (this.state.selectedDays != prevState.selectedDays || this.state.startingTime != prevState.startingTime || this.state.finishingTime != prevState.finishingTime) {
+      this.setState({validTimeRange: (moment(this.state.startingTime,'HH:mm').isBefore(moment(this.state.finishingTime,'HH:mm')) && this.state.selectedDays.length !== 0)})
     }
   }
 
@@ -85,6 +97,12 @@ class ProfessionalsForm extends Component {
     if (startingTime === '' || finishingTime === '') {
       return true;
     }
+/*     if (startingTime && finishingTime === '') {
+      return false;
+    }
+    if (finishingTime && startingTime === '') {
+      return false;
+    } */
     return validTimeRange;
   }
 
@@ -98,7 +116,7 @@ class ProfessionalsForm extends Component {
     this.setState({
       selectedServices: newArray,
     });
-    this.props.onChange && this.props.onChange('services', newArray)
+    this.props.onChange && this.props.onChange('services', newArray, newArray.length !== 0)
   }
 
   renderSkeleton() {
@@ -132,31 +150,31 @@ class ProfessionalsForm extends Component {
     const { services } = this.state;
     return (
       <React.Fragment>
-        <Field className="pl-5 pr-5" label="Nombre">
-          <TextInput value={professional && professional.name} name="name" className="is-fullwidth" onChange={this.handleChange} />
-        </Field>
-        <Field className="pl-5 pr-5" label="Apellido">
-          <TextInput value={professional && professional.lastName} name="lastName" className="is-fullwidth" onChange={this.handleChange} />
-        </Field>
-        <Field className="pl-5 pr-5" label="Teléfono">
-          <TextInput value={professional && professional.phone} name="phone" className="is-fullwidth" onChange={this.handleChange} />
-        </Field>
-        <Field className="pl-5 pr-5" label="Mail">
-          <TextInput value={professional && professional.email} name="email" className="is-fullwidth" onChange={this.handleChange} />
-        </Field>
-        {/*           <Field className="pl-5 pr-5" label="¿En qué sucursal va a atender?" labelNote="Seleccioná una sucursal">
-          <Select className="is-fullwidth" placeholder="Sucursales" borderless icon={ faChevronDown } options={ sucursales().map(sucursal => ({key: sucursal.address, value: sucursal.id})) } />
-        </Field>
-        <Field className="pl-5 pr-5" label="Horarios de trabajo" labelNote="Seleccioná los horarios semanales">
-          <WorkingHoursSelector name="hours" startingDate={ moment('05-17-2018 02:30 PM', 'MM-DD-YYYY hh:mm A') } finishingDate={ moment('05-17-2018 06:00 PM', 'MM-DD-YYYY hh:mm A') } onChange={ this.handleHours } />
-          { !this.isValidHour() && <Panel color="error" invert ><Text className="has-text-centered">Los horarios ingresados son incorrectos</Text></Panel> }
-        </Field> */}
-        <Field className="pl-5 pr-5" label="¿Qué servicios ofrece?" labelNote="Seleccioná los servicios">
-          {services.toArray().map(serv => (
-            <Checkbox className="pt-1" isFullWidth onClick={() => this.handleServices(serv.id)} defaultChecked={professional && professional.professionalServicesIds.includes(serv.id)} ><Text className="pl-1">{startCase(serv.name)}</Text></Checkbox>
-          ))}
-        </Field>
-      </React.Fragment>)
+            <Field className="pl-5 pr-5" label="Nombre">
+              <TextInput value={ professional && professional.name } name="name" className="is-fullwidth" onChange={ this.handleChange } />
+            </Field>
+            <Field className="pl-5 pr-5" label="Apellido">
+              <TextInput value={ professional && professional.lastName } name="lastName" className="is-fullwidth" onChange={ this.handleChange } />
+            </Field>
+            <Field className="pl-5 pr-5" label="Teléfono">
+              <TextInput value={ professional && professional.phone } name="phone" className="is-fullwidth" onChange={ this.handleChange } />
+            </Field>
+            <Field className="pl-5 pr-5" label="Mail">
+              <TextInput value={ professional && professional.email } name="email" className="is-fullwidth" onChange={ this.handleChange } />
+            </Field>
+            {/* <Field className="pl-5 pr-5" label="¿En qué sucursal va a atender?" labelNote="Seleccioná una sucursal">
+              <Select className="is-fullwidth" placeholder="Sucursales" borderless icon={ faChevronDown } options={ sucursales().map(sucursal => ({key: sucursal.address, value: sucursal.id})) } />
+            </Field> */}
+            <Field className="pl-5 pr-5" label="¿En qué días y horarios va a trabajar?" labelNote="Seleccioná los horarios semanales">
+              <WorkingHoursSelector name="hours" defaultProfessional={professional} startingDate={ moment('05-17-2018 09:00 AM', 'MM-DD-YYYY hh:mm A') } finishingDate={ moment('05-17-2018 06:00 PM', 'MM-DD-YYYY hh:mm A') } days={['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY']} onChange={ this.handleHours } />
+              { !this.isValidHour() && <Panel className="mt-1" color="error" invert style={{padding: '2px'}}><Text className="has-text-centered">Los días y/o los horarios ingresados son incorrectos</Text></Panel> }
+            </Field>
+            <Field className="pl-5 pr-5" label="¿Qué servicios ofrece?" labelNote="Seleccioná los servicios">
+              {services.toArray().map(serv => (
+                <Checkbox className="pt-1" isFullWidth onClick={() => this.handleServices(serv.id)} defaultChecked={ professional && professional.professionalServicesIds.includes(serv.id)} ><Text className="pl-1">{startCase(serv.name)}</Text></Checkbox>
+              ))}
+            </Field>
+      </React.Fragment> )
   }
 }
 
