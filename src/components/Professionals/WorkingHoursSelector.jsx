@@ -29,6 +29,15 @@ class WorkingHoursSelector extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+  componentDidMount(){
+    if(this.props.defaultProfessional !== null &&  this.props.defaultProfessional  !== null){
+      this.setState({
+        startingDate: this.props.defaultProfessional.beginHour,
+        finishingDate: this.props.defaultProfessional.endHour
+      })
+    }
+  }
+
   handleChange( sender, value, name, valid ) {
     if (name == 'starting') {
       this.setState({
@@ -113,14 +122,12 @@ class WorkingHoursSelector extends Component {
             <Select placeholder="Entrada" 
                     className="is-fullwidth"
                     borderless icon={ faChevronDown } 
-                    // value = {this.state.startingDate}
-                    // value = {this.props.defaultProfessional && this.props.defaultProfessional.beginHour}
+                    value = {this.state.startingDate}
                     name="starting" onChange={ this.handleChange } options={ hourList } />
             <Select placeholder="Salida"
                     className="is-fullwidth"
                     borderless icon={ faChevronDown }
-                    // value = {this.state.finishingDate}
-                    // value = {this.props.defaultProfessional && this.props.defaultProfessional.endHour}
+                    value = {this.state.finishingDate}
                     name="finishing" onChange={ this.handleChange } options={ hourList } />
           </Column>
         </Columns>
