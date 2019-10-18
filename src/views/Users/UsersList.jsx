@@ -16,6 +16,7 @@ import {
 } from 'bloomer';
 
 import withStore from '../../hocs/withStore';
+import { withToastManager } from 'react-toast-notifications';
 
 import { observer } from 'mobx-react';
 
@@ -25,6 +26,8 @@ import startCase from 'lodash/startCase';
 
 import { UsersEditModal } from '../../components/Users';
 
+import { ConfirmationModal } from '../../components/ConfirmationModal';
+
 @observer
 class UsersList extends Component {
   constructor(props) {
@@ -33,11 +36,55 @@ class UsersList extends Component {
     this.state = {
       users: null,
       showModal: false,
-      editUser: null
+      editUser: null,
     }
 
-    this.handleHideModal = this.handleHideModal.bind(this);
-    this.handleSaved     = this.handleSaved.bind(this);
+    this.handleHideModal  = this.handleHideModal.bind(this);
+    this.handleSaved      = this.handleSaved.bind(this);
+    this.handleActivate   = this.handleActivate.bind(this);
+    this.handleInactivate = this.handleInactivate.bind(this);
+  }
+
+  handleActivate( user ) {
+    const { toastManager } = this.props;
+    user.activate().andThen( (savedUser, responseError) => {
+      if (responseError) {
+        toastManager.add("Ups! Parece que hubo un error al activar el usuario!", {
+          appearance: 'error',
+          autoDismiss: true,
+          pauseOnHover: false,
+        });
+      }
+      else {
+        let text = <Text color="warning" weight="medium" className="mt-1 mb-1">¡El usuario ha sido marcado como activo!</Text>
+        toastManager.add(text, {
+          appearance: 'warning',
+          autoDismiss: true,
+          pauseOnHover: false,
+        });
+      }
+    })
+  }
+
+  handleInactivate( user ) {
+    const { toastManager } = this.props;
+    user.deactivate().andThen( (savedUser, responseError) => {
+      if (responseError) {
+        toastManager.add("Ups! Parece que hubo un error al desactivar el usuario!", {
+          appearance: 'error',
+          autoDismiss: true,
+          pauseOnHover: false,
+        });
+      }
+      else {
+        let text = <Text color="warning" weight="medium" className="mt-1 mb-1">¡El usuario ha sido marcado como inactivo!</Text>
+        toastManager.add(text, {
+          appearance: 'warning',
+          autoDismiss: true,
+          pauseOnHover: false,
+        });
+      }
+    })
   }
 
   handleShowModal( user ) {
@@ -104,7 +151,7 @@ class UsersList extends Component {
       },
       {
         label: 'Activo',
-        content: (data) => (<Toggle checked={ data.active || true } checkedColor="success" unCheckedColor="delete"/>),
+        content: (data) => (<Toggle checked={ data.isActive } checkedColor="success" unCheckedColor="delete" onChange={ () => (data.isActive ? this.handleInactivate(data) : this.handleActivate(data)) }/>),
         size: 'is-1',
         align: 'left'
       },
@@ -126,7 +173,7 @@ class UsersList extends Component {
   }
 
   renderModal() {
-    return(<UsersEditModal user={ this.state.editUser } onClose={ this.handleHideModal } onSave={ this.handleSaved }/>)
+    return( <UsersEditModal user={ this.state.editUser } onClose={ this.handleHideModal } onSave={ this.handleSaved }/> )
   }
 
   render() {
@@ -143,9 +190,10 @@ class UsersList extends Component {
         <hr/>
         { this.renderTable() }
         { this.state.showModal && this.renderModal() }
+        { this.state.showToggleConfirmation && this.renderConfirmationModal() }
       </React.Fragment> )
   }
 
 }
 
-export default withStore(UsersList);
+export default withToastManager(withStore(UsersList));

@@ -5,6 +5,8 @@ import {
   computed,
 } from 'mobx'
 
+import startCase from 'lodash/startCase';
+
 export default class User extends Model {
   constructor( attributes, store ) {
 
@@ -15,6 +17,7 @@ export default class User extends Model {
       roles: [],
       name: '',
       lastname: '',
+      status: null,
     };
 
     let attrs = Object.assign( defaultAttributes, attributes );
@@ -33,6 +36,11 @@ export default class User extends Model {
   }
 
   @computed
+  get cookedFullName() {
+    return `${ startCase(this.cookedName) } ${ startCase(this.cookedLastname) }`;
+  }
+
+  @computed
   get userRole() {
     return this.roles[0] && this.roles[0].name;
   }
@@ -40,5 +48,22 @@ export default class User extends Model {
   @computed
   get roleID() {
     return (this.roles[0] && this.roles[0].id) || this.roles[0];
+  }
+
+  @computed
+  get isActive() {
+    return this.status.name == 'ACTIVE';
+  }
+
+  @action
+  activate() {
+    this.status = 'ACTIVE';
+    return this.save();
+  }
+
+  @action
+  deactivate() {
+    this.status = 'INACTIVE';
+    return this.save();
   }
 }

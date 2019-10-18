@@ -6,10 +6,30 @@ import { observer } from 'mobx-react';
 import withStore from '../../hocs/withStore';
 
 import { SignIn } from '../Session';
-import { UsersMenu, UsersRouter } from '../Users'
-import { AppointmentsMenu, AppointmentsList, AppointmentsRouter } from '../Appointments';
-import { ServicesMenu, ServicesList, ServicesRouter } from '../Services'
-import { ProfessionalsMenu, ProfessionalsList, ProfessionalsRouter } from '../Professionals'
+import { 
+  UsersMenu, 
+  UsersRouter
+} from '../Users'
+
+import { 
+  AppointmentsMenu, 
+  AppointmentsRouter 
+} from '../Appointments';
+
+import { 
+  ServicesMenu, 
+  ServicesRouter 
+} from '../Services';
+
+import { 
+  ProfessionalsMenu, 
+  ProfessionalsRouter 
+} from '../Professionals';
+
+import {
+  ClientsMenu,
+  ClientsRouter
+} from '../Clients'
 
 import LanguageDropdown from '../../components/LanguageDropdown/LanguageDropdown';
 
@@ -30,11 +50,6 @@ import { faChevronCircleLeft, faChevronCircleRight, faBars } from "@fortawesome/
 
 import './style.css'
 
-const FakeContent = withRouter( (props) => (
-  <div>
-    <Title>{ props.location.pathname }</Title>
-  </div>
-));
 @observer
 class AppRouter extends Component {
   constructor(props) {
@@ -63,6 +78,7 @@ class AppRouter extends Component {
               <ServicesMenu      />
               <ProfessionalsMenu />
               <UsersMenu         />
+              <ClientsMenu       />
               <div className={ this.state.expanded ? 'menu_button_expanded' : 'menu_button' }>
                 <Button kind="link" key={ this.state.expanded } invert size="lg" onClick={ () => (this.setState(preState => ({expanded: !preState.expanded})))} icon={ this.state.expanded ? faBars : faBars }/>
               </div>  
@@ -72,6 +88,7 @@ class AppRouter extends Component {
                 <ServicesRouter      />
                 <ProfessionalsRouter />
                 <UsersRouter         />
+                <ClientsRouter       />
             </LayoutContent>
           </Layout>
         </React.Fragment> )
