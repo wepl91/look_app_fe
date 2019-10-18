@@ -1,5 +1,6 @@
 export { default as AppStore           } from './AppStore'; 
 export { default as UIStore            } from './UIStore';
+export { default as ClientsStore       } from './ClientsStore';
 export { default as UsersStore         } from './UsersStore.js';
 export { default as RolesStore         } from './RolesStore';
 export { default as ServicesStore      } from './ServicesStore';
