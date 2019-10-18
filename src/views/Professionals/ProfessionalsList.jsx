@@ -66,7 +66,7 @@ class ProfessionalsList extends Component {
       {
         label: 'Teléfono',
         content: (data) => (<Text>{ data.phone || '- sin teléfono -' }</Text>),
-        size: 'is-2'
+        size: 'is-1'
       },
       {
         label: 'Mail',
@@ -84,9 +84,13 @@ class ProfessionalsList extends Component {
         size: 'is-2'
       },
       {
-        //separar columnas de horarios y dias
-        label: 'Horarios de trabajo',
-        content: (data) => (data.cookedWorkingHours.map(day => (<Text weight="medium" className="mb-2"><FontAwesomeIcon icon={ faDotCircle } size="xs" fixedWidth/>{ day }</Text>))),
+        label: 'Horario de trabajo',
+        content: (data) => (<Text weight="medium" className="mb-2">{ data.cookedWorkingHours }</Text>),
+        size: 'is-1'
+      },
+      {
+        label: 'Días de trabajo',
+        content: (data) => (data.cookedWorkingDays.map(day => (<Text weight="medium" className="mb-2 mt-2"><FontAwesomeIcon icon={ faDotCircle } size="xs" fixedWidth/>{ day }</Text>))),
         size: 'is-2'
       },
       {

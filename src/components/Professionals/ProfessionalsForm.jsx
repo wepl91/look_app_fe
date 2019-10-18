@@ -72,24 +72,16 @@ class ProfessionalsForm extends Component {
         selectedDays: received[0],
         startingTime: received[1],
         finishingTime: received[2]
-      }, () => {
-        valid = this.isValidHour()
       }) 
-/*       this.setState({
-        selectedDays: received[0],
-        startingTime: received[1],
-        finishingTime: received[2]
-      })  */
     let ret = []
 
-    //NO TOCAR
+    //Así tiene el formato correspondiente a la REQUEST que espera el back
     {received[0].map(day => (
     ret.push({"days": day,
     "beginHour": received[1].substring(0, 2),
     "endHour":received[2].substring(0, 2)})
     ))}
           
-
     valid = (moment(received[1],'HH:mm').isBefore(moment(received[2],'HH:mm')) && received[0].length !== 0)
     this.props.onChange && this.props.onChange(name, ret, valid);
   }
@@ -151,14 +143,9 @@ class ProfessionalsForm extends Component {
             <Field className="pl-5 pr-5" label="¿En qué sucursal va a atender?" labelNote="Seleccioná una sucursal">
               <Select className="is-fullwidth" placeholder="Sucursales" borderless icon={ faChevronDown } options={ sucursales().map(sucursal => ({key: sucursal.address, value: sucursal.id})) } />
             </Field>
-            {/* <Field className="pl-5 pr-5" label="¿Qué días va a trabajar?" labelNote="Seleccioná los días de trabajo">
-              {services.toArray().map(serv => (
-                <Checkbox className="pt-1" isFullWidth onClick={() => this.handleServices(serv.id)} defaultChecked={ professional && professional.professionalServicesIds.includes(serv.id)} ><Text className="pl-1">{startCase(serv.name)}</Text></Checkbox>
-              ))}
-            </Field> */}
             <Field className="pl-5 pr-5" label="¿En qué días y horarios va a trabajar?" labelNote="Seleccioná los horarios semanales">
               <WorkingHoursSelector name="hours" startingDate={ moment('05-17-2018 09:00 AM', 'MM-DD-YYYY hh:mm A') } finishingDate={ moment('05-17-2018 06:00 PM', 'MM-DD-YYYY hh:mm A') } days={['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY']} onChange={ this.handleHours } />
-              { !this.isValidHour() && <Panel className="mt-1" color="error" invert style={{padding: '2px', width: '400px'}}><Text className="has-text-centered">Los días y/o los horarios ingresados son incorrectos</Text></Panel> }
+              { !this.isValidHour() && <Panel className="mt-1" color="error" invert style={{padding: '2px'}}><Text className="has-text-centered">Los días y/o los horarios ingresados son incorrectos</Text></Panel> }
             </Field>
             <Field className="pl-5 pr-5" label="¿Qué servicios ofrece?" labelNote="Seleccioná los servicios">
               {services.toArray().map(serv => (

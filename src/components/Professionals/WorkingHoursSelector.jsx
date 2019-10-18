@@ -98,23 +98,18 @@ class WorkingHoursSelector extends Component {
     let daysList = this.props.days
     return(
       <React.Fragment>
-
-        {daysList.map(day => (
-                  <Checkbox className="pr-1 pb-2" name="day" isFullWidth onClick={() => this.handleDays(day)} ><Text className="pl-1">{startCase(day.toLowerCase())}</Text></Checkbox>
-                ))}
-
-        <Columns className="is-gapless is-marginless" isVCentered isCentered>
-          <Column isSize={5}>
+        <Columns className="is-gapless is-marginless" isCentered isVCentered>
+          <Column isSize={6}>
+          {daysList.map(day => (
+                    <Checkbox className="pr-1 pb-2" name="day" isFullWidth onClick={() => this.handleDays(day)} ><Text className="pl-1">{startCase(day.toLowerCase())}</Text></Checkbox>
+                  ))}
+          </Column>
+          <Column isSize={6}>
             <Select placeholder="Entrada" 
                     className="is-fullwidth"
                     borderless icon={ faChevronDown } 
                     value = {this.state.startingDate}
                     name="starting" onChange={ this.handleChange } options={ hourList } />
-          </Column>
-          <Column isSize={2} className="has-text-centered">
-            <Text>a</Text>
-          </Column>
-          <Column isSize={5}>
             <Select placeholder="Salida"
                     className="is-fullwidth"
                     borderless icon={ faChevronDown }
