@@ -136,7 +136,7 @@ class ProfessionalsEditModal extends Component {
           <Level>
             <LevelLeft></LevelLeft>
             <LevelRight>
-              <Button kind="outline" disabled={ !this.getDisabled() } onClick={ this.handleSave }>Guardar</Button>
+              <Button kind="outline" disabled={ this.getDisabled() } onClick={ this.handleSave }>Guardar</Button>
               <Button kind="link" onClick={ this.handleClose }>Cancelar</Button>
             </LevelRight>
           </Level>
