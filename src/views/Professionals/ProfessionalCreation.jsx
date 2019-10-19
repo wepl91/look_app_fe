@@ -123,13 +123,12 @@ class ProfessionalCreation extends Component {
         </Level>
         <hr/>
         <Columns>
-          <Column className="pl-5 pr-5" isSize={5}>
+          <Column className="pr-4" isSize={6}>
             <ProfessionalsForm onChange={ this.handleChange } />
             <br/>
             <br/>
             <br/>
-            <br/>
-            <Button onClick={ this.handleClick } className="ml-5" kind="outline" disabled={this.getDisabled()}>Agregar profesional</Button>
+            <Button onClick={ this.handleClick } className="ml-4" kind="outline" disabled={this.getDisabled()}>Agregar profesional</Button>
           </Column>
           <Column isSize={7}>
             <SvgDraw style={{ height: '75%', width: '75%'}}/>

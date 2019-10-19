@@ -15,11 +15,11 @@ import {
 import moment from 'moment';
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
- 
+
 class WorkingHoursSelector extends Component {
   constructor(props) {
     super(props)
-  
+
     this.state = {
       startingDate: '',
       finishingDate: '',
@@ -29,8 +29,8 @@ class WorkingHoursSelector extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidMount(){
-    if(this.props.defaultProfessional){
+  componentDidMount() {
+    if (this.props.defaultProfessional) {
       this.setState({
         startingDate: this.props.defaultProfessional.beginHour,
         finishingDate: this.props.defaultProfessional.endHour,
@@ -39,7 +39,7 @@ class WorkingHoursSelector extends Component {
     }
   }
 
-  handleChange( sender, value, name, valid ) {
+  handleChange(sender, value, name, valid) {
     if (name == 'starting') {
       this.setState({
         startingDate: value
@@ -49,52 +49,52 @@ class WorkingHoursSelector extends Component {
       this.setState({
         finishingDate: value
       })
-    } 
+    }
   }
 
-  handleDays( received ) {
-      let newArray = Array.from(this.state.days)
-      if(newArray.includes(received)){
-        newArray = newArray.filter(item => item !== received)
-      }else{
-        newArray.push(received)
-      }
-      this.setState({
-        days: newArray,
-      });
+  handleDays(received) {
+    let newArray = Array.from(this.state.days)
+    if (newArray.includes(received)) {
+      newArray = newArray.filter(item => item !== received)
+    } else {
+      newArray.push(received)
+    }
+    this.setState({
+      days: newArray,
+    });
   }
 
-  componentDidUpdate(prevProps, prevState){
+  componentDidUpdate(prevProps, prevState) {
     if (this.state.days != prevState.days || this.state.startingDate != prevState.startingDate || this.state.finishingDate != prevState.finishingDate) {
-      this.props.onChange([this.state.days , this.state.startingDate, this.state.finishingDate]);
+      this.props.onChange([this.state.days, this.state.startingDate, this.state.finishingDate]);
     }
   }
 
   //30 minutes intervals
   // hoursBetweenDates(startDate, endDate) {
   //   let dates = [];
-  
+
   //   let currDate = moment(startDate).startOf('minute').subtract(30, 'minutes');
   //   let lastDate = moment(endDate).startOf('minute').add(30, 'minutes');
-  
+
   //   while(currDate.add(30, 'minutes').diff(lastDate, 'minutes') < 0) {
   //       dates.push(currDate.clone().format('HH:mm'));
   //   }
-  
+
   //   return dates;
   // }
 
   //1 hour intervals
   hoursBetweenDates(startDate, endDate) {
     let hours = [];
-  
+
     let currDate = moment(startDate).startOf('minute').subtract(60, 'minutes');
     let lastDate = moment(endDate).startOf('minute').add(60, 'minutes');
-  
-    while(currDate.add(60, 'minutes').diff(lastDate, 'minutes') < 0) {
-        hours.push(currDate.clone().format('HH:mm'));
+
+    while (currDate.add(60, 'minutes').diff(lastDate, 'minutes') < 0) {
+      hours.push(currDate.clone().format('HH:mm'));
     }
-  
+
     return hours;
   }
 
@@ -108,28 +108,33 @@ class WorkingHoursSelector extends Component {
       'THURSDAY': 'Jueves',
       'FRIDAY': 'Viernes',
       'SATURDAY': 'Sábado',
-      'SUNDAY': 'Domingo'
     }
 
-    return(
+    return (
       <React.Fragment>
-        <Columns className="is-gapless is-marginless" isCentered isVCentered>
-          <Column isSize={6}>
+        <Columns className="is-gapless is-marginless mb-1" isCentered isVCentered>
           {daysList.map(day => (
-                    <Checkbox className="pr-1 pb-2" name="day" isFullWidth defaultChecked={ this.props.defaultProfessional && this.props.defaultProfessional.cookedWorkingDays.includes(translatedDays[day])} onClick={() => this.handleDays(day)} ><Text className="pl-1">{translatedDays[day]}</Text></Checkbox>
-                  ))}
+            <Checkbox className="pr-1 mr-1 mt-2" name="day" isFullWidth defaultChecked={this.props.defaultProfessional && this.props.defaultProfessional.cookedWorkingDays.includes(translatedDays[day])} onClick={() => this.handleDays(day)} ><Text className="ml-1">{translatedDays[day]}</Text></Checkbox>
+          ))}
+        </Columns>
+        <Columns className="is-gapless is-marginless mb-3" isVCentered>
+          <Column className="pt-1" isSize={ 1 }>
+            <Text size="md" weight="medium">De</Text>
           </Column>
-          <Column isSize={6}>
-            <Select placeholder="Entrada" 
-                    className="is-fullwidth"
-                    borderless icon={ faChevronDown } 
-                    value = {this.state.startingDate}
-                    name="starting" onChange={ this.handleChange } options={ hourList } />
+          <Column isSize={ 3 }>
+            <Select placeholder="Entrada"
+              borderless icon={faChevronDown}
+              value={this.state.startingDate}
+              name="starting" onChange={this.handleChange} options={hourList} />
+          </Column>
+          <Column className="pt-1" isSize={ 1 }>
+            <Text size="md" weight="medium">a</Text>
+          </Column>
+          <Column isSize={ 3 }>
             <Select placeholder="Salida"
-                    className="is-fullwidth"
-                    borderless icon={ faChevronDown }
-                    value = {this.state.finishingDate}
-                    name="finishing" onChange={ this.handleChange } options={ hourList } />
+              borderless icon={faChevronDown}
+              value={this.state.finishingDate}
+              name="finishing" onChange={this.handleChange} options={hourList} />
           </Column>
         </Columns>
       </React.Fragment>)
