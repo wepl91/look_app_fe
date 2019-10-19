@@ -2,27 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Column,
-  Columns,
-  Level,
-  LevelLeft,
   Checkbox
 } from 'bloomer';
 
 import {
-  Button,
-  Select,
   Field,
   TextInput,
-  Title,
   Text,
   Panel
 } from 'shipnow-mercurio';
 
 import { WorkingHoursSelector } from './';
-
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-
 
 import startCase from 'lodash/startCase';
 
@@ -31,6 +21,8 @@ import { withStore } from '../../hocs';
 import moment from 'moment';
 
 import { observer } from 'mobx-react';
+
+import { nameRegex, mailRegex, phoneRegex } from '../../lib/Regex'
 
 @observer
 class ProfessionalsForm extends Component {
@@ -81,14 +73,17 @@ class ProfessionalsForm extends Component {
     "endHour":received[2].substring(0, 2)})
     ))}
           
-    valid = (moment(received[1],'HH:mm').isBefore(moment(received[2],'HH:mm')) && received[0].length !== 0)
+    valid = (moment(received[1],'HH:mm').isBefore(moment(received[2],'HH:mm')) && received[0].length > 0)
     this.props.onChange && this.props.onChange(name, ret, valid);
   }
 
   componentDidUpdate(prevProps, prevState){
-    //Extraer los !== a un metodo aparte
-    if (this.state.selectedDays != prevState.selectedDays || this.state.startingTime != prevState.startingTime || this.state.finishingTime != prevState.finishingTime) {
-      this.setState({validTimeRange: (moment(this.state.startingTime,'HH:mm').isBefore(moment(this.state.finishingTime,'HH:mm')) && this.state.selectedDays.length !== 0)})
+    let differentDay = this.state.selectedDays !== prevState.selectedDays
+    let differentStartingTime = this.state.startingTime !== prevState.startingTime
+    let differentFinishingTime = this.state.finishingTime !== prevState.finishingTime
+
+    if ( differentDay || differentStartingTime || differentFinishingTime) {
+      this.setState({validTimeRange: (moment(this.state.startingTime,'HH:mm').isBefore(moment(this.state.finishingTime,'HH:mm')) && this.state.selectedDays.length > 0)})
     }
   }
 
@@ -97,12 +92,6 @@ class ProfessionalsForm extends Component {
     if (startingTime === '' || finishingTime === '') {
       return true;
     }
-/*     if (startingTime && finishingTime === '') {
-      return false;
-    }
-    if (finishingTime && startingTime === '') {
-      return false;
-    } */
     return validTimeRange;
   }
 
@@ -151,23 +140,23 @@ class ProfessionalsForm extends Component {
     return (
       <React.Fragment>
             <Field className="pl-4 pr-4" label="Nombre">
-              <TextInput value={ professional && professional.name } name="name" className="is-fullwidth" onChange={ this.handleChange } />
+              <TextInput value={ professional && professional.name } name="name" validate={ (value) => (nameRegex.test(value)) } className="is-fullwidth" onChange={ this.handleChange } />
             </Field>
             <Field className="pl-4 pr-4" label="Apellido">
-              <TextInput value={ professional && professional.lastName } name="lastName" className="is-fullwidth" onChange={ this.handleChange } />
+              <TextInput value={ professional && professional.lastName } name="lastName" validate={ (value) => (nameRegex.test(value)) } className="is-fullwidth" onChange={ this.handleChange } />
             </Field>
             <Field className="pl-4 pr-4" label="Teléfono">
-              <TextInput value={ professional && professional.phone } name="phone" className="is-fullwidth" onChange={ this.handleChange } />
+              <TextInput value={ professional && professional.phone } name="phone" validate={ (value) => (phoneRegex.test(value)) } className="is-fullwidth" onChange={ this.handleChange } />
             </Field>
             <Field className="pl-4 pr-4" label="Mail">
-              <TextInput value={ professional && professional.email } name="email" className="is-fullwidth" onChange={ this.handleChange } />
+              <TextInput value={ professional && professional.email } name="email" validate={ (value) => (mailRegex.test(value)) } className="is-fullwidth" onChange={ this.handleChange } />
             </Field>
             {/* <Field className="pl-5 pr-5" label="¿En qué sucursal va a atender?" labelNote="Seleccioná una sucursal">
               <Select className="is-fullwidth" placeholder="Sucursales" borderless icon={ faChevronDown } options={ sucursales().map(sucursal => ({key: sucursal.address, value: sucursal.id})) } />
             </Field> */}
             <Field className="pl-4 pr-4" label="¿En qué días y horarios va a trabajar?" labelNote="Seleccioná los horarios semanales">
               <WorkingHoursSelector name="hours" defaultProfessional={professional} startingDate={ moment('05-17-2018 09:00 AM', 'MM-DD-YYYY hh:mm A') } finishingDate={ moment('05-17-2018 06:00 PM', 'MM-DD-YYYY hh:mm A') } days={['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY']} onChange={ this.handleHours } />
-              { !this.isValidHour() && <Panel className="mt-1" color="error" invert style={{padding: '2px'}}><Text className="has-text-centered">Los días y/o los horarios ingresados son incorrectos</Text></Panel> }
+              { !this.isValidHour() && <Panel className="mt-1" color="error" invert style={{padding: '2px'}}><Text className="has-text-centered">Los horarios y/o días ingresados son incorrectos</Text></Panel> }
             </Field>
             <Field className="pl-4 pr-4" label="¿Qué servicios ofrece?" labelNote="Seleccioná los servicios">
               {services.toArray().map(serv => (

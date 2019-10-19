@@ -38,8 +38,12 @@ class ProfessionalsEditModal extends Component {
 
     this.state = {
       reload: true,
+      validName: true,
+      validLastName: true,
+      validPhone: true,
+      validMail: true,
       validServices: true,
-      validHours: true
+      validHours: true,
     }
   }
 
@@ -74,11 +78,31 @@ class ProfessionalsEditModal extends Component {
 
   handleChange( name, value, valid ) {
     const professional = this.getProfessional();
+    if(name=='name'){
+      this.setState({
+        validName: valid.type == 'success',
+      })
+    } else
+    if(name=='lastName'){
+      this.setState({
+        validLastName: valid.type == 'success',
+      })
+    } else
+    if(name=='phone'){
+      this.setState({
+        validPhone: valid.type == 'success',
+      })
+    } else
+    if(name=='email'){
+      this.setState({
+        validMail: valid.type == 'success',
+      })
+    } else
     if(name == 'services'){
       this.setState({
         validServices: valid,
       })
-    }
+    } else
     if(name == 'hours'){
       professional.workingHours = value
       this.setState({
@@ -103,18 +127,9 @@ class ProfessionalsEditModal extends Component {
   }
 
   getDisabled() {
-    const professional = this.getProfessional();
-    if (!this.state.validServices || !this.state.validHours) {
-      return true;
-    }
-    if (professional.name == '') {
-      return true;
-    }
-
-    return false;
+    return !(this.state.validName && this.state.validLastName && this.state.validPhone && this.state.validMail && this.state.validServices && this.state.validHours)
   }
   
-
   render() {
     const professional = this.getProfessional()
     return(
