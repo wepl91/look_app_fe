@@ -38,6 +38,11 @@ class ClientEditModal extends Component {
 
     this.state = {
       isSaving: false,
+      validName: true,
+      validLastName: true,
+      validDni: true,
+      validPrimaryPhone: true,
+      validSecondaryPhone: true
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -45,9 +50,34 @@ class ClientEditModal extends Component {
     this.handleSave   = this.handleSave.bind(this);
   }
 
-  handleChange( name, value ) {
+  handleChange( name, value, valid ) {
     const client = this.getClient();
     client[name] = value;
+    if(name=='name'){
+      this.setState({
+        validName: valid.type == 'success',
+      })
+    } else
+    if(name=='lastName'){
+      this.setState({
+        validLastName: valid.type == 'success',
+      })
+    } else
+    if(name=='DNI'){
+      this.setState({
+        validDni: valid.type == 'success',
+      })
+    } else
+    if(name=='primaryPhone'){
+      this.setState({
+        validPrimaryPhone: valid.type == 'success',
+      })
+    } else
+    if(name=='secondPhone'){
+      this.setState({
+        validSecondaryPhone: valid.type == 'success',
+      })
+    }
   }
 
   handleSave() {
@@ -93,6 +123,10 @@ class ClientEditModal extends Component {
     }
   }
 
+  getDisabled() {
+    return !(this.state.validName && this.state.validLastName && this.state.validDni && this.state.validPrimaryPhone && this.state.validSecondaryPhone)
+  }
+
   render() {
     const client = this.getClient();
     return(
@@ -121,7 +155,7 @@ class ClientEditModal extends Component {
             <LevelRight>
               { this.state.isSaving ? 
                 <Button kind="outline" disabled pulse icon={ faSpinner }>Guardando..</Button> :
-                <Button kind="outline" onClick={ this.handleSave } >Guardar</Button> }
+                <Button kind="outline" onClick={ this.handleSave } disabled={ this.getDisabled() }>Guardar</Button> }
               <Button kind="link" onClick={ this.handleClose }>Cancelar</Button>
             </LevelRight>
           </Level>

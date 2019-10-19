@@ -11,8 +11,8 @@ class AppointmentCell extends Component {
     return(
       <div className="appointment_card_appointment" id={ appointment.statusClassName }>
         { client ?
-          <Text size="xs">{ `${ startCase(client.name) } ${ startCase(client.surname) } a las ${ appointment.beginingTime }` }</Text> :
-          <Text size="xs">{ `Turno a las ${ appointment.beginingTime }` }</Text>
+          <Text size="xs">{ `${ startCase(client.name) } ${ startCase(client.surname) } a las ${ appointment.beginningTime }` }</Text> :
+          <Text size="xs">{ `Turno a las ${ appointment.beginningTime }` }</Text>
         }
         
       </div> )

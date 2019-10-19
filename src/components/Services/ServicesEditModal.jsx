@@ -34,7 +34,8 @@ class ServicesEditModal extends Component {
     this.handleChange = this.handleChange.bind(this);
 
     this.state = {
-      buttonDisabled: false,
+      validName: true,
+      validPrice: true,
       reload: true,
     }
   }
@@ -72,10 +73,15 @@ class ServicesEditModal extends Component {
 
   handleChange( name, value, valid ) {
     const service = this.getService();
+    if(name=='name'){
+      this.setState({
+        validName: valid.type == 'success',
+      })
+    }
     if (name == 'cost') {
       service.price = value
       this.setState({
-        buttonDisabled: valid.type == 'error',
+        validPrice: valid.type == 'success',
       })
     }
     else {
@@ -97,16 +103,7 @@ class ServicesEditModal extends Component {
   }
 
   getDisabled() {
-    const service = this.getService();
-    if (this.state.buttonDisabled) {
-      return false;
-    }
-
-    if (service.price == '' || service.duration == '' || service.name == '') {
-      return false;
-    }
-
-    return true;
+    return !(this.state.validName && this.state.validPrice)
   }
 
   render() {
@@ -116,7 +113,7 @@ class ServicesEditModal extends Component {
         <ModalHeader>
           <Level>
             <LevelLeft>
-              <Title>Modificar turno</Title>
+              <Title>Modificar servicio</Title>
             </LevelLeft>
             <LevelRight>
               <Button kind="link" icon={ faTimes } onClick={ this.handleClose } />
@@ -130,7 +127,7 @@ class ServicesEditModal extends Component {
           <Level>
             <LevelLeft></LevelLeft>
             <LevelRight>
-              <Button disabled={ !this.getDisabled() } onClick={ this.handleSave }>Guardar</Button>
+              <Button disabled={ this.getDisabled() } onClick={ this.handleSave }>Guardar</Button>
               <Button kind="outline" onClick={ this.handleClose }>Cancelar</Button>
             </LevelRight>
           </Level>

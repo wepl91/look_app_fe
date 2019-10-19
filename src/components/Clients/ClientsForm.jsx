@@ -5,10 +5,11 @@ import { observer } from 'mobx-react';
 
 import { withStore } from '../../hocs';
 
+import { nameRegex, dniRegex, phoneRegex } from '../../lib/Regex'
+
 import {
   Columns,
-  Column,
-  Checkbox
+  Column
 } from 'bloomer';
 
 import {
@@ -29,14 +30,14 @@ class ClientsForm extends Component {
   }
 
   handleCategory( category ) {
-    this.props.onChange && this.props.onChange('status', category);
+    this.props.onChange && this.props.onChange('status', category, true);
     this.setState({
       clientCategory: category
     })
   }
 
-  handleChange( sender, value, name) {
-    this.props.onChange && this.props.onChange(name, value)
+  handleChange( sender, value, name, valid) {
+    this.props.onChange && this.props.onChange(name, value, valid)
   }
 
   render() {
@@ -46,21 +47,21 @@ class ClientsForm extends Component {
         <Field label="Nombre y Apellido" labelNote="¿Cómo se llama el nuevo cliente?">
           <Columns>
             <Column>
-              <TextInput placeholder="Nombre.." onChange={ this.handleChange } name="name" value={ client.name } className="is-fullwidth" />
+              <TextInput placeholder="Nombre" onChange={ this.handleChange } validate={ (value) => (nameRegex.test(value)) } name="name" value={ client.name } className="is-fullwidth" />
             </Column>
             <Column>
-              <TextInput placeholder="Apellido.." onChange={ this.handleChange } name="lastName" value={ client.lastName } className="is-fullwidth" />
+              <TextInput placeholder="Apellido" onChange={ this.handleChange } validate={ (value) => (nameRegex.test(value)) } name="lastName" value={ client.lastName } className="is-fullwidth" />
             </Column>
           </Columns>
         </Field>
         <Field label="Documento" labelNote="¿Cuál es el dni del nuevo cliente?">
-          <TextInput onChange={ this.handleChange } name="DNI" value={ client.DNI } className="is-fullwidth" />
+          <TextInput onChange={ this.handleChange } name="DNI" validate={ (value) => (dniRegex.test(value)) } value={ client.DNI } className="is-fullwidth" />
         </Field>
         <Field label="Teléfono principal" labelNote="¿Cuál es el nro de teléfono del cliente?">
-          <TextInput onChange={ this.handleChange } name="primaryPhone" value={ client.primaryPhone } className="is-fullwidth" />
+          <TextInput onChange={ this.handleChange } name="primaryPhone" validate={ (value) => (phoneRegex.test(value)) } value={ client.primaryPhone } className="is-fullwidth" />
         </Field>
         <Field label="Teléfono secundario" labelNote="Es necesario una segunda opción de comunicación">
-          <TextInput onChange={ this.handleChange } name="secondPhone" value={ client.secondPhone } className="is-fullwidth" />
+          <TextInput onChange={ this.handleChange } name="secondPhone" validate={ (value) => (phoneRegex.test(value)) } value={ client.secondPhone } className="is-fullwidth" />
         </Field>
         <Field label="Categoría" labelNote="¿Dentro de qué categoría se encuentra el cliente?">
           <Text className="ml-1" size="md" weight="medium">

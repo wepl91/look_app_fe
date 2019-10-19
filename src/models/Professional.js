@@ -67,7 +67,6 @@ export default class Professional extends Model {
       'THURSDAY': 'Jueves',
       'FRIDAY': 'Viernes',
       'SATURDAY': 'Sábado',
-      'SUNDAY': 'Domingo'
     }
     const sorter = {
       "lunes": 1,
@@ -76,7 +75,6 @@ export default class Professional extends Model {
       "jueves": 4,
       "viernes": 5,
       "sábado": 6,
-      "domingo": 7
     }
     this.workingHours.map( day => (ret.push(cookedDays[day.days.name])))
     ret.sort(function sortByDay(a, b) {

@@ -35,6 +35,9 @@ class UserCreation extends Component {
 
     this.state = {
       isSaving: false,
+      validName: false,
+      validLastName: false,
+      validMail: false,
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -44,6 +47,7 @@ class UserCreation extends Component {
   handleSave() {
     const { toastManager } = this.props;
     this.newUser.fullName = `${this.newUser.name} ${this.newUser.lastname}`;
+    this.newUser.status = 'ACTIVE';
     this.setState({
       isSaving: true,
     }, () => {
@@ -70,13 +74,32 @@ class UserCreation extends Component {
     })
   }
 
-  handleChange(name, value) {
+  handleChange(name, value, valid) {
     if (name == 'role') {
       this.newUser.roles[0] = value;
     }
     else {
       this.newUser[name] = value;
     }
+    if(name=='name'){
+      this.setState({
+        validName: valid.type == 'success',
+      })
+    } else
+    if(name=='lastName'){
+      this.setState({
+        validLastName: valid.type == 'success',
+      })
+    } else
+    if(name=='email'){
+      this.setState({
+        validMail: valid.type == 'success',
+      })
+    }
+  }
+
+  getDisabled() {
+    return !(this.state.validName && this.state.validLastName && this.state.validMail && this.newUser.roles.length > 0)
   }
 
   componentDidMount() {
@@ -103,7 +126,7 @@ class UserCreation extends Component {
         </Columns>
         {this.state.isSaving ?
           <Button kind="outline" className="ml-6" disabled pulse icon={faSpinner}>Creando usuario..</Button> :
-          <Button kind="outline" className="ml-6" onClick={this.handleSave}>Crear usuario</Button>}
+          <Button kind="outline" className="ml-6" onClick={this.handleSave} disabled={ this.getDisabled() }>Crear usuario</Button>}
       </React.Fragment>)
   }
 }

@@ -30,7 +30,8 @@ class ServiceCreation extends Component {
 
     this.state = {
       price: '',
-      buttonDisabled: false,
+      validName: false,
+      validPrice: false,
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -64,29 +65,25 @@ class ServiceCreation extends Component {
   }
 
   handleChange( name, value, valid ) {
+    if(name=='name'){
+      this.setState({
+        validName: valid.type == 'success',
+      })
+    }
     if (name == 'cost') {
       this.setState({
         price: value,
-        buttonDisabled: valid.type == 'error',
+        validPrice: valid.type == 'success',
       })
-    }
-    else {
+    }else{
       this.setState({
         [name]: value,
       })
-    } 
+    }
   }
 
   getDisabled() {
-    if (this.state.buttonDisabled) {
-      return false;
-    }
-
-    if (this.state.price == '' || this.state.duration == '' || this.state.name == '') {
-      return false;
-    }
-
-    return true;
+    return !(this.state.validName && this.state.validPrice && this.state.duration)
   }
 
 
@@ -106,7 +103,7 @@ class ServiceCreation extends Component {
             <br/>
             <br/>
             <br/>
-            <Button onClick={ this.handleClick } className="ml-5" kind="outline" disabled={ !this.getDisabled() }>Crear servicio</Button>
+            <Button onClick={ this.handleClick } className="ml-5" kind="outline" disabled={ this.getDisabled() }>Crear servicio</Button>
           </Column>
           <Column>
           <SvgDraw style={{ height: '300px', width: '400px', marginTop: '-10px' }}/>
