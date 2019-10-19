@@ -5,7 +5,8 @@ import {
   Table,
   SelectableIcon,
   Text,
-  Button
+  Button,
+  Toggle,
 } from 'shipnow-mercurio';
 
 import {
@@ -14,6 +15,7 @@ import {
 } from 'bloomer';
 
 import withStore from '../../hocs/withStore';
+import { withToastManager } from 'react-toast-notifications';
 
 import { observer } from 'mobx-react';
 
@@ -50,6 +52,48 @@ class ProfessionalsList extends Component {
     }))
   }
 
+  handleActivate( user ) {
+    const { toastManager } = this.props;
+    user.activate().andThen( (savedUser, responseError) => {
+      if (responseError) {
+        toastManager.add("Ups! Parece que hubo un error al activar el profesional!", {
+          appearance: 'error',
+          autoDismiss: true,
+          pauseOnHover: false,
+        });
+      }
+      else {
+        let text = <Text color="warning" weight="medium" className="mt-1 mb-1">¡El profesional ha sido marcado como activo!</Text>
+        toastManager.add(text, {
+          appearance: 'warning',
+          autoDismiss: true,
+          pauseOnHover: false,
+        });
+      }
+    })
+  }
+
+  handleInactivate( user ) {
+    const { toastManager } = this.props;
+    user.deactivate().andThen( (savedUser, responseError) => {
+      if (responseError) {
+        toastManager.add("Ups! Parece que hubo un error al desactivar el profesional!", {
+          appearance: 'error',
+          autoDismiss: true,
+          pauseOnHover: false,
+        });
+      }
+      else {
+        let text = <Text color="warning" weight="medium" className="mt-1 mb-1">¡El profesional ha sido marcado como inactivo!</Text>
+        toastManager.add(text, {
+          appearance: 'warning',
+          autoDismiss: true,
+          pauseOnHover: false,
+        });
+      }
+    })
+  }
+
   renderTable() {
     const data = this.state.professionals.toArray();
     const columns = [
@@ -83,6 +127,10 @@ class ProfessionalsList extends Component {
         content: (data) => (data.cookedWorkingDays.map(day => (<Text weight="medium" className="mb-2 mt-2"><FontAwesomeIcon className="mr-1" icon={ faDotCircle } size="xs" fixedWidth/>{ day }</Text>))),
       },
       {
+        label: 'Activo',
+        content: (data) => (<Toggle checked={ data.isActive } checkedColor="success" unCheckedColor="delete" onChange={ () => (data.isActive ? this.handleInactivate(data) : this.handleActivate(data)) }/>),
+      },
+      {
         label: '',
         content: (data) => (<Button icon={ faPencilAlt } kind="link" onClick={ () => (this.handleModal(data)) }/>),
         size: 'is-1',
@@ -112,4 +160,4 @@ class ProfessionalsList extends Component {
 
 }
 
-export default withStore(ProfessionalsList);
+export default withToastManager(withStore(ProfessionalsList));

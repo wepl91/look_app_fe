@@ -1,7 +1,8 @@
 import { Model } from '../lib';
 
 import {
-  computed
+  computed,
+  action
 } from 'mobx'
 
 import startCase from 'lodash/startCase';
@@ -104,5 +105,22 @@ export default class Professional extends Model {
     let ret = []
     this.workingHours.map( day => (ret.push(day.endHour)))
     return moment(ret[0].toString(),"LT").format("HH:mm")
+  }
+
+  @computed
+  get isActive() {
+    return this.status.name == 'ACTIVE';
+  }
+
+  @action
+  activate() {
+    this.status = 'ACTIVE';
+    return this.save();
+  }
+
+  @action
+  deactivate() {
+    this.status = 'INACTIVE';
+    return this.save();
   }
 }
