@@ -150,7 +150,7 @@ export default class Appointment extends Model {
   }
 
   @computed
-  get beginingTime() {
+  get beginningTime() {
     return this.dayHour.format("HH:mm")
   }
 

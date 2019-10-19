@@ -4,8 +4,7 @@ import {
   Column,
   Columns,
   Level,
-  LevelLeft,
-  LevelRight
+  LevelLeft
 } from 'bloomer';
 
 import {
@@ -35,7 +34,8 @@ class AppointmentCreation extends Component {
     super(props);
 
     this.state = {
-      loaded: false
+      loaded: false,
+      areSelectedHours: false
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -56,6 +56,11 @@ class AppointmentCreation extends Component {
     return errorMsj && JSON.parse(errorMsj).message && JSON.parse(errorMsj).message == 'professional is busy';
   }
 
+  allProfessionalsBusyMsj( responseError ) {
+    const errorMsj = responseError.message
+    return errorMsj && JSON.parse(errorMsj).message && JSON.parse(errorMsj).message == 'there are no free professionals';
+  }
+
   handleClick() {
     const { toastManager } = this.props;
     this.setState({
@@ -65,6 +70,13 @@ class AppointmentCreation extends Component {
         if (responseError) {
           if (this.isProfessionalBusyMsj(responseError)) {
             toastManager.add("Ups! Parece que hubo problema! El profesional seleccionado se encuentra ocupado en el horario en el que se quiere crear el turno!", {
+              appearance: 'error',
+              autoDismiss: true,
+              pauseOnHover: false,
+            });
+          }else
+          if (this.allProfessionalsBusyMsj(responseError)) {
+            toastManager.add("Ups! Parece que hubo problema! No hay profesionales que puedan atender en ese horario!", {
               appearance: 'error',
               autoDismiss: true,
               pauseOnHover: false,
@@ -90,12 +102,14 @@ class AppointmentCreation extends Component {
     })
   }
   
-
   handleChange( name, value ) {
     if (name == 'hour') {
       this.newAppointment.dayHour.hour(value);
       this.newAppointment.dayHour.minute(0);
       this.newAppointment.dayHour.second(0);
+      this.setState({
+        areSelectedHours: true
+      })
     }
     else if (name == 'date') {
       this.newAppointment.dayHour.year(value.get('year'));
@@ -107,6 +121,10 @@ class AppointmentCreation extends Component {
     this.setState({
       loaded: !this.state.loaded
     })
+  }
+
+  getDisabled() {
+    return this.newAppointment && !(this.newAppointment.services.length > 0 && this.state.areSelectedHours)
   }
 
   render() {
@@ -123,7 +141,7 @@ class AppointmentCreation extends Component {
             <br />
             <br />
             <AppointmentsForm appointment={ this.newAppointment } onChange={ this.handleChange }/>
-            <Button className="ml-5 mt-5" onClick={ this.handleClick } kind="outline">Reservar turno</Button>
+            <Button className="ml-5 mt-5" onClick={ this.handleClick } kind="outline" disabled={ this.getDisabled() }>Reservar turno</Button>
           </Column>
           <Column isSize={ 7 } className="has-text-right">
             <SvgDraw style={{ height: '500px', width: '500px', marginRight: '100px', marginTop: '-25px'}}/>

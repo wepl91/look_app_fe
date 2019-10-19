@@ -357,7 +357,7 @@ class AppointmentModal extends Component {
       },
       {
         label: 'Horario',
-        content: (data) => (<Text>{ `De ${ data.beginingTime } hs a ${ data.finishTime }` }</Text>),
+        content: (data) => (<Text>{ `De ${ data.beginningTime } hs a ${ data.finishTime }` }</Text>),
         size: 'is-2',
       },
       {
