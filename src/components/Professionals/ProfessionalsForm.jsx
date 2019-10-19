@@ -49,7 +49,7 @@ class ProfessionalsForm extends Component {
       })
     }
     this.setState({
-      services: this.props.store.services.getAll(),
+      services: this.props.store.services.search({}, 'services-professional-creation-view', true),
     })
   }
 
