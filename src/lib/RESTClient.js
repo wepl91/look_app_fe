@@ -36,7 +36,6 @@ export default class RESTClient {
   }
 
   search(uriPath, filters = {}, secure = true) {
-    debugger
     return this.sendRequest(
         `${uriPath}${Object.keys(filters).length > 0 ? '/search' : ''}${this.getFiltersUrl(filters)}`,
         'GET',

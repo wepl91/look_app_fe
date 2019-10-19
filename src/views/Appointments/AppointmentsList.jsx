@@ -30,11 +30,12 @@ class AppointmentsList extends Component {
     constructor(props) {
         super(props);
 
-        this.chunk = this.chunk.bind(this);
-        this.handleYear = this.handleYear.bind(this);
-        this.handleMonth = this.handleMonth.bind(this);
-        this.handleReload = this.handleReload.bind(this);
-        this.getDatesInMonth = this.getDatesInMonth.bind(this);
+        this.chunk              = this.chunk.bind(this);
+        this.handleYear         = this.handleYear.bind(this);
+        this.handleMonth        = this.handleMonth.bind(this);
+        this.handleReload       = this.handleReload.bind(this);
+        this.getDatesInMonth    = this.getDatesInMonth.bind(this);
+        this.handleProfessional = this.handleProfessional.bind(this);
 
         this.state = {
             appointments: null,
@@ -42,7 +43,6 @@ class AppointmentsList extends Component {
             filterProf: 'null',
         }
     }
-
 
     componentDidMount() {
         const date = moment()
@@ -52,6 +52,14 @@ class AppointmentsList extends Component {
             datesInWeeks: this.chunk(datesInMonth, 7),
             appointments: this.props.store.appointments.search({}, 'appointment-list-view', true),
             professionals: this.props.store.professionals.search({}, 'professional-list-appointment-view', true)
+        })
+    }
+
+    handleProfessional( sender, value, name ) {
+        const searchFilter = value != 'null' ? { professional: value } : {}
+        this.setState({
+            filterProf: value,
+            appointments: this.props.store.appointments.search(searchFilter, 'appointment-list-view', true)
         })
     }
 
@@ -149,6 +157,7 @@ class AppointmentsList extends Component {
                             <Select
                                 value={this.state.filterProf}
                                 key={ this.state.professionals }
+                                onChange={ this.handleProfessional }  
                                 placeholder="Profesionales"
                                 borderless
                                 icon={faChevronDown}
