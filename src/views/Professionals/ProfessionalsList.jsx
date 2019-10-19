@@ -72,7 +72,7 @@ class ProfessionalsList extends Component {
       },
       {
         label: 'Servicios Ofrecidos',
-        content: (data) => (data.professionalServices.map(name => (<Text weight="medium" className="mb-2"><FontAwesomeIcon icon={ faDotCircle } size="xs" fixedWidth/>{ name }</Text>))),
+        content: (data) => (data.professionalServices.map(name => (<Text weight="medium" className="mb-2"><FontAwesomeIcon className="mr-1" icon={ faDotCircle } size="xs" fixedWidth/>{ name }</Text>))),
       },
       {
         label: 'Horario de trabajo',
@@ -80,7 +80,7 @@ class ProfessionalsList extends Component {
       },
       {
         label: 'Días de trabajo',
-        content: (data) => (data.cookedWorkingDays.map(day => (<Text weight="medium" className="mb-2 mt-2"><FontAwesomeIcon icon={ faDotCircle } size="xs" fixedWidth/>{ day }</Text>))),
+        content: (data) => (data.cookedWorkingDays.map(day => (<Text weight="medium" className="mb-2 mt-2"><FontAwesomeIcon className="mr-1" icon={ faDotCircle } size="xs" fixedWidth/>{ day }</Text>))),
       },
       {
         label: '',

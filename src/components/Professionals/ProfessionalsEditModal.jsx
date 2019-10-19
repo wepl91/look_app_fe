@@ -118,7 +118,7 @@ class ProfessionalsEditModal extends Component {
   render() {
     const professional = this.getProfessional()
     return(
-      <Modal show>
+      <Modal show width="50%">
         <ModalHeader>
           <Level>
             <LevelLeft>
