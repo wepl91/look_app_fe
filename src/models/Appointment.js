@@ -24,7 +24,6 @@ export default class Appointment extends Model {
     
     super(attrs, store);
     
-    
   }
   
   afterSetData() {
@@ -143,6 +142,27 @@ export default class Appointment extends Model {
       return this;
     })
     this.endUpdate();
+    return this;
+  }
+
+  @action 
+  clean() {
+    if (this.client instanceof Object) {
+      this.client = this.client.id
+    }
+    if (this.professional instanceof Object) {
+      this.professional = this.professional.id;
+    }
+    const cleanServices = [];
+    this.services.forEach( service => {
+      if (service instanceof Object) {
+        cleanServices.push(service.id)
+      }
+      else {
+        cleanServices.push(service)
+      }
+    });
+    this.services = cleanServices;
     return this;
   }
 

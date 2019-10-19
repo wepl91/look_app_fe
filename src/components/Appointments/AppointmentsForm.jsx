@@ -286,7 +286,7 @@ class AppointmentsForm extends Component {
             borderless 
             icon={ faChevronDown }
             onChange={ this.handleHour } 
-            value={ appointment && appointment.beginingTime }
+            value={ appointment && appointment.beginningTime }
             options={ horarios() }/>
         </Field>
       </React.Fragment> )

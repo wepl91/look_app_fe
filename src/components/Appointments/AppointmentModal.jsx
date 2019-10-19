@@ -133,6 +133,7 @@ class AppointmentModal extends Component {
 
   save( appointment ) {
     const { toastManager } = this.props;
+    appointment = appointment.clean();
     this.setState({
       isSaving: true
     }, () => {
