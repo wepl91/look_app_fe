@@ -32,7 +32,8 @@ class AppointmentsForm extends Component {
     super(props);
 
     this.handleProfessional = this.handleProfessional.bind(this);
-    this.handleServices      = this.handleServices.bind(this);
+    this.handleServices     = this.handleServices.bind(this);
+    this.handleClient       = this.handleClient.bind(this);
     this.handleDate         = this.handleDate.bind(this);
     this.handleHour         = this.handleHour.bind(this);
 
@@ -40,6 +41,8 @@ class AppointmentsForm extends Component {
       professionals: null,
       professional: this.props.appointment ? this.props.appointment.professional : 'null',
       services: null,
+      clients: null,
+      client: this.props.appointment ? this.props.appointment.client : 'null',
       date: this.props.appointment ? this.props.appointment.dayHour : moment(),
       selectedServices: [],
       subtotal: 0,
@@ -48,10 +51,15 @@ class AppointmentsForm extends Component {
 
   componentDidMount() {
     this.setState({
-      professionals: this.props.store.professionals.getAll(),
-      services: this.props.store.services.getAll(),
+      professionals: this.props.store.professionals.search({},  'appointment-list-view', true),
+      services: this.props.store.services.search({}, 'services-appointment-list-view', true),
+      clients: !this.props.edit ? this.props.store.clients.search({}, 'clients-appointment-list-view', true) : null,
     })
   }
+
+  handleClient( sender, value, name ) {
+    this.props.onChange && this.props.onChange('client', value);
+  } 
 
   handleHour( sender, value, name ) {
     this.props.onChange && this.props.onChange('hour', value);
@@ -125,14 +133,14 @@ class AppointmentsForm extends Component {
     });
     return ret;
   }
-
+  
   renderServices() {
     const { professional } = this.state;
     const services = professional && professional != 'null' ?  professional.services : this.state.services.toArray();
     return(
       <Field className="ml-5" label="¿Cuál de nuestros servicios requerís?" labelNote="Seleccioná un servicio">
         { services.length > 0 ? 
-          services.map( service => ( <Checkbox key={ service.id } className="mt-1" isFullWidth defaultChecked={ false } onClick={() => this.handleServices(service.id, service.price)}>
+          services.map( service => ( <Checkbox key={ service.id } className="mt-2" isFullWidth defaultChecked={ this.isServiceInAppointment(service.id) } onClick={() => this.handleServices(service.id, service.price)}>
                                       <Text className="ml-1">{`${ startCase(service.name) } - $${ service.price }`}</Text>
                                     </Checkbox> )) : 
           <Text size="md" weight="medium" className="ml-2 mt-1">No hay servicios existentes para ofrecer.</Text> }
@@ -147,11 +155,37 @@ class AppointmentsForm extends Component {
       </Panel> )
   }
 
+  renderClientsList() {
+    const { clients } = this.state;
+    const ret = [];
+
+    ret.push({
+      key: '- Cliente no registrado -',
+      value: 'null',
+    });
+
+    clients.toArray().forEach( client => {
+      ret.push({
+        key: client.fullName,
+        value: client.id
+      });
+    });
+
+    return ret;
+  }
+
   renderSkeleton() {
     return(
     <React.Fragment>
       <Field className="ml-5" label="¿Que día querés venir?" labelNote="Seleccioná ua fecha">
         <DateTimePicker className="is-fullwidth" disabled/>
+      </Field>
+      <Field className="ml-5" label="¿Quién quiere ser atendido?" labelNote="Seleccioná un cliente">
+        <Select 
+          disabled
+          placeholder="Clientes" 
+          borderless 
+          icon={ faChevronDown } />
       </Field>
       <Field className="ml-5" label="¿A cual de nuestras sucursales querés venir?" labelNote="Seleccioná una sucursal">
         <Select 
@@ -181,7 +215,7 @@ class AppointmentsForm extends Component {
           <Text className="ml-1">...</Text>
         </Checkbox> 
       </Field>
-      <Field className="ml-5" label="¿A que hora querés venir?" labelNote="Seleccioná un horario">
+      <Field className="ml-5 mt-2" label="¿A que hora querés venir?" labelNote="Seleccioná un horario">
         <Select 
           maxHeight="120px" 
           placeholder="Horarios" 
@@ -195,12 +229,12 @@ class AppointmentsForm extends Component {
 
   render() {
     const professionalsLoaded = this.state.professionals && this.state.professionals.isOk();
-    const servicesLoaded = this.state.services && this.state.services.isOk()
+    const servicesLoaded = this.state.services && this.state.services.isOk();
+    const clientsLoaded = !this.props.edit ? this.state.clients && this.state.clients.isOk() : true;
     
-    if (!professionalsLoaded || !servicesLoaded) {
+    if (!professionalsLoaded || !servicesLoaded || !clientsLoaded) {
       return this.renderSkeleton();
     }
-
     const { appointment } = this.props;
     return(
       <React.Fragment>
@@ -213,6 +247,18 @@ class AppointmentsForm extends Component {
               onChange={ this.handleDate }/>
             { this.state.date.isoWeekday() == 7 && this.renderAdvise() }
           </Field> }
+        <Field className="ml-5" label="¿Quién quiere ser atendido?" labelNote="Seleccioná un cliente">
+          <Select 
+            key={ this.state.clients }
+            name="client"
+            onChange={ this.handleClient }
+            disabled={ this.props.edit && appointment.client }
+            placeholder="Clientes" 
+            borderless 
+            value={ this.state.client ? this.state.client.id : null }
+            icon={ faChevronDown } 
+            options={ this.props.edit ? [{key: appointment.clientFullName, value: appointment.clientID}] : this.renderClientsList() } />
+        </Field>
         <Field className="ml-5" label="¿A cual de nuestras sucursales querés venir?" labelNote="Seleccioná una sucursal">
           <Select 
             disabled
@@ -240,6 +286,7 @@ class AppointmentsForm extends Component {
             borderless 
             icon={ faChevronDown }
             onChange={ this.handleHour } 
+            value={ appointment && appointment.beginingTime }
             options={ horarios() }/>
         </Field>
       </React.Fragment> )
@@ -249,11 +296,13 @@ class AppointmentsForm extends Component {
 AppointmentsForm.PropTypes = {
   withDate: PropTypes.bool,
   appointment: PropTypes.object,
+  edit: PropTypes.bool,
 }
 
 AppointmentsForm.defaultProps = {
   withDate: false,
   appointment: null,
+  edit: false,
 }
 
 export default withStore(AppointmentsForm);

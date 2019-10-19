@@ -106,9 +106,7 @@ export default class RESTClient {
               return Promise.resolve(res); // empthy response
           });
         }
-        return res.json().then( content => {
-          return Promise.reject(new Error(JSON.stringify(content)))
-        })
+        return Promise.reject(new Error(JSON.stringify(res)))
       })
       .catch( err => {
           return Promise.reject(err);

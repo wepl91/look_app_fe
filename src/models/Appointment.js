@@ -17,7 +17,7 @@ export default class Appointment extends Model {
       professional: null,
       client: null,
       dayHour: moment(),
-      services: '', 
+      services: [], 
     };
     
     let attrs = Object.assign( defaultAttributes, attributes );
@@ -46,7 +46,7 @@ export default class Appointment extends Model {
     if (!this.client) {
       return '';
     }
-    return `${ startCase(this.client.name) } ${ startCase(this.client.surname) }`
+    return `${ startCase(this.client.name) } ${ startCase(this.client.lastname) }`
   }
 
   @computed
@@ -55,6 +55,14 @@ export default class Appointment extends Model {
       return '';
     }
     return `${ startCase(this.professional.name) } ${ startCase(this.professional.lastName) }`;
+  }
+
+  @computed
+  get clientID() {
+    if (!this.client) {
+      return '';
+    }
+    return this.client.id
   }
 
   @computed

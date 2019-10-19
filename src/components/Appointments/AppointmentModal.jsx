@@ -30,6 +30,7 @@ import {
   faDownload, 
   faTimes, 
   faCalendarAlt, 
+  faSpinner,
   faTrash, 
   faChevronDown,
   faBan,
@@ -93,6 +94,7 @@ class AppointmentModal extends Component {
     
     this.handleCancelConfirm = this.handleCancelConfirm.bind(this);
     this.handleShowDetails   = this.handleShowDetails.bind(this);
+    this.handleSaveEdit      = this.handleSaveEdit.bind(this);
     this.handleDetails       = this.handleDetails.bind(this);
     this.handleChange        = this.handleChange.bind(this);
     this.handleCreate        = this.handleCreate.bind(this);
@@ -103,6 +105,7 @@ class AppointmentModal extends Component {
     this.handlePay           = this.handlePay.bind(this);
     this.handleCancel        = this.handleCancel.bind(this);
     this.handleMiss          = this.handleMiss.bind(this);
+    this.handleCancelAdvice  = this.handleCancelAdvice.bind(this);
   }
 
   handlePay() {
@@ -124,16 +127,16 @@ class AppointmentModal extends Component {
   }
 
   isProfessionalBusyMsj( responseError ) {
-    const errorMsj = responseError.message
+    const errorMsj = responseError.message;
     return errorMsj && JSON.parse(errorMsj).message && JSON.parse(errorMsj).message == 'professional is busy';
   }
 
-  handleSave() {
+  save( appointment ) {
     const { toastManager } = this.props;
     this.setState({
       isSaving: true
     }, () => {
-      this.newAppointment.save().andThen( (savedAppointment, responseError) => {
+      appointment.save().andThen( (savedAppointment, responseError) => {
         if (responseError) {
           if (this.isProfessionalBusyMsj(responseError)) {
             toastManager.add("Ups! Parece que hubo problema! El profesional seleccionado se encuentra ocupado en el horario en el que se quiere crear el turno!", {
@@ -141,12 +144,18 @@ class AppointmentModal extends Component {
               autoDismiss: true,
               pauseOnHover: false,
             });
+            this.setState({
+              isSaving: false,
+            });
           }
           else {
             toastManager.add("Ups! Parece que hubo un error al guardar los cambios!", {
               appearance: 'error',
               autoDismiss: true,
               pauseOnHover: false,
+            });
+            this.setState({
+              isSaving: false,
             });
           }     
         }
@@ -162,14 +171,25 @@ class AppointmentModal extends Component {
     })
   }
 
+  handleSaveEdit() {
+    const { appointment } = this.state;
+    this.save(appointment)
+  }
+
+  handleSave() {
+    const { toastManager } = this.props;
+    this.save(this.newAppointment);
+  }
+
   handleChange( name, value ) {
+    const appointment = this.state.renderDetails ? this.state.appointment : this.newAppointment;
     if (name == 'hour') {
-      this.newAppointment.dayHour.hour(value);
-      this.newAppointment.dayHour.minute(0);
-      this.newAppointment.dayHour.second(0);
+      appointment.dayHour.hour(value);
+      appointment.dayHour.minute(0);
+      appointment.dayHour.second(0);
     }
     else {
-      this.newAppointment[name] = value
+      appointment[name] = value
     }
   }
 
@@ -315,7 +335,7 @@ class AppointmentModal extends Component {
     return(
       <Columns>
         <Column isSize={ 6 }>
-          <AppointmentsForm appointment={ this.state.appointment } />
+          <AppointmentsForm appointment={ this.state.appointment } edit onChange={ this.handleChange }/>
         </Column>
         <Column isSize={ 2 }></Column>
         <Column isSize={ 4 }>
@@ -417,8 +437,14 @@ class AppointmentModal extends Component {
             </ModalContent>
           <ModalFooter>
             <Level>
-              <LevelLeft>{ this.state.renderCreate && 
-                <Button kind="outline" onClick={ this.handleSave }>Reservar turno</Button>}</LevelLeft>
+              <LevelLeft>
+                { this.state.renderCreate && 
+                <Button kind="outline" onClick={ this.handleSave }>Reservar turno</Button> }
+                { this.state.renderDetails &&
+                  ( this.state.isSaving ? 
+                    <Button kind="outline" disable icon={ faSpinner } pulse>Guardando..</Button> : 
+                    <Button kind="outline" onClick={ this.handleSaveEdit }>Guardar</Button> ) }
+              </LevelLeft>
               <LevelLeft>
                 { this.state.renderCreate || this.state.renderDetails ?
                   <Button kind="link" onClick={ () => ( this.handleInformationAdvice('list') ) }>
