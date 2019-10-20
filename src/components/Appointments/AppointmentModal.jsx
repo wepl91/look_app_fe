@@ -307,7 +307,7 @@ class AppointmentModal extends Component {
               title=   { infoAdviceData.title   }
               content= { infoAdviceData.content } 
               onAccept={ infoAdviceData.accept  } 
-              onCancel={ infoAdviceData.cancel  }/>)
+              onCancel={ infoAdviceData.cancel  } />)
   }
 
   renderCreate() {
