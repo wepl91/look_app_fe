@@ -57,6 +57,12 @@ class AppointmentsForm extends Component {
     })
   }
 
+  componentDidUpdate(prevProps, prevState){
+    if ( this.state.selectedServices !== prevState.selectedServices) {
+      this.setState({subtotal: this.getSubtotal()})
+    }
+  }
+
   handleClient( sender, value, name ) {
     this.props.onChange && this.props.onChange('client', value);
   } 
@@ -73,6 +79,9 @@ class AppointmentsForm extends Component {
   }
 
   handleProfessional( sender, value, name ) {
+    this.setState({
+      selectedServices: [],
+    });
     if (value == 'null') {
       this.setState({
         professional: null,
@@ -94,19 +103,24 @@ class AppointmentsForm extends Component {
     let newArray = Array.from(this.state.selectedServices)
     if(newArray.includes(serviceId)){
       newArray = newArray.filter(item => item !== serviceId)
-      this.setState({
-        subtotal: this.state.subtotal - servicePrice,
-      });
     }else{
       newArray.push(serviceId)
-      this.setState({
-        subtotal: this.state.subtotal + servicePrice,
-      });
     }
     this.setState({
       selectedServices: newArray,
     });
     this.props.onChange && this.props.onChange('services', newArray)
+  }
+
+  getSubtotal() {
+    let ret = 0;
+    console.log(this.state.selectedServices)
+    this.state.services.toArray().forEach( service => {
+      if (this.state.selectedServices.includes(service.id)) {
+        ret = ret + service.price
+      }
+    });
+    return ret;
   }
 
   getProfessionalList() {
@@ -144,7 +158,7 @@ class AppointmentsForm extends Component {
                                       <Text className="ml-1">{`${ startCase(service.name) } - $${ service.price }`}</Text>
                                     </Checkbox> )) : 
           <Text size="md" weight="medium" className="ml-2 mt-1">No hay servicios existentes para ofrecer.</Text> }
-        {this.state.subtotal !==0 && <Text className="has-text-centered ml-2" weight="medium" color="primaryDark"><hr id="subtotalLine"/>Subtotal: ${this.state.subtotal}</Text>}
+        <Text className="has-text-centered ml-2" weight="medium" color="primaryDark"><hr id="subtotalLine"/>Subtotal: ${this.state.subtotal}</Text>
       </Field> )
   }
 
