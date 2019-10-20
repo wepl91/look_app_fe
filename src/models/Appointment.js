@@ -190,4 +190,11 @@ export default class Appointment extends Model {
     return moment(this.dayHour).add(totalDuration, 'minutes').format("HH:mm");
   }
 
+  @computed
+  get servicesIds() {
+    const ret = [];
+    this.services.map( service => (ret.push(service.id)))
+    return ret;
+  }
+
 }

@@ -44,8 +44,8 @@ class AppointmentsForm extends Component {
       clients: null,
       client: this.props.appointment ? this.props.appointment.client : 'null',
       date: this.props.appointment ? this.props.appointment.dayHour : moment(),
-      selectedServices: [],
-      subtotal: 0,
+      selectedServices: this.props.appointment ? this.props.appointment.servicesIds : [],
+      subtotal: this.props.appointment ? this.props.appointment.totalPrice : 0,
     }
   }
 
@@ -58,10 +58,10 @@ class AppointmentsForm extends Component {
   }
 
   componentDidUpdate(prevProps, prevState){
-    if ( this.state.selectedServices !== prevState.selectedServices) {
+    if (this.state.selectedServices !== prevState.selectedServices) {
       this.setState({subtotal: this.getSubtotal()})
     }
-    if ( this.state.professional !== prevState.professional) {
+    if (this.state.professional !== prevState.professional) {
       this.setState({selectedServices: []})
     }
   }
@@ -114,7 +114,6 @@ class AppointmentsForm extends Component {
 
   getSubtotal() {
     let ret = 0;
-    console.log(this.state.selectedServices)
     this.state.services.toArray().forEach( service => {
       if (this.state.selectedServices.includes(service.id)) {
         ret = ret + service.price
@@ -254,6 +253,7 @@ class AppointmentsForm extends Component {
       return this.renderSkeleton();
     }
     const { appointment } = this.props;
+    console.log(this.state.selectedServices)
     return(
       <React.Fragment>
         { !this.props.withDate &&
