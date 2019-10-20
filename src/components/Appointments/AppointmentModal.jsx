@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import moment from 'moment';
-import startCase from 'lodash/startCase';
 
 import { withToastManager } from 'react-toast-notifications';
 
@@ -32,14 +31,9 @@ import {
   faTimes, 
   faCalendarAlt, 
   faSpinner,
-  faTrash, 
-  faChevronDown,
   faBan,
-  faCircle,
   faInfoCircle,
   faMoneyBill,
-  faUserSlash,
-  faDotCircle
 } from "@fortawesome/free-solid-svg-icons";
 
 import { 
@@ -80,6 +74,7 @@ class AppointmentModal extends Component {
       confirmation: false,
       infoAdvice: false,
       showTicketModal: false,
+      buttonDisabled: true,
       confirmationData: {
         accept: null,
         cancel: null,
@@ -198,6 +193,9 @@ class AppointmentModal extends Component {
   }
 
   handleChange( name, value ) {
+    this.setState({
+      buttonDisabled: false
+    })
     const appointment = this.state.renderDetails ? this.state.appointment : this.newAppointment;
     if (name == 'hour') {
       appointment.dayHour.hour(value);
@@ -436,6 +434,10 @@ class AppointmentModal extends Component {
     return(<Table columns={ columns } data={ this.props.appointments } striped={ false }/>)
   }
 
+  getDisabled() {
+    return this.state.appointment && !(this.state.appointment.services.length > 0 && !this.state.buttonDisabled)
+  }
+
   render() {
     const { date } = this.props
     return(
@@ -466,7 +468,7 @@ class AppointmentModal extends Component {
                 { this.state.renderDetails &&
                   ( this.state.isSaving ? 
                     <Button kind="outline" disable icon={ faSpinner } pulse>Guardando..</Button> : 
-                    <Button kind="outline" onClick={ this.handleSaveEdit }>Guardar</Button> ) }
+                    <Button kind="outline" onClick={ this.handleSaveEdit } disabled={ this.getDisabled() }>Guardar</Button> ) }
               </LevelLeft>
               <LevelLeft>
                 { this.state.renderCreate || this.state.renderDetails ?

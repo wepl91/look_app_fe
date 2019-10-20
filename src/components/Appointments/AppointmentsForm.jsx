@@ -253,7 +253,6 @@ class AppointmentsForm extends Component {
       return this.renderSkeleton();
     }
     const { appointment } = this.props;
-    console.log(this.state.selectedServices)
     return(
       <React.Fragment>
         { !this.props.withDate &&
