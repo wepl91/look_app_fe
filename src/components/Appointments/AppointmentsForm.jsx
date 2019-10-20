@@ -61,6 +61,9 @@ class AppointmentsForm extends Component {
     if ( this.state.selectedServices !== prevState.selectedServices) {
       this.setState({subtotal: this.getSubtotal()})
     }
+    if ( this.state.professional !== prevState.professional) {
+      this.setState({selectedServices: []})
+    }
   }
 
   handleClient( sender, value, name ) {
@@ -79,9 +82,6 @@ class AppointmentsForm extends Component {
   }
 
   handleProfessional( sender, value, name ) {
-    this.setState({
-      selectedServices: [],
-    });
     if (value == 'null') {
       this.setState({
         professional: null,
@@ -149,17 +149,21 @@ class AppointmentsForm extends Component {
   }
   
   renderServices() {
+    // El randomizer lo que hace es cambiar la key para que React vea que ocurrió un cambio en el checkbox. No usé Math.Random() por que rompía el Checkbox
+    // Revisitar, es trucho que el randomizer se base en la longitud del nombre
     const { professional } = this.state;
     const services = professional && professional != 'null' ?  professional.services : this.state.services.toArray();
+    let randomizer = professional && professional != 'null' ?  professional.name.length : 1000;
     return(
       <Field className="ml-5" label="¿Cuál de nuestros servicios requerís?" labelNote="Seleccioná un servicio">
         { services.length > 0 ? 
-          services.map( service => ( <Checkbox key={ service.id } className="mt-2" isFullWidth defaultChecked={ this.isServiceInAppointment(service.id) } onClick={() => this.handleServices(service.id, service.price)}>
+          services.map( service => ( <Checkbox key={ service.id + randomizer } className="mt-2" isFullWidth defaultChecked={ this.isServiceInAppointment(service.id) } onClick={() => this.handleServices(service.id, service.price)}>
                                       <Text className="ml-1">{`${ startCase(service.name) } - $${ service.price }`}</Text>
                                     </Checkbox> )) : 
           <Text size="md" weight="medium" className="ml-2 mt-1">No hay servicios existentes para ofrecer.</Text> }
         <Text className="has-text-centered ml-2" weight="medium" color="primaryDark"><hr id="subtotalLine"/>Subtotal: ${this.state.subtotal}</Text>
       </Field> )
+     
   }
 
   renderAdvise() {

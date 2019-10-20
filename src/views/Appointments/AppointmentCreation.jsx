@@ -35,7 +35,7 @@ class AppointmentCreation extends Component {
 
     this.state = {
       loaded: false,
-      areSelectedHours: false
+      areHoursSelected: false
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -108,7 +108,7 @@ class AppointmentCreation extends Component {
       this.newAppointment.dayHour.minute(0);
       this.newAppointment.dayHour.second(0);
       this.setState({
-        areSelectedHours: true
+        areHoursSelected: true
       })
     }
     else if (name == 'date') {
@@ -124,7 +124,7 @@ class AppointmentCreation extends Component {
   }
 
   getDisabled() {
-    return this.newAppointment && !(this.newAppointment.services.length > 0 && this.state.areSelectedHours)
+    return this.newAppointment && !(this.newAppointment.services.length > 0 && this.state.areHoursSelected)
   }
 
   render() {
