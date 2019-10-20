@@ -79,7 +79,7 @@ class AppRouter extends Component {
               <ProfessionalsMenu />
               <UsersMenu         />
               <ClientsMenu       />
-              <div className={ this.state.expanded ? 'menu_button_expanded' : 'menu_button' }>
+              <div className="menu_button">
                 <Button kind="link" key={ this.state.expanded } invert size="lg" onClick={ () => (this.setState(preState => ({expanded: !preState.expanded})))} icon={ this.state.expanded ? faBars : faBars }/>
               </div>  
             </LayoutMenu>

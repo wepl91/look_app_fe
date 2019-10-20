@@ -109,6 +109,7 @@ class ProfessionalsList extends Component {
       {
         label: 'Teléfono',
         content: (data) => (<Text>{ data.phone || '- sin teléfono -' }</Text>),
+        size: 'is-1',
       },
       {
         label: 'Mail',
@@ -129,6 +130,7 @@ class ProfessionalsList extends Component {
       {
         label: 'Activo',
         content: (data) => (<Toggle checked={ data.isActive } checkedColor="success" unCheckedColor="delete" onChange={ () => (data.isActive ? this.handleInactivate(data) : this.handleActivate(data)) }/>),
+        size: 'is-1',
       },
       {
         label: '',

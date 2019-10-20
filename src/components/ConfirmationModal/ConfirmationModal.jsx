@@ -45,8 +45,8 @@ class ConfirmationModal extends Component {
           <Level>
             <LevelLeft></LevelLeft>
             <LevelRight>
-              <Button onClick={ this.handleAccept } kind="outline">Aceptar</Button>
-              <Button onClick={ this.handleCancel } kind="link">Cancelar</Button>
+              { this.props.onAccept && <Button onClick={ this.handleAccept } kind="outline">{ this.props.acceptWording }</Button> }
+              { this.props.onCancel && <Button onClick={ this.handleCancel } kind="link">{ this.props.cancelWording }</Button> }
             </LevelRight>
           </Level>
         </ModalFooter>
@@ -59,13 +59,17 @@ ConfirmationModal.PropTypes = {
   content: PropTypes.oneOfType([PropTypes.object, PropTypes.node, PropTypes.any]),
   onAccept: PropTypes.func,
   onCancel: PropTypes.func,
+  cancelWording: PropTypes.string,
+  acceptWording: PropTypes.string,
 }
 
 ConfirmationModal.defaultProps = {
   title: null,
   content: null,
   onAccept: null,
-  onCancel: null
+  onCancel: null,
+  cancelWording: 'Cancelar',
+  acceptWording: 'Aceptar'
 } 
 
 export default ConfirmationModal

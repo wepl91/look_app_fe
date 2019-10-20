@@ -14,7 +14,7 @@ class AppointmentScheduleTicket extends Component {
         <Page size="A4" style={styles.page}>
         <View style={styles.section}>
           <Text style={styles.title}>Reserva de turno</Text>
-          <Text style={styles.description}>{`Reserva de turno${ appointment.client ? ` de ${ startCase(appointment.client.name) } ${ appointment.client.lastName} , teléfono ${ appointment.client.phone },`: '' } para el día ${ moment(appointment.dayHour).format("dddd, MMMM Do YYYY") }`}</Text>
+          <Text style={styles.description}>{`Reserva de turno${ appointment.client ? ` de ${ startCase(appointment.client.name) } ${ appointment.client.lastName} , teléfono ${ appointment.client.phone },`: '' } para el día ${ moment(appointment.dayHour).format("dddd, MMMM Do YYYY") } a las ${ appointment.beginningTime }`}</Text>
           <View style={styles.details}>
             { appointment.professional && <Text style={styles.service}>{ `A ser atendido por ${ appointment.professionalFullName }` }</Text> }
             <Text style={ styles.subtitle }>Servicios:</Text>

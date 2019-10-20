@@ -23,7 +23,7 @@ class ClientsMenu extends Component {
     const path = this.props.match.path;
 
     return(
-      <LayoutMenuLinkGroup icon={ faChild } label="Clientes" basePath={ `${path}/users` }>
+      <LayoutMenuLinkGroup icon={ faChild } label="Clientes" basePath={ `${path}/clients` }>
         <LayoutMenuLink icon={ faChild } to={ `${path}/clients/list` }>Listado</LayoutMenuLink>
         <LayoutMenuLink icon={ faPlus } to={ `${path}/clients/new`  }>Nuevo cliente</LayoutMenuLink>
       </LayoutMenuLinkGroup> )

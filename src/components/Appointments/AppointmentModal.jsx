@@ -15,7 +15,8 @@ import {
   Text,
   Button,
   Table,
-  SelectableIcon
+  SelectableIcon,
+  Panel
 } from 'shipnow-mercurio';
 
 import {
@@ -78,6 +79,7 @@ class AppointmentModal extends Component {
       renderDetails: false,
       confirmation: false,
       infoAdvice: false,
+      showTicketModal: false,
       confirmationData: {
         accept: null,
         cancel: null,
@@ -93,6 +95,7 @@ class AppointmentModal extends Component {
     }
     
     this.handleCancelConfirm = this.handleCancelConfirm.bind(this);
+    this.handleCancelTicket  = this.handleCancelTicket.bind(this);
     this.handleShowDetails   = this.handleShowDetails.bind(this);
     this.handleSaveEdit      = this.handleSaveEdit.bind(this);
     this.handleDetails       = this.handleDetails.bind(this);
@@ -131,7 +134,7 @@ class AppointmentModal extends Component {
     return errorMsj && JSON.parse(errorMsj).message && JSON.parse(errorMsj).message == 'professional is busy';
   }
 
-  save( appointment ) {
+  save( appointment, edit=false ) {
     const { toastManager } = this.props;
     appointment = appointment.clean();
     this.setState({
@@ -166,15 +169,27 @@ class AppointmentModal extends Component {
             autoDismiss: true,
             pauseOnHover: false,
           });
-          this.props.onClose && this.props.onClose(true)
+          if (edit) {
+            this.setState({
+              showTicketModal: true,
+              isSaving: false,
+              appointment: savedAppointment
+            });
+          }
         }
       })
     })
   }
 
+  handleCancelTicket() {
+    this.setState({
+      showTicketModal: false,
+    }, () => ( this.props.onClose && this.props.onClose(true) ))
+  }
+
   handleSaveEdit() {
     const { appointment } = this.state;
-    this.save(appointment)
+    this.save(appointment, true)
   }
 
   handleSave() {
@@ -309,8 +324,15 @@ class AppointmentModal extends Component {
       </Columns> )
   }
 
+  renderTicketAdvise() {
+    return(
+      <Panel color="warning" invert style={{padding: '8px'}} className="mt-3">
+        <Text multiline>Acabas de editar el turno, recordá que podes descargar un comprobante con la informació actualizada!</Text>
+      </Panel> )
+  }
+
   renderDetails() {
-    const { appointment } = this.state;
+    const { appointment, showTicketModal } = this.state;
     
     const paymentTicket = 
       <PDFDownloadLink document={ <PaymentTicket appointment={ appointment } /> } fileName={`ComprobanteDePago.pdf`}>
@@ -327,12 +349,11 @@ class AppointmentModal extends Component {
         </PDFDownloadLink>;
 
     const appoinmentTicket = 
-        <PDFDownloadLink document={ <AppointmentScheduleTicket appointment={ appointment } /> } fileName={`Reserva.pdf`}>
+        <PDFDownloadLink key={ this.state.showTicketModal }document={ <AppointmentScheduleTicket appointment={ appointment } /> } fileName={`Reserva.pdf`}>
           {({ loading }) => ( loading ? 
             <Button kind="link" icon={ faDownload } disabled>Comprobante de reserva</Button> : 
             <Button kind="link" icon={ faDownload }>Comprobante de reserva</Button> )}
         </PDFDownloadLink> 
-
     return(
       <Columns>
         <Column isSize={ 6 }>
@@ -340,21 +361,22 @@ class AppointmentModal extends Component {
         </Column>
         <Column isSize={ 2 }></Column>
         <Column isSize={ 4 }>
-          <Title size="md">Comprobantes</Title>
-          { appointment.isOpen      && appoinmentTicket }
-          { appointment.isPaid      && paymentTicket }
-          { appointment.isCancelled && cancelationTicket } 
-          { appointment.isOpen && <Title className="mt-3" size="md">Acciones</Title> }
-          <div className="appointment-accions">
-            { appointment.isOpen && 
-                <Text>
-                  <Button kind="link" icon={ faBan } onClick={ () => (this.handleConfirm('cancel')) }>Cancelar turno</Button>
-                </Text> }
-            { appointment.isOpen && 
-              <Text>
-                <Button className="mt-2" kind="link" icon={ faMoneyBill } onClick={ () => (this.handleConfirm('pay')) }>Marcar como pagado </Button>
-              </Text> }
-          </div>
+        <Title size="md">Comprobantes</Title>
+        { appointment.isOpen      && appoinmentTicket }
+        { appointment.isPaid      && paymentTicket }
+        { appointment.isCancelled && cancelationTicket } 
+        { appointment.isOpen && <Title className="mt-3" size="md">Acciones</Title> }
+        <div className="appointment-accions">
+        { appointment.isOpen && 
+          <Text>
+          <Button kind="link" icon={ faBan } onClick={ () => (this.handleConfirm('cancel')) }>Cancelar turno</Button>
+          </Text> }
+          { appointment.isOpen && 
+            <Text>
+            <Button className="mt-2" kind="link" icon={ faMoneyBill } onClick={ () => (this.handleConfirm('pay')) }>Marcar como pagado </Button>
+            </Text> }
+            </div>
+          { this.state.showTicketModal && this.renderTicketAdvise() }
         </Column>
       </Columns>)
   }
@@ -457,8 +479,8 @@ class AppointmentModal extends Component {
             </Level>
           </ModalFooter>
         </Modal>
-        { this.state.confirmation && this.renderConfirmationModal() }
-        { this.state.infoAdvice && this.renderInformationAdvice() }
+        { this.state.confirmation    && this.renderConfirmationModal() }
+        { this.state.infoAdvice      && this.renderInformationAdvice() }
       </React.Fragment>)
   }
 }

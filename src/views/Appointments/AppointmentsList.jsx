@@ -123,7 +123,7 @@ class AppointmentsList extends Component {
                 <hr />
                 <Columns className="pl-4 pr-3">
                     <Column isSize={3} className="pl-2 pr-2">
-                        <Field label="¿Querés ver los turnos de algun profesional en particular?" labelNote="Selecciona un profesional">
+                        <Field label="¿Querés ver los turnos de un único profesional?" labelNote="Selecciona un profesional">
                             <Select
                                 value={'null'}
                                 placeholder="Profesionales"
@@ -153,7 +153,7 @@ class AppointmentsList extends Component {
                 <hr />
                 <Columns className="pl-4 pr-3">
                     <Column isSize={3} className="pl-2 pr-2">
-                        <Field label="¿Querés ver los turnos de algun profesional en particular?" labelNote="Selecciona un profesional">
+                        <Field label="¿Querés ver los turnos de un profesional?" labelNote="Selecciona un profesional">
                             <Select
                                 value={this.state.filterProf}
                                 key={ this.state.professionals }
