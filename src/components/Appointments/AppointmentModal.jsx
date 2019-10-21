@@ -129,6 +129,11 @@ class AppointmentModal extends Component {
     return errorMsj && JSON.parse(errorMsj).message && JSON.parse(errorMsj).message == 'professional is busy';
   }
 
+  allProfessionalsBusyMsj( responseError ) {
+    const errorMsj = responseError.message
+    return errorMsj && JSON.parse(errorMsj).message && JSON.parse(errorMsj).message == 'there are no free professionals';
+  }
+
   save( appointment, edit=false ) {
     const { toastManager } = this.props;
     appointment = appointment.clean();
@@ -139,6 +144,16 @@ class AppointmentModal extends Component {
         if (responseError) {
           if (this.isProfessionalBusyMsj(responseError)) {
             toastManager.add("Ups! Parece que hubo problema! El profesional seleccionado se encuentra ocupado en el horario en el que se quiere crear el turno!", {
+              appearance: 'error',
+              autoDismiss: true,
+              pauseOnHover: false,
+            });
+            this.setState({
+              isSaving: false,
+            });
+          }else
+          if (this.allProfessionalsBusyMsj(responseError)) {
+            toastManager.add("Ups! Parece que hubo problema! No hay profesionales que puedan atender en ese horario!", {
               appearance: 'error',
               autoDismiss: true,
               pauseOnHover: false,
