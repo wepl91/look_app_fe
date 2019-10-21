@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { withStore } from '../../hocs';
+import { withRouter } from 'react-router';
 
 import {
   Dropdown,
@@ -18,7 +19,7 @@ import {
   Column
 } from 'bloomer'
 
-import { faUser, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faSignOutAlt, faUserEdit } from "@fortawesome/free-solid-svg-icons";
 
 import startCase from 'lodash/startCase'
 
@@ -26,8 +27,13 @@ class UserLoggedDropdown extends Component {
   constructor(props) {
     super(props);
 
-    this.handleClick = this.handleClick.bind(this);
+    this.handleClick    = this.handleClick.bind(this);
+    this.handleRedirect = this.handleRedirect.bind(this);
 
+  }
+
+  handleRedirect() {
+    this.props.history.push(`/app/users/${ this.props.user.id }`)
   }
 
   handleClick() {
@@ -45,11 +51,12 @@ class UserLoggedDropdown extends Component {
           <Columns className="has-text-centered">
             <Column>
               <Avatar image="https://codewebbarcelona.com/wp-content/uploads/2019/01/095_logo-peluqueria.jpg"/>
-              <Text className="mb-1"weight="medium">{ user.username && startCase(user.username)  }</Text>
-              <Text className="mt-1 mb-1"weight="medium">{ user.userRole && startCase(user.userRole) }</Text>
-              <Button className="mt-1" kind="outline" icon={ faSignOutAlt } onClick={ this.handleClick }>Cerrar sesión</Button>
+              <Text className="mb-1" weight="medium">{ user.username && startCase(user.username)  }</Text>
+              <Text className="mt-1" weight="medium">{ user.userRole && startCase(user.userRole) }</Text>
               </Column>
-          </Columns>
+              </Columns>
+              <Button className="mt-1 ml-1 mr-1" kind="link" icon={ faUserEdit } onClick={ this.handleRedirect }>Editar perfill</Button>
+              <Button className="mt-1 ml-1 mr-1" kind="link" icon={ faSignOutAlt } onClick={ this.handleClick } >Cerrar sesión</Button>
         </DropdownPanel>
       </Dropdown> )
   }
@@ -63,4 +70,4 @@ UserLoggedDropdown.defaultProps = {
   user: null
 }
 
-export default withStore(UserLoggedDropdown);
+export default withRouter(withStore(UserLoggedDropdown));

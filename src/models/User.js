@@ -16,7 +16,7 @@ export default class User extends Model {
       email: '',
       roles: [],
       name: '',
-      lastname: '',
+      lastName: '',
       status: null,
     };
 

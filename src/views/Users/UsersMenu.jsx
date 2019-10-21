@@ -21,8 +21,7 @@ class UsersMenu extends Component {
   }
 
   render() {
-    const path = this.props.match.path;
-
+    const path = this.props.match.path;   
     return(
       <LayoutMenuLinkGroup icon={ faUsers } label="Usuarios" basePath={ `${path}/users` }>
         <LayoutMenuLink icon={ faUsers } to={ `${path}/users/list` }>Listado</LayoutMenuLink>

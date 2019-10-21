@@ -53,7 +53,7 @@ class UsersEditModal extends Component {
   handleSave() {
     const { toastManager } = this.props;
     const user = this.getUser();
-    user.fullName = `${user.name} ${user.lastname}`;
+    user.fullName = `${user.name} ${user.lastName}`;
     this.setState({
       isSaving: true,
     }, () => {
