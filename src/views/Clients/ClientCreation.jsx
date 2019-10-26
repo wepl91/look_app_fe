@@ -24,7 +24,9 @@ import { Client } from '../../models';
 
 import { observer } from 'mobx-react';
 
-import { faTimes, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+
+import { translate } from '../../lib/Translator';
 
 @observer
 class ClientCreation extends Component {
@@ -117,14 +119,17 @@ class ClientCreation extends Component {
     return !(this.state.validName && this.state.validLastName && this.state.validDni && this.state.validPrimaryPhone && this.state.validSecondaryPhone && this.newClient.status !== '')
   }
 
-
+  getText( text ) {
+    return translate(text, this.props.store.ui.language)
+  }
+  
   render() {
     if (!this.newClient) return null
     return(
       <React.Fragment>
         <Level>
           <LevelLeft>
-            <Title>Nuevo cliente</Title>
+            <Title>{ this.getText('Nuevo cliente') }</Title>
           </LevelLeft>
         </Level>
         <hr/>
@@ -133,11 +138,9 @@ class ClientCreation extends Component {
             <ClientsForm client={ this.newClient } onChange={ this.handleChange } />
             <br/>
             <br/>
-            <br/>
-            <br/>
             { this.state.isSaving ? 
-              <Button kind="outline" className="mt-5" disabled pulse icon={ faSpinner }>Creando..</Button> :
-              <Button kind="outline" className="mt-5" onClick={ this.handleSave } disabled={ this.getDisabled() }>Crear cliente</Button> }
+              <Button kind="outline" className="mt-5" disabled pulse icon={ faSpinner }>{ this.getText('Creando..') }</Button> :
+              <Button kind="outline" className="mt-5" onClick={ this.handleSave } disabled={ this.getDisabled() }>{ this.getText('Crear cliente') }</Button> }
           </Column>
           <Column isSize={7}>
             <SvgDraw style={{ height: '75%', width: '75%'}}/>

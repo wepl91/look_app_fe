@@ -28,6 +28,8 @@ export default class AppStore {
     const storedToken = localStorage.getItem(this.api_token_key);
     const storedUser  = localStorage.getItem(this.logged_user_key);
 
+    localStorage.setItem('language', 'Español');
+
     
     // create adapters
     this.APIClient = new RESTClient("http://localhost:8080", storedToken);

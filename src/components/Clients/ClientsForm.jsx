@@ -18,6 +18,8 @@ import {
   Field
 } from 'shipnow-mercurio';
 
+import { translate } from '../../lib/Translator';
+
 @observer
 class ClientsForm extends Component {
   constructor(props) {
@@ -40,21 +42,25 @@ class ClientsForm extends Component {
     this.props.onChange && this.props.onChange(name, value, valid)
   }
 
+  getText( text ) {
+    return translate(text, this.props.store.ui.language)
+  }
+
   render() {
     const { client } = this.props
     return(
       <React.Fragment>
-        <Field label="Nombre y Apellido" labelNote="¿Cómo se llama el nuevo cliente?">
+        <Field label={ this.getText('Nombre y Apellido') } labelNote={ this.getText('¿Cómo se llama el nuevo cliente?') }>
           <Columns>
             <Column>
-              <TextInput placeholder="Nombre" onChange={ this.handleChange } validate={ (value) => (nameRegex.test(value)) } name="name" value={ client.name } className="is-fullwidth" />
+              <TextInput placeholder={ this.getText('Nombre') } onChange={ this.handleChange } validate={ (value) => (nameRegex.test(value)) } name="name" value={ client.name } className="is-fullwidth" />
             </Column>
             <Column>
-              <TextInput placeholder="Apellido" onChange={ this.handleChange } validate={ (value) => (nameRegex.test(value)) } name="lastName" value={ client.lastName } className="is-fullwidth" />
+              <TextInput placeholder={ this.getText('Apellido') } onChange={ this.handleChange } validate={ (value) => (nameRegex.test(value)) } name="lastName" value={ client.lastName } className="is-fullwidth" />
             </Column>
           </Columns>
         </Field>
-        <Field label="Documento" labelNote="¿Cuál es el dni del nuevo cliente?">
+        <Field label={ this.getText('Documento') } labelNote="¿Cuál es el dni del nuevo cliente?">
           <TextInput placeholder="11.111.111" onChange={ this.handleChange } name="DNI" validate={ (value) => (dniRegex.test(value)) } value={ client.DNI } className="is-fullwidth" />
         </Field>
         <Field label="Email" labelNote="¿Cuál es el email del nuevo cliente">
@@ -109,4 +115,4 @@ ClientsForm.defaultProps = {
   onChange: null,
 }
 
-export default ClientsForm;
+export default withStore(ClientsForm);
