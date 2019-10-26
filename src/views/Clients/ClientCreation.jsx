@@ -62,32 +62,32 @@ class ClientCreation extends Component {
       this.setState({
         validName: valid.type == 'success',
       })
-    } else
-    if(name=='lastName'){
+    }
+    else if(name=='lastName'){
       this.setState({
         validLastName: valid.type == 'success',
       })
-    } else
-    if(name=='DNI'){
+    } 
+    else if(name=='DNI'){
       this.setState({
         validDni: valid.type == 'success',
       })
-    } else
-    if(name=='primaryPhone'){
+    } 
+    else if(name=='primaryPhone'){
       this.setState({
         validPrimaryPhone: valid.type == 'success',
       })
-    } else
-    if(name=='secondPhone'){
+    } 
+    else if(name=='secondPhone'){
       this.setState({
         validSecondaryPhone: valid.type == 'success',
       })
     }
+    debugger
   }
 
   handleSave() {
     const { toastManager } = this.props;
-    this.newClient.status = 'NORMAL';
     this.setState({
       isSaving: true,
     }, () => {
