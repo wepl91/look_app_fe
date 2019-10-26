@@ -15,7 +15,8 @@ export default class Client extends Model {
       primaryPhone: 0,
       status: 'NORMAL',
       secondPhone: 0,
-      lastName: ''
+      lastName: '',
+      email: ''
     };
 
     let attrs = Object.assign( defaultAttributes, attributes );

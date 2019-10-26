@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 
 import { withStore } from '../../hocs';
 
-import { nameRegex, dniRegex, phoneRegex } from '../../lib/Regex'
+import { nameRegex, dniRegex, phoneRegex, mailRegex } from '../../lib/Regex'
 
 import {
   Columns,
@@ -39,6 +39,9 @@ class ClientsForm extends Component {
   }
 
   handleChange( sender, value, name, valid) {
+    if(name=='primaryPhone' && value=='' || name=='secondPhone' && value==''){
+      valid.type = 'success'
+    }
     this.props.onChange && this.props.onChange(name, value, valid)
   }
 
@@ -64,7 +67,7 @@ class ClientsForm extends Component {
           <TextInput placeholder="11.111.111" onChange={ this.handleChange } name="DNI" validate={ (value) => (dniRegex.test(value)) } value={ client.DNI } className="is-fullwidth" />
         </Field>
         <Field label="Email" labelNote={ this.getText('¿Cuál es el email del nuevo cliente?') }>
-          <TextInput name="" placeholder="cliente@gmail.com" onChange={ this.handleChange } />
+          <TextInput name="email" placeholder="cliente@gmail.com" onChange={ this.handleChange } validate={ (value) => (mailRegex.test(value))} value={ client.email }/>
         </Field>
         <Field label={ this.getText('Teléfono principal') } labelNote={ this.getText('¿Cuál es el nro de teléfono del cliente?') }>
           <TextInput onChange={ this.handleChange } name="primaryPhone" validate={ (value) => (phoneRegex.test(value)) } value={ client.primaryPhone } className="is-fullwidth" />

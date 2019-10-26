@@ -42,8 +42,9 @@ class ClientCreation extends Component {
       validName: false,
       validLastName: false,
       validDni: false,
-      validPrimaryPhone: false,
-      validSecondaryPhone: false
+      validEmail: false,
+      validPrimaryPhone: true,
+      validSecondaryPhone: true
     }
 
     this.handleSave   = this.handleSave.bind(this);
@@ -85,6 +86,11 @@ class ClientCreation extends Component {
         validSecondaryPhone: valid.type == 'success',
       })
     }
+    else if(name=='email'){
+      this.setState({
+        validEmail: valid.type == 'success',
+      })
+    }
   }
 
   handleSave() {
@@ -116,7 +122,7 @@ class ClientCreation extends Component {
   }
 
   getDisabled() {
-    return !(this.state.validName && this.state.validLastName && this.state.validDni && this.state.validPrimaryPhone && this.state.validSecondaryPhone && this.newClient.status !== '')
+    return !(this.state.validName && this.state.validLastName && this.state.validDni && this.state.validPrimaryPhone && this.state.validSecondaryPhone && this.state.validEmail && this.newClient.status !== '')
   }
 
   getText( text ) {

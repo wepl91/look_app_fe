@@ -16,7 +16,7 @@ export default class UIStore extends Store {
     super(adapter, appStore);
 
     // initialize static value lists
-    this.language = localStorage.getItem('languaje');
+    this.language = localStorage.getItem('language');
   }
 
 
