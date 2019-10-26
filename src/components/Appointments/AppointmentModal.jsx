@@ -74,6 +74,7 @@ class AppointmentModal extends Component {
       confirmation: false,
       infoAdvice: false,
       showTicketModal: false,
+      showTicketAction: '',
       buttonDisabled: true,
       confirmationData: {
         accept: null,
@@ -108,13 +109,23 @@ class AppointmentModal extends Component {
 
   handlePay() {
     this.state.appointment.pay().then(() =>{
-      this.props.onClose && this.props.onClose(true)
+      this.setState({
+        showTicketModal: true,
+        showTicketAction: 'pay',
+        renderDetails: true,
+        confirmation: false,
+      });
     });
   }
 
   handleCancel() {
     this.state.appointment.cancel().then(() =>{
-      this.props.onClose && this.props.onClose(true)
+      this.setState({
+        showTicketModal: true,
+        showTicketAction: 'cancel',
+        renderDetails: true,
+        confirmation: false,
+      });
     });
   }
 
@@ -151,8 +162,8 @@ class AppointmentModal extends Component {
             this.setState({
               isSaving: false,
             });
-          }else
-          if (this.allProfessionalsBusyMsj(responseError)) {
+          }
+          else if (this.allProfessionalsBusyMsj(responseError)) {
             toastManager.add("Ups! Parece que hubo problema! No hay profesionales que puedan atender en ese horario!", {
               appearance: 'error',
               autoDismiss: true,
@@ -182,9 +193,13 @@ class AppointmentModal extends Component {
           if (edit) {
             this.setState({
               showTicketModal: true,
+              showTicketAction: 'edit',
               isSaving: false,
               appointment: savedAppointment
             });
+          }
+          else {
+            this.props.onClose && this.props.onClose(true)
           }
         }
       })
@@ -272,7 +287,7 @@ class AppointmentModal extends Component {
   }
 
   handleClose() {
-    this.props.onClose && this.props.onClose()
+    this.props.onClose && this.props.onClose(true)
   }
 
   handleCancelAdvice() {
@@ -329,7 +344,7 @@ class AppointmentModal extends Component {
     return(
       <Columns>
         <Column isSize={ 6 }>
-          <AppointmentsForm onChange={ this.handleChange } withDate/>
+          <AppointmentsForm onChange={ this.handleChange } withDate />
         </Column>
         <Column className="has-text-centered">
           <SvgDraw style={{ height: '300px', width: '300px' }}/>
@@ -338,9 +353,20 @@ class AppointmentModal extends Component {
   }
 
   renderTicketAdvise() {
+    const { showTicketAction } = this.state;
+    let text = '';
+    if (showTicketAction == 'edit') {
+      text = 'Acabas de editar el turno, recordá que podes descargar un comprobante con la información actualizada!';
+    }
+    if (showTicketAction == 'pay') {
+      text = 'Acabas marcar el turno como pagado, recordá que podes descargar un comprobante con la información de pago!';
+    }
+    if (showTicketAction == 'cancel') {
+      text = 'Acabas marcar el turno como cancelado, recordá que podes descargar un comprobante con la información de la cancelación!';
+    }
     return(
       <Panel color="warning" invert style={{padding: '8px'}} className="mt-3">
-        <Text multiline>Acabas de editar el turno, recordá que podes descargar un comprobante con la informació actualizada!</Text>
+        <Text multiline>{ text }</Text>
       </Panel> )
   }
 

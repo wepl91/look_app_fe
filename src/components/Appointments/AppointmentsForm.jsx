@@ -199,7 +199,7 @@ class AppointmentsForm extends Component {
   renderSkeleton() {
     return(
     <React.Fragment>
-      { !this.props.withDate &&
+      { this.props.withDate &&
         <Field className="ml-5" label="¿Que día querés venir?" labelNote="Seleccioná ua fecha">
           <DateTimePicker className="is-fullwidth" disabled/>
         </Field> }
@@ -261,7 +261,7 @@ class AppointmentsForm extends Component {
     const { appointment } = this.props;
     return(
       <React.Fragment>
-        { !this.props.withDate &&
+        { this.props.withDate &&
           <Field className="ml-5" label="¿Que día querés venir?" labelNote="Seleccioná ua fecha">
             <DateTimePicker 
               className="is-fullwidth"
@@ -271,7 +271,7 @@ class AppointmentsForm extends Component {
             { this.state.date.isoWeekday() == 7 && this.renderAdvise() }
           </Field> }
         <Field className="ml-5" label="¿Quién quiere ser atendido?" labelNote="Seleccioná un cliente">
-          <ClientSuggest clients={ this.state.clients.toArray() }/>
+          <ClientSuggest clients={ this.state.clients && this.state.clients.toArray() }/>
         </Field>
         <Field className="ml-5" label="¿A cual de nuestras sucursales querés venir?" labelNote="Seleccioná una sucursal">
           <Select 

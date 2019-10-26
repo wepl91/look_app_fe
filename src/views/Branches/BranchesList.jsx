@@ -47,6 +47,10 @@ class BranchesList extends Component {
     return translate(text, this.props.store.ui.language)
   }
 
+  handleShowModal( branch ) {
+    
+  }
+
   renderTable() {
     const data = this.state.branches.toArray();
 
