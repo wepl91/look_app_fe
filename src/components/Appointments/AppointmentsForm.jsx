@@ -199,9 +199,10 @@ class AppointmentsForm extends Component {
   renderSkeleton() {
     return(
     <React.Fragment>
-      <Field className="ml-5" label="¿Que día querés venir?" labelNote="Seleccioná ua fecha">
-        <DateTimePicker className="is-fullwidth" disabled/>
-      </Field>
+      { !this.props.withDate &&
+        <Field className="ml-5" label="¿Que día querés venir?" labelNote="Seleccioná ua fecha">
+          <DateTimePicker className="is-fullwidth" disabled/>
+        </Field> }
       <Field className="ml-5" label="¿Quién quiere ser atendido?" labelNote="Seleccioná un cliente">
         <Select 
           disabled
