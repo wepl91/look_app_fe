@@ -1,5 +1,6 @@
 export const translate = (str, lang) => {
   const dictionary = {
+    'Bienvenido': 'Welcome',
     'Idioma': 'Language',
     'Español': 'Spanish',
     'Ingles': 'English',

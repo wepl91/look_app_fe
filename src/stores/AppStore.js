@@ -28,6 +28,7 @@ export default class AppStore {
     const storedToken = localStorage.getItem(this.api_token_key);
     const storedUser  = localStorage.getItem(this.logged_user_key);
 
+    //Set by default when app is up in spanish
     localStorage.setItem('language', 'Español');
 
     
