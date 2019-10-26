@@ -13,7 +13,7 @@ export default class Client extends Model {
       name: '',
       DNI: '',
       primaryPhone: 0,
-      status: '',
+      status: 'NORMAL',
       secondPhone: 0,
       lastName: ''
     };
@@ -31,7 +31,7 @@ export default class Client extends Model {
       'MOROSO': 'Moroso'
     };
 
-    return status[this.status.name];
+    return status[this.status.name] || this.status;
   }
 
   @computed

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  Checkbox
-} from 'bloomer';
+// import {
+//   Checkbox
+// } from 'bloomer';
+
+import { Checkbox } from '../../components/Checkbox'
 
 import {
   Field,
@@ -22,7 +24,7 @@ import moment from 'moment';
 
 import { observer } from 'mobx-react';
 
-import { nameRegex, mailRegex, phoneRegex } from '../../lib/Regex'
+import { nameRegex, mailRegex, phoneRegex } from '../../lib/Regex';
 
 @observer
 class ProfessionalsForm extends Component {
@@ -95,12 +97,12 @@ class ProfessionalsForm extends Component {
     return validTimeRange;
   }
 
-  handleServices(value) {
+  handleServices(value, checked) {
     let newArray = Array.from(this.state.selectedServices)
-    if (newArray.includes(value)) {
-      newArray = newArray.filter(item => item !== value)
+    if (!checked) {
+      newArray = newArray.filter(item => item !== value.id)
     } else {
-      newArray.push(value)
+      newArray.push(value.id)
     }
     this.setState({
       selectedServices: newArray,
@@ -124,9 +126,9 @@ class ProfessionalsForm extends Component {
           <TextInput name="email" className="is-fullwidth" disabled />
         </Field>
         <Field className="pl-5 pr-5" label="¿Qué servicios ofrece?" labelNote="Seleccioná los servicios">
-          <Checkbox className="pt-1" isFullWidth defaultChecked={ false } ><Text className="pl-1">...</Text></Checkbox>
-          <Checkbox className="pt-1" isFullWidth defaultChecked={ false } ><Text className="pl-1">...</Text></Checkbox>
-          <Checkbox className="pt-1" isFullWidth defaultChecked={ false } ><Text className="pl-1">...</Text></Checkbox>
+          <Checkbox className="pt-1" checked={ false } >...</Checkbox>
+          <Checkbox className="pt-1" checked={ false } >...</Checkbox>
+          <Checkbox className="pt-1" checked={ false } >...</Checkbox>
         </Field>
       </React.Fragment>)
   }
@@ -160,7 +162,7 @@ class ProfessionalsForm extends Component {
             </Field>
             <Field className="pl-4 pr-4" label="¿Qué servicios ofrece?" labelNote="Seleccioná los servicios">
               {services.toArray().map(serv => (
-                <Checkbox className="pt-1" isFullWidth onClick={() => this.handleServices(serv.id)} defaultChecked={ professional && professional.professionalServicesIds.includes(serv.id)} ><Text className="pl-1">{startCase(serv.name)}</Text></Checkbox>
+                <Checkbox className="pt-1" checked={ professional && professional.professionalServicesIds.includes(serv.id)} value={ serv } onCheck={ this.handleServices }>{startCase(serv.name)}</Checkbox>
               ))}
             </Field>
       </React.Fragment> )
