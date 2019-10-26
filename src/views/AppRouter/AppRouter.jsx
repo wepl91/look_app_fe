@@ -11,6 +11,11 @@ import {
   HomeRouter
 } from '../Home';
 
+import {
+  BranchesRouter,
+  BranchesMenu,
+} from '../Branches'
+
 import { 
   UsersMenu, 
   UsersRouter
@@ -80,6 +85,7 @@ class AppRouter extends Component {
             </LayoutNavbar>
             <LayoutMenu>
             <AppointmentsMenu  />
+            <BranchesMenu      />
             <ServicesMenu      />
             <ProfessionalsMenu />
             <UsersMenu         />
@@ -91,6 +97,7 @@ class AppRouter extends Component {
             <LayoutContent>
               <HomeRouter />
               <AppointmentsRouter  />
+              <BranchesRouter      />
               <ServicesRouter      />
               <ProfessionalsRouter />
               <UsersRouter         />

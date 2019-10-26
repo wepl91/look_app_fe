@@ -8,7 +8,8 @@ import {
   ServicesStore,
   ProfessionalsStore,
   AppointmentsStore,
-  ClientsStore
+  ClientsStore,
+  BranchesStore,
 } from './';
 
 export default class AppStore {
@@ -45,6 +46,7 @@ export default class AppStore {
     this.stores.set('roles', new RolesStore(this.APIClient, this));
     this.stores.set('clients', new ClientsStore(this.APIClient, this));
     this.stores.set('services', new ServicesStore(this.APIClient, this));
+    this.stores.set('branches', new BranchesStore(this.APIClient, this));
     this.stores.set('professionals', new ProfessionalsStore(this.APIClient, this));
     this.stores.set('appointments', new AppointmentsStore(this.APIClient, this));
    

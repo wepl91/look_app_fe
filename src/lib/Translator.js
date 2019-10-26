@@ -20,6 +20,14 @@ export const translate = (str, lang) => {
     'Categoría': 'Category',
     '¿Dentro de qué categoría se encuentra el cliente?': 'What category is the customer in?',
     'Moroso': 'Defaulter',
+    'Sucursales': 'Branches',
+    'Listado': 'List',
+    'Nueva sucursal': 'New branch',
+    'Listado de sucursales': 'List of branches',
+    'Nombre': 'Name',
+    'Estado': 'Status',
+    'Dirección': 'Address',
+    'Cargando las sucursales..': 'Loading branches..'
   }
 
   /**
