@@ -63,16 +63,16 @@ class ClientsForm extends Component {
         <Field label={ this.getText('Documento') } labelNote="¿Cuál es el dni del nuevo cliente?">
           <TextInput placeholder="11.111.111" onChange={ this.handleChange } name="DNI" validate={ (value) => (dniRegex.test(value)) } value={ client.DNI } className="is-fullwidth" />
         </Field>
-        <Field label="Email" labelNote="¿Cuál es el email del nuevo cliente">
+        <Field label="Email" labelNote={ this.getText('¿Cuál es el email del nuevo cliente?') }>
           <TextInput name="" placeholder="cliente@gmail.com" onChange={ this.handleChange } />
         </Field>
-        <Field label="Teléfono principal" labelNote="¿Cuál es el nro de teléfono del cliente?">
+        <Field label={ this.getText('Teléfono principal') } labelNote={ this.getText('¿Cuál es el nro de teléfono del cliente?') }>
           <TextInput onChange={ this.handleChange } name="primaryPhone" validate={ (value) => (phoneRegex.test(value)) } value={ client.primaryPhone } className="is-fullwidth" />
         </Field>
-        <Field label="Teléfono secundario" labelNote="Es necesario una segunda opción de comunicación">
+        <Field label={ this.getText('Teléfono secundario') } labelNote={ this.getText('Es necesario una segunda opción de comunicación') }>
           <TextInput onChange={ this.handleChange } name="secondPhone" validate={ (value) => (phoneRegex.test(value)) } value={ client.secondPhone } className="is-fullwidth" />
         </Field>
-        <Field label="Categoría" labelNote="¿Dentro de qué categoría se encuentra el cliente?">
+        <Field label={ this.getText('Categoría') } labelNote={ this.getText('¿Dentro de qué categoría se encuentra el cliente?') }>
           <Text className="ml-1" size="md" weight="medium">
             <input 
               className="ml-1 mr-1" 
@@ -80,7 +80,7 @@ class ClientsForm extends Component {
               value="NORMAL" 
               onChange={ () => (this.handleCategory('NORMAL')) }
               checked={ client.status.name ? client.status.name == 'NORMAL' : client.status == 'NORMAL' } />
-            Normal
+            { this.getText('Normal') }
           </Text>
           <Text className="ml-1 mt-1 mb-1" size="md" weight="medium">
             <input 
@@ -89,7 +89,7 @@ class ClientsForm extends Component {
               value="MOROSO" 
               onChange={ () => (this.handleCategory('MOROSO')) }
               checked={ client.status.name ? client.status.name == 'MOROSO' : client.status == 'MOROSO' } />
-            Moroso
+            { this.getText('Moroso') }
           </Text>
           <Text className="ml-1" size="md" weight="medium">
             <input 
@@ -98,7 +98,7 @@ class ClientsForm extends Component {
               value="VIP"
               onChange={ () => (this.handleCategory('VIP')) }
               checked={ client.status.name ? client.status.name == 'VIP' : client.status == 'VIP' } />
-            VIP
+            { this.getText('VIP') }
           </Text>
         </Field>
       </React.Fragment> );
