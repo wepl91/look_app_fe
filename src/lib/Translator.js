@@ -21,8 +21,14 @@ export const translate = (str, lang) => {
     'Moroso': 'Defaulter',
   }
 
+  /**
+   * If language is spanish do not transalate becouse every word should be past as parameter in spanish
+   */
   if (lang == 'Español' || lang == 'Spanish') { return str }
   else {
+    /**
+     * If translation is not mapped, instead of breaking down the app, we return the string not translated
+     */
     return dictionary[str] || str; 
   }
 };
