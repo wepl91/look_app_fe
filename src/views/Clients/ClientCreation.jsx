@@ -83,7 +83,6 @@ class ClientCreation extends Component {
         validSecondaryPhone: valid.type == 'success',
       })
     }
-    debugger
   }
 
   handleSave() {

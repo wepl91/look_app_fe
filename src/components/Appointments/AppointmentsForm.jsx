@@ -5,6 +5,7 @@ import './styles.css'
 import {
   Field,
   Select,
+  SelectItem,
   DateTimePicker,
   Text,
   Panel,
@@ -25,6 +26,10 @@ import startCase from 'lodash/startCase';
 import { horarios } from '../../lib/Mocks';
 
 import moment from 'moment';
+import { resolve } from 'url';
+import { reject } from 'q';
+
+import { ClientSuggest } from '../../components/Suggest';
 
 @observer
 class AppointmentsForm extends Component {
@@ -265,16 +270,7 @@ class AppointmentsForm extends Component {
             { this.state.date.isoWeekday() == 7 && this.renderAdvise() }
           </Field> }
         <Field className="ml-5" label="¿Quién quiere ser atendido?" labelNote="Seleccioná un cliente">
-          <Select 
-            key={ this.state.clients }
-            name="client"
-            onChange={ this.handleClient }
-            disabled={ this.props.edit && appointment.client }
-            placeholder="Clientes" 
-            borderless 
-            value={ this.state.client ? this.state.client.id : null }
-            icon={ faChevronDown } 
-            options={ this.props.edit ? [{key: appointment.clientFullName, value: appointment.clientID}] : this.renderClientsList() } />
+          <ClientSuggest clients={ this.state.clients.toArray() }/>
         </Field>
         <Field className="ml-5" label="¿A cual de nuestras sucursales querés venir?" labelNote="Seleccioná una sucursal">
           <Select 

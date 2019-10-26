@@ -86,7 +86,7 @@ class UserEdit extends Component {
           });
         }
         else {
-          toastManager.add("El usuario ha sido creado exitosamente!", {
+          toastManager.add("El usuario ha sido modificado exitosamente!", {
             appearance: 'success',
             autoDismiss: true,
             pauseOnHover: false,

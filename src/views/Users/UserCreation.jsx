@@ -46,7 +46,7 @@ class UserCreation extends Component {
 
   handleSave() {
     const { toastManager } = this.props;
-    this.newUser.fullName = `${this.newUser.name} ${this.newUser.lastname}`;
+    this.newUser.fullName = `${this.newUser.name} ${this.newUser.lastName}`;
     this.newUser.status = 'ACTIVE';
     this.setState({
       isSaving: true,

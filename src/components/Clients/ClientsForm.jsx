@@ -55,7 +55,10 @@ class ClientsForm extends Component {
           </Columns>
         </Field>
         <Field label="Documento" labelNote="¿Cuál es el dni del nuevo cliente?">
-          <TextInput onChange={ this.handleChange } name="DNI" validate={ (value) => (dniRegex.test(value)) } value={ client.DNI } className="is-fullwidth" />
+          <TextInput placeholder="11.111.111" onChange={ this.handleChange } name="DNI" validate={ (value) => (dniRegex.test(value)) } value={ client.DNI } className="is-fullwidth" />
+        </Field>
+        <Field label="Email" labelNote="¿Cuál es el email del nuevo cliente">
+          <TextInput name="" placeholder="cliente@gmail.com" onChange={ this.handleChange } />
         </Field>
         <Field label="Teléfono principal" labelNote="¿Cuál es el nro de teléfono del cliente?">
           <TextInput onChange={ this.handleChange } name="primaryPhone" validate={ (value) => (phoneRegex.test(value)) } value={ client.primaryPhone } className="is-fullwidth" />
