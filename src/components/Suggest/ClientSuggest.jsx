@@ -60,7 +60,7 @@ class ClientSuggest extends Component {
             onFocus={ () => (this.setState({showPanel: true}))} onBlur={ () => (this.setState({showPanel: false})) }/>
         </DropdownToggle>
           <DropdownPanel>
-            { this.state.suggest.map( (client, index) => (
+            { this.state.suggest && this.state.suggest.map( (client, index) => (
               index < 5 && <Text className="mb-1" size="md" onClick={ () => (this.handleSelect(client)) }>{ client.fullName }</Text> )) }
           </DropdownPanel>
       </Dropdown> )

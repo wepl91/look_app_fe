@@ -37,13 +37,13 @@ export default class UIStore extends Store {
 
   @action
   setLanguageToSpanish() {
-    localStorage['languaje'] = 'Español';
+    localStorage['language'] = 'Español';
     this.language = 'Español';
   }
 
   @action
   setLanguageToEnglish() {
-    localStorage['languaje'] = 'Ingles';
+    localStorage['language'] = 'Ingles';
     this.language = 'Ingles';
   }
 
