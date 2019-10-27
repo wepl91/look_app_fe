@@ -87,6 +87,9 @@ class AppointmentsForm extends Component {
   }
 
   handleProfessional( sender, value, name ) {
+    if( value != this.props.appointment){
+        this.props.appointment.services = []
+    }
     if (value == 'null') {
       this.setState({
         professional: null,
@@ -151,13 +154,24 @@ class AppointmentsForm extends Component {
     });
     return ret;
   }
+
+  hashString( received ){
+    var hash = 0, i, chr;
+    if (received.length === 0) return hash;
+    for (i = 0; i < received.length; i++) {
+      chr   = received.charCodeAt(i);
+      hash  = ((hash << 5) - hash) + chr;
+      hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+  }
   
   renderServices() {
     // El randomizer lo que hace es cambiar la key para que React vea que ocurrió un cambio en el checkbox. No usé Math.Random() por que rompía el Checkbox
-    // Revisitar, es trucho que el randomizer se base en la longitud del nombre
+ 
     const { professional } = this.state;
     const services = professional && professional != 'null' ?  professional.services : this.state.services.toArray();
-    let randomizer = professional && professional != 'null' ?  professional.name.length : 1000;
+    let randomizer = professional && professional != 'null' ?  this.hashString(professional.name) : 1000;
     return(
       <Field className="ml-5" label="¿Cuál de nuestros servicios requerís?" labelNote="Seleccioná un servicio">
         { services.length > 0 ? 
