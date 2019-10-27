@@ -87,7 +87,8 @@ class AppointmentsForm extends Component {
   }
 
   handleProfessional( sender, value, name ) {
-    if( this.props.appointment.professional && value != this.props.appointment.professional.id){
+    const { appointment } = this.props;
+    if( appointment.professional && value != appointment.professional.id){
         this.props.appointment.services = []
     }
     if (value == 'null') {
