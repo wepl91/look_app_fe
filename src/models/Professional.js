@@ -52,14 +52,7 @@ export default class Professional extends Model {
   }
 
   @computed
-  get rawWorkingDays() {
-    const ret = [];
-    this.workingHours.map( day => (ret.push(day.days.name)))
-    return ret;
-  }
-
-  @computed
-  get cookedWorkingDays() {
+  get cookedWorkingDays() { //Refactorizar
     const ret = [];
     const cookedDays = {
       'MONDAY': 'Lunes',
@@ -84,6 +77,24 @@ export default class Professional extends Model {
       return sorter[day1] - sorter[day2];
     });
     return ret;
+  }
+
+  // @computed
+  // get rawWorkingDays() {
+  //   const ret = [];
+  //   this.workingHours.map( day => (ret.push(day.days.name)))
+  //   return ret;
+  // }
+
+  @computed
+  get rawWorkingDays() {
+    let ret = {}
+    this.workingHours.map( day => {
+      ret[day.days.name] = {}
+      ret[day.days.name]['sta'] = moment(day.beginHour.toString(),"LT").format("HH:mm")
+      ret[day.days.name]['fin'] = moment(day.endHour.toString(),"LT").format("HH:mm")
+    })
+    return ret
   }
 
   @computed
