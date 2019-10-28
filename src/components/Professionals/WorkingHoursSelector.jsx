@@ -14,12 +14,11 @@ import {
 
 import moment from 'moment';
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import _ from 'lodash';
 
 class WorkingHoursSelector extends Component {
   constructor(props) {
     super(props)
-
+    
     this.state = {
       days: {},
       disabled: true
@@ -36,14 +35,9 @@ class WorkingHoursSelector extends Component {
     }
   }
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   this.props.onChange(this.state.days);
-  // }
-
   //1 hour intervals
   hoursBetweenDates(startDate, endDate) {
     let hours = [];
-
     let currDate = moment(startDate).startOf('minute').subtract(60, 'minutes');
     let lastDate = moment(endDate).startOf('minute').add(60, 'minutes');
 
@@ -84,13 +78,20 @@ class WorkingHoursSelector extends Component {
     this.props.onChange(this.state.days);
   }
 
-  getDisabledSelect(day){
+  isDaySelected(day){
     return (day in this.state.days)
+  }
+
+  getBeginHour( day ){
+    return this.state.days[day]['sta']
+  }
+
+  getEndHour( day ){
+    return this.state.days[day]['fin']
   }
 
   render() {
     let hourList = this.hoursBetweenDates(this.props.startingDate, this.props.finishingDate)
-    // let daysList = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY']
     let daysList = this.props.days
     const translatedDays = {
       'MONDAY': 'Lunes',
@@ -105,15 +106,14 @@ class WorkingHoursSelector extends Component {
       <React.Fragment>
       {daysList.map(day => (
         <React.Fragment>
-        {/* <Checkbox className="pr-1 mr-1 mt-2" name={ day } isFullWidth defaultChecked={this.props.defaultProfessional && this.props.defaultProfessional.cookedWorkingDays.includes(translatedDays[day])} onClick={() => this.handleDays(day)} ><Text className="ml-1">{translatedDays[day]}</Text></Checkbox> */}
-        <Checkbox className="pr-1 mr-1 mt-2" name={ day } isFullWidth onClick={() => this.handleDays(day)} ><Text className="ml-1">{translatedDays[day]}</Text></Checkbox>
-        {this.getDisabledSelect(day) && <Select placeholder="Entrada"
+        <Checkbox className="pr-1 mr-1 mt-2" name={ day } isFullWidth onClick={() => this.handleDays(day)} defaultChecked={this.props.defaultProfessional && day in this.props.defaultProfessional.rawWorkingDays} ><Text className="ml-1">{translatedDays[day]}</Text></Checkbox>
+        {this.isDaySelected(day) && <Select placeholder="Entrada"
           borderless icon={faChevronDown}
-          value={this.state.startingDate}
+          value={ this.getBeginHour(day) }
           name={`${ day }sta`} onChange={this.handleChange} options={hourList} />}
-        {this.getDisabledSelect(day) && <Select placeholder="Salida"
+        {this.isDaySelected(day) && <Select placeholder="Salida"
           borderless icon={faChevronDown}
-          value={this.state.finishingDate}
+          value={ this.getEndHour(day) }
           name={`${ day }fin`} onChange={this.handleChange} options={hourList} />}
         </React.Fragment>
       ))}
@@ -132,6 +132,7 @@ WorkingHoursSelector.PropTypes = {
 WorkingHoursSelector.defaultProps = {
   startingDate: null,
   finishingDate: null,
+  defaultProfessional: null,
   onChange: null,
   validate: null
 }

@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-// import {
-//   Checkbox
-// } from 'bloomer';
-
 import { Checkbox } from '../../components/Checkbox'
 
 import {
@@ -30,21 +26,6 @@ import _ from 'lodash';
 
 @observer
 class ProfessionalsForm extends Component {
-  // constructor(props) {
-  //   super(props);
-
-  //   this.state = {
-  //     selectedDays: [],
-  //     startingTime: '',
-  //     finishingTime: '',
-  //     services: null,
-  //     selectedServices: [],
-  //     validTimeRange: true
-  //   }
-  //   this.handleChange = this.handleChange.bind(this);
-  //   this.handleHours = this.handleHours.bind(this);
-  //   this.handleServices = this.handleServices.bind(this);
-  // }
   constructor(props) {
     super(props);
 
@@ -58,7 +39,6 @@ class ProfessionalsForm extends Component {
     this.handleHours = this.handleHours.bind(this);
     this.handleServices = this.handleServices.bind(this);
   }
-
 
   componentDidMount() {
     if (this.props.professional && this.state.selectedServices.length == 0) {
@@ -75,24 +55,6 @@ class ProfessionalsForm extends Component {
     this.props.onChange && this.props.onChange(name, value, valid);
   }
 
-  // handleHours(received, valid, name ) {
-  //   name = 'hours'
-  //     this.setState({
-  //       days: received,
-  //     }) 
-  //   let ret = []
-
-  //   //Así tiene el formato correspondiente a la REQUEST que espera el back
-  //   {received[0].map(day => (
-  //   ret.push({"days": day,
-  //   "beginHour": received[1].substring(0, 2),
-  //   "endHour":received[2].substring(0, 2)})
-  //   ))}
-          
-  //   valid = (moment(received[1],'HH:mm').isBefore(moment(received[2],'HH:mm')) && received[0].length > 0)
-  //   this.props.onChange && this.props.onChange(name, ret, valid);
-  // }
-
   handleHours(received, valid, name ) {
     name = 'hours'
     this.setState({
@@ -102,8 +64,6 @@ class ProfessionalsForm extends Component {
     valid = true
     if(Object.keys(received).length > 0){
       for (const [day, hours] of Object.entries(received)) {
-        console.log(hours['sta'])
-        console.log(hours['fin'])
         if(hours['sta'] && hours['fin']){ 
           ret.push({
             "days": day,
@@ -113,11 +73,9 @@ class ProfessionalsForm extends Component {
           if(!(moment(hours['sta'],'HH:mm').isBefore(moment(hours['fin'],'HH:mm')))){
             valid = false
           }
-          // this.setState({validTimeRange: valid})
         }else{
           console.log('HORAS VACIAS')
           valid = false
-          // this.setState({validTimeRange: false})
         }
       }
     }else{
@@ -129,32 +87,11 @@ class ProfessionalsForm extends Component {
   }
 
   isValidHour() {
-    const { validTimeRange } = this.state;
-    // if (startingTime === '' || finishingTime === '') {
-    //   return true;
-    // }
-    return validTimeRange;
+    if(Object.keys(this.state.days).length > 0){
+      return this.state.validTimeRange
+    }
+    return true
   }
-
-  // componentDidUpdate(prevProps, prevState){
-  //   if ( !(_.isEqual(this.state.days, prevState.days)) ) {
-  //     console.log('CHECKING VVALID')
-  //     let validHours = true
-  //     if(Object.keys(this.state.days).length > 0){
-  //       for (const [day, hours] of Object.entries(this.state.days)) {
-  //         if(!(moment(hours['sta'],'HH:mm').isBefore(moment(hours['fin'],'HH:mm')))){
-  //           validHours = false
-  //         }
-  //       }
-  //     }else{
-  //       this.setState({validTimeRange: false})
-  //     }
-      
-  //     this.setState({validTimeRange: validHours})
-  //   }
-  // }
-
-
 
   handleServices(value, checked) {
     let newArray = Array.from(this.state.selectedServices)
