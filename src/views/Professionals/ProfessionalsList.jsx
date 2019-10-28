@@ -7,6 +7,7 @@ import {
   Text,
   Button,
   Toggle,
+  Select
 } from 'shipnow-mercurio';
 
 import {
@@ -19,7 +20,7 @@ import { withToastManager } from 'react-toast-notifications';
 
 import { observer } from 'mobx-react';
 
-import { faSuitcase, faPencilAlt, faDotCircle } from "@fortawesome/free-solid-svg-icons";
+import { faSuitcase, faPencilAlt, faDotCircle, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
@@ -120,12 +121,14 @@ class ProfessionalsList extends Component {
         content: (data) => (data.professionalServices.map(name => (<Text weight="medium" className="mb-2"><FontAwesomeIcon className="mr-1" icon={ faDotCircle } size="xs" fixedWidth/>{ name }</Text>))),
       },
       {
-        label: 'Horario de trabajo',
-        content: (data) => (<Text weight="medium" className="mb-2">{ data.cookedWorkingHours }</Text>),
-      },
-      {
         label: 'Días de trabajo',
-        content: (data) => (data.cookedWorkingDays.map(day => (<Text weight="medium" className="mb-2 mt-2"><FontAwesomeIcon className="mr-1" icon={ faDotCircle } size="xs" fixedWidth/>{ day }</Text>))),
+        content: (data) => (data.cookedWorkingDays.map(days => (
+          <Select
+          borderless icon={faDotCircle}
+          value={ days.day }
+          options={[days.begin, days.end]}
+          />
+        ))),
       },
       {
         label: 'Activo',

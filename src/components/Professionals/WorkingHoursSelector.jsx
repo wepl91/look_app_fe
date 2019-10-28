@@ -106,15 +106,17 @@ class WorkingHoursSelector extends Component {
       <React.Fragment>
       {daysList.map(day => (
         <React.Fragment>
-        <Checkbox className="pr-1 mr-1 mt-2" name={ day } isFullWidth onClick={() => this.handleDays(day)} defaultChecked={this.props.defaultProfessional && day in this.props.defaultProfessional.rawWorkingDays} ><Text className="ml-1">{translatedDays[day]}</Text></Checkbox>
-        {this.isDaySelected(day) && <Select placeholder="Entrada"
-          borderless icon={faChevronDown}
-          value={ this.getBeginHour(day) }
-          name={`${ day }sta`} onChange={this.handleChange} options={hourList} />}
-        {this.isDaySelected(day) && <Select placeholder="Salida"
-          borderless icon={faChevronDown}
-          value={ this.getEndHour(day) }
-          name={`${ day }fin`} onChange={this.handleChange} options={hourList} />}
+        <Columns>
+          <Checkbox className="mr-5 mt-2" name={ day } isFullWidth onClick={() => this.handleDays(day)} defaultChecked={this.props.defaultProfessional && day in this.props.defaultProfessional.rawWorkingDays} ><Text className="ml-1">{translatedDays[day]}</Text></Checkbox>
+          {this.isDaySelected(day) && <Select className="pr-1 mr-1 mt-2" placeholder="Entrada"
+            borderless icon={faChevronDown}
+            value={ this.getBeginHour(day) }
+            name={`${ day }sta`} onChange={this.handleChange} options={hourList} />}
+          {this.isDaySelected(day) && <Select className="pr-1 mr-1 mt-2" placeholder="Salida"
+            borderless icon={faChevronDown}
+            value={ this.getEndHour(day) }
+            name={`${ day }fin`} onChange={this.handleChange} options={hourList} />}
+        </Columns>
         </React.Fragment>
       ))}
       </React.Fragment>)
