@@ -5,7 +5,7 @@ import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 import '../../styles/styles.scss';
 
-import { BranchesList } from './';
+import { BranchesList, BranchCreation } from './';
 
 class BranchesRouter extends Component {
   
@@ -22,9 +22,8 @@ class BranchesRouter extends Component {
               <section className="transition-wrapper">
                 <Switch location={ location }>
                   <Route path ={ `${path}/branches/list`    }  component={ BranchesList } />
-                  <Route path ={ `${path}/branches/reports` }  component={ null } />
-                  <Route path ={ `${path}/branches/new`     }  component={ null } />
-                  <Route path ={ `${path}/branches`         }  component={ null } />
+                  <Route path ={ `${path}/branches/new`     }  component={ BranchCreation } />
+                  <Route path ={ `${path}/branches`         }  component={ BranchesList } />
                 </Switch>
             </section>
           </CSSTransition>

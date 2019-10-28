@@ -27,7 +27,8 @@ export const translate = (str, lang) => {
     'Nombre': 'Name',
     'Estado': 'Status',
     'Dirección': 'Address',
-    'Cargando las sucursales..': 'Loading branches..'
+    'Cargando las sucursales..': 'Loading branches..',
+    'Crear sucursal': 'Create branch',
   }
 
   /**
