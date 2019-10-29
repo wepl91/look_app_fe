@@ -7,7 +7,11 @@ import {
   Text,
   Button,
   Toggle,
-  Select
+  Select,
+  Dropdown,
+  DropdownToggle,
+  DropdownPanel,
+  TextInput
 } from 'shipnow-mercurio';
 
 import {
@@ -122,13 +126,18 @@ class ProfessionalsList extends Component {
       },
       {
         label: 'Días de trabajo',
-        content: (data) => (data.cookedWorkingDays.map(days => (
-          <Select
-          borderless icon={faDotCircle}
-          value={ days.day }
-          options={[days.begin, days.end]}
-          />
-        ))),
+        content: (data) => (
+          <Dropdown className="is-fullwidth">
+            <DropdownToggle className="is-fullwidth">
+              <Text>Días y horarios <FontAwesomeIcon className="mr-1" icon={ faChevronDown } size="xs" fixedWidth/></Text>
+            </DropdownToggle>
+            <DropdownPanel>
+            {data.cookedWorkingDays.map(days => (
+              <Text className="mb-1" size="md" >{ days.day } de {days.begin} a {days.end}</Text> 
+            ))}
+            </DropdownPanel>
+        </Dropdown>
+        ),
       },
       {
         label: 'Activo',
