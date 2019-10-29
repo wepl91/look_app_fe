@@ -103,13 +103,13 @@ class AppointmentModal extends Component {
 
     this.handlePay           = this.handlePay.bind(this);
     this.handleCancel        = this.handleCancel.bind(this);
-    this.handleMiss          = this.handleMiss.bind(this);
     this.handleCancelAdvice  = this.handleCancelAdvice.bind(this);
   }
 
   handlePay() {
-    this.state.appointment.pay().then(() =>{
+    this.state.appointment.pay().then( response =>{
       this.setState({
+        appointment: new Appointment(response.results, this.props.store.appointments),
         showTicketModal: true,
         showTicketAction: 'pay',
         renderDetails: true,
@@ -119,19 +119,14 @@ class AppointmentModal extends Component {
   }
 
   handleCancel() {
-    this.state.appointment.cancel().then(() =>{
+    this.state.appointment.cancel().then( response =>{
       this.setState({
+        appointment: new Appointment(response.results, this.props.store.appointments),
         showTicketModal: true,
         showTicketAction: 'cancel',
         renderDetails: true,
         confirmation: false,
       });
-    });
-  }
-
-  handleMiss() {
-    this.state.appointment.miss().then(() =>{
-      this.props.onClose && this.props.onClose(true)
     });
   }
 
@@ -401,16 +396,16 @@ class AppointmentModal extends Component {
         <Column isSize={ 2 }></Column>
         <Column isSize={ 4 }>
         <Title size="md">Comprobantes</Title>
-        { appointment.isOpen      && appoinmentTicket }
-        { appointment.isPaid      && paymentTicket }
-        { appointment.isCancelled && cancelationTicket } 
-        { appointment.isOpen && <Title className="mt-3" size="md">Acciones</Title> }
+        { appointment && appointment.isOpen      && appoinmentTicket }
+        { appointment && appointment.isPaid      && paymentTicket }
+        { appointment && appointment.isCancelled && cancelationTicket } 
+        { appointment && appointment.isOpen && <Title className="mt-3" size="md">Acciones</Title> }
         <div className="appointment-accions">
-        { appointment.isOpen && 
+        { appointment && appointment.isOpen && 
           <Text>
           <Button kind="link" icon={ faBan } onClick={ () => (this.handleConfirm('cancel')) }>Cancelar turno</Button>
           </Text> }
-          { appointment.isOpen && 
+          { appointment && appointment.isOpen && 
             <Text>
             <Button className="mt-2" kind="link" icon={ faMoneyBill } onClick={ () => (this.handleConfirm('pay')) }>Marcar como pagado </Button>
             </Text> }

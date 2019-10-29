@@ -108,41 +108,17 @@ export default class Appointment extends Model {
 
   @action
   pay() {
-    this.beginUpdate()
-    return this.appStore.APIClient.sendRequest(`/appointments/${ this.id }/paid`, 'POST').then( (response) => {
-      this.state = response.results.status;
-    }, err => {
-      this.endUpdate();
-      return this;
-    })
-    this.endUpdate();
-    return this;
+    return this.appStore.APIClient.sendRequest(`/appointments/${ this.id }/paid`, 'POST')
   }
 
   @action
   cancel() {
-    this.beginUpdate()
-    return this.appStore.APIClient.sendRequest(`/appointments/${ this.id }/cancel`, 'POST').then( (response) => {
-      this.state = response.results.status;
-    }, err => {
-      this.endUpdate();
-      return this;
-    })
-    this.endUpdate();
-    return this;
+    return this.appStore.APIClient.sendRequest(`/appointments/${ this.id }/cancel`, 'POST');
   }
 
   @action
   pay() {
-    this.beginUpdate()
-    return this.appStore.APIClient.sendRequest(`/appointments/${ this.id }/paid`, 'POST').then( (response) => {
-      this.state = response.results.status;
-    }, err => {
-      this.endUpdate();
-      return this;
-    })
-    this.endUpdate();
-    return this;
+    return this.appStore.APIClient.sendRequest(`/appointments/${ this.id }/paid`, 'POST')
   }
 
   @action 
