@@ -11,9 +11,7 @@ import {
   Panel,
 } from 'shipnow-mercurio';
 
-import {
-  Checkbox
-} from 'bloomer';
+import { Checkbox } from '../../components/Checkbox'
 
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
@@ -176,8 +174,8 @@ class AppointmentsForm extends Component {
     return(
       <Field className="ml-5" label="¿Cuál de nuestros servicios requerís?" labelNote="Seleccioná un servicio">
         { services.length > 0 ? 
-          services.map( service => ( <Checkbox key={ service.id + randomizer } className="mt-2" isFullWidth defaultChecked={ this.isServiceInAppointment(service.id) } onClick={() => this.handleServices(service.id, service.price)}>
-                                      <Text className="ml-1">{`${ startCase(service.name) } - $${ service.price }`}</Text>
+          services.map( service => ( <Checkbox key={ service.id + randomizer } className="mt-2" checked={ this.isServiceInAppointment(service.id) } onCheck={() => this.handleServices(service.id, service.price)}>
+                                      {`${ startCase(service.name) } - $${ service.price }`}
                                     </Checkbox> )) : 
           <Text size="md" weight="medium" className="ml-2 mt-1">No hay servicios existentes para ofrecer.</Text> }
         <Text className="has-text-centered ml-2" weight="medium" color="primaryDark"><hr id="subtotalLine"/>Subtotal: ${this.state.subtotal}</Text>
@@ -243,15 +241,9 @@ class AppointmentsForm extends Component {
           loading />
       </Field>
       <Field className="ml-5" label="¿Cual de nuestros servicios requeris?" labelNote="Seleccioná un servicio">
-        <Checkbox className="mt-1" isFullWidth defaultChecked={ false } >
-          <Text className="ml-1">...</Text>
-        </Checkbox>
-        <Checkbox className="mt-1" isFullWidth defaultChecked={ false } >
-          <Text className="ml-1">...</Text>
-        </Checkbox>
-        <Checkbox className="mt-1" isFullWidth defaultChecked={ false } >
-          <Text className="ml-1">...</Text>
-        </Checkbox> 
+        <Checkbox className="pt-1" checked={ false } >...</Checkbox>
+        <Checkbox className="pt-1" checked={ false } >...</Checkbox>
+        <Checkbox className="pt-1" checked={ false } >...</Checkbox>
       </Field>
       <Field className="ml-5 mt-2" label="¿A que hora querés venir?" labelNote="Seleccioná un horario">
         <Select 

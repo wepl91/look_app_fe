@@ -147,8 +147,8 @@ class ProfessionalCreation extends Component {
             <br/>
             <Button onClick={ this.handleClick } className="ml-4" kind="outline" disabled={ this.getDisabled() }>Agregar profesional</Button>
           </Column>
-          <Column isSize={7}>
-            <SvgDraw style={{ height: '75%', width: '75%'}}/>
+          <Column isSize={6}>
+            <SvgDraw style={{ height: '650px', width: '750px'}}/>
           </Column>
         </Columns>
       </React.Fragment> )

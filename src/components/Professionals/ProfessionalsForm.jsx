@@ -155,9 +155,9 @@ class ProfessionalsForm extends Component {
               <WorkingHoursSelector name="hours" defaultProfessional={professional} startingDate={ moment('05-17-2018 09:00 AM', 'MM-DD-YYYY hh:mm A') } finishingDate={ moment('05-17-2018 06:00 PM', 'MM-DD-YYYY hh:mm A') } days={['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY']} onChange={ this.handleHours } />
               { !this.isValidHour() && <Panel className="mt-1" color="error" invert style={{padding: '2px'}}><Text className="has-text-centered">Los horarios y/o días ingresados son incorrectos</Text></Panel> }
             </Field>
-            <Field className="pl-4 pr-4" label="¿Qué servicios ofrece?" labelNote="Seleccioná los servicios">
+            <Field className="pl-4 pr-4 pt-1" label="¿Qué servicios ofrece?" labelNote="Seleccioná los servicios">
               {services.toArray().map(serv => (
-                <Checkbox className="pt-1" checked={ professional && professional.professionalServicesIds.includes(serv.id)} value={ serv } onCheck={ this.handleServices }>{startCase(serv.name)}</Checkbox>
+                <Checkbox className="pt-2" checked={ professional && professional.professionalServicesIds.includes(serv.id)} value={ serv } onCheck={ this.handleServices }>{startCase(serv.name)}</Checkbox>
               ))}
             </Field>
       </React.Fragment> )

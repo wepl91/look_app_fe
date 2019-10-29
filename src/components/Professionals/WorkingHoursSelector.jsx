@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Columns,
-  Column,
-  Checkbox
+  Columns, Column
 } from 'bloomer';
+
+import { Checkbox } from '../../components/Checkbox'
 
 import {
   Select,
@@ -91,6 +91,7 @@ class WorkingHoursSelector extends Component {
   }
 
   render() {
+    const { className } = this.props;
     let hourList = this.hoursBetweenDates(this.props.startingDate, this.props.finishingDate)
     let daysList = this.props.days
     const translatedDays = {
@@ -101,29 +102,34 @@ class WorkingHoursSelector extends Component {
       'FRIDAY': 'Viernes',
       'SATURDAY': 'Sábado',
     }
-
+    //style={{ maxHeight: '5vh', width: '300px' }}
     return (
       <React.Fragment>
       {daysList.map(day => (
-        <React.Fragment>
-        <Columns>
-          <Checkbox className="mr-5 mt-2" name={ day } isFullWidth onClick={() => this.handleDays(day)} defaultChecked={this.props.defaultProfessional && day in this.props.defaultProfessional.rawWorkingDays} ><Text className="ml-1">{translatedDays[day]}</Text></Checkbox>
-          {this.isDaySelected(day) && <Select className="pr-1 mr-1 mt-2" placeholder="Entrada"
-            borderless icon={faChevronDown}
-            value={ this.getBeginHour(day) }
-            name={`${ day }sta`} onChange={this.handleChange} options={hourList} />}
-          {this.isDaySelected(day) && <Select className="pr-1 mr-1 mt-2" placeholder="Salida"
-            borderless icon={faChevronDown}
-            value={ this.getEndHour(day) }
-            name={`${ day }fin`} onChange={this.handleChange} options={hourList} />}
+        <Columns isGapless isMarginless isVCentered isCentered className={ className }>
+          <Column>
+            <Checkbox className={'pt-2'} name={ day } onCheck={() => this.handleDays(day)} checked={this.props.defaultProfessional && day in this.props.defaultProfessional.rawWorkingDays} >{translatedDays[day]}</Checkbox>
+          </Column>
+          <Column>
+            {this.isDaySelected(day) && <Select placeholder="Entrada"
+              borderless icon={faChevronDown} className={'mt-2'}
+              value={ this.getBeginHour(day) } 
+              name={`${ day }sta`} onChange={this.handleChange} options={hourList} />}
+          </Column>
+          <Column>
+            {this.isDaySelected(day) && <Select placeholder="Salida"
+              borderless icon={faChevronDown} className={'mt-2'}
+              value={ this.getEndHour(day) }
+              name={`${ day }fin`} onChange={this.handleChange} options={hourList} />}
+           </Column>
         </Columns>
-        </React.Fragment>
       ))}
       </React.Fragment>)
   }
 }
 
 WorkingHoursSelector.PropTypes = {
+  className: PropTypes.string,
   startingDate: PropTypes.object,
   finishingDate: PropTypes.object,
   defaultProfessional: PropTypes.object,
@@ -132,6 +138,7 @@ WorkingHoursSelector.PropTypes = {
 }
 
 WorkingHoursSelector.defaultProps = {
+  className: PropTypes.string,
   startingDate: null,
   finishingDate: null,
   defaultProfessional: null,
