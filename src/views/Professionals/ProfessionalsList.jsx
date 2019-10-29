@@ -7,16 +7,15 @@ import {
   Text,
   Button,
   Toggle,
-  Select,
   Dropdown,
   DropdownToggle,
   DropdownPanel,
-  TextInput
 } from 'shipnow-mercurio';
 
 import {
   Level,
-  LevelLeft
+  LevelLeft,
+  Column
 } from 'bloomer';
 
 import withStore from '../../hocs/withStore';
@@ -31,6 +30,7 @@ import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { ProfessionalsEditModal } from '../../components/Professionals';
 
 import startCase from 'lodash/startCase';
+import { Columns } from 'bloomer/lib/grid/Columns';
 
 @observer
 class ProfessionalsList extends Component {
@@ -122,7 +122,21 @@ class ProfessionalsList extends Component {
       },
       {
         label: 'Servicios Ofrecidos',
-        content: (data) => (data.professionalServices.map(name => (<Text weight="medium" className="mb-2"><FontAwesomeIcon className="mr-1" icon={ faDotCircle } size="xs" fixedWidth/>{ name }</Text>))),
+        content: (data) => (
+          data.professionalServices.length > 0 ?
+          <Dropdown className="is-fullwidth">
+            <DropdownToggle className="is-fullwidth">
+              <Text>Servicios <FontAwesomeIcon className="mr-1" icon={ faChevronDown } size="xs" fixedWidth/></Text>
+            </DropdownToggle>
+            <DropdownPanel>
+            {data.professionalServices.map(name => (
+                  <Text className="mb-1" size="md" ><FontAwesomeIcon className="mr-1" icon={ faDotCircle } size="xs" fixedWidth/>{ name }</Text> 
+            ))}
+            </DropdownPanel>
+        </Dropdown>
+        :
+        <Text>- Sin servicios -</Text>
+        ),
       },
       {
         label: 'Días de trabajo',
@@ -133,7 +147,16 @@ class ProfessionalsList extends Component {
             </DropdownToggle>
             <DropdownPanel>
             {data.cookedWorkingDays.map(days => (
-              <Text className="mb-1" size="md" >{ days.day } de {days.begin} a {days.end}</Text> 
+              <React.Fragment>
+              <Columns>
+                <Column>
+                  <Text size="md" >{ days.day }</Text> 
+                </Column>
+                <Column>
+                  <Text className="has-text-right" size="md" >{days.begin} a {days.end}</Text> 
+                </Column>
+                </Columns>
+              </React.Fragment>
             ))}
             </DropdownPanel>
         </Dropdown>
