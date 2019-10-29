@@ -26,6 +26,8 @@ import { ServicesEditModal } from '../../components/Services';
 
 import startCase from 'lodash/startCase';
 
+import { translate } from '../../lib/Translator';
+
 @observer
 class ServicesList extends Component {
   constructor(props) {
@@ -63,18 +65,18 @@ class ServicesList extends Component {
         size: 'is-1',
       },
       {
-        label: 'Servicio',
+        label: this.getText('Servicio'),
         content: (data) => (<Text>{ startCase(data.name) }</Text>),
         size: 'is-3'
       },
       {
-        label: 'Precio',
+        label: this.getText('Precio'),
         content: (data) => (<Text>{ `$${ data.price }` }</Text>),
         size: 'is-3'
       },
       {
-        label: 'Duración',
-        content: (data) => (<Text>{ `${ data.duration } minutos` }</Text>),
+        label: this.getText('Duración'),
+        content: (data) => (<Text>{ `${ data.duration } ${ this.getText('minutos') }` }</Text>),
         size: 'is-3'
       },
       {
@@ -88,15 +90,19 @@ class ServicesList extends Component {
     return <Table columns={ columns } data={ data } striped={ false }/>
   }
 
+  getText(text) {
+    return translate(text, this.props.store.ui.language)
+  }
+
   render() {
     if (!this.state.services || !this.state.services.isOk()) {
-      return 'Cargando servicios..';
+      return this.getText('Cargando servicios..');
     }
     return(
       <React.Fragment>
         <Level>
           <LevelLeft>
-            <Title>Lista de servicios</Title>
+            <Title>{ this.getText('Lista de servicios') }</Title>
           </LevelLeft>
         </Level>
         <hr/>

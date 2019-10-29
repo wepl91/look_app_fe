@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { observer } from 'mobx-react';
 
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
@@ -11,6 +12,11 @@ import {
   Select
 } from 'shipnow-mercurio';
 
+import { withStore } from '../../hocs';
+
+import { translate } from '../../lib/Translator';
+
+@observer
 class ServicesForm extends Component {
   constructor(props) {
     super(props);
@@ -47,21 +53,25 @@ class ServicesForm extends Component {
     ])
   }
 
+  getText(text) {
+    return translate(text, this.props.store.ui.language)
+  }
+
   render() {
     const { service } = this.props
     return(
       <React.Fragment>
-        <Field className="pl-5 pr-5" label="¿En cuál sucursal querés ofrecer este servicio">
-          <Select className="is-fullwidth" icon={ faChevronDown } borderless placeholder="Sucursales"/>
+        <Field className="pl-5 pr-5" label={ this.getText('¿En cuál sucursal querés ofrecer este servicio?') }>
+          <Select className="is-fullwidth" icon={ faChevronDown } borderless placeholder={ this.getText('Sucursales') } />
         </Field>
-        <Field className="pl-5 pr-5" label="¿Cómo se llama el servicio que querés ofrecer?">
+        <Field className="pl-5 pr-5" label={ this.getText('¿Cómo se llama el servicio que querés ofrecer?') }>
           <TextInput value={ service && service.name } name="name" className="is-fullwidth" validate={ (value) => (nameRegex.test(value)) } onChange={ this.handleChange }/>
         </Field>
-        <Field className="pl-5 pr-5" label="¿Cuánto deseas cobrar por el servicio">
+        <Field className="pl-5 pr-5" label={ this.getText('¿Cuánto deseas cobrar por el servicio') }>
           <TextInput value={ service && service.price } className="is-fullwidth" validate={ (value) => (priceRegex.test(value)) } name="cost" onChange={ this.handleChange }/>
         </Field>
-        <Field className="pl-5 pr-5" label="¿Cuánto tiempo toma el servicio?">
-          <Select name="duration" className="is-fullwidth" value={ service && service.duration } onChange={ this.handleChange } options={ this.getDurationOptions() } icon={ faChevronDown } borderless placeholder="Minutos"/>
+        <Field className="pl-5 pr-5" label={ this.getText('¿Cuánto tiempo toma el servicio?') }>
+          <Select name="duration" className="is-fullwidth" value={ service && service.duration } onChange={ this.handleChange } options={ this.getDurationOptions() } icon={ faChevronDown } borderless placeholder={ this.getText('Minutos') }/>
         </Field>
       </React.Fragment> )
   }
@@ -77,4 +87,4 @@ ServicesForm.defaultProps = {
   service : null,
 }
 
-export default ServicesForm;
+export default withStore(ServicesForm);

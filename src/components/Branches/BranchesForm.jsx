@@ -19,6 +19,8 @@ import {
   Columns
 } from 'bloomer'
 
+import { translate } from '../../lib/Translator'
+
 @observer
 class BranchesForm extends Component {
   constructor(props) {
@@ -97,16 +99,16 @@ class BranchesForm extends Component {
     return (
       <Columns>
         <Column isSize={ 4 }>
-          <Field label="Nombre" labelNote="¿Cuál es el nombre de la nueva sucursal?">
+          <Field label={ this.getText('Nombre') } labelNote={ this.getText('¿Cuál es el nombre de la nueva sucursal?') }>
             <TextInput value={ branch && branch.name } name="name" onChange={this.handleChange} className="is-fullwidth"/>
           </Field>
-          <Field label="Localidad" labelNote="¿En qué localidad se ubica la nueva sucursal?">
+          <Field label={ this.getText('Localidad') } labelNote={ this.getText('¿En qué localidad se ubica la nueva sucursal?') }>
             <TextInput value={ branch && branch.location } name="location" onChange={this.handleChange} className="is-fullwidth"/>
           </Field>
-          <Field label="Calle" labelNote="¿Sobre qué calle se encuentra la nueva sucursal?">
+          <Field label={ this.getText('Calle') } labelNote={ this.getText('¿Sobre qué calle se encuentra la nueva sucursal?') }>
             <TextInput value={ branch && branch.name } name="street_name" onChange={this.handleChange} className="is-fullwidth"/>
           </Field>
-          <Field label="Número" labelNote="¿A qué altura se encuentra la nueva sucursal?">
+          <Field label={ this.getText('Número') } labelNote="¿A qué altura se encuentra la nueva sucursal?">
             <TextInput name="street_number" onChange={this.handleChange} className="is-fullwidth"/>
           </Field>
         </Column>
