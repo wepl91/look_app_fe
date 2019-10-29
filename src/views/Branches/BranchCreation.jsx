@@ -73,15 +73,12 @@ class BranchCreation extends Component {
         </Level>
         <hr/>
         <Columns>
-          <Column className="pl-5 pr-5 pt-3" isSize={5}>
-            <br/>
-            <BranchesForm />
+          <Column className="pl-5 pr-5 pt-3">
+
+            <BranchesForm withMap/>
             { this.state.isSaving ? 
               <Button kind="outline" className="mt-5" disabled pulse icon={ faSpinner }>{ this.getText('Creando..') }</Button> :
               <Button kind="outline" className="mt-5" onClick={ this.handleSave } disabled={ this.getDisabled() }>{ this.getText('Crear sucursal') }</Button> }
-          </Column>
-          <Column isSize={7}>
-            <SvgDraw style={{ height: '75%', width: '75%'}}/>
           </Column>
         </Columns>
       </React.Fragment> )

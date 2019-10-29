@@ -74,7 +74,6 @@ class ProfessionalsForm extends Component {
             valid = false
           }
         }else{
-          console.log('HORAS VACIAS')
           valid = false
         }
       }

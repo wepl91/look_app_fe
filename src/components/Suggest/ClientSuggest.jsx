@@ -39,7 +39,6 @@ class ClientSuggest extends Component {
   }
 
   handleSelect( client ) {
-    debugger
     this.setState({
       value: client.fullName,
       showPanel: false,
