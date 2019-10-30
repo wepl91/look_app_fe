@@ -92,14 +92,19 @@ class ClientsList extends Component {
         size: 'is-2'
       },
       {
+        label: 'Email',
+        content: (data) => (<Text>{ data.email || '- sin email -' }</Text>),
+        size: 'is-2',
+      },
+      {
         label: 'DNI',
         content: (data) => (<Text>{ `${ data.DNI || '- sin DNI -' }` }</Text>),
-        size: 'is-2',
+        size: 'is-1',
       },
       {
         label: 'Categoría',
         content: (data) => (<Text>{ `${ data.category }` }</Text>),
-        size: 'is-2',
+        size: 'is-1',
       },
       {
         label: '',

@@ -28,7 +28,6 @@ class AppointmentCalendar extends Component {
   render() {
     if (!this.state) return null;
     const { weeks } = this.state;
-    console.dir(weeks)
     return(
       <React.Fragment>
       { weeks.map(week => (

@@ -5,14 +5,13 @@ import './styles.css'
 import {
   Field,
   Select,
+  SelectItem,
   DateTimePicker,
   Text,
   Panel,
 } from 'shipnow-mercurio';
 
-import {
-  Checkbox
-} from 'bloomer';
+import { Checkbox } from '../../components/Checkbox'
 
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
@@ -25,6 +24,10 @@ import startCase from 'lodash/startCase';
 import { horarios } from '../../lib/Mocks';
 
 import moment from 'moment';
+import { resolve } from 'url';
+import { reject } from 'q';
+
+import { ClientSuggest } from '../../components/Suggest';
 
 @observer
 class AppointmentsForm extends Component {
@@ -82,6 +85,10 @@ class AppointmentsForm extends Component {
   }
 
   handleProfessional( sender, value, name ) {
+    const { appointment } = this.props;
+    if( appointment.professional && value != appointment.professional.id){
+        this.props.appointment.services = []
+    }
     if (value == 'null') {
       this.setState({
         professional: null,
@@ -146,18 +153,29 @@ class AppointmentsForm extends Component {
     });
     return ret;
   }
+
+  hashString( received ){
+    var hash = 0, i, chr;
+    if (received.length === 0) return hash;
+    for (i = 0; i < received.length; i++) {
+      chr   = received.charCodeAt(i);
+      hash  = ((hash << 5) - hash) + chr;
+      hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+  }
   
   renderServices() {
     // El randomizer lo que hace es cambiar la key para que React vea que ocurrió un cambio en el checkbox. No usé Math.Random() por que rompía el Checkbox
-    // Revisitar, es trucho que el randomizer se base en la longitud del nombre
+ 
     const { professional } = this.state;
     const services = professional && professional != 'null' ?  professional.services : this.state.services.toArray();
-    let randomizer = professional && professional != 'null' ?  professional.name.length : 1000;
+    let randomizer = professional && professional != 'null' ?  this.hashString(professional.name) : 1000;
     return(
       <Field className="ml-5" label="¿Cuál de nuestros servicios requerís?" labelNote="Seleccioná un servicio">
         { services.length > 0 ? 
-          services.map( service => ( <Checkbox key={ service.id + randomizer } className="mt-2" isFullWidth defaultChecked={ this.isServiceInAppointment(service.id) } onClick={() => this.handleServices(service.id, service.price)}>
-                                      <Text className="ml-1">{`${ startCase(service.name) } - $${ service.price }`}</Text>
+          services.map( service => ( <Checkbox key={ service.id + randomizer } className="mt-2" checked={ this.isServiceInAppointment(service.id) } onCheck={() => this.handleServices(service.id, service.price)}>
+                                      {`${ startCase(service.name) } - $${ service.price }`}
                                     </Checkbox> )) : 
           <Text size="md" weight="medium" className="ml-2 mt-1">No hay servicios existentes para ofrecer.</Text> }
         <Text className="has-text-centered ml-2" weight="medium" color="primaryDark"><hr id="subtotalLine"/>Subtotal: ${this.state.subtotal}</Text>
@@ -194,9 +212,10 @@ class AppointmentsForm extends Component {
   renderSkeleton() {
     return(
     <React.Fragment>
-      <Field className="ml-5" label="¿Que día querés venir?" labelNote="Seleccioná ua fecha">
-        <DateTimePicker className="is-fullwidth" disabled/>
-      </Field>
+      { this.props.withDate &&
+        <Field className="ml-5" label="¿Que día querés venir?" labelNote="Seleccioná ua fecha">
+          <DateTimePicker className="is-fullwidth" disabled/>
+        </Field> }
       <Field className="ml-5" label="¿Quién quiere ser atendido?" labelNote="Seleccioná un cliente">
         <Select 
           disabled
@@ -222,15 +241,9 @@ class AppointmentsForm extends Component {
           loading />
       </Field>
       <Field className="ml-5" label="¿Cual de nuestros servicios requeris?" labelNote="Seleccioná un servicio">
-        <Checkbox className="mt-1" isFullWidth defaultChecked={ false } >
-          <Text className="ml-1">...</Text>
-        </Checkbox>
-        <Checkbox className="mt-1" isFullWidth defaultChecked={ false } >
-          <Text className="ml-1">...</Text>
-        </Checkbox>
-        <Checkbox className="mt-1" isFullWidth defaultChecked={ false } >
-          <Text className="ml-1">...</Text>
-        </Checkbox> 
+        <Checkbox className="pt-1" checked={ false } >...</Checkbox>
+        <Checkbox className="pt-1" checked={ false } >...</Checkbox>
+        <Checkbox className="pt-1" checked={ false } >...</Checkbox>
       </Field>
       <Field className="ml-5 mt-2" label="¿A que hora querés venir?" labelNote="Seleccioná un horario">
         <Select 
@@ -255,7 +268,7 @@ class AppointmentsForm extends Component {
     const { appointment } = this.props;
     return(
       <React.Fragment>
-        { !this.props.withDate &&
+        { this.props.withDate &&
           <Field className="ml-5" label="¿Que día querés venir?" labelNote="Seleccioná ua fecha">
             <DateTimePicker 
               className="is-fullwidth"
@@ -265,16 +278,7 @@ class AppointmentsForm extends Component {
             { this.state.date.isoWeekday() == 7 && this.renderAdvise() }
           </Field> }
         <Field className="ml-5" label="¿Quién quiere ser atendido?" labelNote="Seleccioná un cliente">
-          <Select 
-            key={ this.state.clients }
-            name="client"
-            onChange={ this.handleClient }
-            disabled={ this.props.edit && appointment.client }
-            placeholder="Clientes" 
-            borderless 
-            value={ this.state.client ? this.state.client.id : null }
-            icon={ faChevronDown } 
-            options={ this.props.edit ? [{key: appointment.clientFullName, value: appointment.clientID}] : this.renderClientsList() } />
+          <ClientSuggest clients={ this.state.clients && this.state.clients.toArray() }/>
         </Field>
         <Field className="ml-5" label="¿A cual de nuestras sucursales querés venir?" labelNote="Seleccioná una sucursal">
           <Select 

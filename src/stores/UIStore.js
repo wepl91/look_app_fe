@@ -10,12 +10,13 @@ export default class UIStore extends Store {
 
   model = UISettings;
   urlRoot = 'UI';
+  @observable language;
 
   constructor(adapter, appStore) {
     super(adapter, appStore);
 
     // initialize static value lists
-    this.language = 'ESP'; 
+    this.language = localStorage.getItem('language');
   }
 
 
@@ -32,6 +33,18 @@ export default class UIStore extends Store {
   @action
   registerRoute(route, label) {
     this.routes[route] = label;
+  }
+
+  @action
+  setLanguageToSpanish() {
+    localStorage['language'] = 'Español';
+    this.language = 'Español';
+  }
+
+  @action
+  setLanguageToEnglish() {
+    localStorage['language'] = 'Ingles';
+    this.language = 'Ingles';
   }
 
   define(list, value) {

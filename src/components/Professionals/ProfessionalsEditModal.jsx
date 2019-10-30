@@ -82,27 +82,27 @@ class ProfessionalsEditModal extends Component {
       this.setState({
         validName: valid.type == 'success',
       })
-    } else
-    if(name=='lastName'){
+    } 
+    else if(name=='lastName'){
       this.setState({
         validLastName: valid.type == 'success',
       })
-    } else
-    if(name=='phone'){
+    } 
+    else if(name=='phone'){
       this.setState({
         validPhone: valid.type == 'success',
       })
-    } else
-    if(name=='email'){
+    } 
+    else if(name=='email'){
       this.setState({
         validMail: valid.type == 'success',
       })
-    } else
-    if(name == 'services'){
+    } 
+    else if(name == 'services'){
       this.setState({
         validServices: valid,
       })
-    } else
+    } 
     if(name == 'hours'){
       professional.workingHours = value
       this.setState({

@@ -23,6 +23,8 @@ import { ReactComponent as SvgDraw } from '../../assets/undraw_barber_3uel.svg';
 import { Service } from '../../models';
 import { observer } from 'mobx-react';
 
+import { translate } from '../../lib/Translator';
+
 @observer
 class ServiceCreation extends Component {
   constructor(props) {
@@ -86,13 +88,16 @@ class ServiceCreation extends Component {
     return !(this.state.validName && this.state.validPrice && this.state.duration)
   }
 
+  getText(text) {
+    return translate(text, this.props.store.ui.language)
+  }
 
   render() {
     return(
       <React.Fragment>
         <Level>
           <LevelLeft>
-            <Title>Nuevo servicio</Title>
+            <Title>{ this.getText('Nuevo servicio') }</Title>
           </LevelLeft>
         </Level>
         <hr/>
@@ -103,7 +108,7 @@ class ServiceCreation extends Component {
             <br/>
             <br/>
             <br/>
-            <Button onClick={ this.handleClick } className="ml-5" kind="outline" disabled={ this.getDisabled() }>Crear servicio</Button>
+            <Button onClick={ this.handleClick } className="ml-5" kind="outline" disabled={ this.getDisabled() }>{ this.getText('Crear servicio') }</Button>
           </Column>
           <Column>
           <SvgDraw style={{ height: '300px', width: '400px', marginTop: '-10px' }}/>

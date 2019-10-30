@@ -6,6 +6,7 @@ import { ServicesForm } from './';
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 import { withToastManager } from 'react-toast-notifications';
+import { withStore } from '../../hocs';
 
 import {
   Modal,
@@ -22,6 +23,11 @@ import {
   LevelRight,
 } from 'bloomer';
 
+import { observer } from 'mobx-react';
+
+import { translate } from '../../lib/Translator';
+
+@observer
 class ServicesEditModal extends Component {
   
   modifiedService
@@ -106,6 +112,10 @@ class ServicesEditModal extends Component {
     return !(this.state.validName && this.state.validPrice)
   }
 
+  getText(text) {
+    return translate(text, this.props.store.ui.language)
+  }
+
   render() {
     const service = this.getService()
     return(
@@ -113,7 +123,7 @@ class ServicesEditModal extends Component {
         <ModalHeader>
           <Level>
             <LevelLeft>
-              <Title>Modificar servicio</Title>
+              <Title>{ this.getText('Modificar servicio') }</Title>
             </LevelLeft>
             <LevelRight>
               <Button kind="link" icon={ faTimes } onClick={ this.handleClose } />
@@ -127,8 +137,8 @@ class ServicesEditModal extends Component {
           <Level>
             <LevelLeft></LevelLeft>
             <LevelRight>
-              <Button disabled={ this.getDisabled() } onClick={ this.handleSave }>Guardar</Button>
-              <Button kind="outline" onClick={ this.handleClose }>Cancelar</Button>
+              <Button disabled={ this.getDisabled() } onClick={ this.handleSave }>{ this.getText('Guardar') }</Button>
+              <Button kind="outline" onClick={ this.handleClose }>{ this.getText('Cancelar') }</Button>
             </LevelRight>
           </Level>
         </ModalFooter>
@@ -146,4 +156,4 @@ ServicesEditModal.defaultProps = {
   onClose: null,
 }
 
-export default withToastManager(ServicesEditModal)
+export default withToastManager(withStore(ServicesEditModal))

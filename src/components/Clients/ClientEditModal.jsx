@@ -41,6 +41,7 @@ class ClientEditModal extends Component {
       validName: true,
       validLastName: true,
       validDni: true,
+      validEmail: true,
       validPrimaryPhone: true,
       validSecondaryPhone: true
     }
@@ -57,25 +58,30 @@ class ClientEditModal extends Component {
       this.setState({
         validName: valid.type == 'success',
       })
-    } else
-    if(name=='lastName'){
+    }
+    else if(name=='lastName'){
       this.setState({
         validLastName: valid.type == 'success',
       })
-    } else
-    if(name=='DNI'){
+    }
+    else if(name=='DNI'){
       this.setState({
         validDni: valid.type == 'success',
       })
-    } else
-    if(name=='primaryPhone'){
+    }
+    else if(name=='primaryPhone'){
       this.setState({
         validPrimaryPhone: valid.type == 'success',
       })
-    } else
-    if(name=='secondPhone'){
+    } 
+    else if(name=='secondPhone'){
       this.setState({
         validSecondaryPhone: valid.type == 'success',
+      })
+    }
+    else if(name=='email'){
+      this.setState({
+        validEmail: valid.type == 'success',
       })
     }
   }
@@ -124,7 +130,7 @@ class ClientEditModal extends Component {
   }
 
   getDisabled() {
-    return !(this.state.validName && this.state.validLastName && this.state.validDni && this.state.validPrimaryPhone && this.state.validSecondaryPhone)
+    return !(this.state.validName && this.state.validLastName && this.state.validDni && this.state.validPrimaryPhone && this.state.validSecondaryPhone && this.state.validEmail)
   }
 
   render() {

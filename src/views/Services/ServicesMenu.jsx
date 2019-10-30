@@ -7,6 +7,11 @@ import { withRouter } from 'react-router';
 import { faCut, faPlus } from "@fortawesome/free-solid-svg-icons";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
+import { translate } from '../../lib/Translator';
+
+import { observer } from 'mobx-react'
+
+@observer
 class ServicesMenu extends Component {
 
   constructor(props) {
@@ -18,14 +23,18 @@ class ServicesMenu extends Component {
     this.props.store.ui.registerRoute(`${path}/services/list`, 'Listado');
 
   }
+  
+  getText( text ) {
+    return translate(text, this.props.store.ui.language)
+  }
 
   render() {
     const path = this.props.match.path;
 
     return(
-      <LayoutMenuLinkGroup icon={ faCut } label="Servicios" basePath={ `${path}/services` }>
-        <LayoutMenuLink icon={ faCut } to={ `${path}/services/list`  }>Listado</LayoutMenuLink>
-        <LayoutMenuLink icon={ faPlus } to={ `${path}/services/new`   }>Nuevo servicio</LayoutMenuLink>
+      <LayoutMenuLinkGroup icon={ faCut } label={ this.getText('Servicios') } basePath={ `${path}/services` }>
+        <LayoutMenuLink icon={ faCut } to={ `${path}/services/list`  }>{ this.getText('Listado') }</LayoutMenuLink>
+        <LayoutMenuLink icon={ faPlus } to={ `${path}/services/new`   }>{ this.getText('Nuevo servicio') }</LayoutMenuLink>
       </LayoutMenuLinkGroup> )
   };
 

@@ -6,6 +6,16 @@ import { observer } from 'mobx-react';
 import withStore from '../../hocs/withStore';
 
 import { SignIn } from '../Session';
+
+import {
+  HomeRouter
+} from '../Home';
+
+import {
+  BranchesRouter,
+  BranchesMenu,
+} from '../Branches'
+
 import { 
   UsersMenu, 
   UsersRouter
@@ -67,28 +77,31 @@ class AppRouter extends Component {
           <Layout expandedMenu={ this.state.expanded }>
             <LayoutNavbar>
               <LayoutNavbarStart>
+                <LanguageDropdown /> 
               </LayoutNavbarStart>
               <LayoutNavbarEnd>
-               {/* <LanguageDropdown /> */}
                <UserLoggedDropdown user={ this.props.store.loggedInUser }/>
               </LayoutNavbarEnd>
             </LayoutNavbar>
             <LayoutMenu>
-              <AppointmentsMenu  />
-              <ServicesMenu      />
-              <ProfessionalsMenu />
-              <UsersMenu         />
-              <ClientsMenu       />
-              <div className="menu_button">
-                <Button kind="link" key={ this.state.expanded } invert size="lg" onClick={ () => (this.setState(preState => ({expanded: !preState.expanded})))} icon={ this.state.expanded ? faBars : faBars }/>
-              </div>  
+            <AppointmentsMenu  />
+            <BranchesMenu      />
+            <ServicesMenu      />
+            <ProfessionalsMenu />
+            <UsersMenu         />
+            <ClientsMenu       />
+            <div className="menu_button">
+            <Button kind="link" key={ this.state.expanded } invert size="lg" onClick={ () => (this.setState(preState => ({expanded: !preState.expanded})))} icon={ this.state.expanded ? faBars : faBars }/>
+            </div>  
             </LayoutMenu>
             <LayoutContent>
-                <AppointmentsRouter  />
-                <ServicesRouter      />
-                <ProfessionalsRouter />
-                <UsersRouter         />
-                <ClientsRouter       />
+              <HomeRouter />
+              <AppointmentsRouter  />
+              <BranchesRouter      />
+              <ServicesRouter      />
+              <ProfessionalsRouter />
+              <UsersRouter         />
+              <ClientsRouter       />
             </LayoutContent>
           </Layout>
         </React.Fragment> )

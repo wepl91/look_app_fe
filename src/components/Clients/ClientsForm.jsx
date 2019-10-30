@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 
 import { withStore } from '../../hocs';
 
-import { nameRegex, dniRegex, phoneRegex } from '../../lib/Regex'
+import { nameRegex, dniRegex, phoneRegex, mailRegex } from '../../lib/Regex'
 
 import {
   Columns,
@@ -17,6 +17,8 @@ import {
   TextInput,
   Field
 } from 'shipnow-mercurio';
+
+import { translate } from '../../lib/Translator';
 
 @observer
 class ClientsForm extends Component {
@@ -37,33 +39,43 @@ class ClientsForm extends Component {
   }
 
   handleChange( sender, value, name, valid) {
+    if(name=='primaryPhone' && value=='' || name=='secondPhone' && value==''){
+      valid.type = 'success'
+    }
     this.props.onChange && this.props.onChange(name, value, valid)
+  }
+
+  getText( text ) {
+    return translate(text, this.props.store.ui.language)
   }
 
   render() {
     const { client } = this.props
     return(
       <React.Fragment>
-        <Field label="Nombre y Apellido" labelNote="¿Cómo se llama el nuevo cliente?">
+        <Field label={ this.getText('Nombre y Apellido') } labelNote={ this.getText('¿Cómo se llama el nuevo cliente?') }>
           <Columns>
             <Column>
-              <TextInput placeholder="Nombre" onChange={ this.handleChange } validate={ (value) => (nameRegex.test(value)) } name="name" value={ client.name } className="is-fullwidth" />
+              <TextInput placeholder={ this.getText('Nombre') } onChange={ this.handleChange } validate={ (value) => (nameRegex.test(value)) } name="name" value={ client.name } className="is-fullwidth" />
             </Column>
             <Column>
-              <TextInput placeholder="Apellido" onChange={ this.handleChange } validate={ (value) => (nameRegex.test(value)) } name="lastName" value={ client.lastName } className="is-fullwidth" />
+              <TextInput placeholder={ this.getText('Apellido') } onChange={ this.handleChange } validate={ (value) => (nameRegex.test(value)) } name="lastName" value={ client.lastName } className="is-fullwidth" />
             </Column>
           </Columns>
         </Field>
-        <Field label="Documento" labelNote="¿Cuál es el dni del nuevo cliente?">
-          <TextInput onChange={ this.handleChange } name="DNI" validate={ (value) => (dniRegex.test(value)) } value={ client.DNI } className="is-fullwidth" />
+        <Field label={ this.getText('Documento') } labelNote="¿Cuál es el dni del nuevo cliente?">
+          <TextInput placeholder="11.111.111" onChange={ this.handleChange } name="DNI" validate={ (value) => (dniRegex.test(value)) } value={ client.DNI } className="is-fullwidth" />
         </Field>
-        <Field label="Teléfono principal" labelNote="¿Cuál es el nro de teléfono del cliente?">
+        <Field label="Email" labelNote={ this.getText('¿Cuál es el email del nuevo cliente?') }>
+          <TextInput name="email" placeholder="cliente@gmail.com" onChange={ this.handleChange } validate={ (value) => (mailRegex.test(value))} value={ client.email }/>
+        </Field>
+        <Field label={ this.getText('Teléfono principal') } labelNote={ this.getText('¿Cuál es el nro de teléfono del cliente?') }>
           <TextInput onChange={ this.handleChange } name="primaryPhone" validate={ (value) => (phoneRegex.test(value)) } value={ client.primaryPhone } className="is-fullwidth" />
         </Field>
-        <Field label="Teléfono secundario" labelNote="Es necesario una segunda opción de comunicación">
+        <Field label={ this.getText('Teléfono secundario') } labelNote={ this.getText('Es necesario una segunda opción de comunicación') }>
           <TextInput onChange={ this.handleChange } name="secondPhone" validate={ (value) => (phoneRegex.test(value)) } value={ client.secondPhone } className="is-fullwidth" />
         </Field>
-        <Field label="Categoría" labelNote="¿Dentro de qué categoría se encuentra el cliente?">
+        <Field label={ this.getText('Categoría') } labelNote={ this.getText('¿Dentro de qué categoría se encuentra el cliente?') }>
           <Text className="ml-1" size="md" weight="medium">
             <input 
               className="ml-1 mr-1" 
@@ -71,7 +83,7 @@ class ClientsForm extends Component {
               value="NORMAL" 
               onChange={ () => (this.handleCategory('NORMAL')) }
               checked={ client.status.name ? client.status.name == 'NORMAL' : client.status == 'NORMAL' } />
-            Normal
+            { this.getText('Normal') }
           </Text>
           <Text className="ml-1 mt-1 mb-1" size="md" weight="medium">
             <input 
@@ -80,7 +92,7 @@ class ClientsForm extends Component {
               value="MOROSO" 
               onChange={ () => (this.handleCategory('MOROSO')) }
               checked={ client.status.name ? client.status.name == 'MOROSO' : client.status == 'MOROSO' } />
-            Moroso
+            { this.getText('Moroso') }
           </Text>
           <Text className="ml-1" size="md" weight="medium">
             <input 
@@ -89,7 +101,7 @@ class ClientsForm extends Component {
               value="VIP"
               onChange={ () => (this.handleCategory('VIP')) }
               checked={ client.status.name ? client.status.name == 'VIP' : client.status == 'VIP' } />
-            VIP
+            { this.getText('VIP') }
           </Text>
         </Field>
       </React.Fragment> );
@@ -106,4 +118,4 @@ ClientsForm.defaultProps = {
   onChange: null,
 }
 
-export default ClientsForm;
+export default withStore(ClientsForm);

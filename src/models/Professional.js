@@ -53,9 +53,13 @@ export default class Professional extends Model {
 
   @computed
   get rawWorkingDays() {
-    const ret = [];
-    this.workingHours.map( day => (ret.push(day.days.name)))
-    return ret;
+    let ret = {}
+    this.workingHours.map( day => {
+      ret[day.days.name] = {}
+      ret[day.days.name]['sta'] = moment(day.beginHour.toString(),"LT").format("HH:mm")
+      ret[day.days.name]['fin'] = moment(day.endHour.toString(),"LT").format("HH:mm")
+    })
+    return ret
   }
 
   @computed
@@ -77,34 +81,13 @@ export default class Professional extends Model {
       "viernes": 5,
       "sábado": 6,
     }
-    this.workingHours.map( day => (ret.push(cookedDays[day.days.name])))
+    this.workingHours.map( day => (ret.push({day: cookedDays[day.days.name], begin: moment(day.beginHour.toString(),"LT").format("HH:mm"), end: moment(day.endHour.toString(),"LT").format("HH:mm")})))
     ret.sort(function sortByDay(a, b) {
-      let day1 = a.toLowerCase();
-      let day2 = b.toLowerCase();
+      let day1 = a.day.toLowerCase();
+      let day2 = b.day.toLowerCase();
       return sorter[day1] - sorter[day2];
     });
     return ret;
-  }
-
-  @computed
-  get cookedWorkingHours() { //Refactorizar
-    let ret = []
-    this.workingHours.map( day => (ret.push(` ${ moment(day.beginHour.toString(),"LT").format("HH:mm") } a ${ moment(day.endHour.toString(),"LT").format("HH:mm") }`)))
-    return ret[0]
-  }
-
-  @computed
-  get beginHour() { //Refactorizar
-    let ret = []
-    this.workingHours.map( day => (ret.push(day.beginHour)))
-    return moment(ret[0].toString(),"LT").format("HH:mm")
-  }
-
-  @computed
-  get endHour() { //Refactorizar
-    let ret = []
-    this.workingHours.map( day => (ret.push(day.endHour)))
-    return moment(ret[0].toString(),"LT").format("HH:mm")
   }
 
   @computed
