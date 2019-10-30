@@ -11,45 +11,28 @@ import {
   ModalContent,
   ModalFooter,
   Title,
-  Text,
   Button,
-  Table,
-  SelectableIcon,
-  Panel
 } from 'shipnow-mercurio';
 
 import {
   Level,
   LevelLeft,
   LevelRight,
-  Columns,
-  Column
 } from 'bloomer';
 
 import { 
-  faDownload, 
   faTimes, 
-  faCalendarAlt, 
-  faSpinner,
-  faBan,
-  faInfoCircle,
-  faMoneyBill,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { PaymentForm } from './';
 
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
-import { Appointment } from '../../models';
-
 import { withStore } from '../../hocs';
 
 import { ConfirmationModal } from '../ConfirmationModal';
 
-import './styles.css';
-
 class PaymentsModal extends Component {
-
   constructor(props) {
     super(props);
 
@@ -68,11 +51,6 @@ class PaymentsModal extends Component {
     this.handleConfirm         = this.handleConfirm.bind(this);
     this.handleCancelConfirm = this.handleCancelConfirm.bind(this);
     this.handlePay         = this.handlePay.bind(this);
-    // this.handleSave          = this.handleSave.bind(this);
-
-    // this.handlePay           = this.handlePay.bind(this);
-    // this.handleCancel        = this.handleCancel.bind(this);
-    // this.handleCancelAdvice  = this.handleCancelAdvice.bind(this);
   }
 
   handlePay( name ) {
