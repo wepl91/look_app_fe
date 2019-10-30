@@ -108,8 +108,8 @@ class BranchCreation extends Component {
           <Column className="pl-5 pr-5 pt-3">
             <BranchesForm withMap branche={ this.newBranch } onChange={ this.handleChange }/>
             { this.state.isSaving ? 
-              <Button kind="outline" className="mt-5" disabled pulse icon={ faSpinner }>{ this.getText('Creando..') }</Button> :
-              <Button kind="outline" className="mt-5" onClick={ this.handleSave } disabled={ this.getDisabled() }>{ this.getText('Crear sucursal') }</Button> }
+              <Button kind="outline" className="mt-5 ml-5" disabled pulse icon={ faSpinner }>{ this.getText('Creando..') }</Button> :
+              <Button kind="outline" className="mt-5 ml-5" onClick={ this.handleSave } disabled={ this.getDisabled() }>{ this.getText('Crear sucursal') }</Button> }
           </Column>
         </Columns>
       </React.Fragment> )

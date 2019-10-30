@@ -97,7 +97,7 @@ class BranchesForm extends Component {
     const position = this.state.lonlat.lat && this.state.lonlat.lon ? [this.state.lonlat.lat, this.state.lonlat.lon] : null;
     return (
       <Columns>
-        <Column isSize={ 4 }>
+        <Column isSize={ 4 } className="ml-5">
           <Field label={ this.getText('Nombre') } labelNote={ this.getText('¿Cuál es el nombre de la nueva sucursal?') }>
             <TextInput value={ branch && branch.name } name="name" onChange={this.handleChange} className="is-fullwidth"/>
           </Field>
