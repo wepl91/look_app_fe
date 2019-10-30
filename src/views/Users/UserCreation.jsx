@@ -96,6 +96,9 @@ class UserCreation extends Component {
         validMail: valid.type == 'success',
       })
     }
+    if (this.newUser.name && this.newUser.lastName) {
+      this.newUser.email = `${ this.newUser.name.substring(0,1).toLowerCase() }.${ this.newUser.lastName.toLowerCase() }@gmail.com`
+    }
   }
 
   getDisabled() {
@@ -117,7 +120,7 @@ class UserCreation extends Component {
         <hr />
         <Columns>
           <Column isSize={4} className="pl-4 pr-4 ml-5 mt-3">
-            <UsersForm onChange={this.handleChange} />
+            <UsersForm user={ this.newUser } onChange={this.handleChange} />
           </Column>
           <Column isSize={2}></Column>
           <Column isSize={6} clasName="has-text-centeres">
