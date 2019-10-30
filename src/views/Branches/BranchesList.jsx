@@ -26,6 +26,8 @@ import { translate } from '../../lib/Translator';
 
 import { faSpinner, faStoreAlt, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 
+import { BranchEditModal } from '../../components/Branches';
+
 @observer
 class BranchesList extends Component {
   constructor(props) {
@@ -34,6 +36,7 @@ class BranchesList extends Component {
     this.state = {
       branches: null,
       showModal: false,
+      branch: null,
     }
   }
 
@@ -48,7 +51,10 @@ class BranchesList extends Component {
   }
 
   handleShowModal( branch ) {
-    
+    this.setState({
+      branch: branch,
+      showModal: true
+    })
   }
 
   renderTable() {
@@ -62,18 +68,19 @@ class BranchesList extends Component {
       },
       {
         label: this.getText('Nombre'),
-        content: (data) => (<Text>{ startCase( data.name) || '- sin nombre -' }</Text>),
-        size: 'is-2'
+        content: (data) => (<Text>{ startCase( data.name) || this.getText('- sin nombre -') }</Text>),
+        size: 'is-4'
       },
       {
         label: this.getText('Dirección'),
-        content: (data) => (<Text>{ data.address || '- sin dirección -' }</Text>),
-        size: 'is-2'
+        content: (data) => (<Text>{ data.cookedAddress || this.getText('- sin dirección -') }</Text>),
+        size: 'is-3'
       },
       {
         label: this.getText('Estado'),
-        content: (data) => (<Text>{ `${ data.status }` }</Text>),
-        size: 'is-2',
+        content: (data) => (<Text>{ `${ this.getText(data.cookedStatus) }` }</Text>),
+        size: 'is-3',
+        align: 'center'
       },
       {
         label: '',
@@ -87,7 +94,7 @@ class BranchesList extends Component {
   }
 
   renderModal() {
-    return null;
+    return <BranchEditModal branch={ this.state.branch } />;
   }
 
   render() {

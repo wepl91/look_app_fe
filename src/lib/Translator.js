@@ -51,7 +51,15 @@ export const translate = (str, lang) => {
     'Guardar': 'Save',
     'Cancelar': 'Cancel',
     'Modificar servicio': 'Edit service',
-    'Lista de servicios': 'Services list'
+    'Lista de servicios': 'Services list',
+    'Activo': 'Active',
+    'Inactivo': 'Inactive',
+    'Ups! Parece que hubo un error al guardar!': 'Ups! It seems there was a problem when saving!',
+    'La sucursal ha sido creado exitosamente!': 'The branch was successfully created!',
+    '- sin nombre -': '- without name -',
+    '- sin dirección -': '- without address -',
+    'Modificar sucursal': 'Edit branch',
+    'Guardando..': 'Saving..'
   }
 
   /**

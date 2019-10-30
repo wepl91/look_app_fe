@@ -40,6 +40,7 @@ class BranchCreation extends Component {
     }
 
     this.handleSave = this.handleSave.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   } 
 
   componentDidMount(){
@@ -54,12 +55,43 @@ class BranchCreation extends Component {
     return translate(text, this.props.store.ui.language)
   }
 
-  getDisabled() {
-    return false
+  handleSave() {
+    const { toastManager } = this.props;
+    this.setState({
+      isSaving: true,
+    }, () => {
+      this.newBranch.save().andThen( (savedBranch, responseError) => {
+        if (responseError) {
+          toastManager.add("Ups! Parece que hubo un error al guardar!", {
+            appearance: 'error',
+            autoDismiss: true,
+            pauseOnHover: false,
+          });
+          this.setState({
+            isSaving: false
+          });
+        }
+        else {
+          toastManager.add("La sucursal ha sido creado exitosamente!", {
+            appearance: 'success',
+            autoDismiss: true,
+            pauseOnHover: false,
+          });
+          this.props.history.push('list');
+        }
+      })
+    })
   }
 
-  handleSave() {
+  handleChange(name, value) {
+    this.newBranch[name] = value;
+    this.setState( prevState => ({
+      loaded: !prevState.loaded,
+    }))
+  }
 
+  getDisabled() {
+    return !this.newBranch.name || !this.newBranch.street_name || !this.newBranch.street_number || !this.newBranch.location;
   }
 
   render() {
@@ -74,8 +106,7 @@ class BranchCreation extends Component {
         <hr/>
         <Columns>
           <Column className="pl-5 pr-5 pt-3">
-
-            <BranchesForm withMap/>
+            <BranchesForm withMap branche={ this.newBranch } onChange={ this.handleChange }/>
             { this.state.isSaving ? 
               <Button kind="outline" className="mt-5" disabled pulse icon={ faSpinner }>{ this.getText('Creando..') }</Button> :
               <Button kind="outline" className="mt-5" onClick={ this.handleSave } disabled={ this.getDisabled() }>{ this.getText('Crear sucursal') }</Button> }

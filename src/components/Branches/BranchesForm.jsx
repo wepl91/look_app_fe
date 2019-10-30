@@ -38,20 +38,14 @@ class BranchesForm extends Component {
 
     this.handleChange = this.handleChange.bind(this);
 
-    this.getLanLot = debounce(this.getLanLot.bind(this), 200);
+    this.getLanLot = debounce(this.getLanLot.bind(this), 400);
 
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const diffStreet = prevState.street_name != this.state.street_name;
-    const diffNumber = prevState.street_number != this.state.street_number;
-    const diffLocation = prevState.location != this.state.location;
-    if (diffLocation || diffNumber || diffStreet) {
-      this.getLanLot();
-    }
   }
 
   componentDidMount() {
+    if (this.props.branch) {
+      this.getLanLot(this.props.branch);
+    }
     this.setState({
       loaded: true
     });
@@ -62,13 +56,15 @@ class BranchesForm extends Component {
     return translate(text, this.props.store.ui.language)
   }
 
-  getLanLot() {
-    if (this.state.street_name == '' || this.state.location == '' || this.state.street_number == '') {
+  getLanLot(branch = null) {
+    const street_name = branch ? branch.street_name : this.state.street_name;
+    const street_number = branch ? branch.street_number : this.state.street_number;
+    const location = branch ? branch.location : this.state.location;
+    if (street_name == '' || location == '' || street_number == '') {
       return;
     }
 
-    const cookedLocation = `${this.state.street_name} ${this.state.street_number}, ${this.state.location}`;
-    const url = `http://www.mapquestapi.com/geocoding/v1/address?key=1G0vEZOEtXkU5BW9MDLAGp22ATGiUzs8&location=${cookedLocation}`
+    const url = `http://www.mapquestapi.com/geocoding/v1/address?key=1G0vEZOEtXkU5BW9MDLAGp22ATGiUzs8&street=${ street_number }+${ street_name.replace(' ', '+') }&city=${ location.replace(' ', '+') }&country=Argentina,`
     let request = {
       'method': 'GET',
       'headers': {},
@@ -90,12 +86,15 @@ class BranchesForm extends Component {
   handleChange(sender, value, name, valid) {
     this.setState({
       [name]: value,
+    }, () => {
+      this.getLanLot();
     });
+    this.props.onChange && this.props.onChange(name, value);
   }
 
   render() {
     const { branch, withMap } = this.props
-    const position = this.state.lonlat.lon && this.state.lonlat.lat ? [this.state.lonlat.lat, this.state.lonlat.lon] : [-34.5217483,-58.7029549]
+    const position = this.state.lonlat.lat && this.state.lonlat.lon ? [this.state.lonlat.lat, this.state.lonlat.lon] : null;
     return (
       <Columns>
         <Column isSize={ 4 }>
@@ -106,10 +105,10 @@ class BranchesForm extends Component {
             <TextInput value={ branch && branch.location } name="location" onChange={this.handleChange} className="is-fullwidth"/>
           </Field>
           <Field label={ this.getText('Calle') } labelNote={ this.getText('¿Sobre qué calle se encuentra la nueva sucursal?') }>
-            <TextInput value={ branch && branch.name } name="street_name" onChange={this.handleChange} className="is-fullwidth"/>
+            <TextInput value={ branch && branch.street_name } name="street_name" onChange={this.handleChange} className="is-fullwidth"/>
           </Field>
           <Field label={ this.getText('Número') } labelNote="¿A qué altura se encuentra la nueva sucursal?">
-            <TextInput name="street_number" onChange={this.handleChange} className="is-fullwidth"/>
+            <TextInput value={ branch && branch.street_number } name="street_number" onChange={this.handleChange} className="is-fullwidth"/>
           </Field>
         </Column>
         { withMap && 
@@ -128,11 +127,13 @@ class BranchesForm extends Component {
 BranchesForm.PropTypes = {
   branch: PropTypes.object,
   withMap: PropTypes.bool,
+  onChange: PropTypes.func,
 }
 
 BranchesForm.defaultProps = {
   branch: null,
-  withMap: false
+  withMap: false,
+  onChange: null,
 }
 
 export default withStore(BranchesForm);
