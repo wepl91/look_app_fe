@@ -32,6 +32,8 @@ import { ProfessionalsEditModal } from '../../components/Professionals';
 import startCase from 'lodash/startCase';
 import { Columns } from 'bloomer/lib/grid/Columns';
 
+import { translate } from '../../lib/Translator'
+
 @observer
 class ProfessionalsList extends Component {
   constructor(props) {
@@ -108,25 +110,30 @@ class ProfessionalsList extends Component {
         size: 'is-1',
       },
       {
-        label: 'Nombre',
-        content: (data) => (<Text>{ startCase( data.fullName || '- sin nombre -'  )}</Text>),
+        label: this.getText('Nombre'),
+        content: (data) => (<Text>{ startCase( data.fullName || this.getText('- sin nombre -')  )}</Text>),
+        size: 'is-2'
       },
       {
-        label: 'Teléfono',
-        content: (data) => (<Text>{ data.phone || '- sin teléfono -' }</Text>),
+        label: this.getText('Teléfono'),
+        content: (data) => (<Text>{ data.phone || this.getText('- sin teléfono -') }</Text>),
         size: 'is-1',
       },
       {
-        label: 'Mail',
-        content: (data) => (<Text>{ data.email || '- sin email -' }</Text>),
+        label: this.getText('Email'),
+        content: (data) => (<Text>{ data.email || this.getText('- sin email -') }</Text>),
+        size: 'is-2'
       },
       {
-        label: 'Servicios Ofrecidos',
+        label: this.getText('Servicios ofrecidos'),
         content: (data) => (
           data.professionalServices.length > 0 ?
           <Dropdown className="is-fullwidth">
             <DropdownToggle className="is-fullwidth">
-              <Text>Servicios <FontAwesomeIcon className="mr-1" icon={ faChevronDown } size="xs" fixedWidth/></Text>
+              <Text>
+                { `${ this.getText('Servicios') } ` }
+                <FontAwesomeIcon className="mr-1" icon={ faChevronDown } size="xs" fixedWidth/>
+              </Text>
             </DropdownToggle>
             <DropdownPanel>
             {data.professionalServices.map(name => (
@@ -135,25 +142,28 @@ class ProfessionalsList extends Component {
             </DropdownPanel>
         </Dropdown>
         :
-        <Text>- Sin servicios -</Text>
+        <Text>{ this.getText('- Sin servicios -') }</Text>
         ),
       },
       {
-        label: 'Días de trabajo',
+        label: this.getText('Días de trabajo'),
         content: (data) => (
           <Dropdown className="is-fullwidth">
             <DropdownToggle className="is-fullwidth">
-              <Text>Días y horarios <FontAwesomeIcon className="mr-1" icon={ faChevronDown } size="xs" fixedWidth/></Text>
+              <Text>
+                {`${ this.getText('Días y horarios') }  `} 
+                <FontAwesomeIcon className="mr-1" icon={ faChevronDown } size="xs" fixedWidth/>
+              </Text>
             </DropdownToggle>
             <DropdownPanel>
             {data.cookedWorkingDays.map(days => (
               <React.Fragment>
               <Columns>
                 <Column>
-                  <Text size="md" >{ days.day }</Text> 
+                  <Text size="md" >{ this.getText(days.day) }</Text> 
                 </Column>
                 <Column>
-                  <Text className="has-text-right" size="md" >{days.begin} a {days.end}</Text> 
+                  <Text className="has-text-right" size="md" >{ `${days.begin} ${ this.getText('a') } ${days.end}` }</Text> 
                 </Column>
                 </Columns>
               </React.Fragment>
@@ -163,7 +173,7 @@ class ProfessionalsList extends Component {
         ),
       },
       {
-        label: 'Activo',
+        label: this.getText('Activo'),
         content: (data) => (<Toggle checked={ data.isActive } checkedColor="success" unCheckedColor="delete" onChange={ () => (data.isActive ? this.handleInactivate(data) : this.handleActivate(data)) }/>),
         size: 'is-1',
       },
@@ -171,22 +181,26 @@ class ProfessionalsList extends Component {
         label: '',
         content: (data) => (<Button icon={ faPencilAlt } kind="link" onClick={ () => (this.handleModal(data)) }/>),
         size: 'is-1',
-        align: 'left'
+        align: 'center'
       },
     ]
 
     return <Table columns={ columns } data={ data } striped={ false }/>
   }
 
+  getText( text ) {
+    return translate(text, this.props.store.ui.language)
+  }
+
   render() {
     if (!this.state.professionals || !this.state.professionals.isOk()) {
-      return 'Cargando usuarios..';
+      return this.getText('Cargando profesionales..');
     }
     return(
       <React.Fragment>
         <Level>
           <LevelLeft>
-            <Title>Lista de profesionales</Title>
+            <Title>{ this.getText('Lista de profesionales') }</Title>
           </LevelLeft>
         </Level>
         <hr/>

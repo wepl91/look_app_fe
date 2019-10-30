@@ -18,11 +18,13 @@ import { ReactComponent as SvgDraw } from '../../assets/undraw_online_cv_qy9w.sv
 import { ProfessionalsForm } from '../../components/Professionals/';
 
 import { withToastManager } from 'react-toast-notifications';
-
 import withStore from '../../hocs/withStore';
+
 
 import { Professional } from '../../models';
 import { observer } from 'mobx-react';
+
+import { translate } from '../../lib/Translator'; 
 
 @observer
 class ProfessionalCreation extends Component {
@@ -55,14 +57,14 @@ class ProfessionalCreation extends Component {
 
     professional.save().andThen( (savedProfessional, responseError) => {
       if (responseError) {
-        toastManager.add("Ups! Parece que hubo un error al guardar!", {
+        toastManager.add( this.getText('Ups! Parece que hubo un error al guardar!'), {
           appearance: 'error',
           autoDismiss: true,
           pauseOnHover: false,
         });
       }
       else {
-        toastManager.add("Los cambios se han guardado exitosamente!", {
+        toastManager.add(this.getText('El profesional fue agregado exitosamente!'), {
           appearance: 'success',
           autoDismiss: true,
           pauseOnHover: false,
@@ -117,6 +119,10 @@ class ProfessionalCreation extends Component {
     return !(this.state.validName && this.state.validLastName && this.state.validPhone && this.state.validMail && this.state.validServices && this.state.validHours)
   }
 
+  getText( text ) {
+    return translate(text, this.props.store.ui.language)
+  }
+
   getProfessional() {
     if (this.newProfessional) {
       return this.newProfessional;
@@ -135,7 +141,7 @@ class ProfessionalCreation extends Component {
       <React.Fragment>
         <Level>
           <LevelLeft>
-            <Title>Nuevo profesional</Title>
+            <Title>{ this.getText('Nuevo profesional') }</Title>
           </LevelLeft>
         </Level>
         <hr/>
@@ -145,7 +151,7 @@ class ProfessionalCreation extends Component {
             <br/>
             <br/>
             <br/>
-            <Button onClick={ this.handleClick } className="ml-4" kind="outline" disabled={ this.getDisabled() }>Agregar profesional</Button>
+            <Button onClick={ this.handleClick } className="ml-4" kind="outline" disabled={ this.getDisabled() }>{ this.getText('Agregar profesional') }</Button>
           </Column>
           <Column isSize={6}>
             <SvgDraw style={{ height: '650px', width: '750px'}}/>

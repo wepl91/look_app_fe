@@ -15,6 +15,13 @@ import {
 import moment from 'moment';
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
+import { observer } from 'mobx-react';
+
+import { withStore } from '../../hocs'
+
+import { translate } from '../../lib/Translator';
+
+@observer
 class WorkingHoursSelector extends Component {
   constructor(props) {
     super(props)
@@ -90,6 +97,10 @@ class WorkingHoursSelector extends Component {
     return this.state.days[day]['fin']
   }
 
+  getText( text ) {
+    return translate(text, this.props.store.ui.language)
+  }
+
   render() {
     const { className } = this.props;
     let hourList = this.hoursBetweenDates(this.props.startingDate, this.props.finishingDate)
@@ -108,16 +119,16 @@ class WorkingHoursSelector extends Component {
       {daysList.map(day => (
         <Columns isGapless isMarginless isVCentered isCentered className={ className }>
           <Column>
-            <Checkbox className={'pt-2'} name={ day } onCheck={() => this.handleDays(day)} checked={this.props.defaultProfessional && day in this.props.defaultProfessional.rawWorkingDays} >{translatedDays[day]}</Checkbox>
+            <Checkbox className={'pt-2'} name={ day } onCheck={() => this.handleDays(day)} checked={this.props.defaultProfessional && day in this.props.defaultProfessional.rawWorkingDays} >{ this.getText(translatedDays[day]) }</Checkbox>
           </Column>
           <Column>
-            {this.isDaySelected(day) && <Select placeholder="Entrada"
+            {this.isDaySelected(day) && <Select placeholder={ this.getText('Entrada') }
               borderless icon={faChevronDown} className={'mt-2'}
               value={ this.getBeginHour(day) } 
               name={`${ day }sta`} onChange={this.handleChange} options={hourList} />}
           </Column>
           <Column>
-            {this.isDaySelected(day) && <Select placeholder="Salida"
+            {this.isDaySelected(day) && <Select placeholder={ this.getText('Salida') }
               borderless icon={faChevronDown} className={'mt-2'}
               value={ this.getEndHour(day) }
               name={`${ day }fin`} onChange={this.handleChange} options={hourList} />}
@@ -146,4 +157,4 @@ WorkingHoursSelector.defaultProps = {
   validate: null
 }
 
-export default WorkingHoursSelector;
+export default withStore(WorkingHoursSelector);
