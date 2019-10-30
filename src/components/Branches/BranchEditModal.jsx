@@ -47,12 +47,37 @@ class BranchEditModal extends Component {
     this.handleSave   = this.handleSave.bind(this);
   }
 
-  handleChange( name, value, valid ) {
-
+  handleChange(name, value) {
+    const branch = this.getBranch()
+    branch[name] = value;
   }
 
   handleSave() {
-
+    const { toastManager } = this.props;
+    this.setState({
+      isSaving: true,
+    }, () => {
+      this.modifiedBranch.save().andThen( (savedBranch, responseError) => {
+        if (responseError) {
+          toastManager.add(this.getText('Ups! Parece que hubo un error al guardar!'), {
+            appearance: 'error',
+            autoDismiss: true,
+            pauseOnHover: false,
+          });
+          this.setState({
+            isSaving: false
+          });
+        }
+        else {
+          toastManager.add(this.getText('La sucursal ha sido creado exitosamente!'), {
+            appearance: 'success',
+            autoDismiss: true,
+            pauseOnHover: false,
+          });
+          this.handleClose();
+        }
+      })
+    })
   }
 
   handleClose() {

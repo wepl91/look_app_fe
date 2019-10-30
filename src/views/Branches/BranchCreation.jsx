@@ -62,7 +62,7 @@ class BranchCreation extends Component {
     }, () => {
       this.newBranch.save().andThen( (savedBranch, responseError) => {
         if (responseError) {
-          toastManager.add("Ups! Parece que hubo un error al guardar!", {
+          toastManager.add(this.getText('Ups! Parece que hubo un error al guardar!'), {
             appearance: 'error',
             autoDismiss: true,
             pauseOnHover: false,
@@ -72,7 +72,7 @@ class BranchCreation extends Component {
           });
         }
         else {
-          toastManager.add("La sucursal ha sido creado exitosamente!", {
+          toastManager.add(this.getText('La sucursal ha sido creado exitosamente!'), {
             appearance: 'success',
             autoDismiss: true,
             pauseOnHover: false,

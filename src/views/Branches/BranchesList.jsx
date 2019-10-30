@@ -38,6 +38,8 @@ class BranchesList extends Component {
       showModal: false,
       branch: null,
     }
+
+    this.handleCloseModal = this.handleCloseModal.bind(this);
   }
 
   componentDidMount() {
@@ -48,6 +50,12 @@ class BranchesList extends Component {
 
   getText( text ) {
     return translate(text, this.props.store.ui.language)
+  }
+
+  handleCloseModal() {
+    this.setState({
+      showModal: false,
+    })
   }
 
   handleShowModal( branch ) {
@@ -94,7 +102,7 @@ class BranchesList extends Component {
   }
 
   renderModal() {
-    return <BranchEditModal branch={ this.state.branch } />;
+    return <BranchEditModal branch={ this.state.branch } onClose={ this.handleCloseModal } />;
   }
 
   render() {
