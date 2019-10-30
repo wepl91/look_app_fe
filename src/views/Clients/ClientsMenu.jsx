@@ -6,6 +6,11 @@ import { withRouter } from 'react-router';
 
 import { faChild, faPlus } from "@fortawesome/free-solid-svg-icons";
 
+import { translate } from '../../lib/Translator';
+
+import { observer } from 'mobx-react'
+
+@observer
 class ClientsMenu extends Component {
 
   constructor(props) {
@@ -19,13 +24,17 @@ class ClientsMenu extends Component {
 
   }
 
+  getText( text ) {
+    return translate(text, this.props.store.ui.language)
+  }
+
   render() {
     const path = this.props.match.path;
 
     return(
-      <LayoutMenuLinkGroup icon={ faChild } label="Clientes" basePath={ `${path}/clients` }>
-        <LayoutMenuLink icon={ faChild } to={ `${path}/clients/list` }>Listado</LayoutMenuLink>
-        <LayoutMenuLink icon={ faPlus } to={ `${path}/clients/new`  }>Nuevo cliente</LayoutMenuLink>
+      <LayoutMenuLinkGroup icon={ faChild } label={ this.getText('Clientes') } basePath={ `${path}/clients` }>
+        <LayoutMenuLink icon={ faChild } to={ `${path}/clients/list` }>{ this.getText('Listado') }</LayoutMenuLink>
+        <LayoutMenuLink icon={ faPlus } to={ `${path}/clients/new`  }>{ this.getText('Nuevo cliente') }</LayoutMenuLink>
       </LayoutMenuLinkGroup> )
   };
 

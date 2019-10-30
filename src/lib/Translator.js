@@ -4,6 +4,7 @@ export const translate = (str, lang) => {
     'Idioma': 'Language',
     'Español': 'Spanish',
     'Ingles': 'English',
+    'Clientes': 'Customers',
     'Nuevo cliente': 'New customer',
     'Creando..':'Creating..',
     'Crear cliente': 'Create customer',
@@ -92,6 +93,14 @@ export const translate = (str, lang) => {
     'Corte': 'Cut',
     'Tintura': 'Dyeing',
     'Peinado': 'HairStyle',
+    'Turnos': 'Appointments',
+    'Nuevo turno': 'New appointment',
+    'Reportes': 'Reports',
+    'Profesionales': 'Professionals',
+    'Usuarios': 'Users',
+    'Nuevo usuario': 'New user',
+
+
   }
 
   /**

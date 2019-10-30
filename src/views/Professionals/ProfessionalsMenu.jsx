@@ -6,6 +6,11 @@ import { withRouter } from 'react-router';
 
 import { faPlus, faBriefcase } from "@fortawesome/free-solid-svg-icons";
 
+import { translate } from '../../lib/Translator';
+
+import { observer } from 'mobx-react'
+
+@observer
 class ProfessionalsMenu extends Component {
 
   constructor(props) {
@@ -18,13 +23,17 @@ class ProfessionalsMenu extends Component {
 
   }
 
+  getText( text ) {
+    return translate(text, this.props.store.ui.language)
+  }
+
   render() {
     const path = this.props.match.path;
 
     return(
-      <LayoutMenuLinkGroup icon={ faBriefcase } label="Profesionales" basePath={ `${path}/professionals` }>
-        <LayoutMenuLink icon={ faBriefcase } to={ `${path}/professionals/list`  }>Listado</LayoutMenuLink>
-        <LayoutMenuLink icon={ faPlus } to={ `${path}/professionals/new`   }>Nuevo profesional</LayoutMenuLink>
+      <LayoutMenuLinkGroup icon={ faBriefcase } label={ this.getText('Profesionales') } basePath={ `${path}/professionals` }>
+        <LayoutMenuLink icon={ faBriefcase } to={ `${path}/professionals/list`  }>{ this.getText('Listado') }</LayoutMenuLink>
+        <LayoutMenuLink icon={ faPlus } to={ `${path}/professionals/new`   }>{ this.getText('Nuevo profesional') }</LayoutMenuLink>
       </LayoutMenuLinkGroup> )
   };
 
