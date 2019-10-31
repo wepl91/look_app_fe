@@ -49,6 +49,14 @@ export default class Appointment extends Model {
   }
 
   @computed
+  get clientPoints() {
+    if (!this.client) {
+      return '';
+    }
+    return this.client.points
+  }
+
+  @computed
   get professionalFullName() {
     if (!this.professional) {
       return '';
