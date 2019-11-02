@@ -18,6 +18,7 @@ export default class User extends Model {
       name: '',
       lastName: '',
       status: null,
+      branch: {},
     };
 
     let attrs = Object.assign( defaultAttributes, attributes );
@@ -27,17 +28,20 @@ export default class User extends Model {
 
   @computed
   get cookedName() {
-    return (this.fullName && this.fullName.split(" ")[0]) || this.name;
+    return startCase(this.name);
   }
 
   @computed
-  get cookedLastname() {
-    return (this.fullName && this.fullName.split(" ")[1]) || this.lastname;
+  get cookedLastName() {
+    return startCase(this.lastName);
   }
 
   @computed
   get cookedFullName() {
-    return `${ startCase(this.cookedName) } ${ startCase(this.cookedLastname) }`;
+    if (!this.name && !this.lastName) {
+      return null;
+    }
+    return `${ startCase(this.name) || '' } ${ startCase(this.lastName) || '' }`;
   }
 
   @computed
@@ -65,5 +69,23 @@ export default class User extends Model {
   deactivate() {
     this.status = 'INACTIVE';
     return this.save();
+  }
+
+  @action
+  clean() {
+    if (this.branch instanceof Object) {
+      this.branch = this.branch.id;
+    }
+    if (this.status instanceof Object) {
+      this.status = this.status.name;
+    }
+    const cleanRoles = [];
+    this.roles.forEach( rol => {
+      if (rol instanceof Object) {
+        cleanRoles.push(rol.id);
+      }
+    });
+
+    return this;
   }
 }

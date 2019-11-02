@@ -122,6 +122,10 @@ export const translate = (str, lang) => {
     '¡El usuario ha sido marcado como inactivo!': 'The user has been marked as inactive!',
     'Cargando los usuarios..': 'Loading users..',
     'Lista de Usuarios': 'User List'
+    'Contraseña': 'Password',
+    'Confirmación de contraseña': 'Password confirmation',
+    'Rol': 'Role',
+    '¿Cómo se llama el nuevo usuario?': 'What is the name of the new user?'
 
   }
 

@@ -31,7 +31,8 @@ class UserEdit extends Component {
 
     this.state = {
       isSaving: false,
-      user: null
+      user: null,
+      edited: false,
     }
 
     this.handleSave   = this.handleSave.bind(this);
@@ -49,33 +50,43 @@ class UserEdit extends Component {
     if (name == 'role') {
       user.roles[0] = value;
     }
-    else {
+    if (name=='name' && value != user.cookedName) {
       user[name] = value;
+      this.setState({
+        edited: true,
+        invalidName: valid.type == 'error',
+      });
+    } 
+    else if (name=='lastName' && value != user.cookedLastName) {
+      user[name] = value;
+      this.setState({
+        edited: true,
+        invalidLastName: valid.type == 'error',
+      });
+    } 
+    else if (name=='email' && value != user.email) {
+      user[name] = value;
+      this.setState({
+        edited: true,
+        invalidMail: valid.type == 'error',
+      });
     }
-    if(name=='name'){
+    else if (name == 'password') {
+      user.setField('password', value);
       this.setState({
-        validName: valid.type == 'success',
-      })
-    } 
-    else if(name=='lastName'){
-      this.setState({
-        validLastName: valid.type == 'success',
-      })
-    } 
-    else if(name=='email'){
-      this.setState({
-        validMail: valid.type == 'success',
-      })
+        edited: true,
+        invalidPassword: false,
+      });
     }
   }
 
   handleSave() {
     const { toastManager } = this.props;
-    const { user } = this.state;
-    user.fullName = `${user.name} ${user.lastName}`;
+    let { user } = this.state;
     this.setState({
       isSaving: true,
     }, () => {
+      user = user.clean();
       user.save().andThen((savedUser, responseError) => {
         if (responseError) {
           toastManager.add("Ups! Parece que hubo un error al guardar!", {
@@ -100,7 +111,12 @@ class UserEdit extends Component {
   }
 
   getDisabled() {
-    return !(this.state.validName && this.state.validLastName && this.state.validMail && this.state.user.roles.length > 0)
+    if (this.state.edited) {
+      return this.state.invalidName || this.state.invalidLastName || this.state.invalidMail || this.state.user.roles.length < 1 || this.state.invalidPassword;
+    }
+    else {
+      return true
+    }
   }
 
   getText( text ) {
@@ -122,7 +138,13 @@ class UserEdit extends Component {
           <hr />
           <Columns>
             <Column isSize={4} className="pl-4 pr-4 ml-5 mt-3">
-              <UsersForm user={ this.state.user } onChange={this.handleChange} />
+              <UsersForm user={ this.state.user } onChange={this.handleChange} withPassword />
+              <br />
+              <br />
+              <br />
+              {this.state.isSaving ?
+                <Button kind="outline" disabled pulse icon={faSpinner}>Guardando</Button> :
+                <Button kind="outline" onClick={this.handleSave} disabled={ this.getDisabled() }>Guardar</Button>}
             </Column>
             <Column isSize={2}></Column>
             <Column isSize={6} clasName="has-text-centered">

@@ -178,6 +178,10 @@ class UsersList extends Component {
     return <Table columns={ columns } data={ data } striped={ false }/>
   }
 
+  getText( text ) {
+    return translate(text, this.props.store.ui.language)
+  }
+
   renderModal() {
     return( <UsersEditModal user={ this.state.editUser } onClose={ this.handleHideModal } onSave={ this.handleSaved }/> )
   }
