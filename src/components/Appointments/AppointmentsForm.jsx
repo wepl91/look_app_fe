@@ -27,7 +27,7 @@ import moment from 'moment';
 import { resolve } from 'url';
 import { reject } from 'q';
 
-import { ClientSuggest } from '../../components/Suggest';
+import { ClientSuggest, ProfessionalSuggest } from '../../components/Suggest';
 
 @observer
 class AppointmentsForm extends Component {
@@ -37,13 +37,14 @@ class AppointmentsForm extends Component {
     this.handleProfessional = this.handleProfessional.bind(this);
     this.handleServices     = this.handleServices.bind(this);
     this.handleClient       = this.handleClient.bind(this);
+    this.handleBranch       = this.handleBranch.bind(this); 
     this.handleDate         = this.handleDate.bind(this);
     this.handleHour         = this.handleHour.bind(this);
 
     this.state = {
-      professionals: null,
+      branch: this.props.appointment ? this.props.appointment.branch : null,
       professional: this.props.appointment ? this.props.appointment.professional : 'null',
-      services: null,
+      professionals: this.props.appointment ? this.props.appointment.branch : null,
       clients: null,
       client: this.props.appointment ? this.props.appointment.client : 'null',
       date: this.props.appointment ? this.props.appointment.dayHour : moment(),
@@ -54,8 +55,7 @@ class AppointmentsForm extends Component {
 
   componentDidMount() {
     this.setState({
-      professionals: this.props.store.professionals.search({},  'appointment-list-view', true),
-      services: this.props.store.services.search({}, 'services-appointment-list-view', true),
+      branches: this.props.store.branches.search({}, 'branches-appointment-list-view'),
       clients: !this.props.edit ? this.props.store.clients.search({}, 'clients-appointment-list-view', true) : null,
     })
   }
@@ -69,8 +69,10 @@ class AppointmentsForm extends Component {
     }
   }
 
-  handleClient( sender, value, name ) {
-    this.props.onChange && this.props.onChange('client', value);
+  handleClient( value ) {
+    if (value != 'null') {
+      this.props.onChange && this.props.onChange('client', value.id);
+    }
   } 
 
   handleHour( sender, value, name ) {
@@ -84,25 +86,34 @@ class AppointmentsForm extends Component {
     this.props.onChange && this.props.onChange('date', value);
   }
 
-  handleProfessional( sender, value, name ) {
+  handleBranch( sender, value, name ) {
+    const branch = this.state.branches.toArray().find( branch => {
+      return branch.id == value;
+    });
+    this.setState({
+      professional: null,
+      professionals: branch.professionals,
+      branch: branch,
+    });
+    this.props.onChange && this.props.onChange('branch', value);
+  }
+
+  handleProfessional( value ) {
     const { appointment } = this.props;
     if( appointment.professional && value != appointment.professional.id){
         this.props.appointment.services = []
     }
-    if (value == 'null') {
+    if (value == 'null' || !value) {
       this.setState({
         professional: null,
       });
       this.props.onChange && this.props.onChange('professional', null);
     }
     else {
-      const professional = this.state.professionals.toArray().find( professional => {
-        return professional.id == value;
-      })
       this.setState({
-        professional: professional,
+        professional: value,
       });
-      this.props.onChange && this.props.onChange('professional', value);
+      this.props.onChange && this.props.onChange('professional', value.id);
     }
   }
 
@@ -121,7 +132,7 @@ class AppointmentsForm extends Component {
 
   getSubtotal() {
     let ret = 0;
-    this.state.services.toArray().forEach( service => {
+    this.state.branch.allServices.forEach( service => {
       if (this.state.selectedServices.includes(service.id)) {
         ret = ret + service.price
       }
@@ -129,15 +140,16 @@ class AppointmentsForm extends Component {
     return ret;
   }
 
-  getProfessionalList() {
-    const prof = [];
-    prof.push({key: '- Ninguno -', value: 'null'});
-
-    this.state.professionals.toArray().forEach(element => {
-      prof.push({ key: `${ startCase(element.name) } ${ startCase(element.lastName) }`, value: element.id })
+  getBranchesList() {
+    const list = [];
+    this.state.branches.toArray().forEach( branch => {
+      list.push(
+        <SelectItem value={ branch.id } key={ branch.id }>
+          { `${ startCase(branch.name) || branch.cookedAddress }` }
+        </SelectItem>);
     });
 
-    return prof
+    return list;
   }
 
   isServiceInAppointment( serviceID ) {
@@ -169,8 +181,11 @@ class AppointmentsForm extends Component {
     // El randomizer lo que hace es cambiar la key para que React vea que ocurrió un cambio en el checkbox. No usé Math.Random() por que rompía el Checkbox
  
     const { professional } = this.state;
-    const services = professional && professional != 'null' ?  professional.services : this.state.services.toArray();
+    const services = professional && professional != 'null' ?  professional.services : this.state.branch && this.state.branch.allServices;
     let randomizer = professional && professional != 'null' ?  this.hashString(professional.name) : 1000;
+
+    if (!services) return null;
+
     return(
       <Field className="ml-5" label="¿Cuál de nuestros servicios requerís?" labelNote="Seleccioná un servicio">
         { services.length > 0 ? 
@@ -181,6 +196,19 @@ class AppointmentsForm extends Component {
         <Text className="has-text-centered ml-2" weight="medium" color="primaryDark"><hr id="subtotalLine"/>Subtotal: ${this.state.subtotal}</Text>
       </Field> )
      
+  }
+
+  renderProfessionals() {
+    const isDisabled = !this.state.branch;
+    return(
+      <Field className="ml-5" label="¿Por quién querés ser atendido?" labelNote="Seleccioná un profesional">
+          <ProfessionalSuggest 
+            key={ this.state.branch } 
+            disabled={ isDisabled } 
+            onChange={ this.handleProfessional }
+            professionals={ this.state.branch ? this.state.branch.professionals : null} 
+            value={ this.state.professional } />
+      </Field>)
   }
 
   renderAdvise() {
@@ -240,11 +268,12 @@ class AppointmentsForm extends Component {
           disabled
           loading />
       </Field>
-      <Field className="ml-5" label="¿Cual de nuestros servicios requeris?" labelNote="Seleccioná un servicio">
-        <Checkbox className="pt-1" checked={ false } >...</Checkbox>
-        <Checkbox className="pt-1" checked={ false } >...</Checkbox>
-        <Checkbox className="pt-1" checked={ false } >...</Checkbox>
-      </Field>
+      { this.props.edit && 
+        <Field className="ml-5" label="¿Cual de nuestros servicios requeris?" labelNote="Seleccioná un servicio">
+          <Checkbox className="pt-1" checked={ false } >...</Checkbox>
+          <Checkbox className="pt-1" checked={ false } >...</Checkbox>
+          <Checkbox className="pt-1" checked={ false } >...</Checkbox>
+        </Field> }
       <Field className="ml-5 mt-2" label="¿A que hora querés venir?" labelNote="Seleccioná un horario">
         <Select 
           maxHeight="120px" 
@@ -258,14 +287,14 @@ class AppointmentsForm extends Component {
   }
 
   render() {
-    const professionalsLoaded = this.state.professionals && this.state.professionals.isOk();
-    const servicesLoaded = this.state.services && this.state.services.isOk();
+    const isBranchesLoaded = this.state.branches && this.state.branches.isOk();
     const clientsLoaded = !this.props.edit ? this.state.clients && this.state.clients.isOk() : true;
     
-    if (!professionalsLoaded || !servicesLoaded || !clientsLoaded) {
+    if (!isBranchesLoaded || !clientsLoaded) {
       return this.renderSkeleton();
     }
     const { appointment } = this.props;
+    
     return(
       <React.Fragment>
         { this.props.withDate &&
@@ -278,26 +307,19 @@ class AppointmentsForm extends Component {
             { this.state.date.isoWeekday() == 7 && this.renderAdvise() }
           </Field> }
         <Field className="ml-5" label="¿Quién quiere ser atendido?" labelNote="Seleccioná un cliente">
-          <ClientSuggest clients={ this.state.clients && this.state.clients.toArray() }/>
+          <ClientSuggest onChange={ this.handleClient } clients={ this.state.clients && this.state.clients.toArray() }/>
         </Field>
         <Field className="ml-5" label="¿A cual de nuestras sucursales querés venir?" labelNote="Seleccioná una sucursal">
-          <Select 
-            disabled
+          <Select
+            key={ this.state.branches }
             placeholder="Sucursales" 
             borderless 
             icon={ faChevronDown } 
-            options={ [] } />
+            onChange={ this.handleBranch }
+            value={ this.state.branch ? this.state.branch.id : null }
+            options={ this.getBranchesList() } />
         </Field>
-        <Field className="ml-5" label="¿Por quién querés ser atendido?" labelNote="Seleccioná un profesional">
-          <Select 
-            key={ this.state.professional }
-            value={ this.state.professional ? this.state.professional.id : 'null' }
-            placeholder="Profesionales" 
-            borderless 
-            icon={ faChevronDown } 
-            onChange={ this.handleProfessional }
-            options={ this.getProfessionalList() } />
-        </Field>
+        { this.renderProfessionals() }
         { this.renderServices() } 
         <Field className="ml-5" label="¿A que hora querés venir?" labelNote="Seleccioná un horario">
           <Select 

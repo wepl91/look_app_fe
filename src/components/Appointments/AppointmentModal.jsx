@@ -341,7 +341,7 @@ class AppointmentModal extends Component {
     return(
       <Columns>
         <Column isSize={ 6 }>
-          <AppointmentsForm onChange={ this.handleChange } withDate/>
+          <AppointmentsForm onChange={ this.handleChange } appointment={ this.newAppointment } />
         </Column>
         <Column className="has-text-centered">
           <SvgDraw style={{ height: '300px', width: '300px' }}/>

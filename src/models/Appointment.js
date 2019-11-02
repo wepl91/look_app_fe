@@ -12,7 +12,8 @@ export default class Appointment extends Model {
   constructor( attributes, store ) {
 
     let defaultAttributes = {
-      local: 'casa',
+      local: '',
+      branch: null,
       status: "OPEN",
       professional: null,
       client: null,

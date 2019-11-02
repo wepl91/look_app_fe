@@ -43,13 +43,16 @@ class ClientSuggest extends Component {
       value: client.fullName,
       showPanel: false,
     })
+    this.props.onChange && this.props.onChange(client);
   }
 
   render() {
+    const { disabled } = this.props;
     return(
-      <Dropdown className="is-fullwidth">
-        <DropdownToggle className="is-fullwidth">
+      <Dropdown className="is-fullwidth" disabled={ disabled }>
+        <DropdownToggle className="is-fullwidth" disabled={ disabled }>
           <TextInput
+            disabled={ disabled }
             borderless={ !this.state.showPanel }
             placeholder="Cliente"
             className="is-fullwidth" 
@@ -59,6 +62,7 @@ class ClientSuggest extends Component {
             onFocus={ () => (this.setState({showPanel: true}))} onBlur={ () => (this.setState({showPanel: false})) }/>
         </DropdownToggle>
           <DropdownPanel>
+            <Text className="mb-1" size="md" onClick={ () => (this.handleSelect('null')) }>- Cliente no registrado -</Text>
             { this.state.suggest && this.state.suggest.map( (client, index) => (
               index < 5 && <Text className="mb-1" size="md" onClick={ () => (this.handleSelect(client)) }>{ client.fullName }</Text> )) }
           </DropdownPanel>
@@ -70,10 +74,14 @@ class ClientSuggest extends Component {
 
 ClientSuggest.PropTypes = {
   clients: PropTypes.array,
+  disabled: PropTypes.bool,
+  onChange: PropTypes.func,
 }
 
 ClientSuggest.defaultProps = {
   clients: [],
+  disabled: false,
+  onChange: null,
 }
 
 export default ClientSuggest

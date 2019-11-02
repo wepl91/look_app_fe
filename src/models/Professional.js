@@ -18,8 +18,8 @@ export default class Professional extends Model {
       email: '',
       status: '',
       services: '',
-      workingHours: ''
-      // branch: ''
+      workingHours: '',
+      branch: 1,
     };
 
     let attrs = Object.assign( defaultAttributes, attributes );
