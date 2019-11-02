@@ -23,6 +23,11 @@ import { faUser, faSignOutAlt, faUserEdit } from "@fortawesome/free-solid-svg-ic
 
 import startCase from 'lodash/startCase'
 
+import { translate } from '../../lib/Translator';
+
+import { observer } from 'mobx-react'
+
+@observer
 class UserLoggedDropdown extends Component {
   constructor(props) {
     super(props);
@@ -40,6 +45,10 @@ class UserLoggedDropdown extends Component {
     this.props.store.signOut();
   }
 
+  getText( text ) {
+    return translate(text, this.props.store.ui.language)
+  }
+
   render() {
     const { user } = this.props
     return(
@@ -52,11 +61,11 @@ class UserLoggedDropdown extends Component {
             <Column>
               <Avatar image="https://codewebbarcelona.com/wp-content/uploads/2019/01/095_logo-peluqueria.jpg"/>
               <Text className="mb-1" weight="medium">{ user.username && startCase(user.username)  }</Text>
-              <Text className="mt-1" weight="medium">{ user.userRole && startCase(user.userRole) }</Text>
+              <Text className="mt-1" weight="medium">{ user.userRole && startCase(this.getText(user.userRole)) }</Text>
               </Column>
               </Columns>
-              <Button className="mt-1 ml-1 mr-1" kind="link" icon={ faUserEdit } onClick={ this.handleRedirect }>Editar perfill</Button>
-              <Button className="mt-1 ml-1 mr-1" kind="link" icon={ faSignOutAlt } onClick={ this.handleClick } >Cerrar sesión</Button>
+              <Button className="mt-1 ml-1 mr-1" kind="link" icon={ faUserEdit } onClick={ this.handleRedirect }>{this.getText("Editar perfil")}</Button>
+              <Button className="mt-1 ml-1 mr-1" kind="link" icon={ faSignOutAlt } onClick={ this.handleClick } >{this.getText("Cerrar sesión")}</Button>
         </DropdownPanel>
       </Dropdown> )
   }

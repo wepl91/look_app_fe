@@ -10,6 +10,8 @@ import { UsersForm } from '../../components/Users';
 import { ReactComponent as SvgDraw } from '../../assets/undraw_short_bio_e5pg.svg';
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
+import { translate } from '../../lib/Translator';
+
 import {
   Columns,
   Column,
@@ -101,16 +103,20 @@ class UserEdit extends Component {
     return !(this.state.validName && this.state.validLastName && this.state.validMail && this.state.user.roles.length > 0)
   }
 
+  getText( text ) {
+    return translate(text, this.props.store.ui.language)
+  }
+
   render() {
     const userLoaded = this.state.user && this.state.user.isOk();
     if (!userLoaded) {
-      return 'Cargando..'
+      return this.getText('Cargando..')
     }
     return (
       <React.Fragment>
           <Level>
             <LevelLeft>
-              <Title>Editar usuario</Title>
+              <Title>{ this.getText("Editar usuario") }</Title>
             </LevelLeft>
           </Level>
           <hr />
@@ -119,13 +125,13 @@ class UserEdit extends Component {
               <UsersForm user={ this.state.user } onChange={this.handleChange} />
             </Column>
             <Column isSize={2}></Column>
-            <Column isSize={6} clasName="has-text-centeres">
+            <Column isSize={6} clasName="has-text-centered">
               <SvgDraw style={{ height: '75%', width: '75%' }} />
             </Column>
           </Columns>
           {this.state.isSaving ?
-            <Button kind="outline" className="ml-6" disabled pulse icon={faSpinner}>Guardando</Button> :
-            <Button kind="outline" className="ml-6" onClick={this.handleSave} disabled={ this.getDisabled() }>Guardar</Button>}
+            <Button kind="outline" className="ml-6" disabled pulse icon={faSpinner}>{this.getText("Guardando")}</Button> :
+            <Button kind="outline" className="ml-6" onClick={this.handleSave} disabled={ this.getDisabled() }>{this.getText("Guardar")}</Button>}
         </React.Fragment>)
   }
 }
