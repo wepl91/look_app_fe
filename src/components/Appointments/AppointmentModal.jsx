@@ -420,7 +420,7 @@ class AppointmentModal extends Component {
       },
       {
         label: 'Profesional',
-        content: (data) => (<Text>{ data.professionalFullName }</Text>),
+        content: (data) => (<Text>{ data.professionalFullName ? data.professionalFullName : '- sin profesional -' }</Text>),
         size: 'is-2'
       },
       {

@@ -38,6 +38,11 @@
   background-color: #FFC3CF;
 }
 
+#warning {
+  border-color: rgb(255, 244, 195);
+  background-color: rgb(255, 244, 195);
+}
+
 .empty_draw {
   height: 400px;
   width: 100%;

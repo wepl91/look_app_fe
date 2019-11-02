@@ -134,7 +134,9 @@ export default class Appointment extends Model {
       'OPEN': 'open',
       'PAID': 'approved',
       'CANCELED': 'cancelled',
-      'EXPIRED': 'cancelled'
+      'EXPIRED': 'cancelled',
+      'PARTIAL_PAID': 'warning',
+      'PENDING_PAID': 'warning',
     }
     return classNames[this.status.name];
   }
@@ -181,7 +183,9 @@ export default class Appointment extends Model {
       'OPEN': 'Activo',
       'PAID': 'Pagado',
       'CANCELED': 'Cancelado',
-      'EXPIRED': 'Ausente'
+      'EXPIRED': 'Ausente',
+      'PARTIAL_PAID': 'Pagado parcialmente',
+      'PENDING_PAID': 'Pago pendiente'
     }
     return statuses[this.status.name];
   }
