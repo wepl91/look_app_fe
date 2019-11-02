@@ -48,7 +48,7 @@ class UsersForm extends Component {
     const roles = [];
     this.state.roles.toArray().forEach(rol => {
       roles.push({
-        key: rol.name,
+        key: this.getText(rol.name),
         value: rol.id
       });
     });
@@ -107,7 +107,7 @@ class UsersForm extends Component {
         <Field label="Email">
           <TextInput value={ user && user.email } name="email" validate={ (value) => (mailRegex.test(value)) } placeholder="user@gmail.com" onChange={ this.handleChange } />
         </Field>
-        <Field label="Rol">
+        <Field label={this.getText("Rol")}>
         <Select 
           key={ this.state.roles } 
           value={ user && user.roleID }
