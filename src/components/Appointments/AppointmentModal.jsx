@@ -465,6 +465,12 @@ class AppointmentModal extends Component {
     return this.state.appointment && !(this.state.appointment.services.length > 0 && !this.state.buttonDisabled)
   }
 
+  getCreateDisabled() {
+    const { date } = this.props;
+    const today = moment();
+    return moment(date.format('DD-MM-YYYY')).isBefore(today.format('DD-MM-YYYY'));
+  }
+
   render() {
     const { date } = this.props
     return(
@@ -502,7 +508,7 @@ class AppointmentModal extends Component {
                   <Button kind="link" onClick={ () => ( this.handleInformationAdvice('list') ) }>
                     <FontAwesomeIcon className="mr-2" icon={ faCalendarAlt }/>Ver los turnos de hoy</Button> : null }
                 { this.state.renderList && 
-                  <Button kind="link" onClick={ this.handleCreate }>
+                  <Button kind="link" onClick={ this.handleCreate } disabled={ this.getCreateDisabled() }>
                     <FontAwesomeIcon className="mr-2" icon={ faCalendarAlt }/>Crear un turno para hoy</Button> }
               </LevelLeft>
             </Level>
