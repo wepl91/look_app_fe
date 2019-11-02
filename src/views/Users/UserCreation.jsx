@@ -10,6 +10,8 @@ import { UsersForm } from '../../components/Users';
 import { ReactComponent as SvgDraw } from '../../assets/undraw_short_bio_e5pg.svg';
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
+import { translate } from '../../lib/Translator';
+
 import {
   Columns,
   Column,
@@ -53,7 +55,7 @@ class UserCreation extends Component {
     }, () => {
       this.newUser.save().andThen((savedUser, responseError) => {
         if (responseError) {
-          toastManager.add("Ups! Parece que hubo un error al guardar!", {
+          toastManager.add(this.getText("Ups! Parece que hubo un error al guardar!"), {
             appearance: 'error',
             autoDismiss: true,
             pauseOnHover: false,
@@ -63,7 +65,7 @@ class UserCreation extends Component {
           });
         }
         else {
-          toastManager.add("El usuario ha sido creado exitosamente!", {
+          toastManager.add(this.getText("El usuario ha sido creado exitosamente!"), {
             appearance: 'success',
             autoDismiss: true,
             pauseOnHover: false,
@@ -105,6 +107,10 @@ class UserCreation extends Component {
     return !(this.state.validName && this.state.validLastName && this.state.validMail && this.newUser.roles.length > 0)
   }
 
+  getText( text ) {
+    return translate(text, this.props.store.ui.language)
+  }
+
   componentDidMount() {
     this.newUser = new User({}, this.props.store.users);
   }
@@ -114,7 +120,7 @@ class UserCreation extends Component {
       <React.Fragment>
         <Level>
           <LevelLeft>
-            <Title>Nuevo usuario</Title>
+            <Title>{this.getText("Nuevo usuario")}</Title>
           </LevelLeft>
         </Level>
         <hr />
@@ -123,13 +129,13 @@ class UserCreation extends Component {
             <UsersForm user={ this.newUser } onChange={this.handleChange} />
           </Column>
           <Column isSize={2}></Column>
-          <Column isSize={6} clasName="has-text-centeres">
+          <Column isSize={6} clasName="has-text-centered">
             <SvgDraw style={{ height: '75%', width: '75%' }} />
           </Column>
         </Columns>
         {this.state.isSaving ?
-          <Button kind="outline" className="ml-6" disabled pulse icon={faSpinner}>Creando usuario..</Button> :
-          <Button kind="outline" className="ml-6" onClick={this.handleSave} disabled={ this.getDisabled() }>Crear usuario</Button>}
+          <Button kind="outline" className="ml-6" disabled pulse icon={faSpinner}>{this.getText("Creando usuario..")}</Button> :
+          <Button kind="outline" className="ml-6" onClick={this.handleSave} disabled={ this.getDisabled() }>{this.getText("Crear usuario")}</Button>}
       </React.Fragment>)
   }
 }

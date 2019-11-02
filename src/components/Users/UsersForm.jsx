@@ -20,6 +20,8 @@ import {
 
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
+import { translate } from '../../lib/Translator';
+
 @observer
 class UsersForm extends Component {
   constructor(props) {
@@ -53,23 +55,27 @@ class UsersForm extends Component {
     return roles;
   }
 
+  getText( text ) {
+    return translate(text, this.props.store.ui.language)
+  }
+
   renderSkeleton() {
     return(
       <React.Fragment>
-        <Field label="Nombre y Apellido" labelNote="¿Cómo se llama el nuevo usuario?">
+        <Field label={this.getText("Nombre y Apellido")} labelNote={this.getText("¿Cómo se llama el nuevo usuario?")}>
           <Columns isGapless isMarginless>
             <Column>
-                <TextInput name="name" placeholder="Nombre.." disabled />
+                <TextInput name="name" placeholder={this.getText("Nombre..")} disabled />
             </Column>
             <Column>
-                <TextInput name="lastName" placeholder="Apellido.." disbaled />
+                <TextInput name="lastName" placeholder={this.getText("Apellido..")} disbaled />
             </Column>
           </Columns>
         </Field>
         <Field label="Email">
           <TextInput name="email" placeholder="user@gmail.com" disabled />
         </Field>
-        <Field label="Rol">
+        <Field label={this.getText("Rol")}>
         <Select 
           maxHeight="110px"
           name="role"
@@ -88,13 +94,13 @@ class UsersForm extends Component {
     const { user } = this.props;
     return(
       <React.Fragment>
-        <Field label="Nombre y Apellido" labelNote="¿Cómo se llama el nuevo usuario?">
+        <Field label={this.getText("Nombre y Apellido")} labelNote={this.getText("¿Cómo se llama el nuevo usuario?")}>
           <Columns isGapless isMarginless>
             <Column>
-                <TextInput value={ user && user.cookedName } validate={ (value) => (nameRegex.test(value)) } name="name" placeholder="Nombre" onChange={ this.handleChange } />
+                <TextInput value={ user && user.cookedName } validate={ (value) => (nameRegex.test(value)) } name="name" placeholder={this.getText("Nombre")} onChange={ this.handleChange } />
             </Column>
             <Column>
-                <TextInput value={ user && user.cookedLastname } validate={ (value) => (nameRegex.test(value)) } name="lastName" placeholder="Apellido" onChange={ this.handleChange } />
+                <TextInput value={ user && user.cookedLastname } validate={ (value) => (nameRegex.test(value)) } name="lastName" placeholder={this.getText("Apellido")} onChange={ this.handleChange } />
             </Column>
           </Columns>
         </Field>
