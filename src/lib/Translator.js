@@ -99,6 +99,10 @@ export const translate = (str, lang) => {
     'Profesionales': 'Professionals',
     'Usuarios': 'Users',
     'Nuevo usuario': 'New user',
+    'Contraseña': 'Password',
+    'Confirmación de contraseña': 'Password confirmation',
+    'Rol': 'Role',
+    '¿Cómo se llama el nuevo usuario?': 'What is the name of the new user?'
 
 
   }

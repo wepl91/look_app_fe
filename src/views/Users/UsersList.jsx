@@ -28,6 +28,8 @@ import { UsersEditModal } from '../../components/Users';
 
 import { ConfirmationModal } from '../../components/ConfirmationModal';
 
+import { translate } from '../../lib/Translator';
+
 @observer
 class UsersList extends Component {
   constructor(props) {
@@ -124,13 +126,13 @@ class UsersList extends Component {
         size: 'is-1',
       },
       {
-        label: 'Nombre',
-        content: (data) => (<Text>{ startCase( data.fullName) || '- sin nombre -' }</Text>),
+        label: this.getText('Nombre'),
+        content: (data) => (<Text>{ startCase( data.cookedFullName) || this.getText('- sin nombre -') }</Text>),
         size: 'is-2'
       },
       {
         label: 'Mail',
-        content: (data) => (<Text>{ data.email || '- sin email -' }</Text>),
+        content: (data) => (<Text>{ data.email || this.getText('- sin email -') }</Text>),
         size: 'is-2'
       },
       {
@@ -170,6 +172,10 @@ class UsersList extends Component {
     ]
 
     return <Table columns={ columns } data={ data } striped={ false }/>
+  }
+
+  getText( text ) {
+    return translate(text, this.props.store.ui.language)
   }
 
   renderModal() {
