@@ -34,7 +34,6 @@ class ProfessionalSuggest extends Component {
     this.professionals = props.professionals;
     this.suggest = props.professionals;
     this.value = props.value ? props.value.fullName : '';
-
     this.handleInput = this.handleInput.bind(this);
   }
 

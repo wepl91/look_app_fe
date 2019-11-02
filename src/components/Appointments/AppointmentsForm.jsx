@@ -179,7 +179,6 @@ class AppointmentsForm extends Component {
   
   renderServices() {
     // El randomizer lo que hace es cambiar la key para que React vea que ocurrió un cambio en el checkbox. No usé Math.Random() por que rompía el Checkbox
- 
     const { professional } = this.state;
     const services = professional && professional != 'null' ?  professional.services : this.state.branch && this.state.branch.allServices;
     let randomizer = professional && professional != 'null' ?  this.hashString(professional.name) : 1000;
@@ -189,17 +188,21 @@ class AppointmentsForm extends Component {
     return(
       <Field className="ml-5" label="¿Cuál de nuestros servicios requerís?" labelNote="Seleccioná un servicio">
         { services.length > 0 ? 
-          services.map( service => ( <Checkbox key={ service.id + randomizer } className="mt-2" checked={ this.isServiceInAppointment(service.id) } onCheck={() => this.handleServices(service.id, service.price)}>
-                                      {`${ startCase(service.name) } - $${ service.price }`}
-                                    </Checkbox> )) : 
+            services.map( service => ( 
+              <Checkbox 
+                key={ service.id + randomizer } 
+                className="mt-2" checked={ this.isServiceInAppointment(service.id) } 
+                onCheck={() => this.handleServices(service.id, service.price)}>
+                {`${ startCase(service.name) } - $${ service.price }`}
+              </Checkbox> )) : 
           <Text size="md" weight="medium" className="ml-2 mt-1">No hay servicios existentes para ofrecer.</Text> }
         <Text className="has-text-centered ml-2" weight="medium" color="primaryDark"><hr id="subtotalLine"/>Subtotal: ${this.state.subtotal}</Text>
-      </Field> )
-     
+      </Field> )   
   }
 
   renderProfessionals() {
     const isDisabled = !this.state.branch;
+    debugger
     return(
       <Field className="ml-5" label="¿Por quién querés ser atendido?" labelNote="Seleccioná un profesional">
           <ProfessionalSuggest 
@@ -211,30 +214,66 @@ class AppointmentsForm extends Component {
       </Field>)
   }
 
+  renderClients() {
+    const { appointment, edit } = this.props;
+    return(
+      <Field className="ml-5" label="¿Quién quiere ser atendido?" labelNote="Seleccioná un cliente">
+        <ClientSuggest 
+          disabled={ edit } 
+          value={ appointment ? appointment.client : null } 
+          onChange={ this.handleClient } 
+          clients={ this.state.clients && this.state.clients.toArray() }/>
+      </Field>);
+  }
+
+  renderBranches() {
+    return(
+      <Field className="ml-5" label="¿A cual de nuestras sucursales querés venir?" labelNote="Seleccioná una sucursal">
+        <Select
+          key={ this.state.branches }
+          placeholder="Sucursales" 
+          borderless 
+          icon={ faChevronDown } 
+          onChange={ this.handleBranch }
+          value={ this.state.branch ? this.state.branch.id : null }
+          options={ this.getBranchesList() } />
+      </Field>)
+  }
+
+  renderDatePicker() {
+    if (!this.props.withDate) return null;
+    return(
+      <Field className="ml-5" label="¿Que día querés venir?" labelNote="Seleccioná ua fecha">
+        <DateTimePicker 
+          className="is-fullwidth"
+          key={ this.state.date } 
+          value={ this.state.date } 
+          onChange={ this.handleDate }/>
+        { this.state.date.isoWeekday() == 7 && this.renderAdvise() }
+      </Field>)
+  }
+
+  renderHourPicker() {
+    const { appointment } = this.props;
+    return(
+      <Field className="ml-5" label="¿A que hora querés venir?" labelNote="Seleccioná un horario">
+        <Select 
+          key={ this.state }
+          maxHeight="120px" 
+          placeholder="Horarios" 
+          borderless 
+          icon={ faChevronDown }
+          onChange={ this.handleHour } 
+          value={ appointment && appointment.beginningTime }
+          options={ horarios() }/>
+      </Field>)
+  }
+
   renderAdvise() {
     return(
       <Panel className="has-text-centered mr-3 mt-1" invert color="error" style={{ padding: '2px' }}>
         <Text size="sm" weight="medium">La fecha seleccionada es un día no laboral.</Text>
       </Panel> )
-  }
-
-  renderClientsList() {
-    const { clients } = this.state;
-    const ret = [];
-
-    ret.push({
-      key: '- Cliente no registrado -',
-      value: 'null',
-    });
-
-    clients.toArray().forEach( client => {
-      ret.push({
-        key: client.fullName,
-        value: client.id
-      });
-    });
-
-    return ret;
   }
 
   renderSkeleton() {
@@ -293,45 +332,15 @@ class AppointmentsForm extends Component {
     if (!isBranchesLoaded || !clientsLoaded) {
       return this.renderSkeleton();
     }
-    const { appointment } = this.props;
     
     return(
       <React.Fragment>
-        { this.props.withDate &&
-          <Field className="ml-5" label="¿Que día querés venir?" labelNote="Seleccioná ua fecha">
-            <DateTimePicker 
-              className="is-fullwidth"
-              key={ this.state.date } 
-              value={ this.state.date } 
-              onChange={ this.handleDate }/>
-            { this.state.date.isoWeekday() == 7 && this.renderAdvise() }
-          </Field> }
-        <Field className="ml-5" label="¿Quién quiere ser atendido?" labelNote="Seleccioná un cliente">
-          <ClientSuggest onChange={ this.handleClient } clients={ this.state.clients && this.state.clients.toArray() }/>
-        </Field>
-        <Field className="ml-5" label="¿A cual de nuestras sucursales querés venir?" labelNote="Seleccioná una sucursal">
-          <Select
-            key={ this.state.branches }
-            placeholder="Sucursales" 
-            borderless 
-            icon={ faChevronDown } 
-            onChange={ this.handleBranch }
-            value={ this.state.branch ? this.state.branch.id : null }
-            options={ this.getBranchesList() } />
-        </Field>
+        { this.renderDatePicker()    }
+        { this.renderClients()       }
+        { this.renderBranches()      }
         { this.renderProfessionals() }
-        { this.renderServices() } 
-        <Field className="ml-5" label="¿A que hora querés venir?" labelNote="Seleccioná un horario">
-          <Select 
-            key={ this.state }
-            maxHeight="120px" 
-            placeholder="Horarios" 
-            borderless 
-            icon={ faChevronDown }
-            onChange={ this.handleHour } 
-            value={ appointment && appointment.beginningTime }
-            options={ horarios() }/>
-        </Field>
+        { this.renderServices()      } 
+        { this.renderHourPicker()    }
       </React.Fragment> )
   }
 }

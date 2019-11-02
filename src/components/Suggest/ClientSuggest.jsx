@@ -7,13 +7,17 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 import {
   TextInput,
-  Panel,
   Dropdown,
   DropdownToggle,
   DropdownPanel,
   Text,
 } from 'shipnow-mercurio';
 
+import { observable } from 'mobx';
+
+import { observer } from 'mobx-react';
+
+@observer
 class ClientSuggest extends Component {
   clients
   constructor(props) {
@@ -21,7 +25,7 @@ class ClientSuggest extends Component {
 
     this.state = {
       suggest: props.clients,
-      value: '',
+      value: props.value ? props.value.fullName : '',
       showPanel: false,
     }
 
@@ -76,12 +80,14 @@ ClientSuggest.PropTypes = {
   clients: PropTypes.array,
   disabled: PropTypes.bool,
   onChange: PropTypes.func,
+  value: PropTypes.object,
 }
 
 ClientSuggest.defaultProps = {
   clients: [],
   disabled: false,
   onChange: null,
+  value: null
 }
 
 export default ClientSuggest

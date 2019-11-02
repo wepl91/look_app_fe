@@ -8,6 +8,9 @@ import {
 import moment from 'moment';
 import startCase from 'lodash/startCase';
 
+import { Service, User, Professional, Client, Branch } from '../models';
+import { ServicesStore, UsersStore, ProfessionalsStore, ClientsStore, BranchesStore } from '../stores';
+
 export default class Appointment extends Model {
   constructor( attributes, store ) {
 
@@ -30,6 +33,27 @@ export default class Appointment extends Model {
   afterSetData() {
     if (this.dayHour) {
       this.dayHour = moment(this.dayHour);
+    }
+    if (this.client) {
+      this.client = new Client(this.client, ClientsStore);
+    }
+    if (this.professional) {
+      this.professional = new Professional(this.professional, ProfessionalsStore);
+    }
+    if (this.users) {
+      this.user = new User(this.user, UsersStore);
+    }
+    if (this.services) {
+      const modeledServices = [];
+      this.services.forEach( service => {
+        modeledServices.push(new Service(service, ServicesStore));
+      });
+      this.services = modeledServices;
+    }
+    if (this.branch) {
+      this.appStore.stores.get('branches').get(this.branch.id).andThen( branch => {
+        this.branch = branch;
+      })
     }
   }
 
