@@ -149,7 +149,6 @@ class PaymentsModal extends Component {
             <Level>
               <LevelLeft>
                 <Title>{ `${ moment(date).format('LL') }` }</Title>
-                <Text>{ `${ this.getText('Total a abonar: $') } ${appointment.totalPrice}` }</Text>
               </LevelLeft>
               <LevelRight>
               <Button icon="plus" name="cancelled" kind="link" size="xl" onClick={() => this.handlePay('cancelled') }>
@@ -161,6 +160,7 @@ class PaymentsModal extends Component {
           <ModalContent>
               <Columns>
                 <Column isSize={ 5 }>
+                  <Title size="md">{ `${ this.getText('Total a abonar: $') } ${appointment.totalPrice}` }</Title>
                   <PaymentForm totalAmount={ appointment.totalPrice } clientPoints={ appointment.clientPoints } onChange={ this.handlePaymentData }></PaymentForm>
                 </Column>
                 <Column className="has-text-centered" isSize={ 7 }>
@@ -171,7 +171,7 @@ class PaymentsModal extends Component {
           <ModalFooter>
             <Level>
               <LevelLeft>
-                  <Button kind="outline" name="paid" onClick={ this.handleConfirm } disabled={ this.getDisabled() }>Pagar</Button>
+                  <Button kind="outline" name="paid" onClick={ this.handleConfirm } disabled={ this.getDisabled() }>Efectuar pago</Button>
               </LevelLeft>
             </Level>
           </ModalFooter>

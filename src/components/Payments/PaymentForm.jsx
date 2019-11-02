@@ -21,6 +21,11 @@ import { translate } from '../../lib/Translator';
 
 import { priceRegex } from '../../lib/Regex'
 
+import { 
+  faCoins,
+  faMoneyBill
+} from "@fortawesome/free-solid-svg-icons";
+
 @observer
 class PaymentForm extends Component {
   constructor(props) {
@@ -81,8 +86,8 @@ class PaymentForm extends Component {
   render() {
     return(
       <React.Fragment>
-        <Field label={ this.getText('Tipo de pago') } labelNote={ this.getText('¿De qué manera desea realizar el pago?') }>
-          <Text className="ml-1" size="md" weight="medium">
+        <Field label={ this.getText('Tipo de pago') } labelNote={ this.getText('¿De qué manera desea realizar el pago?') } size="lg">
+          <Text className="ml-1 mt-2" weight="medium" size="lg">
               <input 
                 className="ml-1 mr-1" 
                 type="radio" 
@@ -91,7 +96,7 @@ class PaymentForm extends Component {
                 checked={ this.state.paymentType == 'loaned'} />
               { this.getText('Fiado') }
           </Text>
-          <Text className="ml-1" size="md" weight="medium">
+          <Text className="ml-1 mt-2" size="lg" weight="medium">
               <input 
                 className="ml-1 mr-1" 
                 type="radio" 
@@ -100,7 +105,7 @@ class PaymentForm extends Component {
                 checked={ this.state.paymentType == 'cash'} />
               { this.getText('Efectivo') }
           </Text>
-          <Text className="ml-1" size="md" weight="medium">
+          <Text className="ml-1 mt-2" size="lg" weight="medium">
               <input 
                 className="ml-1 mr-1" 
                 type="radio" 
@@ -109,7 +114,7 @@ class PaymentForm extends Component {
                 checked={ this.state.paymentType == 'points'} />
               { this.getText('Puntos') }
           </Text>
-          <Text className="ml-1" size="md" weight="medium">
+          <Text className="ml-1 mt-2" size="lg" weight="medium">
               <input 
                 className="ml-1 mr-1" 
                 type="radio" 
@@ -120,26 +125,25 @@ class PaymentForm extends Component {
           </Text>
         </Field>
         {this.state.paymentType != '' && this.state.paymentType != 'loaned' &&
-        <Field label={ this.getText('Ingrese los montos') } labelNote={ this.getText('¿Cuánto va abonar?') }>
+        <Field className="mt-4" label={ this.getText('Ingrese los montos') } labelNote={ this.getText('¿Cuánto va abonar?') } size="lg">
 
          {this.state.paymentType == 'cash' && 
-         <TextInput validate={ (value) => (this.validateCashPayment(value)) } name="cash" onChange={ this.handleChange }/>}
+         <TextInput icon={ faMoneyBill } validate={ (value) => (this.validateCashPayment(value)) } name="cash" onChange={ this.handleChange }/>}
 
          {this.state.paymentType == 'points' && 
-         <TextInput validate={ (value) => (this.validatePointsPayment(value)) } name="points" onChange={ this.handleChange }/>}
+         <TextInput icon={ faCoins } validate={ (value) => (this.validatePointsPayment(value)) } name="points" onChange={ this.handleChange }/>}
          
          {this.state.paymentType == 'cashAndPoints' && 
           <React.Fragment>
             <Columns>
               <Column isSize={ 6 }>
-                <TextInput validate={ () => this.state.validSplitPayment } name="cashHalf" onChange={ this.handleChange }/>
+                <TextInput className="mt-1" icon={ faMoneyBill } validate={ () => this.state.validSplitPayment } name="cashHalf" onChange={ this.handleChange }/>
               </Column>
               <Column isSize={ 6 }>
-                <TextInput validate={ () => this.state.validSplitPayment } name="pointsHalf" onChange={ this.handleChange }/>
+                <TextInput className="mt-1" icon={ faCoins } validate={ () => this.state.validSplitPayment } name="pointsHalf" onChange={ this.handleChange }/>
               </Column>
             </Columns>
           </React.Fragment>}
-
         </Field>}
       </React.Fragment> )
   }

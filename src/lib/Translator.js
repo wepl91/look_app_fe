@@ -121,7 +121,7 @@ export const translate = (str, lang) => {
     'Ups! Parece que hubo un error al desactivar el usuario!': 'Oops! an error occurred while deactivating the user',
     '¡El usuario ha sido marcado como inactivo!': 'The user has been marked as inactive!',
     'Cargando los usuarios..': 'Loading users..',
-    'Lista de Usuarios': 'User List'
+    'Lista de Usuarios': 'User List',
     'Contraseña': 'Password',
     'Confirmación de contraseña': 'Password confirmation',
     'Rol': 'Role',
