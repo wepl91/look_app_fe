@@ -12,12 +12,15 @@ import {
   ModalFooter,
   Title,
   Button,
+  Text
 } from 'shipnow-mercurio';
 
 import {
   Level,
   LevelLeft,
   LevelRight,
+  Columns,
+  Column
 } from 'bloomer';
 
 import { 
@@ -32,14 +35,25 @@ import { withStore } from '../../hocs';
 
 import { ConfirmationModal } from '../ConfirmationModal';
 
+import { observer } from 'mobx-react';
+
+import { translate } from '../../lib/Translator';
+
+import { ReactComponent as SvgDraw } from '../../assets/undraw_Savings_dwkw.svg';
+
+@observer
 class PaymentsModal extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      buttonDisabled: true,
       confirmation: false,
       appointment: this.props.appointment,
+      paymentType: '',
+      cash: 0,
+      points: 0,
+      validCash: false,
+      validPoints: false,
       confirmationData: {
         accept: null,
         cancel: null,
@@ -51,13 +65,32 @@ class PaymentsModal extends Component {
     this.handleConfirm         = this.handleConfirm.bind(this);
     this.handleCancelConfirm = this.handleCancelConfirm.bind(this);
     this.handlePay         = this.handlePay.bind(this);
+    this.handlePaymentData         = this.handlePaymentData.bind(this);
   }
 
   handlePay( name ) {
     if( name=='cancelled' ){
       this.props.onPay && this.props.onPay('cancelled')
     }else{
-      this.state.appointment.pay().then( response =>{ this.props.onPay && this.props.onPay('paid', response) });
+      //realizar el pago correspondiente y mandar la response de vuelta al appointment modal
+      // ver el state: si el paymenttype es cash, hacerlo en efectivo. si es points en puntos. si es cashAndPoints hacerlo con los dos, si es fiado hacer la request correspondiente
+      // fijarse ademas si lo que estoy enviando suma el total del pago a realizar o si es parcial
+      // this.state.appointment.pay().then( response =>{ this.props.onPay && this.props.onPay('paid', response) });
+    }
+  }
+
+  handlePaymentData(sender, value, name, valid) {
+    if(name == 'cash'){
+      valid.type == 'success' ? this.setState({cash: value, paymentType: 'cash', validCash: true}) : this.setState({ validCash: false })
+    }
+    if(name == 'points'){
+      valid.type == 'success' ? this.setState({points: value, paymentType: 'points', validPoints: true}) : this.setState({ validPoints: false })
+    }
+    if(name == 'cashHalf'){
+      valid.type == 'success' ? this.setState({cash: value, paymentType: 'cashAndPoints', validCash: true}) : this.setState({ validCash: false })
+    }
+    if(name == 'pointsHalf'){
+      valid.type == 'success' ? this.setState({points: value, paymentType: 'cashAndPoints', validPoints: true}) : this.setState({ validPoints: false })
     }
   }
 
@@ -91,12 +124,24 @@ class PaymentsModal extends Component {
   }
 
   getDisabled() {
-    // return this.state.appointment && !(this.state.appointment.services.length > 0 && !this.state.buttonDisabled)
-    return false
+    if(this.state.paymentType == 'cash'){
+      return !this.state.validCash
+    }
+    if(this.state.paymentType == 'points'){
+      return !this.state.validPoints
+    }
+    if(this.state.paymentType == 'cashAndPoints'){
+      return !(this.state.validCash && this.state.validPoints)
+    }
+  }
+
+  getText( text ) {
+    return translate(text, this.props.store.ui.language)
   }
 
   render() {
     const { date } = this.props
+    const { appointment } = this.state
     return(
       <React.Fragment>
         <Modal width="70%" height="90%" show>
@@ -104,6 +149,7 @@ class PaymentsModal extends Component {
             <Level>
               <LevelLeft>
                 <Title>{ `${ moment(date).format('LL') }` }</Title>
+                <Text>{ `${ this.getText('Total a abonar: $') } ${appointment.totalPrice}` }</Text>
               </LevelLeft>
               <LevelRight>
               <Button icon="plus" name="cancelled" kind="link" size="xl" onClick={() => this.handlePay('cancelled') }>
@@ -113,7 +159,14 @@ class PaymentsModal extends Component {
               </Level>
           </ModalHeader>
           <ModalContent>
-              <PaymentForm></PaymentForm>
+              <Columns>
+                <Column isSize={ 5 }>
+                  <PaymentForm totalAmount={ appointment.totalPrice } clientPoints={ appointment.clientPoints } onChange={ this.handlePaymentData }></PaymentForm>
+                </Column>
+                <Column className="has-text-centered" isSize={ 7 }>
+                  <SvgDraw style={{ height: '450px', width: '450px' }}/>
+                </Column>
+              </Columns>
             </ModalContent>
           <ModalFooter>
             <Level>

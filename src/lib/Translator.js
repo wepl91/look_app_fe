@@ -99,11 +99,33 @@ export const translate = (str, lang) => {
     'Profesionales': 'Professionals',
     'Usuarios': 'Users',
     'Nuevo usuario': 'New user',
+    'Rol': 'Role',
+    'Administrador':'Administrator',
+    'Contador':'Accountant',
+    '¿Cómo se llama el nuevo usuario?':'What\'s the new user\'s name?',
+    'Crear usuario': 'Create user',
+    'El usuario ha sido creado exitosamente!': 'The user has been created successfully!',
+    'Cargando..': 'Loading..',
+    'Editar usuario': 'Edit user',
+    'Guardando': 'Saving',
+    'Ups! Parece que hubo un error al guardar!': 'Oops! an error occurred while saving',
+    'Creando usuario..': 'Creating user..',
+    'El usuario ha sido modificado exitosamente!': 'The user has been modified successfully!',
+    'Modificar usuario': 'Modify user',
+    'Editar perfil': 'Edit profile',
+    'Cerrar sesión': 'Logout',
+    'Nombre..': 'Name..',
+    'Apellido..': 'Last Name..',
+    'Ups! Parece que hubo un error al activar el usuario!"': 'Oops! an error occurred while activating the user',
+    '¡El usuario ha sido marcado como activo!': 'The user has been marked as active!',
+    'Ups! Parece que hubo un error al desactivar el usuario!': 'Oops! an error occurred while deactivating the user',
+    '¡El usuario ha sido marcado como inactivo!': 'The user has been marked as inactive!',
+    'Cargando los usuarios..': 'Loading users..',
+    'Lista de Usuarios': 'User List'
     'Contraseña': 'Password',
     'Confirmación de contraseña': 'Password confirmation',
     'Rol': 'Role',
     '¿Cómo se llama el nuevo usuario?': 'What is the name of the new user?'
-
 
   }
 

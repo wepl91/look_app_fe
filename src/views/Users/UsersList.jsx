@@ -51,14 +51,14 @@ class UsersList extends Component {
     const { toastManager } = this.props;
     user.activate().andThen( (savedUser, responseError) => {
       if (responseError) {
-        toastManager.add("Ups! Parece que hubo un error al activar el usuario!", {
+        toastManager.add(this.getText("Ups! Parece que hubo un error al activar el usuario!"), {
           appearance: 'error',
           autoDismiss: true,
           pauseOnHover: false,
         });
       }
       else {
-        let text = <Text color="warning" weight="medium" className="mt-1 mb-1">¡El usuario ha sido marcado como activo!</Text>
+        let text = <Text color="warning" weight="medium" className="mt-1 mb-1">{ this.getText("¡El usuario ha sido marcado como activo!") }</Text>
         toastManager.add(text, {
           appearance: 'warning',
           autoDismiss: true,
@@ -72,14 +72,14 @@ class UsersList extends Component {
     const { toastManager } = this.props;
     user.deactivate().andThen( (savedUser, responseError) => {
       if (responseError) {
-        toastManager.add("Ups! Parece que hubo un error al desactivar el usuario!", {
+        toastManager.add(this.getText("Ups! Parece que hubo un error al desactivar el usuario!"), {
           appearance: 'error',
           autoDismiss: true,
           pauseOnHover: false,
         });
       }
       else {
-        let text = <Text color="warning" weight="medium" className="mt-1 mb-1">¡El usuario ha sido marcado como inactivo!</Text>
+        let text = <Text color="warning" weight="medium" className="mt-1 mb-1">{ this.getText("¡El usuario ha sido marcado como inactivo!") }</Text>
         toastManager.add(text, {
           appearance: 'warning',
           autoDismiss: true,
@@ -116,6 +116,10 @@ class UsersList extends Component {
     })
   }
 
+  getText( text ) {
+    return translate(text, this.props.store.ui.language)
+  }
+
   renderTable() {
     const data = this.state.users.toArray();
 
@@ -127,11 +131,11 @@ class UsersList extends Component {
       },
       {
         label: this.getText('Nombre'),
-        content: (data) => (<Text>{ startCase( data.cookedFullName) || this.getText('- sin nombre -') }</Text>),
+        content: (data) => (<Text>{ startCase( data.fullName) || this.getText('- sin nombre -') }</Text>),
         size: 'is-2'
       },
       {
-        label: 'Mail',
+        label: this.getText('Mail'),
         content: (data) => (<Text>{ data.email || this.getText('- sin email -') }</Text>),
         size: 'is-2'
       },
@@ -142,8 +146,8 @@ class UsersList extends Component {
         align: 'left'
       },
       {
-        label: 'Rol',
-        content: (data) => (<Text>{ `${ data.userRole }` }</Text>),
+        label: this.getText('Rol'),
+        content: (data) => (<Text>{ `${ this.getText(data.userRole) }` }</Text>),
         size: 'is-2',
       },{
         label: '',
@@ -152,7 +156,7 @@ class UsersList extends Component {
         align: 'left'
       },
       {
-        label: 'Activo',
+        label: this.getText('Activo'),
         content: (data) => (<Toggle checked={ data.isActive } checkedColor="success" unCheckedColor="delete" onChange={ () => (data.isActive ? this.handleInactivate(data) : this.handleActivate(data)) }/>),
         size: 'is-1',
         align: 'left'
@@ -184,13 +188,13 @@ class UsersList extends Component {
 
   render() {
     if (!this.state.users || !this.state.users.isOk()) {
-      return <Loader icon={ faSpinner } label="Cargando los usuarios.." className="fullscreen" />
+      return <Loader icon={ faSpinner } label={ this.getText("Cargando los usuarios..") } className="fullscreen" />
     }
     return(
       <React.Fragment>
         <Level>
           <LevelLeft>
-            <Title>Lista de Usuarios</Title>
+            <Title>{ this.getText("Lista de Usuarios") }</Title>
           </LevelLeft>
         </Level>
         <hr/>

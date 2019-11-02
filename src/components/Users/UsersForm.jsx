@@ -20,7 +20,7 @@ import {
 
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
-import { translate } from "../../lib/Translator";
+import { translate } from '../../lib/Translator';
 
 @observer
 class UsersForm extends Component {
@@ -64,38 +64,42 @@ class UsersForm extends Component {
     const roles = [];
     this.state.roles.toArray().forEach(rol => {
       roles.push({
-        key: rol.name,
+        key: this.getText(rol.name),
         value: rol.id
       });
     });
     return roles;
   }
 
+  getText( text ) {
+    return translate(text, this.props.store.ui.language)
+  }
+
   renderSkeleton() {
     const { withPassword } = this.props;
     return(
       <React.Fragment>
-        <Field label="Nombre y Apellido" labelNote="¿Cómo se llama el nuevo usuario?">
+        <Field label={this.getText("Nombre y Apellido")} labelNote={this.getText("¿Cómo se llama el nuevo usuario?")}>
           <Columns isGapless isMarginless>
             <Column>
-                <TextInput name="name" placeholder="Nombre.." disabled />
+                <TextInput name="name" placeholder={this.getText("Nombre..")} disabled />
             </Column>
             <Column>
-                <TextInput name="lastName" placeholder="Apellido.." disbaled />
+                <TextInput name="lastName" placeholder={this.getText("Apellido..")} disbaled />
             </Column>
           </Columns>
         </Field>
         <Field label="Email">
           <TextInput name="email" placeholder="user@gmail.com" disabled />
         </Field>
-        <Field label="Rol">
-          <Select 
-            maxHeight="110px"
-            name="role"
-            placeholder="Roles" 
-            borderless 
-            icon={ faChevronDown } 
-            disabled />
+        <Field label={this.getText("Rol")}>
+        <Select 
+          maxHeight="110px"
+          name="role"
+          placeholder="Roles" 
+          borderless 
+          icon={ faChevronDown } 
+          disabled />
         </Field>
         { withPassword &&
           <React.Fragment>
@@ -120,29 +124,29 @@ class UsersForm extends Component {
     const { user, withPassword } = this.props;
     return(
       <React.Fragment>
-        <Field label={ this.getText('Nombre y Apellido') } labelNote={ this.getText('¿Cómo se llama el nuevo usuario?') }>
+        <Field label={this.getText("Nombre y Apellido")} labelNote={this.getText("¿Cómo se llama el nuevo usuario?")}>
           <Columns isGapless isMarginless>
             <Column>
-                <TextInput value={ user && user.cookedName } validate={ (value) => (nameRegex.test(value)) } name="name" placeholder="Nombre" onChange={ this.handleChange } />
+                <TextInput value={ user && user.cookedName } validate={ (value) => (nameRegex.test(value)) } name="name" placeholder={this.getText("Nombre")} onChange={ this.handleChange } />
             </Column>
             <Column>
-                <TextInput value={ user && user.cookedLastName } validate={ (value) => (nameRegex.test(value)) } name="lastName" placeholder="Apellido" onChange={ this.handleChange } />
+                <TextInput value={ user && user.cookedLastname } validate={ (value) => (nameRegex.test(value)) } name="lastName" placeholder={this.getText("Apellido")} onChange={ this.handleChange } />
             </Column>
           </Columns>
         </Field>
         <Field label={ this.getText('Email') }>
           <TextInput value={ user && user.email } name="email" validate={ (value) => (mailRegex.test(value)) } placeholder="user@gmail.com" onChange={ this.handleChange } />
         </Field>
-        <Field label={ this.getText('Rol') }>
-          <Select 
-            key={ this.state.roles } 
-            value={ user && user.roleID }
-            name="role"
-            placeholder="Roles" 
-            borderless 
-            icon={ faChevronDown } 
-            options={ this.getRolesList() }
-            onChange={ this.handleChange } />
+        <Field label={this.getText("Rol")}>
+        <Select 
+          key={ this.state.roles } 
+          value={ user && user.roleID }
+          name="role"
+          placeholder="Roles" 
+          borderless 
+          icon={ faChevronDown } 
+          options={ this.getRolesList() }
+          onChange={ this.handleChange } />
         </Field>
         { withPassword &&
           <React.Fragment>

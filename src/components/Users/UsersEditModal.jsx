@@ -9,6 +9,9 @@ import { observer } from 'mobx-react';
 
 import { faTimes, faSpinner } from "@fortawesome/free-solid-svg-icons";
 
+import { translate } from '../../lib/Translator';
+
+
 import {
   Modal,
   ModalContent,
@@ -59,7 +62,7 @@ class UsersEditModal extends Component {
     }, () => {
       user.save().andThen((savedUser, responseError) => {
         if (responseError) {
-          toastManager.add("Ups! Parece que hubo un error al guardar!", {
+          toastManager.add(this.getText("Ups! Parece que hubo un error al guardar!"), {
             appearance: 'error',
             autoDismiss: true,
             pauseOnHover: false,
@@ -69,7 +72,7 @@ class UsersEditModal extends Component {
           });
         }
         else {
-          toastManager.add("El usuario ha sido modificado exitosamente!", {
+          toastManager.add(this.getText("El usuario ha sido modificado exitosamente!"), {
             appearance: 'success',
             autoDismiss: true,
             pauseOnHover: false,
@@ -118,6 +121,10 @@ class UsersEditModal extends Component {
       return this.modifiedUser;
     }
   }
+
+  getText( text ) {
+    return translate(text, this.props.store.ui.language)
+  }
   
   render() {
     const user = this.getUser()
@@ -126,7 +133,7 @@ class UsersEditModal extends Component {
         <ModalHeader>
           <Level>
             <LevelLeft>
-              <Title>Modificar usuario</Title>
+              <Title>{this.getText("Modificar usuario")}</Title>
             </LevelLeft>
             <LevelRight>
               <Button kind="link" icon={ faTimes } onClick={ this.handleClose } />
@@ -141,9 +148,9 @@ class UsersEditModal extends Component {
             <LevelLeft></LevelLeft>
             <LevelRight>
               { this.state.isSaving ? 
-                <Button kind="outline" disabled pulse icon={ faSpinner }>Guardando..</Button> :
-                <Button kind="outline" onClick={ this.handleSave } disabled={ this.getDisabled() }>Guardar</Button> }
-              <Button kind="link" onClick={ this.handleClose }>Cancelar</Button>
+                <Button kind="outline" disabled pulse icon={ faSpinner }>{this.getText("Guardando..")}</Button> :
+                <Button kind="outline" onClick={ this.handleSave } disabled={ this.getDisabled() }>{this.getText("Guardar")}</Button> }
+              <Button kind="link" onClick={ this.handleClose }>{this.getText("Cancelar")}</Button>
             </LevelRight>
           </Level>
         </ModalFooter>
