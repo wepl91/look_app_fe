@@ -145,18 +145,26 @@ class PaymentForm extends Component {
          {this.state.paymentType == 'points' && 
          <React.Fragment>
           <TextInput icon={ faCoins } name="points" validate={ (value) => this.validatePointsPayment(value) } onChange={ this.handleChange }/>
-          <Text>{ `${ this.getText('Equivale a: $') } ${this.getConvertedPoints(this.state.points)}` }</Text>
+          <Text className="has-text-centered" >{ `${ this.getText('(Equivale a: $') } ${this.getConvertedPoints(this.state.points)})` }</Text>
          </React.Fragment>}
          
          {this.state.paymentType == 'cashAndPoints' && 
           <React.Fragment>
-            <Columns>
-              <Column isSize={ 6 }>
-                <TextInput className="mt-1" icon={ faMoneyBill } name="cashHalf" onChange={ this.handleChange }/>
+            <Columns isGapless isMarginless isVCentered>
+              <Column isSize={ 5 }>
+                <TextInput className="is-fullwidth" icon={ faMoneyBill } name="cashHalf" onChange={ this.handleChange }/>
               </Column>
-              <Column isSize={ 6 }>
-                <TextInput className="mt-1" icon={ faCoins } name="pointsHalf" onChange={ this.handleChange }/>
-                <Text>{ `${ this.getText('Equivale a: $') } ${this.getConvertedPoints(this.state.pointsHalf)}` }</Text>
+              <Column isSize={ 1 }>
+                <Text className="has-text-centered">+</Text>
+              </Column>
+              <Column isSize={ 5 }>
+              <React.Fragment>
+                <TextInput className="mt-2 is-fullwidth" icon={ faCoins } name="pointsHalf" onChange={ this.handleChange }/>
+                <Text className="has-text-centered" >{ `${ this.getText('(Equivale a: $') } ${this.getConvertedPoints(this.state.pointsHalf)})` }</Text>
+              </React.Fragment>
+              </Column>
+              <Column>
+                <Text>{ ` =  $ ${this.getConvertedPoints(this.state.pointsHalf) + this.state.cashHalf*1.0}` }</Text>
               </Column>
             </Columns>
           </React.Fragment>}

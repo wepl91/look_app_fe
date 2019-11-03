@@ -178,8 +178,7 @@ class PaymentsModal extends Component {
               <Columns>
                 <Column isSize={ 5 }>
                   <Title size="md">{ `${ this.getText('Total a abonar: $') } ${appointment.totalPrice}` }</Title>
-                  <Title size="md">{ `${ this.getText('Puntos disponibles: ') } ${appointment.clientPoints}  ${ ' ($ '} ${ this.props.store.ui.getChange('changePurchase').convertPoints(appointment.clientPoints) }${ ')'}`}</Title>
-                  {/* <Text>{this.props.store.ui.configs}</Text> */}
+                  <Title className="mt-1" size="md">{ `${appointment.clientPoints}  ${ this.getText('puntos disponibles ') } ${ ' ($ '} ${ this.props.store.ui.getChange('changePurchase').convertPoints(appointment.clientPoints) }${ ')'}`}</Title>
                   <PaymentForm totalAmount={ appointment.totalPrice } clientPoints={ appointment.clientPoints } onChange={ this.handlePaymentData }></PaymentForm>
                   { !this.isValidSplitPayment() && 
                   <Panel 
