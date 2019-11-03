@@ -141,7 +141,7 @@ class AppointmentsList extends Component {
     render() {
         const isAppointmentLoaded = this.state.appointments && this.state.appointments.isOk();
         const isProfessionalsLoaded = this.state.professionals && this.state.professionals.isOk();
-        if (!isAppointmentLoaded || !isProfessionalsLoaded) return this.renderLoader()
+        if (!isAppointmentLoaded || !isProfessionalsLoaded) return this.renderLoader();
         return (
             <React.Fragment>
                 <Level className="pl-3 pr-3">

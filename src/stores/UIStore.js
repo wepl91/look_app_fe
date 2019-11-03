@@ -11,6 +11,7 @@ export default class UIStore extends Store {
   model = UISettings;
   urlRoot = 'UI';
   @observable language;
+  @observable configs
 
   constructor(adapter, appStore) {
     super(adapter, appStore);
