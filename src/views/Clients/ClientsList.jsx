@@ -26,6 +26,8 @@ import {
 
 import { ClientEditModal } from '../../components/Clients';
 
+import { translate } from '../../lib/Translator';
+
 @observer
 class ClientsList extends Component {
   constructor(props) {
@@ -77,17 +79,17 @@ class ClientsList extends Component {
         size: 'is-1',
       },
       {
-        label: 'Nombre',
+        label: this.getText('Nombre'),
         content: (data) => (<Text>{ startCase( data.fullName) || '- sin nombre -' }</Text>),
         size: 'is-2'
       },
       {
-        label: 'Teléfono',
+        label: this.getText('Teléfono'),
         content: (data) => (<Text>{ data.primaryPhone || '- sin teléfono -' }</Text>),
         size: 'is-1'
       },
       {
-        label: 'Teléfono secundario',
+        label: this.getText('Teléfono secundario'),
         content: (data) => (<Text>{ data.secondPhone || '- sin teléfono -' }</Text>),
         size: 'is-2'
       },
@@ -102,12 +104,12 @@ class ClientsList extends Component {
         size: 'is-1',
       },
       {
-        label: 'Categoría',
+        label: this.getText('Categoría'),
         content: (data) => (<Text>{ `${ data.category }` }</Text>),
         size: 'is-1',
       },
       {
-        label: 'Puntos',
+        label: this.getText('Puntos'),
         content: (data) => (<Text>{ data.points }</Text>),
         size: 'is-1'
       },
@@ -125,17 +127,21 @@ class ClientsList extends Component {
   renderModal() {
     return <ClientEditModal client={ this.state.client } onClose={ this.handleCloseModal } onSave={ this.handleSave }/>;
   }
+
+  getText(text) {
+    return translate(text, this.props.store.ui.language)
+  }
   
   render() {
     const isClientsLoaded = this.state.clients && this.state.clients.isOk();
     if (!isClientsLoaded) {
-      return <Loader icon={ faSpinner } label="Cargando los clientes.." className="fullscreen" />
+      return <Loader icon={ faSpinner } label={ this.getText('Cargando los clientes..') } className="fullscreen" />
     }
     return(
       <React.Fragment>
         <Level>
           <LevelLeft>
-            <Title>Listado de Clientes</Title>
+            <Title>{ this.getText('Listado de clientes') }</Title>
           </LevelLeft>
         </Level>
         <hr/>

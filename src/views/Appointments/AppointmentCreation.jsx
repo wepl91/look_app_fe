@@ -25,6 +25,8 @@ import { observer } from 'mobx-react';
 import { withStore } from '../../hocs';
 import { withToastManager } from 'react-toast-notifications';
 import { withRouter } from 'react-router';
+
+import { translate } from '../../lib/Translator';
 @observer
 class AppointmentCreation extends Component {
   
@@ -69,21 +71,21 @@ class AppointmentCreation extends Component {
       this.newAppointment.save().andThen( (savedAppointment, responseError) => {
         if (responseError) {
           if (this.isProfessionalBusyMsj(responseError)) {
-            toastManager.add("Ups! Parece que hubo problema! El profesional seleccionado se encuentra ocupado en el horario en el que se quiere crear el turno!", {
+            toastManager.add(this.getText('Ups! Parece que hubo problema! El profesional seleccionado se encuentra ocupado en el horario en el que se quiere crear el turno!'), {
               appearance: 'error',
               autoDismiss: true,
               pauseOnHover: false,
             });
           }else
           if (this.allProfessionalsBusyMsj(responseError)) {
-            toastManager.add("Ups! Parece que hubo problema! No hay profesionales que puedan atender en ese horario!", {
+            toastManager.add(this.getText('Ups! Parece que hubo problema! No hay profesionales que puedan atender en ese horario!', {
               appearance: 'error',
               autoDismiss: true,
               pauseOnHover: false,
             });
           }
           else {
-            toastManager.add("Ups! Parece que hubo un error al guardar los cambios!", {
+            toastManager.add(this.getText('Ups! Parece que hubo un error al guardar los cambios!', {
               appearance: 'error',
               autoDismiss: true,
               pauseOnHover: false,
@@ -91,7 +93,7 @@ class AppointmentCreation extends Component {
           } 
         }
         else {
-          toastManager.add("El turno se reservó exitosamente!", {
+          toastManager.add(this.getText('El turno se reservó exitosamente!'), {
             appearance: 'success',
             autoDismiss: true,
             pauseOnHover: false,
@@ -127,12 +129,16 @@ class AppointmentCreation extends Component {
     return this.newAppointment && !(this.newAppointment.services.length > 0 && this.state.areHoursSelected)
   }
 
+  getText(text) {
+    return translate(text, this.props.store.ui.language)
+  }
+
   render() {
     return(
       <React.Fragment>
         <Level>
           <LevelLeft>
-            <Title>Nuevo turno</Title>
+            <Title>{ this.getText('Nuevo turno') }</Title>
           </LevelLeft>
         </Level>
         <hr/>
@@ -141,7 +147,7 @@ class AppointmentCreation extends Component {
             <br />
             <br />
             <AppointmentsForm appointment={ this.newAppointment } onChange={ this.handleChange }/>
-            <Button className="ml-5 mt-5" onClick={ this.handleClick } kind="outline" disabled={ this.getDisabled() }>Reservar turno</Button>
+            <Button className="ml-5 mt-5" onClick={ this.handleClick } kind="outline" disabled={ this.getDisabled() }>{ this.getText('Reservar turno') }</Button>
           </Column>
           <Column isSize={ 7 } className="has-text-right">
             <SvgDraw style={{ height: '500px', width: '500px', marginRight: '100px', marginTop: '-25px'}}/>

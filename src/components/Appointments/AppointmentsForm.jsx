@@ -24,8 +24,8 @@ import startCase from 'lodash/startCase';
 import { horarios } from '../../lib/Mocks';
 
 import moment from 'moment';
-import { resolve } from 'url';
-import { reject } from 'q';
+
+import { translate } from '../../lib/Translator';
 
 import { ClientSuggest, ProfessionalSuggest } from '../../components/Suggest';
 
@@ -186,7 +186,7 @@ class AppointmentsForm extends Component {
     if (!services) return null;
 
     return(
-      <Field className="ml-5" label="¿Cuál de nuestros servicios requerís?" labelNote="Seleccioná un servicio">
+      <Field className="ml-5" label={ this.getText('¿Cuál de nuestros servicios requerís?') } labelNote={ this.getText('Seleccioná un servicio') }>
         { services.length > 0 ? 
             services.map( service => ( 
               <Checkbox 
@@ -195,7 +195,7 @@ class AppointmentsForm extends Component {
                 onCheck={() => this.handleServices(service.id, service.price)}>
                 {`${ startCase(service.name) } - $${ service.price }`}
               </Checkbox> )) : 
-          <Text size="md" weight="medium" className="ml-2 mt-1">No hay servicios existentes para ofrecer.</Text> }
+          <Text size="md" weight="medium" className="ml-2 mt-1">{ this.getText('No hay servicios existentes para ofrecer.') }</Text> }
         <Text className="has-text-centered ml-2" weight="medium" color="primaryDark"><hr id="subtotalLine"/>Subtotal: ${this.state.subtotal}</Text>
       </Field> )   
   }
@@ -204,7 +204,7 @@ class AppointmentsForm extends Component {
     const isDisabled = !this.state.branch;
     debugger
     return(
-      <Field className="ml-5" label="¿Por quién querés ser atendido?" labelNote="Seleccioná un profesional">
+      <Field className="ml-5" label={ this.getText('¿Por quién querés ser atendido?') } labelNote={ this.getText('Seleccioná un profesional') }>
           <ProfessionalSuggest 
             key={ this.state.branch } 
             disabled={ isDisabled } 
@@ -217,7 +217,7 @@ class AppointmentsForm extends Component {
   renderClients() {
     const { appointment, edit } = this.props;
     return(
-      <Field className="ml-5" label="¿Quién quiere ser atendido?" labelNote="Seleccioná un cliente">
+      <Field className="ml-5" label={ this.getText('¿Quién quiere ser atendido?') } labelNote={ this.getText('Seleccioná un cliente') }>
         <ClientSuggest 
           disabled={ edit } 
           value={ appointment ? appointment.client : null } 
@@ -228,10 +228,10 @@ class AppointmentsForm extends Component {
 
   renderBranches() {
     return(
-      <Field className="ml-5" label="¿A cual de nuestras sucursales querés venir?" labelNote="Seleccioná una sucursal">
+      <Field className="ml-5" label={ this.getText('¿A cual de nuestras sucursales querés venir?') } labelNote={ this.getText('Seleccioná una sucursal') }>
         <Select
           key={ this.state.branches }
-          placeholder="Sucursales" 
+          placeholder={ this.getText('Sucursales') } 
           borderless 
           icon={ faChevronDown } 
           onChange={ this.handleBranch }
@@ -243,7 +243,7 @@ class AppointmentsForm extends Component {
   renderDatePicker() {
     if (!this.props.withDate) return null;
     return(
-      <Field className="ml-5" label="¿Que día querés venir?" labelNote="Seleccioná ua fecha">
+      <Field className="ml-5" label={ this.getText('¿Que día querés venir?') } labelNote={ this.getText('Seleccioná una fecha') }>
         <DateTimePicker 
           className="is-fullwidth"
           key={ this.state.date } 
@@ -256,11 +256,11 @@ class AppointmentsForm extends Component {
   renderHourPicker() {
     const { appointment } = this.props;
     return(
-      <Field className="ml-5" label="¿A que hora querés venir?" labelNote="Seleccioná un horario">
+      <Field className="ml-5" label={ this.getText('¿A que hora querés venir?') } labelNote={ this.getText('Seleccioná un horario') }>
         <Select 
           key={ this.state }
           maxHeight="120px" 
-          placeholder="Horarios" 
+          placeholder={ this.getText('Horarios') } 
           borderless 
           icon={ faChevronDown }
           onChange={ this.handleHour } 
@@ -272,7 +272,7 @@ class AppointmentsForm extends Component {
   renderAdvise() {
     return(
       <Panel className="has-text-centered mr-3 mt-1" invert color="error" style={{ padding: '2px' }}>
-        <Text size="sm" weight="medium">La fecha seleccionada es un día no laboral.</Text>
+        <Text size="sm" weight="medium">{ this.getText('La fecha seleccionada es un día no laboral.') }</Text>
       </Panel> )
   }
 
@@ -280,26 +280,26 @@ class AppointmentsForm extends Component {
     return(
     <React.Fragment>
       { this.props.withDate &&
-        <Field className="ml-5" label="¿Que día querés venir?" labelNote="Seleccioná ua fecha">
+        <Field className="ml-5" label={ this.getText('¿Que día querés venir?') } labelNote={ this.getText('Seleccioná uva fecha') }>
           <DateTimePicker className="is-fullwidth" disabled/>
         </Field> }
-      <Field className="ml-5" label="¿Quién quiere ser atendido?" labelNote="Seleccioná un cliente">
+      <Field className="ml-5" label={ this.getText('¿Quién quiere ser atendido?') } labelNote={ this.getText('Seleccioná un cliente') }>
         <Select 
           disabled
-          placeholder="Clientes" 
+          placeholder={ this.getText('Clientes') } 
           borderless 
           icon={ faChevronDown } />
       </Field>
-      <Field className="ml-5" label="¿A cual de nuestras sucursales querés venir?" labelNote="Seleccioná una sucursal">
+      <Field className="ml-5" label={ this.getText('¿A cual de nuestras sucursales querés venir?') } labelNote={ this.getText('Seleccioná una sucursal') }>
         <Select 
           disabled
-          placeholder="Sucursales" 
+          placeholder={ this.getText('Sucursales') } 
           borderless 
           icon={ faChevronDown } 
           disabled
           loading />
       </Field>
-      <Field className="ml-5" label="¿Por quién querés ser atendido?" labelNote="Seleccioná un profesional">
+      <Field className="ml-5" label={ this.getText('¿Por quién querés ser atendido?') } labelNote={ this.getText('Seleccioná un profesional') }>
         <Select 
           placeholder="Profesionales" 
           borderless 
@@ -308,21 +308,25 @@ class AppointmentsForm extends Component {
           loading />
       </Field>
       { this.props.edit && 
-        <Field className="ml-5" label="¿Cual de nuestros servicios requeris?" labelNote="Seleccioná un servicio">
+        <Field className="ml-5" label={ this.getText('¿Cual de nuestros servicios requeris?') } labelNote={ this.getText('Seleccioná un servicio') }>
           <Checkbox className="pt-1" checked={ false } >...</Checkbox>
           <Checkbox className="pt-1" checked={ false } >...</Checkbox>
           <Checkbox className="pt-1" checked={ false } >...</Checkbox>
         </Field> }
-      <Field className="ml-5 mt-2" label="¿A que hora querés venir?" labelNote="Seleccioná un horario">
+      <Field className="ml-5 mt-2" label={ this.getText('¿A que hora querés venir?') } labelNote={ this.getText('Seleccioná un horario') }>
         <Select 
           maxHeight="120px" 
-          placeholder="Horarios" 
+          placeholder={ this.getText('Horarios') } 
           borderless 
           icon={ faChevronDown }
           disabled
           loading/>
       </Field>
     </React.Fragment>)
+  }
+
+  getText(text) {
+    return translate(text, this.props.store.ui.language)
   }
 
   render() {

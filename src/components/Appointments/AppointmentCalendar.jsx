@@ -6,7 +6,14 @@ import {
 } from 'bloomer';
 
 import { AppointmentCard } from '.';
- 
+
+import { withStore } from '../../hocs';
+
+import { observer } from 'mobx-react';
+
+import { translate } from '../../lib/Translator';
+
+@observer
 class AppointmentCalendar extends Component {
   constructor(props) {
     super(props)
@@ -24,6 +31,9 @@ class AppointmentCalendar extends Component {
     this.props.onReload && this.props.onReload()
   }
   
+  getText(text) {
+    return translate(text, this.props.store.ui.language)
+  }
 
   render() {
     if (!this.state) return null;
@@ -51,4 +61,4 @@ AppointmentCalendar.defaultProps = {
   onReload: null,
 }
 
-export default AppointmentCalendar;
+export default withStore(AppointmentCalendar);

@@ -24,6 +24,13 @@ import moment from 'moment';
 
 import AppointmentCell from './AppointmentCell';
 
+import { observer } from 'mobx-react';
+
+import { translate } from '../../lib/Translator';
+
+import { withStore } from '../../hocs';
+
+@observer
 class AppointmentCard extends Component {
   constructor(props) {
     super(props);
@@ -68,6 +75,10 @@ class AppointmentCard extends Component {
       appointment.dayHour.isSame(this.state.date, 'month') && 
       appointment.dayHour.isSame(this.state.date, 'year')))
   }
+
+  getText(text) {
+    return translate(text, this.props.store.ui.language)
+  }
   
   render() {
     const turnos = this.getTurnos();
@@ -76,7 +87,7 @@ class AppointmentCard extends Component {
         <Panel invert={ this.isToday(this.state.date) } className="appointment_card_panel" key={ this.state.date }>
           <Level>
             <LevelLeft>
-              <Text className="ml-1" size="md" key={ this.state.reload } weight="medium" color="primaryDark">{`${ startCase(this.state.date.format('ddd')) } ${ this.state.date.format('D') }`}</Text>
+              <Text className="ml-1" size="md" key={ this.state.reload } weight="medium" color="primaryDark">{`${ this.getText(startCase(this.state.date.format('dddd'))) } ${ this.state.date.format('D') }`}</Text>
             </LevelLeft>
             <LevelRight>
               <Button icon={ faEllipsisH } kind="link" onClick={ this.handleClick }/>
@@ -101,4 +112,4 @@ AppointmentCard.defaultProps = {
   onReload: null
 }
 
-export default AppointmentCard;
+export default withStore(AppointmentCard);
