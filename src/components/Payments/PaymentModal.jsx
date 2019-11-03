@@ -12,7 +12,8 @@ import {
   ModalFooter,
   Title,
   Button,
-  Text
+  Text,
+  Panel
 } from 'shipnow-mercurio';
 
 import {
@@ -54,6 +55,7 @@ class PaymentsModal extends Component {
       points: null,
       validCash: false,
       validPoints: false,
+      validCashAndPoints: false,
       confirmationData: {
         accept: null,
         cancel: null,
@@ -62,10 +64,10 @@ class PaymentsModal extends Component {
       }
     }
 
-    this.handleConfirm         = this.handleConfirm.bind(this);
+    this.handleConfirm       = this.handleConfirm.bind(this);
     this.handleCancelConfirm = this.handleCancelConfirm.bind(this);
-    this.handlePay         = this.handlePay.bind(this);
-    this.handlePaymentData         = this.handlePaymentData.bind(this);
+    this.handlePay           = this.handlePay.bind(this);
+    this.handlePaymentData   = this.handlePaymentData.bind(this);
   }
 
   handlePay( name ) {
@@ -80,16 +82,16 @@ class PaymentsModal extends Component {
 
   handlePaymentData(sender, value, name, valid) {
     if(name == 'cash'){
-      valid.type == 'success' ? this.setState({cash: value, points: null, paymentType: 'cash', validCash: true}) : this.setState({ validCash: false })
+      valid && valid.type == 'success' ? this.setState({cash: value, points: null, paymentType: 'cash', validCash: true}) : this.setState({ paymentType: 'cash', validCash: false})
     }
     if(name == 'points'){
-      valid.type == 'success' ? this.setState({points: value, cash: null, paymentType: 'points', validPoints: true}) : this.setState({ validPoints: false })
+      valid && valid.type == 'success' ? this.setState({points: value, cash: null, paymentType: 'points', validPoints: true}) : this.setState({ paymentType: 'points',validPoints: false})
     }
     if(name == 'cashHalf'){
-      valid.type == 'success' ? this.setState({cash: value, paymentType: 'cashAndPoints', validCash: true}) : this.setState({ validCash: false })
+      valid ? this.setState({cash: value, paymentType: 'cashAndPoints', validCashAndPoints: valid}) : this.setState({ paymentType: 'cashAndPoints', validCashAndPoints: false})
     }
     if(name == 'pointsHalf'){
-      valid.type == 'success' ? this.setState({points: value, paymentType: 'cashAndPoints', validPoints: true}) : this.setState({ validPoints: false })
+      valid ? this.setState({points: value, paymentType: 'cashAndPoints', validCashAndPoints: valid}) : this.setState({ paymentType: 'cashAndPoints', validCashAndPoints: false})
     }
     if(name == 'loaned'){
       this.setState({points: null, cash: null, paymentType: 'loaned'})
@@ -133,7 +135,20 @@ class PaymentsModal extends Component {
       return !this.state.validPoints
     }
     if(this.state.paymentType == 'cashAndPoints'){
-      return !(this.state.validCash && this.state.validPoints)
+      return !this.state.validCashAndPoints
+    }
+    if(this.state.paymentType == 'loaned'){
+      return false
+    }else{
+      return true
+    }
+  }
+
+  isValidSplitPayment() {
+    if(this.state.paymentType == 'cashAndPoints'){
+      return this.state.validCashAndPoints
+    }else{
+      return true
     }
   }
 
@@ -165,6 +180,14 @@ class PaymentsModal extends Component {
                   <Title size="md">{ `${ this.getText('Total a abonar: $') } ${appointment.totalPrice}` }</Title>
                   <Title size="md">{ `${ this.getText('Puntos disponibles: ') } ${appointment.clientPoints}  ${ ' ($ '} ${ '250'}${ ')'}`}</Title>
                   <PaymentForm totalAmount={ appointment.totalPrice } clientPoints={ appointment.clientPoints } onChange={ this.handlePaymentData }></PaymentForm>
+                  { !this.isValidSplitPayment() && 
+                  <Panel 
+                    className="mt-1" 
+                    color="error" 
+                    invert 
+                    style={{padding: '2px'}}>
+                    <Text className="has-text-centered">{ this.getText('Los valores ingresados son incorrectos') }</Text>
+                  </Panel> }
                 </Column>
                 <Column className="has-text-centered" isSize={ 7 }>
                   <SvgDraw style={{ height: '450px', width: '450px' }}/>

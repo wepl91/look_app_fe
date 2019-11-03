@@ -37,7 +37,7 @@ class PaymentForm extends Component {
       validSplitPayment: false
     }
 
-    this.handleChange        = this.handleChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   getText( text ) {
@@ -45,12 +45,15 @@ class PaymentForm extends Component {
   }
 
   handlePaymentType( type ){
-    if(type == 'loaned'){
-      this.props.onChange && this.props.onChange( null, null, type, null )    
-    }
     this.setState({
       paymentType: type
     })
+    if(type == 'cashAndPoints'){
+      this.props.onChange && this.props.onChange( null, null, 'cashHalf', null )    
+    }else{
+      this.props.onChange && this.props.onChange( null, null, type, null )    
+    }
+
   }
 
   validateCashPayment( value ){
@@ -62,11 +65,7 @@ class PaymentForm extends Component {
     //una vez que tengamos conversion, validar que no se este excediendo del monto total
     // return priceRegex.test(value) && value <= this.props.clientPoints && value * (coeficienteConversion) <= this.props.totalAmount
 
-    //y ver la validacion de efectivoypuntos que no se actualiza a tiempo
-
     return priceRegex.test(value) && value <= this.props.clientPoints
-
-
   }
 
   handleChange(sender, value, name, valid){
@@ -74,26 +73,16 @@ class PaymentForm extends Component {
       this.setState({
         cashHalf: value
       })
+      valid = this.validateCashPayment( value ) && this.validatePointsPayment( this.state.pointsHalf )
     }
     if(name =='pointsHalf'){
       this.setState({
         pointsHalf: value
       })
+      valid = this.validateCashPayment( this.state.cashHalf ) && this.validatePointsPayment( value )
     }
-    
-    this.props.onChange && this.props.onChange(sender, value, name, valid)    
-  }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.cashHalf != this.state.cashHalf || prevState.pointsHalf != this.state.pointsHalf ) {
-      let validCash = this.validateCashPayment( this.state.cashHalf )
-      let validPoints = this.validatePointsPayment( this.state.pointsHalf )
-      // let validCashAndPoints = (this.state.cashHalf + (this.state.pointsHalf*(coeficienteConversion)) <= this.props.totalAmount)
-      this.setState({
-        validSplitPayment: validCash && validPoints
-        //         validSplitPayment: validCash && validPoints && validCashAndPoints
-      })
-    }
+    this.props.onChange && this.props.onChange(sender, value, name, valid)    
   }
 
   render() {
@@ -141,19 +130,19 @@ class PaymentForm extends Component {
         <Field className="mt-4" label={ this.getText('Ingrese los montos') } labelNote={ this.getText('¿Cuánto va abonar?') } size="lg">
 
          {this.state.paymentType == 'cash' && 
-         <TextInput icon={ faMoneyBill } validate={ (value) => (this.validateCashPayment(value)) } name="cash" onChange={ this.handleChange }/>}
+         <TextInput icon={ faMoneyBill } name="cash" validate={ (value) => this.validateCashPayment(value) } onChange={ this.handleChange }/>}
 
          {this.state.paymentType == 'points' && 
-         <TextInput icon={ faCoins } validate={ (value) => (this.validatePointsPayment(value)) } name="points" onChange={ this.handleChange }/>}
+         <TextInput icon={ faCoins } name="points" validate={ (value) => this.validatePointsPayment(value) } onChange={ this.handleChange }/>}
          
          {this.state.paymentType == 'cashAndPoints' && 
           <React.Fragment>
             <Columns>
               <Column isSize={ 6 }>
-                <TextInput className="mt-1" icon={ faMoneyBill } validate={ () => this.state.validSplitPayment } name="cashHalf" onChange={ this.handleChange }/>
+                <TextInput className="mt-1" icon={ faMoneyBill } name="cashHalf" onChange={ this.handleChange }/>
               </Column>
               <Column isSize={ 6 }>
-                <TextInput className="mt-1" icon={ faCoins } validate={ () => this.state.validSplitPayment } name="pointsHalf" onChange={ this.handleChange }/>
+                <TextInput className="mt-1" icon={ faCoins } name="pointsHalf" onChange={ this.handleChange }/>
               </Column>
             </Columns>
           </React.Fragment>}
