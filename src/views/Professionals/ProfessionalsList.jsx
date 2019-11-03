@@ -107,7 +107,7 @@ class ProfessionalsList extends Component {
       {
         label: '',
         content: (data) => (<SelectableIcon  className="ml-2" icon={ faSuitcase } readOnly/>),
-        size: 'is-1',
+        size: 'is-1'
       },
       {
         label: this.getText('Nombre'),
@@ -144,6 +144,7 @@ class ProfessionalsList extends Component {
         :
         <Text>{ this.getText('- Sin servicios -') }</Text>
         ),
+        size: 'is-2'
       },
       {
         label: this.getText('Días de trabajo'),
@@ -171,6 +172,7 @@ class ProfessionalsList extends Component {
             </DropdownPanel>
         </Dropdown>
         ),
+        size: 'is-2'
       },
       {
         label: this.getText('Activo'),

@@ -29,6 +29,7 @@ class UsersForm extends Component {
 
     this.state = {
       roles: null,
+      branches: null,
       password: '',
       repeatPassword: '',
     }
@@ -39,6 +40,7 @@ class UsersForm extends Component {
   componentDidMount() {
     this.setState({
       roles: this.props.store.roles.search({}, 'roles-list-users-form', true),
+      branches: this.props.store.branches.search({}, 'branches-list-users-form', true),
     })    
   }
 
@@ -92,6 +94,15 @@ class UsersForm extends Component {
         <Field label="Email">
           <TextInput name="email" placeholder="user@gmail.com" disabled />
         </Field>
+        <Field label={ this.getText('Sucursla') } labelNote={ this.getText('¿En cuál sucursal va a trabajar el ususario?') }>
+          <Select 
+            disabled
+            name="branch"
+            icon={ faChevronDown } 
+            borderless 
+            placeholder={ this.getText('Sucursales') }
+          />
+        </Field>
         <Field label={this.getText("Rol")}>
         <Select 
           maxHeight="110px"
@@ -118,7 +129,9 @@ class UsersForm extends Component {
   }
 
   render() {
-    if (!this.state.roles || !this.state.roles.isOk()) {
+    const isRolesLoaded = this.state.roles && this.state.roles.isOk();
+    const isBranchesLoaded = this.state.branches && this.state.branches.isOk();
+    if (!isBranchesLoaded || !isRolesLoaded) {
       return this.renderSkeleton();
     }
     const { user, withPassword } = this.props;
@@ -136,6 +149,18 @@ class UsersForm extends Component {
         </Field>
         <Field label={ this.getText('Email') }>
           <TextInput value={ user && user.email } name="email" validate={ (value) => (mailRegex.test(value)) } placeholder="user@gmail.com" onChange={ this.handleChange } />
+        </Field>
+        <Field label={ this.getText('Sucursla') } labelNote={ this.getText('¿En cuál sucursal va a trabajar el ususario?') }>
+          <Select 
+            key={ this.state.branches }
+            value={ user && user.branch.id }
+            name="branch"
+            icon={ faChevronDown } 
+            borderless 
+            placeholder={ this.getText('Sucursales') }
+            onChange={ this.handleChange }
+            options={ this.state.branches.toArray().map( branch => ({ key: branch.name || branch.cookedAddress, value: branch.id })) }
+          />
         </Field>
         <Field label={this.getText("Rol")}>
         <Select 
