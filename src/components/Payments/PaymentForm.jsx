@@ -60,12 +60,13 @@ class PaymentForm extends Component {
 
   validatePointsPayment( value ){
     //una vez que tengamos conversion, validar que no se este excediendo del monto total
-
-
-    //aparte de sto mostrar la equivalencia de puntos a dinero en algun lugar
+    // return priceRegex.test(value) && value <= this.props.clientPoints && value * (coeficienteConversion) <= this.props.totalAmount
 
     //y ver la validacion de efectivoypuntos que no se actualiza a tiempo
+
     return priceRegex.test(value) && value <= this.props.clientPoints
+
+
   }
 
   handleChange(sender, value, name, valid){
@@ -85,8 +86,12 @@ class PaymentForm extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.cashHalf != this.state.cashHalf || prevState.pointsHalf != this.state.pointsHalf ) {
+      let validCash = this.validateCashPayment( this.state.cashHalf )
+      let validPoints = this.validatePointsPayment( this.state.pointsHalf )
+      // let validCashAndPoints = (this.state.cashHalf + (this.state.pointsHalf*(coeficienteConversion)) <= this.props.totalAmount)
       this.setState({
-        validSplitPayment: this.validateCashPayment( this.state.cashHalf ) && this.validatePointsPayment( this.state.pointsHalf )
+        validSplitPayment: validCash && validPoints
+        //         validSplitPayment: validCash && validPoints && validCashAndPoints
       })
     }
   }

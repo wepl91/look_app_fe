@@ -79,8 +79,6 @@ class PaymentsModal extends Component {
   }
 
   handlePaymentData(sender, value, name, valid) {
-    console.log(name)
-    console.log(value)
     if(name == 'cash'){
       valid.type == 'success' ? this.setState({cash: value, points: null, paymentType: 'cash', validCash: true}) : this.setState({ validCash: false })
     }
@@ -165,6 +163,7 @@ class PaymentsModal extends Component {
               <Columns>
                 <Column isSize={ 5 }>
                   <Title size="md">{ `${ this.getText('Total a abonar: $') } ${appointment.totalPrice}` }</Title>
+                  <Title size="md">{ `${ this.getText('Puntos disponibles: ') } ${appointment.clientPoints}  ${ ' ($ '} ${ '250'}${ ')'}`}</Title>
                   <PaymentForm totalAmount={ appointment.totalPrice } clientPoints={ appointment.clientPoints } onChange={ this.handlePaymentData }></PaymentForm>
                 </Column>
                 <Column className="has-text-centered" isSize={ 7 }>
