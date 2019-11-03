@@ -8,6 +8,10 @@ import {
 import startCase from 'lodash/startCase';
 import moment from 'moment';
 
+
+import { Service, Branch } from '../models';
+import { ServicesStore, BranchesStore } from '../stores';
+
 export default class Professional extends Model {
   constructor( attributes, store ) {
 
@@ -25,6 +29,19 @@ export default class Professional extends Model {
     let attrs = Object.assign( defaultAttributes, attributes );
 
     super(attrs, store);
+  }
+
+  afterSetData() {
+    if (this.services) {
+      const modeledServices = [];
+      this.services.forEach( service => {
+        modeledServices.push(new Service(service, ServicesStore));
+      });
+      this.services = modeledServices;
+    }
+    if (this.branch) {
+      this.branch = new Branch(this.branch, BranchesStore);
+    }
   }
 
   @computed

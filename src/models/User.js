@@ -7,6 +7,8 @@ import {
 
 import startCase from 'lodash/startCase';
 
+import { Branch } from '../models';
+import { BranchesStore } from '../stores';
 export default class User extends Model {
   constructor( attributes, store ) {
 
@@ -24,6 +26,11 @@ export default class User extends Model {
     let attrs = Object.assign( defaultAttributes, attributes );
 
     super(attrs, store);
+  }
+  afterSetData() {
+    if (this.branch) {
+      this.branch = new Branch(this.branch, BranchesStore);
+    }
   }
 
   @computed

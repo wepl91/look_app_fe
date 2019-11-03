@@ -41,15 +41,15 @@ class UsersList extends Component {
       editUser: null,
     }
 
-    this.handleHideModal  = this.handleHideModal.bind(this);
-    this.handleSaved      = this.handleSaved.bind(this);
-    this.handleActivate   = this.handleActivate.bind(this);
+    this.handleHideModal = this.handleHideModal.bind(this);
+    this.handleSaved = this.handleSaved.bind(this);
+    this.handleActivate = this.handleActivate.bind(this);
     this.handleInactivate = this.handleInactivate.bind(this);
   }
 
-  handleActivate( user ) {
+  handleActivate(user) {
     const { toastManager } = this.props;
-    user.activate().andThen( (savedUser, responseError) => {
+    user.activate().andThen((savedUser, responseError) => {
       if (responseError) {
         toastManager.add(this.getText("Ups! Parece que hubo un error al activar el usuario!"), {
           appearance: 'error',
@@ -58,7 +58,7 @@ class UsersList extends Component {
         });
       }
       else {
-        let text = <Text color="warning" weight="medium" className="mt-1 mb-1">{ this.getText("¡El usuario ha sido marcado como activo!") }</Text>
+        let text = <Text color="warning" weight="medium" className="mt-1 mb-1">{this.getText("¡El usuario ha sido marcado como activo!")}</Text>
         toastManager.add(text, {
           appearance: 'warning',
           autoDismiss: true,
@@ -68,9 +68,9 @@ class UsersList extends Component {
     })
   }
 
-  handleInactivate( user ) {
+  handleInactivate(user) {
     const { toastManager } = this.props;
-    user.deactivate().andThen( (savedUser, responseError) => {
+    user.deactivate().andThen((savedUser, responseError) => {
       if (responseError) {
         toastManager.add(this.getText("Ups! Parece que hubo un error al desactivar el usuario!"), {
           appearance: 'error',
@@ -79,7 +79,7 @@ class UsersList extends Component {
         });
       }
       else {
-        let text = <Text color="warning" weight="medium" className="mt-1 mb-1">{ this.getText("¡El usuario ha sido marcado como inactivo!") }</Text>
+        let text = <Text color="warning" weight="medium" className="mt-1 mb-1">{this.getText("¡El usuario ha sido marcado como inactivo!")}</Text>
         toastManager.add(text, {
           appearance: 'warning',
           autoDismiss: true,
@@ -89,7 +89,7 @@ class UsersList extends Component {
     })
   }
 
-  handleShowModal( user ) {
+  handleShowModal(user) {
     this.setState({
       editUser: user,
       showModal: true,
@@ -116,27 +116,27 @@ class UsersList extends Component {
     })
   }
 
-  getText( text ) {
+  getText(text) {
     return translate(text, this.props.store.ui.language)
   }
 
   renderTable() {
     const data = this.state.users.toArray();
-
+    debugger
     const columns = [
       {
         label: '',
-        content: (data) => (<SelectableIcon  className="ml-2" icon={ faSuitcase } readOnly/>),
+        content: (data) => (<SelectableIcon className="ml-2" icon={faSuitcase} readOnly />),
         size: 'is-1',
       },
       {
         label: this.getText('Nombre'),
-        content: (data) => (<Text>{ startCase( data.fullName) || this.getText('- sin nombre -') }</Text>),
+        content: (data) => (<Text>{startCase(data.cookedFullName) || this.getText('- sin nombre -')}</Text>),
         size: 'is-2'
       },
       {
         label: this.getText('Mail'),
-        content: (data) => (<Text>{ data.email || this.getText('- sin email -') }</Text>),
+        content: (data) => (<Text>{data.email || this.getText('- sin email -')}</Text>),
         size: 'is-2'
       },
       {
@@ -147,9 +147,15 @@ class UsersList extends Component {
       },
       {
         label: this.getText('Rol'),
-        content: (data) => (<Text>{ `${ this.getText(data.userRole) }` }</Text>),
+        content: (data) => (<Text>{`${this.getText(data.userRole)}`}</Text>),
         size: 'is-2',
-      },{
+      },
+      {
+        label: this.getText('Sucursal'),
+        content: (data) => (<Text>{data.branch ? `${data.branch.name || data.branch.cookedAddress}` : '- sin sucursal -'}</Text>),
+        size: 'is-2',
+      },
+      {
         label: '',
         content: null,
         size: 'is-1',
@@ -157,7 +163,7 @@ class UsersList extends Component {
       },
       {
         label: this.getText('Activo'),
-        content: (data) => (<Toggle checked={ data.isActive } checkedColor="success" unCheckedColor="delete" onChange={ () => (data.isActive ? this.handleInactivate(data) : this.handleActivate(data)) }/>),
+        content: (data) => (<Toggle checked={data.isActive} checkedColor="success" unCheckedColor="delete" onChange={() => (data.isActive ? this.handleInactivate(data) : this.handleActivate(data))} />),
         size: 'is-1',
         align: 'left'
       },
@@ -169,39 +175,39 @@ class UsersList extends Component {
       },
       {
         label: '',
-        content: (data) => (<Button icon={ faPencilAlt } kind="link" onClick={ () => (this.handleShowModal(data)) } />),
+        content: (data) => (<Button icon={faPencilAlt} kind="link" onClick={() => (this.handleShowModal(data))} />),
         size: 'is-1',
-        align: 'center'
+        align: 'right'
       },
     ]
 
-    return <Table columns={ columns } data={ data } striped={ false }/>
+    return <Table columns={columns} data={data} striped={false} />
   }
 
-  getText( text ) {
+  getText(text) {
     return translate(text, this.props.store.ui.language)
   }
 
   renderModal() {
-    return( <UsersEditModal user={ this.state.editUser } onClose={ this.handleHideModal } onSave={ this.handleSaved }/> )
+    return (<UsersEditModal user={this.state.editUser} onClose={this.handleHideModal} onSave={this.handleSaved} />)
   }
 
   render() {
     if (!this.state.users || !this.state.users.isOk()) {
-      return <Loader icon={ faSpinner } label={ this.getText("Cargando los usuarios..") } className="fullscreen" />
+      return <Loader icon={faSpinner} label={this.getText("Cargando los usuarios..")} className="fullscreen" />
     }
-    return(
+    return (
       <React.Fragment>
         <Level>
           <LevelLeft>
-            <Title>{ this.getText("Lista de Usuarios") }</Title>
+            <Title>{this.getText("Lista de Usuarios")}</Title>
           </LevelLeft>
         </Level>
-        <hr/>
-        { this.renderTable() }
-        { this.state.showModal && this.renderModal() }
-        { this.state.showToggleConfirmation && this.renderConfirmationModal() }
-      </React.Fragment> )
+        <hr />
+        {this.renderTable()}
+        {this.state.showModal && this.renderModal()}
+        {this.state.showToggleConfirmation && this.renderConfirmationModal()}
+      </React.Fragment>)
   }
 
 }
