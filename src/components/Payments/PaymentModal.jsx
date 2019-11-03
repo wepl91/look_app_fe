@@ -178,7 +178,7 @@ class PaymentsModal extends Component {
               <Columns>
                 <Column isSize={ 5 }>
                   <Title size="md">{ `${ this.getText('Total a abonar: $') } ${appointment.totalPrice}` }</Title>
-                  <Title size="md">{ `${ this.getText('Puntos disponibles: ') } ${appointment.clientPoints}  ${ ' ($ '} ${ '250'}${ ')'}`}</Title>
+                  <Title size="md">{ `${ this.getText('Puntos disponibles: ') } ${appointment.clientPoints}  ${ ' ($ '} ${ '{placeholder puntos convertidos}'}${ ')'}`}</Title>
                   <PaymentForm totalAmount={ appointment.totalPrice } clientPoints={ appointment.clientPoints } onChange={ this.handlePaymentData }></PaymentForm>
                   { !this.isValidSplitPayment() && 
                   <Panel 

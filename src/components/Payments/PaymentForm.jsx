@@ -34,6 +34,7 @@ class PaymentForm extends Component {
       paymentType: '',
       cashHalf: 0,
       pointsHalf: 0,
+      points: 0,
       validSplitPayment: false
     }
 
@@ -68,6 +69,11 @@ class PaymentForm extends Component {
     return priceRegex.test(value) && value <= this.props.clientPoints
   }
 
+  getConvertedInputPoints(){
+    return 'placeholder puntos del input convertidos'
+    // return this.state.points * (coeficienteConversion)
+  }
+
   handleChange(sender, value, name, valid){
     if(name =='cashHalf'){
       this.setState({
@@ -80,6 +86,11 @@ class PaymentForm extends Component {
         pointsHalf: value
       })
       valid = this.validateCashPayment( this.state.cashHalf ) && this.validatePointsPayment( value )
+    }
+    if(name == 'points'){
+      this.setState({
+        points: value
+      })
     }
 
     this.props.onChange && this.props.onChange(sender, value, name, valid)    
@@ -133,7 +144,10 @@ class PaymentForm extends Component {
          <TextInput icon={ faMoneyBill } name="cash" validate={ (value) => this.validateCashPayment(value) } onChange={ this.handleChange }/>}
 
          {this.state.paymentType == 'points' && 
-         <TextInput icon={ faCoins } name="points" validate={ (value) => this.validatePointsPayment(value) } onChange={ this.handleChange }/>}
+         <React.Fragment>
+         <TextInput icon={ faCoins } name="points" validate={ (value) => this.validatePointsPayment(value) } onChange={ this.handleChange }/>
+         <Text>{ `${ this.getText('Equivale a: $') } ${this.getConvertedInputPoints()}` }</Text>
+         </React.Fragment>}
          
          {this.state.paymentType == 'cashAndPoints' && 
           <React.Fragment>
