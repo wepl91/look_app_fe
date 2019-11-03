@@ -111,8 +111,13 @@ class ProfessionalsList extends Component {
       },
       {
         label: this.getText('Nombre'),
-        content: (data) => (<Text>{ startCase( data.fullName || this.getText('- sin nombre -')  )}</Text>),
-        size: 'is-2'
+        content: (data) => ( 
+          <React.Fragment>
+            { data.name && <Text>{ startCase(data.name) }</Text> }
+            { data.lastName && <Text>{ startCase(data.lastName) }</Text>}
+            { !data.name && !data.lastName && <Text>{ this.getText('- sin nombre -') }</Text>} 
+          </React.Fragment> ),
+        size: 'is-1'
       },
       {
         label: this.getText('Teléfono'),
@@ -122,6 +127,11 @@ class ProfessionalsList extends Component {
       {
         label: this.getText('Email'),
         content: (data) => (<Text>{ data.email || this.getText('- sin email -') }</Text>),
+        size: 'is-2'
+      },
+      {
+        label: this.getText('Sucursal'),
+        content: (data) => (<Text>{ data.branch ? data.branch.name || data.branch.cookedAddress : this.getText('- sin surcursal -') }</Text>),
         size: 'is-2'
       },
       {

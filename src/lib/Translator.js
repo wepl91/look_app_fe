@@ -129,6 +129,7 @@ export const translate = (str, lang) => {
     'Monto': 'Amount',
     'Historial de pagos': 'Payment history',
     'Fecha de pago': 'Payment date',
+    'Sucursal': 'Branch'
 
   }
 
