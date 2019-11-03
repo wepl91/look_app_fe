@@ -56,6 +56,7 @@ class PaymentsModal extends Component {
       validCash: false,
       validPoints: false,
       validCashAndPoints: false,
+      invalidMsg: '',
       confirmationData: {
         accept: null,
         cancel: null,
@@ -80,18 +81,18 @@ class PaymentsModal extends Component {
     }
   }
 
-  handlePaymentData(sender, value, name, valid) {
+  handlePaymentData(sender, value, name, valid, message) {
     if(name == 'cash'){
       valid && valid.type == 'success' ? this.setState({cash: value, points: null, paymentType: 'cash', validCash: true}) : this.setState({ paymentType: 'cash', validCash: false})
     }
     if(name == 'points'){
-      valid && valid.type == 'success' ? this.setState({points: value, cash: null, paymentType: 'points', validPoints: true}) : this.setState({ paymentType: 'points',validPoints: false})
+      valid && valid.type == 'success' ? this.setState({points: value, cash: null, paymentType: 'points', validPoints: true}) : this.setState({ paymentType: 'points', validPoints: false})
     }
     if(name == 'cashHalf'){
-      valid ? this.setState({cash: value, paymentType: 'cashAndPoints', validCashAndPoints: valid}) : this.setState({ paymentType: 'cashAndPoints', validCashAndPoints: false})
+      valid ? this.setState({cash: value, paymentType: 'cashAndPoints', validCashAndPoints: valid}) : this.setState({ paymentType: 'cashAndPoints', validCashAndPoints: false, invalidMsg: message})
     }
     if(name == 'pointsHalf'){
-      valid ? this.setState({points: value, paymentType: 'cashAndPoints', validCashAndPoints: valid}) : this.setState({ paymentType: 'cashAndPoints', validCashAndPoints: false})
+      valid ? this.setState({points: value, paymentType: 'cashAndPoints', validCashAndPoints: valid}) : this.setState({ paymentType: 'cashAndPoints', validCashAndPoints: false, invalidMsg: message})
     }
     if(name == 'loaned'){
       this.setState({points: null, cash: null, paymentType: 'loaned'})
@@ -186,7 +187,8 @@ class PaymentsModal extends Component {
                     color="error" 
                     invert 
                     style={{padding: '2px'}}>
-                    <Text className="has-text-centered">{ this.getText('Los valores ingresados son incorrectos') }</Text>
+                    {/* <Text className="has-text-centered">{ this.getText('Los valores ingresados son incorrectos') }</Text> */}
+                    <Text className="has-text-centered">{ this.state.invalidMsg }</Text>
                   </Panel> }
                 </Column>
                 <Column className="has-text-centered" isSize={ 7 }>

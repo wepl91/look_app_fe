@@ -53,7 +53,7 @@ class PaymentForm extends Component {
       points: 0,
     })
     if(type == 'cashAndPoints'){
-      this.props.onChange && this.props.onChange( null, null, 'cashHalf', null )    
+      this.props.onChange && this.props.onChange( null, null, 'cashHalf', null, 'Los campos están vacíos' )    
     }else{
       this.props.onChange && this.props.onChange( null, null, type, null )    
     }
@@ -61,7 +61,6 @@ class PaymentForm extends Component {
   }
 
   validateCashPayment( value ){
-    //agregar mensaje de error
     return priceRegex.test(value) && value <= this.props.totalAmount
   }
 
@@ -74,25 +73,59 @@ class PaymentForm extends Component {
   }
 
   handleChange(sender, value, name, valid){
+    let message = ''
     if(name =='cashHalf'){
       this.setState({
         cashHalf: value
       })
-      valid = this.validateCashPayment( value ) && this.validatePointsPayment( this.state.pointsHalf )
+      let validCash = this.validateCashPayment( value )
+      let validPoints = this.validatePointsPayment( this.state.pointsHalf )
+      let doesNotExceedTotal = (value*1.0 + this.getConvertedPoints(this.state.pointsHalf)) <= this.props.totalAmount
+
+      if(!validCash){
+        message = 'El monto en efectivo ingresado no es válido'
+      }
+      if(!validPoints){
+        message = 'Los puntos ingresados no son válidos'
+      }
+      if(validCash && validPoints && !doesNotExceedTotal){
+        message = 'El monto excede el total a pagar'
+      }
+
+      valid = validCash && validPoints && doesNotExceedTotal
     }
     if(name =='pointsHalf'){
       this.setState({
         pointsHalf: value
       })
-      valid = this.validateCashPayment( this.state.cashHalf ) && this.validatePointsPayment( value )
+      let validCash = this.validateCashPayment( this.state.cashHalf )
+      let validPoints = this.validatePointsPayment( value )
+      let doesNotExceedTotal = (this.state.cashHalf*1.0 + this.getConvertedPoints(value)) <= this.props.totalAmount
+      if(!validCash){
+        message = 'El monto en efectivo ingresado no es válido'
+      }
+      if(!validPoints){
+        message = 'Los puntos ingresados no son válidos'
+      }
+      if(validCash && validPoints && !doesNotExceedTotal){
+        message = 'El monto excede el total a pagar'
+      }
+      valid = validCash && validPoints  && doesNotExceedTotal
     }
     if(name == 'points'){
       this.setState({
         points: value
       })
     }
+    if(name =='pointsHalf' || name =='cashHalf'){
+      if(this.state.cashHalf == 0 || this.state.pointsHalf == 0){
+        message = 'Los campos están vacíos'
+      }
+      this.props.onChange && this.props.onChange(sender, value, name, valid, message)
+    }else{
+      this.props.onChange && this.props.onChange(sender, value, name, valid)    
+    }
 
-    this.props.onChange && this.props.onChange(sender, value, name, valid)    
   }
 
   render() {
