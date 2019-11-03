@@ -47,7 +47,10 @@ class PaymentForm extends Component {
 
   handlePaymentType( type ){
     this.setState({
-      paymentType: type
+      paymentType: type,
+      cashHalf: 0,
+      pointsHalf: 0,
+      points: 0,
     })
     if(type == 'cashAndPoints'){
       this.props.onChange && this.props.onChange( null, null, 'cashHalf', null )    
@@ -63,15 +66,11 @@ class PaymentForm extends Component {
   }
 
   validatePointsPayment( value ){
-    //una vez que tengamos conversion, validar que no se este excediendo del monto total
-    // return priceRegex.test(value) && value <= this.props.clientPoints && value * (coeficienteConversion) <= this.props.totalAmount
-
-    return priceRegex.test(value) && value <= this.props.clientPoints
+    return priceRegex.test(value) && value <= this.props.clientPoints && this.getConvertedPoints(value) <= this.props.totalAmount
   }
 
-  getConvertedInputPoints(){
-    return 'placeholder puntos del input convertidos'
-    // return this.state.points * (coeficienteConversion)
+  getConvertedPoints(points){
+    return this.props.store.ui.getChange('changePurchase').convertPoints(points)
   }
 
   handleChange(sender, value, name, valid){
@@ -145,8 +144,8 @@ class PaymentForm extends Component {
 
          {this.state.paymentType == 'points' && 
          <React.Fragment>
-         <TextInput icon={ faCoins } name="points" validate={ (value) => this.validatePointsPayment(value) } onChange={ this.handleChange }/>
-         <Text>{ `${ this.getText('Equivale a: $') } ${this.getConvertedInputPoints()}` }</Text>
+          <TextInput icon={ faCoins } name="points" validate={ (value) => this.validatePointsPayment(value) } onChange={ this.handleChange }/>
+          <Text>{ `${ this.getText('Equivale a: $') } ${this.getConvertedPoints(this.state.points)}` }</Text>
          </React.Fragment>}
          
          {this.state.paymentType == 'cashAndPoints' && 
@@ -157,6 +156,7 @@ class PaymentForm extends Component {
               </Column>
               <Column isSize={ 6 }>
                 <TextInput className="mt-1" icon={ faCoins } name="pointsHalf" onChange={ this.handleChange }/>
+                <Text>{ `${ this.getText('Equivale a: $') } ${this.getConvertedPoints(this.state.pointsHalf)}` }</Text>
               </Column>
             </Columns>
           </React.Fragment>}

@@ -63,4 +63,16 @@ export default class UIStore extends Store {
     return new UISettings({}, this);
   }
 
+  getChange( type ){
+    let ret = 0
+    if (this.configs){
+      this.configs.forEach((element) =>
+        {if (element.key == type){
+          ret = element
+        }}
+      )
+    }
+    return ret
+  }
+
 }
