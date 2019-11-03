@@ -7,8 +7,11 @@ import {
   Field,
   TextInput,
   Text,
-  Panel
+  Panel,
+  Select
 } from 'shipnow-mercurio';
+
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 
 import { WorkingHoursSelector } from './';
 
@@ -34,6 +37,7 @@ class ProfessionalsForm extends Component {
     this.state = {
       days: {},
       services: null,
+      branches: null,
       selectedServices: [],
       validTimeRange: true
     }
@@ -50,6 +54,7 @@ class ProfessionalsForm extends Component {
     }
     this.setState({
       services: this.props.store.services.search({}, 'services-professional-creation-view', true),
+      branches: this.props.store.branches.search({}, 'branches-professional-creation-view', true),
     })
   }
 
@@ -122,6 +127,9 @@ class ProfessionalsForm extends Component {
         <Field className="pl-5 pr-5" label={ this.getText('Email') }>
           <TextInput name="email" className="is-fullwidth" disabled />
         </Field>
+        <Field className="pl-5 pr-5" label={ this.getText('Email') }>
+          <Select name="branch" className="is-fullwidth" disabled />
+        </Field>
         <Field className="pl-5 pr-5" label={ this.getText('¿Qué servicios ofrece?') } labelNote={ this.getText('Seleccioná los servicios') }>
           <Checkbox className="pt-1" checked={ false } >...</Checkbox>
           <Checkbox className="pt-1" checked={ false } >...</Checkbox>
@@ -135,7 +143,9 @@ class ProfessionalsForm extends Component {
   }
 
   render() {
-    if (!this.state.services || !this.state.services.isOk()) {
+    const isServicesLoaded = this.state.services && this.state.services.isOk();
+    const isBranchesLoaded = this.state.branches && this.state.branches.isOk()
+    if (!isServicesLoaded || !isBranchesLoaded) {
       return this.renderSkeleton()
     }
     const { professional } = this.props;
@@ -143,28 +153,74 @@ class ProfessionalsForm extends Component {
     return (
       <React.Fragment>
             <Field className="pl-4 pr-4" label={ this.getText('Nombre') }>
-              <TextInput value={ professional && professional.name } name="name" validate={ (value) => (nameRegex.test(value)) } className="is-fullwidth" onChange={ this.handleChange } />
+              <TextInput 
+                value={ professional && professional.name } 
+                name="name" 
+                validate={ (value) => (nameRegex.test(value)) } 
+                className="is-fullwidth" 
+                onChange={ this.handleChange } />
             </Field>
             <Field className="pl-4 pr-4" label={ this.getText('Apellido') }>
-              <TextInput value={ professional && professional.lastName } name="lastName" validate={ (value) => (nameRegex.test(value)) } className="is-fullwidth" onChange={ this.handleChange } />
+              <TextInput 
+                value={ professional && professional.lastName } 
+                name="lastName" 
+                validate={ (value) => (nameRegex.test(value)) } 
+                className="is-fullwidth" 
+                onChange={ this.handleChange } />
             </Field>
             <Field className="pl-4 pr-4" label={ this.getText('Teléfono') }>
-              <TextInput value={ professional && professional.phone } name="phone" validate={ (value) => (phoneRegex.test(value)) } className="is-fullwidth" onChange={ this.handleChange } />
+              <TextInput 
+                value={ professional && professional.phone } 
+                name="phone" 
+                validate={ (value) => (phoneRegex.test(value)) } 
+                className="is-fullwidth" 
+                onChange={ this.handleChange } />
             </Field>
             <Field className="pl-4 pr-4" label={ this.getText('Email') }>
-              <TextInput value={ professional && professional.email } name="email" validate={ (value) => (mailRegex.test(value)) } className="is-fullwidth" onChange={ this.handleChange } />
+              <TextInput 
+                value={ professional && professional.email } 
+                name="email" 
+                validate={ (value) => (mailRegex.test(value)) } 
+                className="is-fullwidth" 
+                onChange={ this.handleChange } />
             </Field>
-            {/* <Field className="pl-5 pr-5" label="¿En qué sucursal va a atender?" labelNote="Seleccioná una sucursal">
-              <Select className="is-fullwidth" placeholder="Sucursales" borderless icon={ faChevronDown } options={ sucursales().map(sucursal => ({key: sucursal.address, value: sucursal.id})) } />
-            </Field> */}
+            <Field className="pl-4 pr-4" label="¿En qué sucursal va a atender?" labelNote="Seleccioná una sucursal">
+              <Select 
+                key={ this.state.branches }
+                className="is-fullwidth" 
+                placeholder="Sucursales" 
+                name="branch" 
+                borderless 
+                icon={ faChevronDown } 
+                options={ this.state.branches.toArray().map(branch => ({key: branch.name || branch.cookedAddress, value: branch.id})) } 
+                onChange={ this.handleChange } />
+            </Field> 
             <Field className="pl-4 pr-4" label={ this.getText('¿En qué días y horarios va a trabajar?') } labelNote={ this.getText('Seleccioná los horarios semanales') }>
-              <WorkingHoursSelector name="hours" defaultProfessional={professional} startingDate={ moment('05-17-2018 09:00 AM', 'MM-DD-YYYY hh:mm A') } finishingDate={ moment('05-17-2018 06:00 PM', 'MM-DD-YYYY hh:mm A') } days={['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY']} onChange={ this.handleHours } />
-              { !this.isValidHour() && <Panel className="mt-1" color="error" invert style={{padding: '2px'}}><Text className="has-text-centered">{ this.getText('Los horarios y/o días ingresados son incorrectos') }</Text></Panel> }
+              <WorkingHoursSelector 
+                name="hours" 
+                defaultProfessional={professional} 
+                startingDate={ moment('05-17-2018 09:00 AM', 'MM-DD-YYYY hh:mm A') } 
+                finishingDate={ moment('05-17-2018 06:00 PM', 'MM-DD-YYYY hh:mm A') } 
+                days={['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY']} 
+                onChange={ this.handleHours } />
+              { !this.isValidHour() && 
+                  <Panel 
+                    className="mt-1" 
+                    color="error" 
+                    invert 
+                    style={{padding: '2px'}}>
+                    <Text className="has-text-centered">{ this.getText('Los horarios y/o días ingresados son incorrectos') }</Text>
+                  </Panel> }
             </Field>
             <Field className="pl-4 pr-4 pt-1" label={ this.getText('¿Qué servicios ofrece?') } labelNote={ this.getText('Seleccioná los servicios') }>
               {services.toArray().map(serv => (
-                <Checkbox className="pt-2" checked={ professional && professional.professionalServicesIds.includes(serv.id)} value={ serv } onCheck={ this.handleServices }>{this.getText(startCase(serv.name))}</Checkbox>
-              ))}
+                <Checkbox 
+                  className="pt-2" 
+                  checked={ professional && professional.professionalServicesIds.includes(serv.id)} 
+                  value={ serv } 
+                  onCheck={ this.handleServices }>
+                  {this.getText(startCase(serv.name))}
+                </Checkbox> ))}
             </Field>
       </React.Fragment> )
   }

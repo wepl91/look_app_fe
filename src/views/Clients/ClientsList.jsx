@@ -82,9 +82,9 @@ class ClientsList extends Component {
         size: 'is-2'
       },
       {
-        label: 'Teléfono principal',
+        label: 'Teléfono',
         content: (data) => (<Text>{ data.primaryPhone || '- sin teléfono -' }</Text>),
-        size: 'is-2'
+        size: 'is-1'
       },
       {
         label: 'Teléfono secundario',
@@ -105,6 +105,11 @@ class ClientsList extends Component {
         label: 'Categoría',
         content: (data) => (<Text>{ `${ data.category }` }</Text>),
         size: 'is-1',
+      },
+      {
+        label: 'Puntos',
+        content: (data) => (<Text>{ data.points }</Text>),
+        size: 'is-1'
       },
       {
         label: '',

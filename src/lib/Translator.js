@@ -128,7 +128,7 @@ export const translate = (str, lang) => {
     '¿Cómo se llama el nuevo usuario?': 'What is the name of the new user?',
     'Monto': 'Amount',
     'Historial de pagos': 'Payment history',
-    'Fecha de pago': '',
+    'Fecha de pago': 'Payment date',
 
   }
 

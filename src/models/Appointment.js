@@ -142,8 +142,18 @@ export default class Appointment extends Model {
   }
 
   @action
-  pay() {
-    return this.appStore.APIClient.sendRequest(`/appointments/${ this.id }/paid`, 'POST')
+  pay(money = null, points = null) {
+    let params = {};
+    if (money) {
+      params['amount'] = money;
+    }
+    if (points) {
+      params['points'] = points;
+    }
+    params['appointmentId'] = this.id;
+    params['clientId'] = this.client.id;
+    params['currency'] = 'ARS';
+    return this.appStore.APIClient.sendRequest(`/appointments/${ this.id }/pay`, 'POST', params);
   }
 
   @action
