@@ -45,18 +45,26 @@ class PaymentForm extends Component {
   }
 
   handlePaymentType( type ){
+    if(type == 'loaned'){
+      this.props.onChange && this.props.onChange( null, null, type, null )    
+    }
     this.setState({
       paymentType: type
     })
   }
 
-  //ver como se agregan mensajes al validar algo
   validateCashPayment( value ){
+    //agregar mensaje de error
     return priceRegex.test(value) && value <= this.props.totalAmount
   }
 
   validatePointsPayment( value ){
     //una vez que tengamos conversion, validar que no se este excediendo del monto total
+
+
+    //aparte de sto mostrar la equivalencia de puntos a dinero en algun lugar
+
+    //y ver la validacion de efectivoypuntos que no se actualiza a tiempo
     return priceRegex.test(value) && value <= this.props.clientPoints
   }
 

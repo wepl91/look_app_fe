@@ -50,8 +50,8 @@ class PaymentsModal extends Component {
       confirmation: false,
       appointment: this.props.appointment,
       paymentType: '',
-      cash: 0,
-      points: 0,
+      cash: null,
+      points: null,
       validCash: false,
       validPoints: false,
       confirmationData: {
@@ -71,26 +71,30 @@ class PaymentsModal extends Component {
   handlePay( name ) {
     if( name=='cancelled' ){
       this.props.onPay && this.props.onPay('cancelled')
+    }else if(this.state.paymentType == 'loaned'){
+      this.state.appointment.loan().then( response =>{ this.props.onPay && this.props.onPay('paid', response) });
     }else{
-      //realizar el pago correspondiente y mandar la response de vuelta al appointment modal
-      // ver el state: si el paymenttype es cash, hacerlo en efectivo. si es points en puntos. si es cashAndPoints hacerlo con los dos, si es fiado hacer la request correspondiente
-      // fijarse ademas si lo que estoy enviando suma el total del pago a realizar o si es parcial
-      // this.state.appointment.pay().then( response =>{ this.props.onPay && this.props.onPay('paid', response) });
+      this.state.appointment.pay(this.state.cash,this.state.points).then( response =>{ this.props.onPay && this.props.onPay('paid', response) });
     }
   }
 
   handlePaymentData(sender, value, name, valid) {
+    console.log(name)
+    console.log(value)
     if(name == 'cash'){
-      valid.type == 'success' ? this.setState({cash: value, paymentType: 'cash', validCash: true}) : this.setState({ validCash: false })
+      valid.type == 'success' ? this.setState({cash: value, points: null, paymentType: 'cash', validCash: true}) : this.setState({ validCash: false })
     }
     if(name == 'points'){
-      valid.type == 'success' ? this.setState({points: value, paymentType: 'points', validPoints: true}) : this.setState({ validPoints: false })
+      valid.type == 'success' ? this.setState({points: value, cash: null, paymentType: 'points', validPoints: true}) : this.setState({ validPoints: false })
     }
     if(name == 'cashHalf'){
       valid.type == 'success' ? this.setState({cash: value, paymentType: 'cashAndPoints', validCash: true}) : this.setState({ validCash: false })
     }
     if(name == 'pointsHalf'){
       valid.type == 'success' ? this.setState({points: value, paymentType: 'cashAndPoints', validPoints: true}) : this.setState({ validPoints: false })
+    }
+    if(name == 'loaned'){
+      this.setState({points: null, cash: null, paymentType: 'loaned'})
     }
   }
 

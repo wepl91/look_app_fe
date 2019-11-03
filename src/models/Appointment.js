@@ -145,25 +145,25 @@ export default class Appointment extends Model {
   pay(money = null, points = null) {
     let params = {};
     if (money) {
-      params['amount'] = money;
+      params['amount'] = parseInt(money,10);
     }
     if (points) {
-      params['points'] = points;
+      params['points'] = parseInt(points,10);
     }
-    params['appointmentId'] = this.id;
-    params['clientId'] = this.client.id;
+    params['appointmentId'] = parseInt(this.id,10);
+    params['clientId'] = parseInt(this.clientID,10);
     params['currency'] = 'ARS';
     return this.appStore.APIClient.sendRequest(`/appointments/${ this.id }/pay`, 'POST', params);
   }
 
   @action
-  cancel() {
-    return this.appStore.APIClient.sendRequest(`/appointments/${ this.id }/cancel`, 'POST');
+  loan() {
+    return this.appStore.APIClient.sendRequest(`/appointments/${ this.id }/pending`, 'POST');
   }
 
   @action
-  pay() {
-    return this.appStore.APIClient.sendRequest(`/appointments/${ this.id }/paid`, 'POST')
+  cancel() {
+    return this.appStore.APIClient.sendRequest(`/appointments/${ this.id }/cancel`, 'POST');
   }
 
   @action 
