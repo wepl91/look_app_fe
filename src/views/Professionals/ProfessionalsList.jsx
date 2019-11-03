@@ -125,16 +125,6 @@ class ProfessionalsList extends Component {
         size: 'is-1',
       },
       {
-        label: this.getText('Email'),
-        content: (data) => (<Text>{ data.email || this.getText('- sin email -') }</Text>),
-        size: 'is-2'
-      },
-      {
-        label: this.getText('Sucursal'),
-        content: (data) => (<Text>{ data.branch ? data.branch.name || data.branch.cookedAddress : this.getText('- sin surcursal -') }</Text>),
-        size: 'is-2'
-      },
-      {
         label: this.getText('Servicios ofrecidos'),
         content: (data) => (
           data.professionalServices.length > 0 ?
@@ -154,7 +144,7 @@ class ProfessionalsList extends Component {
         :
         <Text>{ this.getText('- Sin servicios -') }</Text>
         ),
-        size: 'is-2'
+        size: 'is-1'
       },
       {
         label: this.getText('Días de trabajo'),
@@ -182,6 +172,16 @@ class ProfessionalsList extends Component {
             </DropdownPanel>
         </Dropdown>
         ),
+        size: 'is-1'
+      },
+      {
+        label: this.getText('Email'),
+        content: (data) => (<Text>{ data.email || this.getText('- sin email -') }</Text>),
+        size: 'is-2'
+      },
+      {
+        label: this.getText('Sucursal'),
+        content: (data) => (<Text>{ data.branch ? data.branch.name || data.branch.cookedAddress : this.getText('- sin surcursal -') }</Text>),
         size: 'is-2'
       },
       {
@@ -193,7 +193,7 @@ class ProfessionalsList extends Component {
         label: '',
         content: (data) => (<Button icon={ faPencilAlt } kind="link" onClick={ () => (this.handleModal(data)) }/>),
         size: 'is-1',
-        align: 'center'
+        align: 'right'
       },
     ]
 

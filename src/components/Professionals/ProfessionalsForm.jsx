@@ -186,7 +186,7 @@ class ProfessionalsForm extends Component {
             </Field>
             <Field className="pl-4 pr-4" label="¿En qué sucursal va a atender?" labelNote="Seleccioná una sucursal">
               <Select 
-                value={ professional.branch.id }
+                value={ professional && professional.branch.id }
                 key={ this.state.branches }
                 className="is-fullwidth" 
                 placeholder="Sucursales" 
