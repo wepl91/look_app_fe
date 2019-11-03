@@ -59,6 +59,8 @@ import { withStore } from '../../hocs';
 
 import { ConfirmationModal } from '../ConfirmationModal';
 
+import { translate } from '../../lib/Translator';
+
 import './styles.css';
 
 class AppointmentModal extends Component {
@@ -155,7 +157,7 @@ class AppointmentModal extends Component {
       appointment.save().andThen( (savedAppointment, responseError) => {
         if (responseError) {
           if (this.isProfessionalBusyMsj(responseError)) {
-            toastManager.add("Ups! Parece que hubo problema! El profesional seleccionado se encuentra ocupado en el horario en el que se quiere crear el turno!", {
+            toastManager.add(this.getText('Ups! Parece que hubo problema! El profesional seleccionado se encuentra ocupado en el horario en el que se quiere crear el turno!'), {
               appearance: 'error',
               autoDismiss: true,
               pauseOnHover: false,
@@ -165,7 +167,7 @@ class AppointmentModal extends Component {
             });
           }else
           if (this.allProfessionalsBusyMsj(responseError)) {
-            toastManager.add("Ups! Parece que hubo problema! No hay profesionales que puedan atender en ese horario!", {
+            toastManager.add(this.getText('Ups! Parece que hubo problema! No hay profesionales que puedan atender en ese horario!'), {
               appearance: 'error',
               autoDismiss: true,
               pauseOnHover: false,
@@ -175,7 +177,7 @@ class AppointmentModal extends Component {
             });
           }
           else {
-            toastManager.add("Ups! Parece que hubo un error al guardar los cambios!", {
+            toastManager.add(this.getText('Ups! Parece que hubo un error al guardar los cambios!'), {
               appearance: 'error',
               autoDismiss: true,
               pauseOnHover: false,
@@ -186,7 +188,7 @@ class AppointmentModal extends Component {
           }     
         }
         else {
-          toastManager.add("El turno se reservó existosamente!", {
+          toastManager.add(this.getText('El turno se reservó existosamente!'), {
             appearance: 'success',
             autoDismiss: true,
             pauseOnHover: false,
@@ -275,7 +277,7 @@ class AppointmentModal extends Component {
     if (action == 'list') {
       data['accept']  = this.handleList;
       data['cancel']  = this.handleCancelAdvice;
-      data['content'] = 'Al cambiar a la pantalla de visualización de turnos, vas a perder los datos que hayas cargado.';
+      data['content'] = this.getText('Al cambiar a la pantalla de visualización de turnos, vas a perder los datos que hayas cargado.');
     }
     this.setState({
       infoAdvice: true,
@@ -302,10 +304,10 @@ class AppointmentModal extends Component {
   handleConfirm( action ) {
     let data = {};
     if (action == 'cancel') {
-      data['title']   = 'Cancelación de turno';
+      data['title']   = this.getText('Cancelación de turno');
       data['accept']  = this.handleCancel;
       data['cancel']  = this.handleCancelConfirm;
-      data['content'] = 'El turno será cancelado. Luego de ejecutar esta acción, no podrá revertirse.';
+      data['content'] = this.getText('El turno será cancelado. Luego de ejecutar esta acción, no podrá revertirse.');
     }
     this.setState({
       confirmation:true,
@@ -352,7 +354,7 @@ class AppointmentModal extends Component {
   renderTicketAdvise() {
     return(
       <Panel color="warning" invert style={{padding: '8px'}} className="mt-3">
-        <Text multiline>Acabas de editar el turno, recordá que podes descargar un comprobante con la informació actualizada!</Text>
+        <Text multiline>{ this.getText('Acabas de editar el turno, recordá que podes descargar un comprobante con la informació actualizada!') }</Text>
       </Panel> )
   }
 
@@ -362,22 +364,22 @@ class AppointmentModal extends Component {
     const paymentTicket = 
       <PDFDownloadLink document={ <PaymentTicket appointment={ appointment } /> } fileName={`ComprobanteDePago.pdf`}>
       {({ loading }) => ( loading ? 
-        <Button className="mt-2" kind="link" icon={ faDownload } disabled>Comprobante de pago</Button> : 
-        <Button className="mt-2" kind="link" icon={ faDownload }>Comprobante de pago</Button> )}
+        <Button className="mt-2" kind="link" icon={ faDownload } disabled>{ this.getText('Comprobante de pago') }</Button> : 
+        <Button className="mt-2" kind="link" icon={ faDownload }>{ this.getText('Comprobante de pago') }</Button> )}
       </PDFDownloadLink>;
     
     const cancelationTicket = 
         <PDFDownloadLink document={ <AppointmentCancelledTicket appointment={ appointment } /> } fileName={`Cancelacion.pdf`}>
           {({ loading }) => ( loading ? 
-            <Button className="mt-2" kind="link" icon={ faDownload } disabled>Comprobante de cancelación</Button> : 
-            <Button className="mt-2" kind="link" icon={ faDownload }>Comprobante de cancelación</Button> )}
+            <Button className="mt-2" kind="link" icon={ faDownload } disabled>{ this.getText('Comprobante de cancelación') }</Button> : 
+            <Button className="mt-2" kind="link" icon={ faDownload }>{ this.getText('Comprobante de cancelación') }</Button> )}
         </PDFDownloadLink>;
 
     const appoinmentTicket = 
         <PDFDownloadLink key={ this.state.showTicketModal }document={ <AppointmentScheduleTicket appointment={ appointment } /> } fileName={`Reserva.pdf`}>
           {({ loading }) => ( loading ? 
-            <Button kind="link" icon={ faDownload } disabled>Comprobante de reserva</Button> : 
-            <Button kind="link" icon={ faDownload }>Comprobante de reserva</Button> )}
+            <Button kind="link" icon={ faDownload } disabled>{ this.getText('Comprobante de reserva') }</Button> : 
+            <Button kind="link" icon={ faDownload }>{ this.getText('Comprobante de reserva') }</Button> )}
         </PDFDownloadLink> 
     return(
       <Columns>
@@ -386,19 +388,19 @@ class AppointmentModal extends Component {
         </Column>
         <Column isSize={ 2 }></Column>
         <Column isSize={ 4 }>
-        <Title size="md">Comprobantes</Title>
+        <Title size="md">{ this.getText('Comprobantes')}</Title>
         { appointment.isOpen      && appoinmentTicket }
         { appointment.isPaid      && paymentTicket }
         { appointment.isCancelled && cancelationTicket } 
-        { appointment.isOpen && <Title className="mt-3" size="md">Acciones</Title> }
+        { appointment.isOpen && <Title className="mt-3" size="md">{ this.getText('Acciones') }</Title> }
         <div className="appointment-accions">
         { appointment.isOpen && 
           <Text>
-          <Button kind="link" icon={ faBan } onClick={ () => (this.handleConfirm('cancel')) }>Cancelar turno</Button>
+          <Button kind="link" icon={ faBan } onClick={ () => (this.handleConfirm('cancel')) }>{ this.getText('Cancelar turno') }</Button>
           </Text> }
           { appointment.isOpen && 
             <Text>
-            <Button className="mt-2" kind="link" icon={ faMoneyBill } onClick={ this.handlePay }>Efectuar pago </Button>
+            <Button className="mt-2" kind="link" icon={ faMoneyBill } onClick={ this.handlePay }>{ this.getText('Efectuar pago') }</Button>
             </Text> }
             </div>
           { this.state.showTicketModal && this.renderTicketAdvise() }
@@ -414,34 +416,34 @@ class AppointmentModal extends Component {
         size: 'is-1',
       },
       {
-        label: 'Cliente',
-        content: (data) => (<Text>{ data.clientFullName != '' ? data.clientFullName : '- sin cliente -' }</Text>),
+        label: this.getText('Cliente'),
+        content: (data) => (<Text>{ data.clientFullName != '' ? data.clientFullName : this.getText('- sin cliente -') }</Text>),
         size: 'is-2',
       },
       {
-        label: 'Profesional',
-        content: (data) => (<Text>{ data.professionalFullName ? data.professionalFullName : '- sin profesional -' }</Text>),
+        label: this.getText('Profesional'),
+        content: (data) => (<Text>{ data.professionalFullName ? data.professionalFullName : this.getText('- sin profesional -') }</Text>),
         size: 'is-2'
       },
       {
-        label: 'Horario',
-        content: (data) => (<Text>{ `De ${ data.beginningTime } hs a ${ data.finishTime }` }</Text>),
-        size: 'is-2',
+        label: this.getText('Horario'),
+        content: (data) => (<Text>{ `${ this.getText('De') } ${ data.beginningTime } hs ${ this.getText('a') } ${ data.finishTime }` }</Text>),
+        size: 'is-3',
       },
       {
-        label: 'Precio',
+        label: this.getText('Precio'),
         content: (data) => (<Text>{ `$${ data.totalPrice }` }</Text>),
-        size: 'is-2',
+        size: 'is-1',
         align: 'center',
       },
       {
-        label: 'Estado',
+        label: this.getText('Estado'),
         content: (data) => (<Text>{ data.cookedStatus }</Text>),
         size: 'is-2',
         align: 'center',
       },
       {
-        label: 'Detalles',
+        label: this.getText('Detalles'),
         content: (data) => (<Button kind="link" icon={ faInfoCircle } onClick={ () => ( this.handleShowDetails(data) ) }/>),
         size: 'is-1',
         align: 'center'
@@ -452,7 +454,7 @@ class AppointmentModal extends Component {
       return(
         <Columns className="has-text-centered">
           <Column>
-            <Title size="md">No hay turnos para la fecha</Title>
+            <Title size="md">{ this.getText('No hay turnos para la fecha') }</Title>
             <SvgDraw2  className="empty_draw" />
           </Column>
         </Columns> )
@@ -471,15 +473,27 @@ class AppointmentModal extends Component {
     return moment(date.format('DD-MM-YYYY')).isBefore(today.format('DD-MM-YYYY'));
   }
 
+  getText(text) {
+    return translate(text, this.props.store.ui.language)
+  }
+
+  getLang() {
+    const langs = {
+      'Español': 'es',
+      'Ingles': 'en'
+    }
+    return langs[this.props.store.ui.language]
+  }
+
   render() {
     const { date } = this.props
     return(
       <React.Fragment>
-        <Modal width="70%" height="90%" show>
+        <Modal width="70%" height="95%" show>
           <ModalHeader>
             <Level>
               <LevelLeft>
-                <Title>{ this.state.renderCreate ? 'Nuevo turno' : `${ moment(date).format('LL') }` }</Title>
+                <Title>{ this.state.renderCreate ? this.getText('Nuevo turno') : `${ moment(date). locale(this.getLang()).format('LL') }` }</Title>
               </LevelLeft>
               <LevelRight>
               <Button icon="plus" kind="link" size="xl" onClick={ this.handleClose }>
@@ -497,19 +511,19 @@ class AppointmentModal extends Component {
             <Level>
               <LevelLeft>
                 { this.state.renderCreate && 
-                <Button kind="outline" onClick={ this.handleSave }>Reservar turno</Button> }
+                <Button kind="outline" onClick={ this.handleSave }>{ this.getText('Reservar turno') }</Button> }
                 { this.state.renderDetails &&
                   ( this.state.isSaving ? 
-                    <Button kind="outline" disable icon={ faSpinner } pulse>Guardando..</Button> : 
-                    <Button kind="outline" onClick={ this.handleSaveEdit } disabled={ this.getDisabled() }>Guardar</Button> ) }
+                    <Button kind="outline" disable icon={ faSpinner } pulse>{ this.getText('Guardando..') }</Button> : 
+                    <Button kind="outline" onClick={ this.handleSaveEdit } disabled={ this.getDisabled() }>{ this.getText('Guardar') }</Button> ) }
               </LevelLeft>
               <LevelLeft>
                 { this.state.renderCreate || this.state.renderDetails ?
                   <Button kind="link" onClick={ () => ( this.handleInformationAdvice('list') ) }>
-                    <FontAwesomeIcon className="mr-2" icon={ faCalendarAlt }/>Ver los turnos de hoy</Button> : null }
+                    <FontAwesomeIcon className="mr-2" icon={ faCalendarAlt }/>{ this.getText('Ver los turnos de hoy') }</Button> : null }
                 { this.state.renderList && 
                   <Button kind="link" onClick={ this.handleCreate } disabled={ this.getCreateDisabled() }>
-                    <FontAwesomeIcon className="mr-2" icon={ faCalendarAlt }/>Crear un turno para hoy</Button> }
+                    <FontAwesomeIcon className="mr-2" icon={ faCalendarAlt }/>{ this.getText('Crear un turno para hoy') }</Button> }
               </LevelLeft>
             </Level>
           </ModalFooter>

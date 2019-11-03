@@ -10,7 +10,7 @@ class LanguageDropdown extends Component {
     this.handleChange = this.handleChange.bind(this);
 
     this.state = {
-      languag: this.props.store.ui.language
+      language: this.props.store.ui.language
     }
   }
 

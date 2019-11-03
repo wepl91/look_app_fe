@@ -25,6 +25,8 @@ import { AppointmentCalendar } from '../../components/Appointments';
 import startCase from 'lodash/startCase';
 import { faChevronCircleLeft, faChevronCircleRight, faSpinner, faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+
+import { translate } from '../../lib/Translator';
 @observer
 class AppointmentsList extends Component {
     constructor(props) {
@@ -101,7 +103,7 @@ class AppointmentsList extends Component {
     getProfessionalList() {
         const ret = [];
         ret.push({
-            key: '- Sin profesional -',
+            key: this.getText('- sin profesional -'),
             value: 'null',
         });
         this.state.professionals.toArray().forEach(prof => {
@@ -110,31 +112,35 @@ class AppointmentsList extends Component {
         return ret;
     }
 
+    getText(text) {
+        return translate(text, this.props.store.ui.language)
+    }
+
     renderLoader() {
 
         return (
             <React.Fragment>
                 <Level className="pl-3 pr-3">
                     <LevelLeft style={{ paddingRight: '6px' }}>
-                        <Title>Calendario de turnos</Title>
+                        <Title>{ this.getText('Calendario de turnos') }</Title>
                     </LevelLeft>
                     <LevelRight></LevelRight>
                 </Level>
                 <hr />
                 <Columns className="pl-4 pr-3">
                     <Column isSize={3} className="pl-2 pr-2">
-                        <Field label="¿Querés ver los turnos de un único profesional?" labelNote="Selecciona un profesional">
+                        <Field label={ this.getText('¿Querés ver los turnos de un único profesional?') } labelNote={ this.getText('Selecciona un profesional')}>
                             <Select
                                 value={'null'}
-                                placeholder="Profesionales"
+                                placeholder={ this.getText('Profesionales') }
                                 borderless
                                 icon={faChevronDown}
                                 loading={!this.state.professionals || !this.state.professionals.isOk()}
-                                value={[{key: '- Sin profesional -',value: 'null',}]}/>
+                                value={[{key: this.getText('- sin profesional -'),value: 'null',}]}/>
                         </Field>
                     </Column>
                 </Columns>
-                <Loader icon={faSpinner} label="Cargando los turnos.." className="fullscreen" />
+                <Loader icon={faSpinner} label={ this.getText('Cargando los turnos..') } className="fullscreen" />
             </React.Fragment>)
     }
 
@@ -146,19 +152,19 @@ class AppointmentsList extends Component {
             <React.Fragment>
                 <Level className="pl-3 pr-3">
                     <LevelLeft style={{ paddingRight: '6px' }}>
-                        <Title>Calendario de turnos</Title>
+                        <Title>{this.getText('Calendario de turnos')}</Title>
                     </LevelLeft>
                     <LevelRight></LevelRight>
                 </Level>
                 <hr />
                 <Columns className="pl-4 pr-3">
                     <Column isSize={3} className="pl-2 pr-2">
-                        <Field label="¿Querés ver los turnos de un profesional?" labelNote="Selecciona un profesional">
+                        <Field label={ this.getText('¿Querés ver los turnos de un único profesional?') } labelNote={ this.getText('Selecciona un profesional')}>
                             <Select
                                 value={this.state.filterProf}
                                 key={ this.state.professionals }
                                 onChange={ this.handleProfessional }  
-                                placeholder="Profesionales"
+                                placeholder={ this.getText('Profesionales') }
                                 borderless
                                 icon={faChevronDown}
                                 loading={!this.state.professionals || !this.state.professionals.isOk()}
@@ -179,13 +185,13 @@ class AppointmentsList extends Component {
                 </Columns>
                 <Columns className="pl-3" isVCentered>
                     <Column className="has-text-left">
-                        <Button onClick={this.handleMonth} name="prev" kind="outline">{`${startCase(moment(this.state.date).subtract(1, 'months').format('MMMM'))}`}</Button>
+                        <Button onClick={this.handleMonth} name="prev" kind="outline">{`${this.getText(startCase(moment(this.state.date).subtract(1, 'months').format('MMMM')))}`}</Button>
                     </Column>
                     <Column className="has-text-centered" isSize={2}>
-                        <Text weight="medium" size="xl" color="primaryDark">{startCase(this.state.date.format('MMMM'))}</Text>
+                        <Text weight="medium" size="xl" color="primaryDark">{this.getText(startCase(this.state.date.format('MMMM')))}</Text>
                     </Column>
                     <Column className="has-text-right pr-4">
-                        <Button onClick={this.handleMonth} name="next" kind="outline">{`${startCase(moment(this.state.date).add(1, 'months').format('MMMM'))}`}</Button>
+                        <Button onClick={this.handleMonth} name="next" kind="outline">{`${this.getText(startCase(moment(this.state.date).add(1, 'months').format('MMMM')))}`}</Button>
                     </Column>
                 </Columns>
                 <AppointmentCalendar onReload={this.handleReload} key={this.state.datesInWeeks} weeks={this.state.datesInWeeks} appointments={this.state.appointments.toArray()} />

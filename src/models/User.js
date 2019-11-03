@@ -14,7 +14,6 @@ export default class User extends Model {
 
     let defaultAttributes = {
       username: '',
-      fullName: '',
       email: '',
       roles: [],
       name: '',

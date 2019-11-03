@@ -16,6 +16,10 @@ import {
 
 import { observable } from 'mobx';
 
+import { translate } from '../../lib/Translator';
+
+import { withStore } from '../../hocs';
+
 import { observer } from 'mobx-react';
 
 @observer
@@ -38,7 +42,7 @@ class ProfessionalSuggest extends Component {
   }
 
   handleInput( sender, value, name ) {
-    if (value == '- Ninguno -') {
+    if (value == this.getText('- Ninguno -')) {
       this.props.onChange && this.props.onChange(null);
     }
     const filtered = value == '' || !value ? this.professionals : this.professionals.filter( professional => professional.fullName.includes(value)) 
@@ -57,11 +61,15 @@ class ProfessionalSuggest extends Component {
   }
 
   handleSelect( professional ) {
-    this.value = professional == 'null' ? '- Ninguno -' : professional.fullName;
+    this.value = professional == 'null' ? this.getText('- Ninguno -'): professional.fullName;
     this.setState({
       showPanel: false,
     })
     this.props.onChange && this.props.onChange(professional == 'null' ? null : professional);
+  }
+
+  getText(text) {
+    return translate(text, this.props.store.ui.language)
   }
 
   render() {
@@ -72,7 +80,7 @@ class ProfessionalSuggest extends Component {
           <TextInput
             disabled={ disabled }
             borderless={ !this.state.showPanel }
-            placeholder="Profesional"
+            placeholder={ this.getText('Profesional') }
             className="is-fullwidth" 
             icon={ faChevronDown } 
             value={ this.value } 
@@ -80,7 +88,7 @@ class ProfessionalSuggest extends Component {
             onFocus={ () => (this.setState({showPanel: true}))} onBlur={ () => (this.setState({showPanel: false})) }/>
         </DropdownToggle>
           <DropdownPanel key={ this.state.suggest }>
-            <Text className="mb-1" size="md" onClick={ () => (this.handleSelect('null')) }>- Ninguno -</Text>
+            <Text className="mb-1" size="md" onClick={ () => (this.handleSelect('null')) }>{ this.getText('- Ninguno -') }</Text>
             { this.suggest && this.suggest.map( (professional, index) => (
               index < 5 && <Text className="mb-1" size="md" onClick={ () => (this.handleSelect(professional)) }>{ professional.fullName }</Text> )) }
           </DropdownPanel>
@@ -104,4 +112,4 @@ ProfessionalSuggest.defaultProps = {
   onChange: null,
 }
 
-export default ProfessionalSuggest
+export default withStore(ProfessionalSuggest);

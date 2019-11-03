@@ -131,19 +131,18 @@ class UsersList extends Component {
       },
       {
         label: this.getText('Nombre'),
-        content: (data) => (<Text>{startCase(data.cookedFullName) || this.getText('- sin nombre -')}</Text>),
-        size: 'is-2'
+        content: (data) => (
+          <React.Fragment>
+            { data.name && <Text>{startCase(data.name) }</Text>}
+            { data.lastName && <Text>{startCase(data.lastName) }</Text> }
+            { !data.name && !data.lastName && <Text>{this.getText('- sin nombre -')}</Text> }
+          </React.Fragment>),
+        size: 'is-1'
       },
       {
         label: this.getText('Mail'),
         content: (data) => (<Text>{data.email || this.getText('- sin email -')}</Text>),
         size: 'is-2'
-      },
-      {
-        label: '',
-        content: null,
-        size: 'is-1',
-        align: 'left'
       },
       {
         label: this.getText('Rol'),
@@ -177,7 +176,7 @@ class UsersList extends Component {
         label: '',
         content: (data) => (<Button icon={faPencilAlt} kind="link" onClick={() => (this.handleShowModal(data))} />),
         size: 'is-1',
-        align: 'right'
+        align: 'center'
       },
     ]
 
@@ -200,7 +199,7 @@ class UsersList extends Component {
       <React.Fragment>
         <Level>
           <LevelLeft>
-            <Title>{this.getText("Lista de Usuarios")}</Title>
+            <Title>{this.getText("Listado de usuarios")}</Title>
           </LevelLeft>
         </Level>
         <hr />

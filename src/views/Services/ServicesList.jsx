@@ -102,7 +102,7 @@ class ServicesList extends Component {
       <React.Fragment>
         <Level>
           <LevelLeft>
-            <Title>{ this.getText('Lista de servicios') }</Title>
+            <Title>{ this.getText('Listado de servicios') }</Title>
           </LevelLeft>
         </Level>
         <hr/>

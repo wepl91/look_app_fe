@@ -13,9 +13,11 @@ import {
   Text,
 } from 'shipnow-mercurio';
 
-import { observable } from 'mobx';
-
 import { observer } from 'mobx-react';
+
+import { translate } from '../../lib/Translator';
+
+import { withStore } from '../../hocs';
 
 @observer
 class ClientSuggest extends Component {
@@ -50,6 +52,10 @@ class ClientSuggest extends Component {
     this.props.onChange && this.props.onChange(client);
   }
 
+  getText(text) {
+    return translate(text, this.props.store.ui.language)
+  }
+
   render() {
     const { disabled } = this.props;
     return(
@@ -58,7 +64,7 @@ class ClientSuggest extends Component {
           <TextInput
             disabled={ disabled }
             borderless={ !this.state.showPanel }
-            placeholder="Cliente"
+            placeholder={ this.getText('Cliente') }
             className="is-fullwidth" 
             icon={ faChevronDown } 
             value={ this.state.value } 
@@ -66,14 +72,12 @@ class ClientSuggest extends Component {
             onFocus={ () => (this.setState({showPanel: true}))} onBlur={ () => (this.setState({showPanel: false})) }/>
         </DropdownToggle>
           <DropdownPanel>
-            <Text className="mb-1" size="md" onClick={ () => (this.handleSelect('null')) }>- Cliente no registrado -</Text>
+            <Text className="mb-1" size="md" onClick={ () => (this.handleSelect('null')) }>{ this.getText('- Cliente no registrado -') }</Text>
             { this.state.suggest && this.state.suggest.map( (client, index) => (
               index < 5 && <Text className="mb-1" size="md" onClick={ () => (this.handleSelect(client)) }>{ client.fullName }</Text> )) }
           </DropdownPanel>
       </Dropdown> )
   }
-
-
 }
 
 ClientSuggest.PropTypes = {
@@ -90,4 +94,4 @@ ClientSuggest.defaultProps = {
   value: null
 }
 
-export default ClientSuggest
+export default withStore(ClientSuggest);
