@@ -78,14 +78,14 @@ class AppointmentCreation extends Component {
             });
           }else
           if (this.allProfessionalsBusyMsj(responseError)) {
-            toastManager.add(this.getText('Ups! Parece que hubo problema! No hay profesionales que puedan atender en ese horario!', {
+            toastManager.add(this.getText('Ups! Parece que hubo problema! No hay profesionales que puedan atender en ese horario!'), {
               appearance: 'error',
               autoDismiss: true,
               pauseOnHover: false,
             });
           }
           else {
-            toastManager.add(this.getText('Ups! Parece que hubo un error al guardar los cambios!', {
+            toastManager.add(this.getText('Ups! Parece que hubo un error al guardar los cambios!'), {
               appearance: 'error',
               autoDismiss: true,
               pauseOnHover: false,
