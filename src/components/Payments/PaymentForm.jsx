@@ -53,7 +53,7 @@ class PaymentForm extends Component {
       points: 0,
     })
     if(type == 'cashAndPoints'){
-      this.props.onChange && this.props.onChange( null, null, 'cashHalf', null, 'Los campos están vacíos' )    
+      this.props.onChange && this.props.onChange( null, null, 'cashHalf', null, this.getText('Los campos están vacíos') )    
     }else{
       this.props.onChange && this.props.onChange( null, null, type, null )    
     }
@@ -83,13 +83,13 @@ class PaymentForm extends Component {
       let doesNotExceedTotal = (value*1.0 + this.getConvertedPoints(this.state.pointsHalf)) <= this.props.totalAmount
 
       if(!validCash){
-        message = 'El monto en efectivo ingresado no es válido'
+        message = this.getText('El monto en efectivo ingresado no es válido')
       }
       if(!validPoints){
-        message = 'Los puntos ingresados no son válidos'
+        message = this.getText('Los puntos ingresados no son válidos')
       }
       if(validCash && validPoints && !doesNotExceedTotal){
-        message = 'El monto excede el total a pagar'
+        message = this.getText('El monto excede el total a pagar')
       }
 
       valid = validCash && validPoints && doesNotExceedTotal
@@ -102,13 +102,13 @@ class PaymentForm extends Component {
       let validPoints = this.validatePointsPayment( value )
       let doesNotExceedTotal = (this.state.cashHalf*1.0 + this.getConvertedPoints(value)) <= this.props.totalAmount
       if(!validCash){
-        message = 'El monto en efectivo ingresado no es válido'
+        message = this.getText('El monto en efectivo ingresado no es válido')
       }
       if(!validPoints){
-        message = 'Los puntos ingresados no son válidos'
+        message = this.getText('Los puntos ingresados no son válidos')
       }
       if(validCash && validPoints && !doesNotExceedTotal){
-        message = 'El monto excede el total a pagar'
+        message = this.getText('El monto excede el total a pagar')
       }
       valid = validCash && validPoints  && doesNotExceedTotal
     }
@@ -119,7 +119,7 @@ class PaymentForm extends Component {
     }
     if(name =='pointsHalf' || name =='cashHalf'){
       if(this.state.cashHalf == 0 || this.state.pointsHalf == 0){
-        message = 'Los campos están vacíos'
+        message = this.getText('Los campos están vacíos')
       }
       this.props.onChange && this.props.onChange(sender, value, name, valid, message)
     }else{
@@ -139,7 +139,7 @@ class PaymentForm extends Component {
                 value="loaned" 
                 onChange={ () => (this.handlePaymentType('loaned')) }
                 checked={ this.state.paymentType == 'loaned'} />
-              { this.getText('Fiado') }
+              { this.getText('Fiar') }
           </Text>
           <Text className="ml-1 mt-2" size="lg" weight="medium">
               <input 

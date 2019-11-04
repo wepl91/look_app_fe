@@ -199,6 +199,24 @@ export const translate = (str, lang) => {
     '- Cliente no registrado -': '- Unregistered customer -',
     'Ver los turnos de hoy': "See today's appointments", 
     'Reservar turno': 'Book appointment',
+    'Los campos están vacíos': 'The fields are empty',
+    'El monto en efectivo ingresado no es válido': 'The entered money amount is not valid',
+    'Los puntos ingresados no son válidos': 'The entered points are not valid',
+    'El monto excede el total a pagar': 'The amount exceeds the total price',
+    'Tipo de pago': 'Payment type',
+    '¿De qué manera desea realizar el pago?': 'How would you like to make your payment?',
+    'Fiar': 'Loan',
+    'Efectivo': 'Cash',
+    'Puntos': 'Points',
+    'Efectivo y puntos': 'Cash and points',
+    'Ingrese los montos': 'Enter the amounts',
+    '¿Cuánto va abonar?': 'How much are you gonna pay?',
+    '(Equivale a: $': '(Equivalent to: $',
+    'Abonar turno': 'Pay appointment',
+    'Estás por efectuar el pago. ¿Estás seguro?': 'You\'re about to realize the payment. Are you sure?',
+    'Total a abonar: $': 'Total amount: $',
+    'puntos disponibles ': 'available points ',
+    'Efectuar pago': 'Pay'
     
   }
 

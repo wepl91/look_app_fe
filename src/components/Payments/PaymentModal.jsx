@@ -108,10 +108,10 @@ class PaymentsModal extends Component {
   handleConfirm( ) {
     let data = {};
 
-    data['title']   = 'Abonar turno';
+    data['title']   = this.getText('Abonar turno');
     data['accept']  = this.handlePay;
     data['cancel']  = this.handleCancelConfirm;
-    data['content'] = 'Estás por efectuar el pago. ¿Estás seguro?';
+    data['content'] = this.getText('Estás por efectuar el pago. ¿Estás seguro?');
 
     this.setState({
       confirmation:true,
@@ -162,7 +162,7 @@ class PaymentsModal extends Component {
     const { appointment } = this.state
     return(
       <React.Fragment>
-        <Modal width="70%" height="90%" show>
+        <Modal width="70%" height="95%" show>
           <ModalHeader>
             <Level>
               <LevelLeft>
@@ -187,7 +187,6 @@ class PaymentsModal extends Component {
                     color="error" 
                     invert 
                     style={{padding: '2px'}}>
-                    {/* <Text className="has-text-centered">{ this.getText('Los valores ingresados son incorrectos') }</Text> */}
                     <Text className="has-text-centered">{ this.state.invalidMsg }</Text>
                   </Panel> }
                 </Column>
@@ -199,7 +198,7 @@ class PaymentsModal extends Component {
           <ModalFooter>
             <Level>
               <LevelLeft>
-                  <Button kind="outline" name="paid" onClick={ this.handleConfirm } disabled={ this.getDisabled() }>Efectuar pago</Button>
+                  <Button kind="outline" name="paid" onClick={ this.handleConfirm } disabled={ this.getDisabled() }>{this.getText('Efectuar pago')}</Button>
               </LevelLeft>
             </Level>
           </ModalFooter>
