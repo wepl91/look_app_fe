@@ -40,4 +40,9 @@ export default class Client extends Model {
   get fullName() {
     return `${ startCase(this.name) } ${ startCase(this.lastName) }`
   }
+
+  @computed
+  get cookedPhone() {
+    return this.primaryPhone || this.secondPhone;
+  }
 }

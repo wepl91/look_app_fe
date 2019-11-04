@@ -199,6 +199,13 @@ export const translate = (str, lang) => {
     '- Cliente no registrado -': '- Unregistered customer -',
     'Ver los turnos de hoy': "See today's appointments", 
     'Reservar turno': 'Book appointment',
+    'El turno no posee ningún pago aún': 'The appointment has no payment yet',
+    'Aviso': 'Advise',
+    'Aceptar': 'Accept',
+    'Se ha creado un nuevo ususario.': 'A new user have been created.',
+    'Su contraseña es:': 'His/her password is:',
+    'Actualizarla una vez que inicie sesión.': 'Update it once he/she logs in.',
+    'Recomendación': 'Recommendation: ',
     'Los campos están vacíos': 'The fields are empty',
     'El monto en efectivo ingresado no es válido': 'The entered money amount is not valid',
     'Los puntos ingresados no son válidos': 'The entered points are not valid',
@@ -219,7 +226,8 @@ export const translate = (str, lang) => {
     'Efectuar pago': 'Pay',
     'El campo está vacío': 'The field is empty',
     'El cliente no cuenta con puntos suficientes': 'The costumer doesn\'t have enough points',
-    'El monto ingresado no es válido': 'The entered amount is invalid'
+    'El monto ingresado no es válido': 'The entered amount is invalid',
+    'Ups! Parece que hubo problema! El profesional seleccionado no trabaja en el horario o dia seleccionado!': 'Ups! It seems there was a problem! The selected professional is not working on the selected date or at the selected hour!'
     
   }
 

@@ -15,7 +15,7 @@ class AppointmentCancelledTicket extends Component {
         <View style={styles.section}>
           <Text style={styles.title}>Cancelación de turno</Text>
           <Text style={styles.description}>
-            { `Cancelación de turno${ appointment.client ? ` de ${ startCase(appointment.client.name) } ${ appointment.client.lastName }` : ''} correspondiente al día ${ moment(appointment.dayHour).format("dddd, MMMM Do YYYY") }` }
+            { `Cancelación de turno${ appointment.client ? ` de ${ startCase(appointment.client.name) } ${ appointment.client.lastName }` : ''} correspondiente al día ${ moment(appointment.dayHour).format("DD-MM-YYYY") }` }
           </Text>
           <Text style={styles.brand}>Hair&Head</Text>
         </View>

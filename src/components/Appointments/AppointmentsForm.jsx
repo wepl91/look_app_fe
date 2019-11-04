@@ -40,7 +40,7 @@ class AppointmentsForm extends Component {
     this.handleBranch       = this.handleBranch.bind(this); 
     this.handleDate         = this.handleDate.bind(this);
     this.handleHour         = this.handleHour.bind(this);
-
+    debugger
     this.state = {
       branch: this.props.appointment ? this.props.appointment.branch : null,
       professional: this.props.appointment ? this.props.appointment.professional : 'null',
@@ -190,6 +190,7 @@ class AppointmentsForm extends Component {
         { services.length > 0 ? 
             services.map( service => ( 
               <Checkbox 
+                disabled={ this.props.canNotEdit }
                 key={ service.id + randomizer } 
                 className="mt-2" checked={ this.isServiceInAppointment(service.id) } 
                 onCheck={() => this.handleServices(service.id, service.price)}>
@@ -202,12 +203,12 @@ class AppointmentsForm extends Component {
 
   renderProfessionals() {
     const isDisabled = !this.state.branch;
-    debugger
+    const { canNotEdit } = this.props;
     return(
       <Field className="ml-5" label={ this.getText('¿Por quién querés ser atendido?') } labelNote={ this.getText('Seleccioná un profesional') }>
           <ProfessionalSuggest 
             key={ this.state.branch } 
-            disabled={ isDisabled } 
+            disabled={ isDisabled || canNotEdit} 
             onChange={ this.handleProfessional }
             professionals={ this.state.branch ? this.state.branch.professionals : null} 
             value={ this.state.professional } />
@@ -215,11 +216,11 @@ class AppointmentsForm extends Component {
   }
 
   renderClients() {
-    const { appointment, edit } = this.props;
+    const { appointment, edit, canNotEdit } = this.props;
     return(
       <Field className="ml-5" label={ this.getText('¿Quién quiere ser atendido?') } labelNote={ this.getText('Seleccioná un cliente') }>
         <ClientSuggest 
-          disabled={ edit } 
+          disabled={ edit || canNotEdit } 
           value={ appointment ? appointment.client : null } 
           onChange={ this.handleClient } 
           clients={ this.state.clients && this.state.clients.toArray() }/>
@@ -227,9 +228,11 @@ class AppointmentsForm extends Component {
   }
 
   renderBranches() {
+    const {  canNotEdit } = this.props;
     return(
       <Field className="ml-5" label={ this.getText('¿A cual de nuestras sucursales querés venir?') } labelNote={ this.getText('Seleccioná una sucursal') }>
         <Select
+          disabled={ canNotEdit }
           key={ this.state.branches }
           placeholder={ this.getText('Sucursales') } 
           borderless 
@@ -254,10 +257,11 @@ class AppointmentsForm extends Component {
   }
 
   renderHourPicker() {
-    const { appointment } = this.props;
+    const { appointment, canNotEdit } = this.props;
     return(
       <Field className="ml-5" label={ this.getText('¿A que hora querés venir?') } labelNote={ this.getText('Seleccioná un horario') }>
         <Select 
+          disabled={ canNotEdit }
           key={ this.state }
           maxHeight="120px" 
           placeholder={ this.getText('Horarios') } 
@@ -353,12 +357,14 @@ AppointmentsForm.PropTypes = {
   withDate: PropTypes.bool,
   appointment: PropTypes.object,
   edit: PropTypes.bool,
+  canNotEdit: PropTypes.bool,
 }
 
 AppointmentsForm.defaultProps = {
   withDate: false,
   appointment: null,
   edit: false,
+  canNotEdit: false,
 }
 
 export default withStore(AppointmentsForm);

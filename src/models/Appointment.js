@@ -51,9 +51,7 @@ export default class Appointment extends Model {
       this.services = modeledServices;
     }
     if (this.branch) {
-      this.appStore.stores.get('branches').get(this.branch.id).andThen( branch => {
-        this.branch = branch;
-      })
+      this.branch = new Branch(this.branch, BranchesStore);
     }
   }
 
@@ -105,12 +103,22 @@ export default class Appointment extends Model {
     }
 
     this.services.map( service => ( total += parseInt(service.price) ));
-    return total;
+    return parseFloat(total);
   }
 
   @computed
   get isOpen() {
     return this.status.name === 'OPEN';
+  }
+
+  @computed
+  get isPartialPaid() {
+    return this.status.name == 'PARTIAL_PAID' || this.status.name == 'PENDING_PAID'
+  }
+
+  @computed
+  get isTrustworthy() {
+    return this.status.name == 'PENDING_PAID';
   }
 
   @computed
@@ -170,6 +178,9 @@ export default class Appointment extends Model {
   clean() {
     if (this.client instanceof Object) {
       this.client = this.client.id
+    }
+    if (this.branch instanceof Object) {
+      this.branch = this.branch.id
     }
     if (this.professional instanceof Object) {
       this.professional = this.professional.id;

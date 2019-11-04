@@ -20,7 +20,7 @@ class PaymentTicket extends Component {
         <Page size="A4" style={styles.page}>
         <View style={styles.section}>
           <Text style={styles.title}>Comprobante de pago</Text>
-          <Text style={styles.description}>{ `El cliente ${ appointment.client ? startCase(appointment.client.name) : ''} ${ appointment.client ? startCase(appointment.client.lastName) : ''} abonó en efectivo ${ `$${ this.getTotalAmount(appointment) }` } por el turno correspondiente al día ${ moment(appointment.dayHour).format("dddd, MMMM Do YYYY") }`}</Text>
+          <Text style={styles.description}>{ `El cliente ${ appointment.client ? startCase(appointment.client.name) : ''} ${ appointment.client ? startCase(appointment.client.lastName) : ''} abonó ${ `$${ this.getTotalAmount(appointment) }` } por el turno correspondiente al día ${ moment(appointment.dayHour).format("DD-MM-YYYY") } a las ${ appointment.beginningTime }`}</Text>
           <View style={styles.details}>
             { appointment.professional && <Text style={styles.service}>{ `Atendido por ${ appointment.professionalFullName }` }</Text> }
             <Text style={ styles.subtitle }>Servicios:</Text>

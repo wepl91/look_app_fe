@@ -32,7 +32,7 @@ class Checkbox extends Component {
     const { children, size, className } = this.props;
     const { checked } = this.state;
     return(
-      <Text color="black" weight="medium" className={ className } onClick={ this.handleCheck } size={ size }>
+      <Text color="black" weight="medium" className={ className } onClick={ !this.props.disabled && this.handleCheck } size={ size }>
         <FontAwesomeIcon className="ml-1 mr-1" size="sm" icon={ checked ? faCheckSquare : faSquare }/>
         { children }
       </Text> );
@@ -46,6 +46,7 @@ Checkbox.PropTypes = {
   children: PropTypes.node,
   onCheck: PropTypes.func,
   value: PropTypes.any,
+  disabled: PropTypes.bool,
 };
 Checkbox.defaultProps = {
   className: PropTypes.string,
@@ -53,7 +54,8 @@ Checkbox.defaultProps = {
   checked: false,
   children: '',
   onCheck: null,
-  value: null
+  value: null,
+  disabled: false
 }
 
 export default Checkbox;

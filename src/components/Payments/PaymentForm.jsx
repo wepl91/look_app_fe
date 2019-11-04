@@ -197,11 +197,11 @@ class PaymentForm extends Component {
         <Field className="mt-4" label={ this.getText('Ingrese los montos') } labelNote={ this.getText('¿Cuánto va abonar?') } size="lg">
 
          {this.state.paymentType == 'cash' && 
-         <TextInput icon={ faMoneyBill } name="cash" validate={ (value) => this.validateCashPayment(value) } onChange={ this.handleChange }/>}
+         <TextInput className="is-fullwidth" icon={ faMoneyBill } name="cash" validate={ (value) => this.validateCashPayment(value) } onChange={ this.handleChange }/>}
 
          {this.state.paymentType == 'points' && 
          <React.Fragment>
-          <TextInput icon={ faCoins } name="points" validate={ (value) => this.validatePointsPayment(value) } onChange={ this.handleChange }/>
+          <TextInput className="is-fullwidth" icon={ faCoins } name="points" validate={ (value) => this.validatePointsPayment(value) } onChange={ this.handleChange }/>
           <Text className="has-text-centered" >{ `${ this.getText('(Equivale a: $') } ${this.getConvertedPoints(this.state.points)})` }</Text>
          </React.Fragment>}
          
@@ -221,7 +221,7 @@ class PaymentForm extends Component {
               </React.Fragment>
               </Column>
               <Column>
-                <Text>{ ` =  $ ${this.getConvertedPoints(this.state.pointsHalf) + this.state.cashHalf*1.0}` }</Text>
+                <Text className="ml-1">{ ` =  $ ${this.getConvertedPoints(this.state.pointsHalf) + this.state.cashHalf*1.0}` }</Text>
               </Column>
             </Columns>
           </React.Fragment>}

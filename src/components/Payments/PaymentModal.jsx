@@ -164,6 +164,30 @@ class PaymentsModal extends Component {
     return translate(text, this.props.store.ui.language)
   }
 
+  renderPartial() {
+    const { appointment } = this.state;
+    if (appointment.payments.length > 0) {
+      let paid = 0;
+      appointment.payments.forEach(payment => {
+        paid += parseFloat(payment.amount);
+      });
+      return <Title size="md" className="mt-1 mb-1">{ `${ this.getText('Total abonado: $') } ${paid}` }</Title>
+    }
+    return null;
+  }
+
+  renderPending() {
+    const { appointment } = this.state;
+    if (appointment.payments.length > 0) {
+      let paid = 0;
+      appointment.payments.forEach(payment => {
+        paid += parseFloat(payment.amount);
+      });
+      return <Title size="md" className="mt-1 mb-1">{ `${ this.getText('Total restante: $') } ${appointment.totalPrice - paid}` }</Title>
+    }
+    return null;
+  }
+
   render() {
     const { date } = this.props
     const { appointment } = this.state
@@ -185,7 +209,9 @@ class PaymentsModal extends Component {
           <ModalContent>
               <Columns>
                 <Column isSize={ 5 }>
-                  <Title size="md">{ `${ this.getText('Total a abonar: $') } ${appointment.totalPrice}` }</Title>
+                  <Title size="md" className="mb-1">{ `${ this.getText('Total a abonar: $') } ${appointment.totalPrice}` }</Title>
+                  { this.renderPartial() }
+                  { this.renderPending() }
                   <Title className="mt-1" size="md">{ `${appointment.clientPoints}  ${ this.getText('puntos disponibles ') } ${ ' ($ '} ${ this.props.store.ui.getChange('changePurchase').convertPoints(appointment.clientPoints) }${ ')'}`}</Title>
                   <PaymentForm totalAmount={ appointment.totalPrice } clientPoints={ appointment.clientPoints } onChange={ this.handlePaymentData }></PaymentForm>
                   { !this.isValidPayment() && 

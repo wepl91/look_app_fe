@@ -12,15 +12,14 @@ import {
   Title,
   Button,
   Table,
-  Text
+  Text,
+  Panel,
 } from 'shipnow-mercurio';
 
 import {
   Level,
   LevelLeft,
   LevelRight,
-  Columns,
-  Column
 } from 'bloomer';
 
 import { 
@@ -62,6 +61,13 @@ class PaymentHistoryModal extends Component {
 
   renderTable() {
     const data = this.props.appointment.payments;
+
+    if (this.props.appointment.isTrustworthy && data.length < 1) {
+      return (
+        <Panel color="warning" invert>
+          <Text>{ this.getText('El turno no posee ningún pago aún') }</Text>
+        </Panel> )
+    }
     const columns = [
       {
         label: '',
@@ -69,14 +75,41 @@ class PaymentHistoryModal extends Component {
         size: 'is-1',
       },
       {
+        label: '',
+        content: null,
+        size: 'is-1',
+      },
+      {
+        label: '',
+        content: null,
+        size: 'is-1',
+      },
+      {
         label: this.getText('Monto'),
-        content: (data) => (<Text>{ data.amount }</Text>),
-        size: 'is-2'
+        content: (data) => (<Text>{ `$ ${ parseFloat(data.amount) }` }</Text>),
+        size: 'is-2',
+        align: 'center',
+      },
+      {
+        label: '',
+        content: null,
+        size: 'is-1',
+      },
+      {
+        label: '',
+        content: null,
+        size: 'is-1',
+      },
+      {
+        label: '',
+        content: null,
+        size: 'is-1',
       },
       {
         label: this.getText('Fecha de pago'),
         content: (data) => (<Text>{ moment(data.dateCreated).format('DD-MM-YYYY HH:mm') }</Text>),
-        size: 'is-2'
+        size: 'is-2',
+        align: 'center',
       },
     ];
     return <Table columns={ columns } data={ data } striped={ false }/>

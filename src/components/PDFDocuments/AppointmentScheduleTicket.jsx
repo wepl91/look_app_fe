@@ -9,16 +9,20 @@ import startCase from 'lodash/startCase';
 class AppointmentScheduleTicket extends Component {
   render() {
     const { appointment } = this.props
+    const client = appointment.client;
+    const branch = appointment.branch;
+    const professional = appointment.professional;
+    const services = appointment.services;
     return(
       <Document>
         <Page size="A4" style={styles.page}>
         <View style={styles.section}>
           <Text style={styles.title}>Reserva de turno</Text>
-          <Text style={styles.description}>{`Reserva de turno${ appointment.client ? ` de ${ startCase(appointment.client.name) } ${ appointment.client.lastName} , teléfono ${ appointment.client.phone },`: '' } para el día ${ moment(appointment.dayHour).format("dddd, MMMM Do YYYY") } a las ${ appointment.beginningTime }`}</Text>
+          <Text style={styles.description}>{`Reserva de turno${ client ? ` de ${ startCase(client.name) } ${ client.lastName} , ${ client.cookedPhone ? `teléfono: ${ client.cookedPhone }` : '' },`: '' } para el día ${ moment(appointment.dayHour).format("DD-MM-YYYY") } a las ${ appointment.beginningTime }${ branch && `, en la sucursal ${ branch.name || branch.cookedAddress }` }.`}</Text>
           <View style={styles.details}>
-            { appointment.professional && <Text style={styles.service}>{ `A ser atendido por ${ appointment.professionalFullName }` }</Text> }
+            { professional && <Text style={styles.service}>{ `A ser atendido por ${ appointment.professionalFullName }` }</Text> }
             <Text style={ styles.subtitle }>Servicios:</Text>
-            { appointment.services.map( service => (<View><Text style={styles.service}>{ `- ${ startCase(service.name) }: $${ service.price }` }</Text></View>)) }
+            { services.map( service => (<View><Text style={styles.service}>{ `- ${ startCase(service.name) }: $${ service.price }` }</Text></View>)) }
             <Text style={ styles.subtitle }>{ `Total: $${ appointment.totalPrice } `}</Text>
           </View>
           <Text style={styles.brand}>Hair&Head</Text>

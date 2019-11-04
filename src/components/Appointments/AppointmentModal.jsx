@@ -34,6 +34,7 @@ import {
   faBan,
   faInfoCircle,
   faMoneyBill,
+  faClipboardList
 } from "@fortawesome/free-solid-svg-icons";
 
 import { 
@@ -44,7 +45,7 @@ import {
 
 import { AppointmentsForm } from './';
 
-import { PaymentModal } from './../Payments/'
+import { PaymentModal, PaymentHistoryModal } from './../Payments/'
 
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
@@ -66,6 +67,7 @@ import './styles.css';
 class AppointmentModal extends Component {
   
   newAppointment
+  modifiedAppointment
   
   constructor(props) {
     super(props);
@@ -120,6 +122,9 @@ class AppointmentModal extends Component {
         renderDetails: true,
         confirmation: false,
       });
+      this.setState(prevState => ({
+        showPaymentModal: !prevState.showPaymentModal
+      }), () => (this.props.onClose && this.props.onClose(true)) )
     }
     this.setState(prevState => ({
       showPaymentModal: !prevState.showPaymentModal
@@ -148,6 +153,11 @@ class AppointmentModal extends Component {
     return errorMsj && JSON.parse(errorMsj).message && JSON.parse(errorMsj).message == 'there are no free professionals';
   }
 
+  professionalNotWorking( responseError ) {
+    const errorMsj = responseError.message
+    return errorMsj && JSON.parse(errorMsj).message && JSON.parse(errorMsj).message == 'The professional does not work at that time';
+  }
+
   save( appointment, edit=false ) {
     const { toastManager } = this.props;
     appointment = appointment.clean();
@@ -168,6 +178,16 @@ class AppointmentModal extends Component {
           }else
           if (this.allProfessionalsBusyMsj(responseError)) {
             toastManager.add(this.getText('Ups! Parece que hubo problema! No hay profesionales que puedan atender en ese horario!'), {
+              appearance: 'error',
+              autoDismiss: true,
+              pauseOnHover: false,
+            });
+            this.setState({
+              isSaving: false,
+            });
+          }
+          else if (this.professionalNotWorking(responseError)) {
+            toastManager.add(this.getText('Ups! Parece que hubo problema! El profesional seleccionado no trabaja en el horario o dia seleccionado!'), {
               appearance: 'error',
               autoDismiss: true,
               pauseOnHover: false,
@@ -212,8 +232,7 @@ class AppointmentModal extends Component {
   }
 
   handleSaveEdit() {
-    const { appointment } = this.state;
-    this.save(appointment, true)
+    this.save(this.getAppointment(), true)
   }
 
   handleSave() {
@@ -225,7 +244,7 @@ class AppointmentModal extends Component {
     this.setState({
       buttonDisabled: false
     })
-    const appointment = this.state.renderDetails ? this.state.appointment : this.newAppointment;
+    const appointment = this.state.renderDetails ? this.getAppointment() : this.newAppointment;
     if (name == 'hour') {
       appointment.dayHour.hour(value);
       appointment.dayHour.minute(0);
@@ -237,6 +256,7 @@ class AppointmentModal extends Component {
   }
 
   handleShowDetails( appointment ) {
+    this.modifiedAppointment = appointment.clone();
     this.setState({
       renderCreate : false,
       renderList   : false,
@@ -360,7 +380,7 @@ class AppointmentModal extends Component {
 
   renderDetails() {
     const { appointment, showTicketModal } = this.state;
-    
+    debugger
     const paymentTicket = 
       <PDFDownloadLink document={ <PaymentTicket appointment={ appointment } /> } fileName={`ComprobanteDePago.pdf`}>
       {({ loading }) => ( loading ? 
@@ -376,7 +396,7 @@ class AppointmentModal extends Component {
         </PDFDownloadLink>;
 
     const appoinmentTicket = 
-        <PDFDownloadLink key={ this.state.showTicketModal }document={ <AppointmentScheduleTicket appointment={ appointment } /> } fileName={`Reserva.pdf`}>
+        <PDFDownloadLink key={ this.state.showTicketModal } document={ <AppointmentScheduleTicket appointment={ appointment } /> } fileName={`Reserva.pdf`}>
           {({ loading }) => ( loading ? 
             <Button kind="link" icon={ faDownload } disabled>{ this.getText('Comprobante de reserva') }</Button> : 
             <Button kind="link" icon={ faDownload }>{ this.getText('Comprobante de reserva') }</Button> )}
@@ -384,28 +404,44 @@ class AppointmentModal extends Component {
     return(
       <Columns>
         <Column isSize={ 6 }>
-          <AppointmentsForm appointment={ this.state.appointment } edit onChange={ this.handleChange }/>
+          <AppointmentsForm appointment={ this.getAppointment() } edit onChange={ this.handleChange } canNotEdit={ this.state.appointment.isPartialPaid } />
         </Column>
         <Column isSize={ 2 }></Column>
         <Column isSize={ 4 }>
         <Title size="md">{ this.getText('Comprobantes')}</Title>
-        { appointment.isOpen      && appoinmentTicket }
-        { appointment.isPaid      && paymentTicket }
-        { appointment.isCancelled && cancelationTicket } 
-        { appointment.isOpen && <Title className="mt-3" size="md">{ this.getText('Acciones') }</Title> }
+        { (appointment.isOpen || 
+          appointment.isPartialPaid )  && appoinmentTicket }
+        { appointment.isPaid           && paymentTicket }
+        { appointment.isCancelled      && cancelationTicket } 
+        { (appointment.isOpen || appointment.isPartialPaid || appointment.isPaid) && <Title className="mt-3" size="md">{ this.getText('Acciones') }</Title> }
         <div className="appointment-accions">
         { appointment.isOpen && 
           <Text>
-          <Button kind="link" icon={ faBan } onClick={ () => (this.handleConfirm('cancel')) }>{ this.getText('Cancelar turno') }</Button>
+            <Button kind="link" icon={ faBan } onClick={ () => (this.handleConfirm('cancel')) }>{ this.getText('Cancelar turno') }</Button>
           </Text> }
-          { appointment.isOpen && 
+          { (appointment.isPartialPaid || appointment.isOpen) &&
             <Text>
-            <Button className="mt-2" kind="link" icon={ faMoneyBill } onClick={ this.handlePay }>{ this.getText('Efectuar pago') }</Button>
+              <Button className="mt-2" kind="link" icon={ faMoneyBill } onClick={ this.handlePay }>{ this.getText('Efectuar pago') }</Button>
             </Text> }
+          { (appointment.isPaid || appointment.isPartialPaid) &&
+            <Text>
+             <Button 
+                className="mt-2" 
+                kind="link" 
+                icon={ faClipboardList } 
+                onClick={ () => ( this.setState({ showPaymentHistoryModal: true})) }>
+                { this.getText('Historial de pagos') }
+              </Button>
+            </Text>            
+          }
             </div>
           { this.state.showTicketModal && this.renderTicketAdvise() }
         </Column>
       </Columns>)
+  }
+
+  renderPaymentHistoryModal() {
+    return (<PaymentHistoryModal appointment={ this.state.appointment } onClose={ () => ( this.setState({ showPaymentHistoryModal: false }) ) }/>)
   }
 
   renderList() {
@@ -485,6 +521,16 @@ class AppointmentModal extends Component {
     return langs[this.props.store.ui.language]
   }
 
+  getAppointment() {
+    if (this.modifiedAppointment) {
+      return this.modifiedAppointment;
+    }
+    else {
+      this.modifiedAppointment = this.state.appointment.clone();
+    }
+    return this.modifiedAppointment;
+  }
+
   render() {
     const { date } = this.props
     return(
@@ -528,9 +574,10 @@ class AppointmentModal extends Component {
             </Level>
           </ModalFooter>
         </Modal>
-        { this.state.showPaymentModal    && this.renderPaymentModal() }
-        { this.state.confirmation    && this.renderConfirmationModal() }
-        { this.state.infoAdvice      && this.renderInformationAdvice() }
+        { this.state.showPaymentModal        && this.renderPaymentModal() }
+        { this.state.confirmation            && this.renderConfirmationModal() }
+        { this.state.infoAdvice              && this.renderInformationAdvice() }
+        { this.state.showPaymentHistoryModal && this.renderPaymentHistoryModal() }
       </React.Fragment>)
   }
 }

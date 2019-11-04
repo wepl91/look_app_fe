@@ -20,12 +20,18 @@ import {
 } from 'bloomer';
 
 import {
+  Text,
   Title,
-  Button
+  Button,
+  Modal,
+  ModalHeader,
+  ModalContent,
+  ModalFooter,
 } from 'shipnow-mercurio';
 
 
 import { User } from '../../models';
+import { LevelRight } from 'bloomer/lib/components/Level/LevelRight';
 
 @observer
 class UserCreation extends Component {
@@ -42,8 +48,17 @@ class UserCreation extends Component {
       validMail: false,
     }
 
+    this.handleAccept = this.handleAccept.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
+  }
+
+  handleAccept() {
+    this.setState({
+      user: null,
+      showPasswordModal: false
+    });
+    this.props.history.push('list');
   }
 
   handleSave() {
@@ -69,8 +84,11 @@ class UserCreation extends Component {
             autoDismiss: true,
             pauseOnHover: false,
           });
+          this.setState({
+            user: savedUser,
+            showPasswordModal: true,
+          })
         }
-        this.props.history.push('list');
       });
     })
   }
@@ -114,6 +132,36 @@ class UserCreation extends Component {
     this.newUser = new User({}, this.props.store.users);
   }
 
+  renderPasswordModal() {
+    const { user } = this.state;
+
+    return(
+      <Modal show>
+        <ModalHeader>
+          <Title>{this.getText("Aviso")}</Title>
+        </ModalHeader>
+        <ModalContent>
+          <Text size="sm" lead>{ this.getText('Se ha creado un nuevo ususario.') }</Text>
+          <Text size="sm" lead className="mb-3">  
+            <Text inline size="sm" lead>{ this.getText('Su contraseña es:') }</Text>
+            <Text inline size="sm" lead>{ `  ${ user.password }` }</Text>
+          </Text>
+          <Text inline size="sm" lead className="mt-2">
+            <Text inline size="sm" lead>{ this.getText('Recomendación: ') }</Text>
+            <Text inline size="sm" lead>{ this.getText('Actualizarla una vez que inicie sesión.') }</Text>
+          </Text>
+        </ModalContent>
+        <ModalFooter>
+          <Level>
+            <LevelLeft></LevelLeft>
+            <LevelRight>
+              <Button kind="outline" onClick={ this.handleAccept }>{ this.getText('Aceptar') }</Button>
+            </LevelRight>
+          </Level>
+        </ModalFooter>
+      </Modal> )
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -135,6 +183,7 @@ class UserCreation extends Component {
         {this.state.isSaving ?
           <Button kind="outline" className="ml-6" disabled pulse icon={faSpinner}>{this.getText("Creando usuario..")}</Button> :
           <Button kind="outline" className="ml-6" onClick={this.handleSave} disabled={ this.getDisabled() }>{this.getText("Crear usuario")}</Button>}
+        { this.state.showPasswordModal && this.renderPasswordModal() }    
       </React.Fragment>)
   }
 }
