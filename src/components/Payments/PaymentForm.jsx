@@ -55,9 +55,8 @@ class PaymentForm extends Component {
     if(type == 'cashAndPoints'){
       this.props.onChange && this.props.onChange( null, null, 'cashHalf', null, this.getText('Los campos están vacíos') )    
     }else{
-      this.props.onChange && this.props.onChange( null, null, type, null )    
+      this.props.onChange && this.props.onChange( null, null, type, null, this.getText('El campo está vacío') )    
     }
-
   }
 
   validateCashPayment( value ){
@@ -116,15 +115,40 @@ class PaymentForm extends Component {
       this.setState({
         points: value
       })
+      if(value > this.props.clientPoints){
+        message = this.getText('El cliente no cuenta con puntos suficientes')
+      }
+      if(this.getConvertedPoints(value) > this.props.totalAmount){
+        message = this.getText('El monto excede el total a pagar')
+      }
+      if(!priceRegex.test(value)){
+        message = this.getText('El monto ingresado no es válido')
+      }
+      if(value == ''){
+        message = this.getText('El campo está vacío')
+      }
     }
+    if(name == 'cash'){
+      if(value > this.props.totalAmount){
+        message = this.getText('El monto excede el total a pagar')
+      }
+      if(!priceRegex.test(value)){
+        message = this.getText('El monto ingresado no es válido')
+      }
+      if(value == ''){
+        message = this.getText('El campo está vacío')
+      }
+    }
+
+
     if(name =='pointsHalf' || name =='cashHalf'){
       if(this.state.cashHalf == 0 || this.state.pointsHalf == 0){
         message = this.getText('Los campos están vacíos')
       }
-      this.props.onChange && this.props.onChange(sender, value, name, valid, message)
-    }else{
-      this.props.onChange && this.props.onChange(sender, value, name, valid)    
     }
+
+
+    this.props.onChange && this.props.onChange(sender, value, name, valid, message)
 
   }
 
@@ -185,14 +209,14 @@ class PaymentForm extends Component {
           <React.Fragment>
             <Columns isGapless isMarginless isVCentered>
               <Column isSize={ 5 }>
-                <TextInput className="is-fullwidth" icon={ faMoneyBill } name="cashHalf" onChange={ this.handleChange }/>
+                <TextInput className="is-fullwidth" icon={ faMoneyBill } validate={ (value) => this.validateCashPayment(value) } name="cashHalf" onChange={ this.handleChange }/>
               </Column>
               <Column isSize={ 1 }>
                 <Text className="has-text-centered">+</Text>
               </Column>
               <Column isSize={ 5 }>
               <React.Fragment>
-                <TextInput className="mt-2 is-fullwidth" icon={ faCoins } name="pointsHalf" onChange={ this.handleChange }/>
+                <TextInput className="mt-2 is-fullwidth" icon={ faCoins } validate={ (value) => this.validatePointsPayment(value) } name="pointsHalf" onChange={ this.handleChange }/>
                 <Text className="has-text-centered" >{ `${ this.getText('(Equivale a: $') } ${this.getConvertedPoints(this.state.pointsHalf)})` }</Text>
               </React.Fragment>
               </Column>

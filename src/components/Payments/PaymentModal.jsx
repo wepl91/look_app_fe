@@ -83,10 +83,10 @@ class PaymentsModal extends Component {
 
   handlePaymentData(sender, value, name, valid, message) {
     if(name == 'cash'){
-      valid && valid.type == 'success' ? this.setState({cash: value, points: null, paymentType: 'cash', validCash: true}) : this.setState({ paymentType: 'cash', validCash: false})
+      valid && valid.type == 'success' ? this.setState({cash: value, points: null, paymentType: 'cash', validCash: true}) : this.setState({ paymentType: 'cash', validCash: false, invalidMsg: message})
     }
     if(name == 'points'){
-      valid && valid.type == 'success' ? this.setState({points: value, cash: null, paymentType: 'points', validPoints: true}) : this.setState({ paymentType: 'points', validPoints: false})
+      valid && valid.type == 'success' ? this.setState({points: value, cash: null, paymentType: 'points', validPoints: true}) : this.setState({ paymentType: 'points', validPoints: false, invalidMsg: message})
     }
     if(name == 'cashHalf'){
       valid ? this.setState({cash: value, paymentType: 'cashAndPoints', validCashAndPoints: valid}) : this.setState({ paymentType: 'cashAndPoints', validCashAndPoints: false, invalidMsg: message})
@@ -145,10 +145,17 @@ class PaymentsModal extends Component {
     }
   }
 
-  isValidSplitPayment() {
+  isValidPayment() {
     if(this.state.paymentType == 'cashAndPoints'){
       return this.state.validCashAndPoints
-    }else{
+    }
+    if(this.state.paymentType == 'cash'){
+      return this.state.validCash
+    }
+    if(this.state.paymentType == 'points'){
+      return this.state.validPoints
+    }
+    else{
       return true
     }
   }
@@ -181,7 +188,7 @@ class PaymentsModal extends Component {
                   <Title size="md">{ `${ this.getText('Total a abonar: $') } ${appointment.totalPrice}` }</Title>
                   <Title className="mt-1" size="md">{ `${appointment.clientPoints}  ${ this.getText('puntos disponibles ') } ${ ' ($ '} ${ this.props.store.ui.getChange('changePurchase').convertPoints(appointment.clientPoints) }${ ')'}`}</Title>
                   <PaymentForm totalAmount={ appointment.totalPrice } clientPoints={ appointment.clientPoints } onChange={ this.handlePaymentData }></PaymentForm>
-                  { !this.isValidSplitPayment() && 
+                  { !this.isValidPayment() && 
                   <Panel 
                     className="mt-1" 
                     color="error" 

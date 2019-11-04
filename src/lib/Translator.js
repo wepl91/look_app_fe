@@ -137,7 +137,7 @@ export const translate = (str, lang) => {
     '¿Querés ver los turnos de un único profesional?': 'Do you want to see the appointments of a single professional?',
     'Selecciona un profesional': 'Choose a professional',
     'Profesionales': 'Professionals',
-    '- sin profesional -': '- withour professional -',
+    '- sin profesional -': '- without professional -',
     'Cargando los turnos..': 'Loading appointments..',
     'Enero': 'January',
     'Febrero': 'February',
@@ -216,7 +216,10 @@ export const translate = (str, lang) => {
     'Estás por efectuar el pago. ¿Estás seguro?': 'You\'re about to realize the payment. Are you sure?',
     'Total a abonar: $': 'Total amount: $',
     'puntos disponibles ': 'available points ',
-    'Efectuar pago': 'Pay'
+    'Efectuar pago': 'Pay',
+    'El campo está vacío': 'The field is empty',
+    'El cliente no cuenta con puntos suficientes': 'The costumer doesn\'t have enough points',
+    'El monto ingresado no es válido': 'The entered amount is invalid'
     
   }
 
