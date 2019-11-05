@@ -122,7 +122,6 @@ class UsersList extends Component {
 
   renderTable() {
     const data = this.state.users.toArray();
-    debugger
     const columns = [
       {
         label: '',

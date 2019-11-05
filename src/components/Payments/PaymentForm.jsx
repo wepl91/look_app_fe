@@ -153,18 +153,21 @@ class PaymentForm extends Component {
   }
 
   render() {
+    const { client } = this.props;
+
     return(
       <React.Fragment>
         <Field label={ this.getText('Tipo de pago') } labelNote={ this.getText('¿De qué manera desea realizar el pago?') } size="lg">
-          <Text className="ml-1 mt-2" weight="medium" size="lg">
+          { client.canPayMixed && 
+            <Text className="ml-1 mt-2" weight="medium" size="lg">
               <input 
                 className="ml-1 mr-1" 
                 type="radio" 
                 value="loaned" 
                 onChange={ () => (this.handlePaymentType('loaned')) }
-                checked={ this.state.paymentType == 'loaned'} />
+                checked={ this.state.paymentType == 'loaned'}/>
               { this.getText('Fiar') }
-          </Text>
+            </Text>}
           <Text className="ml-1 mt-2" size="lg" weight="medium">
               <input 
                 className="ml-1 mr-1" 
@@ -183,15 +186,17 @@ class PaymentForm extends Component {
                 checked={ this.state.paymentType == 'points'} />
               { this.getText('Puntos') }
           </Text>
-          <Text className="ml-1 mt-2" size="lg" weight="medium">
+          { client.canPayMixed &&
+            <Text className="ml-1 mt-2" size="lg" weight="medium">
               <input 
                 className="ml-1 mr-1" 
                 type="radio" 
                 value="cashAndPoints" 
                 onChange={ () => (this.handlePaymentType('cashAndPoints')) }
-                checked={ this.state.paymentType == 'cashAndPoints'} />
+                checked={ this.state.paymentType == 'cashAndPoints'}/>
+
               { this.getText('Efectivo y puntos') }
-          </Text>
+            </Text>}
         </Field>
         {this.state.paymentType != '' && this.state.paymentType != 'loaned' &&
         <Field className="mt-4" label={ this.getText('Ingrese los montos') } labelNote={ this.getText('¿Cuánto va abonar?') } size="lg">
@@ -233,13 +238,15 @@ class PaymentForm extends Component {
 PaymentForm.PropTypes = {
   totalAmount: PropTypes.number,
   clientPoints: PropTypes.number,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  client: PropTypes.object,
 }
 
 PaymentForm.defaultProps = {
   totalAmount: 0,
   clientPoints: 0,
-  onChange: null
+  onChange: null,
+  client: null,
 }
 
 export default withStore(PaymentForm);

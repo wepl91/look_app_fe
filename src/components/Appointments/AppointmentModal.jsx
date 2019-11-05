@@ -220,6 +220,9 @@ class AppointmentModal extends Component {
               appointment: savedAppointment
             });
           }
+          else {
+            this.props.onClose && this.props.onClose(true);
+          }
         }
       })
     })
@@ -380,7 +383,6 @@ class AppointmentModal extends Component {
 
   renderDetails() {
     const { appointment, showTicketModal } = this.state;
-    debugger
     const paymentTicket = 
       <PDFDownloadLink document={ <PaymentTicket appointment={ appointment } /> } fileName={`ComprobanteDePago.pdf`}>
       {({ loading }) => ( loading ? 
@@ -404,7 +406,11 @@ class AppointmentModal extends Component {
     return(
       <Columns>
         <Column isSize={ 6 }>
-          <AppointmentsForm appointment={ this.getAppointment() } edit onChange={ this.handleChange } canNotEdit={ this.state.appointment.isPartialPaid } />
+          <AppointmentsForm 
+            appointment={ this.getAppointment() } 
+            edit 
+            onChange={ this.handleChange } 
+            canNotEdit={ !this.state.appointment.isOpen } />
         </Column>
         <Column isSize={ 2 }></Column>
         <Column isSize={ 4 }>

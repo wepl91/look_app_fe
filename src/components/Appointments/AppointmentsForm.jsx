@@ -40,7 +40,7 @@ class AppointmentsForm extends Component {
     this.handleBranch       = this.handleBranch.bind(this); 
     this.handleDate         = this.handleDate.bind(this);
     this.handleHour         = this.handleHour.bind(this);
-    debugger
+
     this.state = {
       branch: this.props.appointment ? this.props.appointment.branch : null,
       professional: this.props.appointment ? this.props.appointment.professional : 'null',

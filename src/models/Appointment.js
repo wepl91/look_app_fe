@@ -155,6 +155,9 @@ export default class Appointment extends Model {
     if (money) {
       params['amount'] = parseInt(money,10);
     }
+    else {
+      params['amount'] = 0;
+    }
     if (points) {
       params['points'] = parseInt(points,10);
     }

@@ -45,4 +45,9 @@ export default class Client extends Model {
   get cookedPhone() {
     return this.primaryPhone || this.secondPhone;
   }
+
+  @computed
+  get canPayMixed() {
+    return this.category != 'Moroso';  
+  }
 }

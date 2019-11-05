@@ -213,7 +213,11 @@ class PaymentsModal extends Component {
                   { this.renderPartial() }
                   { this.renderPending() }
                   <Title className="mt-1" size="md">{ `${appointment.clientPoints}  ${ this.getText('puntos disponibles ') } ${ ' ($ '} ${ this.props.store.ui.getChange('changePurchase').convertPoints(appointment.clientPoints) }${ ')'}`}</Title>
-                  <PaymentForm totalAmount={ appointment.totalPrice } clientPoints={ appointment.clientPoints } onChange={ this.handlePaymentData }></PaymentForm>
+                  <PaymentForm 
+                    totalAmount={ appointment.totalPrice } 
+                    clientPoints={ appointment.clientPoints } 
+                    client={ appointment.client }
+                    onChange={ this.handlePaymentData }></PaymentForm>
                   { !this.isValidPayment() && 
                   <Panel 
                     className="mt-1" 
