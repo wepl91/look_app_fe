@@ -115,12 +115,31 @@ export default class Professional extends Model {
   @action
   activate() {
     this.status = 'ACTIVE';
-    return this.save();
+    return this.clean().save();
   }
 
   @action
   deactivate() {
     this.status = 'INACTIVE';
-    return this.save();
+    return this.clean().save();
+  }
+
+  @action
+  clean() {
+    const cleanServices = [];
+    this.services.forEach( service => {
+      if (service instanceof Object) {
+        cleanServices.push(service.id);
+      }
+      else {
+        cleanServices.push(service);
+      }
+    });
+    this.services = cleanServices;
+
+    if (this.branch instanceof Object) {
+      this.branch = this.branch.id;
+    }
+    return this;
   }
 }

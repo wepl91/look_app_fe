@@ -90,7 +90,7 @@ class ProfessionalSuggest extends Component {
           <DropdownPanel key={ this.state.suggest }>
             <Text className="mb-1" size="md" onClick={ () => (this.handleSelect('null')) }>{ this.getText('- Ninguno -') }</Text>
             { this.suggest && this.suggest.map( (professional, index) => (
-              index < 5 && <Text className="mb-1" size="md" onClick={ () => (this.handleSelect(professional)) }>{ professional.fullName }</Text> )) }
+              index < 5 && professional.isActive && <Text className="mb-1" size="md" onClick={ () => (this.handleSelect(professional)) }>{ professional.fullName }</Text> )) }
           </DropdownPanel>
       </Dropdown> )
   }

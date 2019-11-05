@@ -14,6 +14,7 @@ import {
   Table,
   Button,
   SelectableIcon,
+  Toggle,
 } from 'shipnow-mercurio';
 
 import {
@@ -65,6 +66,48 @@ class BranchesList extends Component {
     })
   }
 
+  handleActivate(branch) {
+    const { toastManager } = this.props;
+    branch.activate().andThen((savedBranch, responseError) => {
+      if (responseError) {
+        toastManager.add(this.getText("Ups! Parece que hubo un error al activar el usuario!"), {
+          appearance: 'error',
+          autoDismiss: true,
+          pauseOnHover: false,
+        });
+      }
+      else {
+        let text = <Text color="warning" weight="medium" className="mt-1 mb-1">{this.getText("¡El usuario ha sido marcado como activo!")}</Text>
+        toastManager.add(text, {
+          appearance: 'warning',
+          autoDismiss: true,
+          pauseOnHover: false,
+        });
+      }
+    })
+  }
+
+  handleInactivate(branch) {
+    const { toastManager } = this.props;
+    branch.deactivate().andThen((savedBranch, responseError) => {
+      if (responseError) {
+        toastManager.add(this.getText("Ups! Parece que hubo un error al desactivar la sucursal!"), {
+          appearance: 'error',
+          autoDismiss: true,
+          pauseOnHover: false,
+        });
+      }
+      else {
+        let text = <Text color="warning" weight="medium" className="mt-1 mb-1">{this.getText("¡La sucursal ha sido marcado como inactiva!")}</Text>
+        toastManager.add(text, {
+          appearance: 'warning',
+          autoDismiss: true,
+          pauseOnHover: false,
+        });
+      }
+    })
+  }
+
   renderTable() {
     const data = this.state.branches.toArray();
 
@@ -85,10 +128,10 @@ class BranchesList extends Component {
         size: 'is-3'
       },
       {
-        label: this.getText('Estado'),
-        content: (data) => (<Text>{ `${ this.getText(data.cookedStatus) }` }</Text>),
-        size: 'is-3',
-        align: 'center'
+        label: this.getText('Activo'),
+        content: (data) => (<Toggle checked={data.isActive} checkedColor="success" unCheckedColor="delete" onChange={() => (data.isActive ? this.handleInactivate(data) : this.handleActivate(data))} />),
+        size: 'is-1',
+        align: 'left'
       },
       {
         label: '',

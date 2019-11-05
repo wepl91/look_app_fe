@@ -54,9 +54,6 @@ export default class AppStore {
     // UI stores
     this.stores.set('ui', new UIStore(this.localStorageClient, this));
 
-    this.stores.get('configs').search({}, 'configs').andThen( configsResponse => {
-      this.stores.get('ui').configs = configsResponse.toArray();
-    })
     // create easy stores getters
     this.stores.forEach( (store, key) => { 
       Object.defineProperty(this, key, { 
@@ -111,6 +108,9 @@ export default class AppStore {
 
   @action
   authenticate( user, password ) {
+    this.stores.get('configs').search({}, 'configs').andThen( configsResponse => {
+      this.stores.get('ui').setConfigs(configsResponse.toArray());
+    });
     return this.APIClient.authenticate(user, password)
   }
 

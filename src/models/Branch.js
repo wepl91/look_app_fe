@@ -54,6 +54,23 @@ export default class Branch extends Model {
     return statuses[this.status.name || this.status];
   }
 
+  @action
+  activate() {
+    this.status = 'ACTIVE';
+    return this.clean().save();
+  }
+
+  @action
+  deactivate() {
+    this.status = 'INACTIVE';
+    return this.clean().save();
+  }
+
+  @computed
+  get isActive() {
+    return this.status.name == 'ACTIVE' || this.status == 'ACTIVE';
+  }
+
   @computed
   get cookedAddress() {
     return `${ startCase(this.street_name) } ${ this.street_number }, ${ startCase(this.location) }`
@@ -63,12 +80,40 @@ export default class Branch extends Model {
   get allServices() {
     const services = [];
     this.professionals.forEach( professional => {
-      professional.services.forEach( service => {
-        if (!services.includes(service)) {
-          services.push(new Service(service, ServicesStore));
-        }
-      });
+      if (professional.isActive) {
+        professional.services.forEach( service => {
+          if (!services.includes(service)) {
+            services.push(new Service(service, ServicesStore));
+          }
+        });
+      }
     });
     return Object.values(services.reduce((acc,cur) => Object.assign(acc,{[cur.id]:cur}),{}));
+  }
+
+  @action
+  clean() {
+    const cleanedProfessional = [];
+    const cleanedUsers = [];
+    this.professionals.forEach( professional => {
+      if (professional instanceof Object) {
+        cleanedProfessional.push({id: professional.id});
+      }
+      else {
+        cleanedProfessional.push({id: professional});
+      }
+    });
+    this.users.forEach( user => {
+      if (user instanceof Object) {
+        cleanedUsers.push({id: user.id});
+      }
+      else {
+        cleanedUsers.push({id: user});
+      }
+    });
+    this.professionals = cleanedProfessional;
+    this.users = cleanedUsers;
+
+    return this;
   }
 }

@@ -48,6 +48,11 @@ export default class UIStore extends Store {
     this.language = 'Ingles';
   }
 
+  @action
+  setConfigs(config) {
+    this.configs = config;
+  }
+
   define(list, value) {
     const found = this.lists[list].find( x => x.value == value );
 

@@ -143,10 +143,12 @@ class AppointmentsForm extends Component {
   getBranchesList() {
     const list = [];
     this.state.branches.toArray().forEach( branch => {
-      list.push(
-        <SelectItem value={ branch.id } key={ branch.id }>
-          { `${ startCase(branch.name) || branch.cookedAddress }` }
-        </SelectItem>);
+      if (branch.isActive) {
+        list.push(
+          <SelectItem value={ branch.id } key={ branch.id }>
+            { `${ startCase(branch.name) || branch.cookedAddress }` }
+          </SelectItem>);
+      }
     });
 
     return list;
