@@ -50,7 +50,6 @@ class ProfessionalsEditModal extends Component {
   handleSave() {
     const { toastManager } = this.props;
     const professional = this.getProfessional();
-    professional.status = 'ACTIVE';
     
     professional.save().andThen( (savedProfessional, responseError) => {
       if (responseError) {
