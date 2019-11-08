@@ -73,6 +73,11 @@ class PaymentForm extends Component {
 
   handleChange(sender, value, name, valid){
     let message = ''
+    if(name =='pointsHalf' || name =='cashHalf'){
+      if(this.state.cashHalf == 0 || this.state.pointsHalf == 0){
+        message = this.getText('Los campos están vacíos')
+      }
+    }
     if(name =='cashHalf'){
       this.setState({
         cashHalf: value
@@ -86,6 +91,9 @@ class PaymentForm extends Component {
       }
       if(!validPoints){
         message = this.getText('Los puntos ingresados no son válidos')
+      }
+      if (this.state.pointsHalf > this.props.clientPoints){
+        message = this.getText('El cliente no cuenta con puntos suficientes')
       }
       if(validCash && validPoints && !doesNotExceedTotal){
         message = this.getText('El monto excede el total a pagar')
@@ -105,6 +113,9 @@ class PaymentForm extends Component {
       }
       if(!validPoints){
         message = this.getText('Los puntos ingresados no son válidos')
+      }
+      if (value > this.props.clientPoints){
+        message = this.getText('El cliente no cuenta con puntos suficientes')
       }
       if(validCash && validPoints && !doesNotExceedTotal){
         message = this.getText('El monto excede el total a pagar')
@@ -141,11 +152,7 @@ class PaymentForm extends Component {
     }
 
 
-    if(name =='pointsHalf' || name =='cashHalf'){
-      if(this.state.cashHalf == 0 || this.state.pointsHalf == 0){
-        message = this.getText('Los campos están vacíos')
-      }
-    }
+
 
 
     this.props.onChange && this.props.onChange(sender, value, name, valid, message)

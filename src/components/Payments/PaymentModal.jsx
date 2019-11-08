@@ -76,6 +76,8 @@ class PaymentsModal extends Component {
       this.props.onPay && this.props.onPay('cancelled')
     }else if(this.state.paymentType == 'loaned'){
       this.state.appointment.loan().then( response =>{ this.props.onPay && this.props.onPay('paid', response) });
+    }else if(this.state.paymentType == 'cashAndPoints' && this.state.cash == 0 && this.state.points == 0){
+      this.state.appointment.loan().then( response =>{ this.props.onPay && this.props.onPay('paid', response) });
     }else{
       this.state.appointment.pay(this.state.cash,this.state.points).then( response =>{ this.props.onPay && this.props.onPay('paid', response) });
     }
