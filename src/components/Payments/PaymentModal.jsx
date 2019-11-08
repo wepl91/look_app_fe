@@ -212,10 +212,10 @@ class PaymentsModal extends Component {
                   <Title size="md" className="mb-1">{ `${ this.getText('Total a abonar: $') } ${appointment.totalPrice}` }</Title>
                   { this.renderPartial() }
                   { this.renderPending() }
-                  <Title className="mt-1" size="md">{ `${appointment.clientPoints}  ${ this.getText('puntos disponibles ') } ${ ' ($ '} ${ this.props.store.ui.getChange('changePurchase').convertPoints(appointment.clientPoints) }${ ')'}`}</Title>
+                  <Title className="mt-1" size="md">{ `${appointment.clientPoints != null ? appointment.clientPoints : 0}  ${ this.getText('puntos disponibles ') } ${ ' ($ '} ${ this.props.store.ui.getChange('changePurchase').convertPoints(appointment.clientPoints) }${ ')'}`}</Title>
                   <PaymentForm 
                     totalAmount={ appointment.totalPrice } 
-                    clientPoints={ appointment.clientPoints } 
+                    clientPoints={ appointment.clientPoints != null ? appointment.clientPoints : 0 } 
                     client={ appointment.client }
                     onChange={ this.handlePaymentData }></PaymentForm>
                   { !this.isValidPayment() && 

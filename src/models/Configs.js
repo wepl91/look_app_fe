@@ -11,6 +11,9 @@ export default class Configs extends Model {
   
   @action
   convertPoints(points){
+    if (points == null){
+      return 0
+    }
     if (this.key=='changePay'){
       return points * this.value
     }
