@@ -184,7 +184,7 @@ class ProfessionalsForm extends Component {
                 className="is-fullwidth" 
                 onChange={ this.handleChange } />
             </Field>
-            <Field className="pl-4 pr-4" label="¿En qué sucursal va a atender?" labelNote="Seleccioná una sucursal">
+            <Field className="pl-4 pr-4" label={ this.getText('¿En qué sucursal va a atender?') } labelNote={ this.getText('Seleccioná una sucursal') }>
               <Select 
                 value={ professional && professional.branch.id }
                 key={ this.state.branches }

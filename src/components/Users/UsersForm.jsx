@@ -94,7 +94,7 @@ class UsersForm extends Component {
         <Field label="Email">
           <TextInput name="email" placeholder="user@gmail.com" disabled />
         </Field>
-        <Field label={ this.getText('Sucursla') } labelNote={ this.getText('¿En cuál sucursal va a trabajar el ususario?') }>
+        <Field label={ this.getText('Sucursal') } labelNote={ this.getText('¿En qué sucursal va a trabajar el ususario?') }>
           <Select 
             disabled
             name="branch"
@@ -150,7 +150,7 @@ class UsersForm extends Component {
         <Field label={ this.getText('Email') }>
           <TextInput value={ user && user.email } name="email" validate={ (value) => (mailRegex.test(value)) } placeholder="user@gmail.com" onChange={ this.handleChange } />
         </Field>
-        <Field label={ this.getText('Sucursla') } labelNote={ this.getText('¿En cuál sucursal va a trabajar el ususario?') }>
+        <Field label={ this.getText('Sucursal') } labelNote={ this.getText('¿En qué sucursal va a trabajar el ususario?') }>
           <Select 
             key={ this.state.branches }
             value={ user && user.branch.id }
