@@ -69,6 +69,11 @@ export default class Professional extends Model {
   }
 
   @computed
+  get cookedBranchId() {
+    return this.branch instanceof Object ? this.branch.id : this.branch;
+  }
+
+  @computed
   get rawWorkingDays() {
     let ret = {}
     this.workingHours.map( day => {
