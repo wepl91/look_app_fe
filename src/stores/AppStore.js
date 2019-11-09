@@ -108,9 +108,6 @@ export default class AppStore {
 
   @action
   authenticate( user, password ) {
-    this.stores.get('configs').search({}, 'configs').andThen( configsResponse => {
-      this.stores.get('ui').setConfigs(configsResponse.toArray());
-    });
     return this.APIClient.authenticate(user, password)
   }
 
