@@ -36,7 +36,6 @@ class AppointmentsMenu extends Component {
       <LayoutMenuLinkGroup icon={ faCalendarAlt } label={ this.getText('Turnos') } basePath={ `${path}/appointments` }>
         <LayoutMenuLink icon={ faCalendarAlt } to={ `${path}/appointments/list`   }>{ this.getText('Listado') }</LayoutMenuLink>
         <LayoutMenuLink icon={ faPlus } to={ `${path}/appointments/new`           }>{ this.getText('Nuevo turno') }</LayoutMenuLink>
-        <LayoutMenuLink icon={ faChartBar } to={ `${path}/appointments/reports`   }>{ this.getText('Reportes') }</LayoutMenuLink>
       </LayoutMenuLinkGroup> )
   };
 

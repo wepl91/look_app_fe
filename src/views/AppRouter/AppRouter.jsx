@@ -39,7 +39,12 @@ import {
 import {
   ClientsMenu,
   ClientsRouter
-} from '../Clients'
+} from '../Clients';
+
+import {
+  ReportsMenu,
+  ReportsRouter,
+} from '../Reports';
 
 import LanguageDropdown from '../../components/LanguageDropdown/LanguageDropdown';
 
@@ -84,6 +89,7 @@ class AppRouter extends Component {
               </LayoutNavbarEnd>
             </LayoutNavbar>
             <LayoutMenu>
+            <ReportsMenu       />
             <AppointmentsMenu  />
             <BranchesMenu      />
             <ServicesMenu      />
@@ -95,7 +101,8 @@ class AppRouter extends Component {
             </div>  
             </LayoutMenu>
             <LayoutContent>
-              <HomeRouter />
+              <HomeRouter          />
+              <ReportsRouter       />
               <AppointmentsRouter  />
               <BranchesRouter      />
               <ServicesRouter      />
