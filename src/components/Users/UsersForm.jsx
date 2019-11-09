@@ -153,7 +153,7 @@ class UsersForm extends Component {
         <Field label={ this.getText('Sucursal') } labelNote={ this.getText('¿En qué sucursal va a trabajar el ususario?') }>
           <Select 
             key={ this.state.branches }
-            value={ user && user.branch.id }
+            value={ user && user.cookedBranchId }
             name="branch"
             icon={ faChevronDown } 
             borderless 

@@ -33,6 +33,11 @@ export default class User extends Model {
   }
 
   @computed
+  get cookedBranchId() {
+    return this.branch instanceof Object ? this.branch.id : this.branch;
+  }
+
+  @computed
   get cookedName() {
     return startCase(this.name);
   }
