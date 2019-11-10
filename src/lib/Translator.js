@@ -79,6 +79,7 @@ export const translate = (str, lang) => {
     'Jueves': 'Thursday',
     'Viernes': 'Friday',
     'Sábado': 'Saturday',
+    'Sabado': 'Saturday',
     'Domingo': 'Sunday',
     'Nuevo profesional': 'New professional',
     'Agregar profesional': 'Add professional',

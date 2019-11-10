@@ -6,7 +6,7 @@ import {
 
 import startCase from 'lodash/startCase';
 import uniq from 'lodash/uniq'
-
+import moment from 'moment';
 import { Service, User, Professional } from '../models';
 import { ServicesStore, UsersStore, ProfessionalsStore } from '../stores';
 
@@ -64,6 +64,44 @@ export default class Branch extends Model {
   deactivate() {
     this.status = 'INACTIVE';
     return this.clean().save();
+  }
+
+  @action
+  filterProfessionals( day ) {
+    let ret = []
+    this.professionals.map(professional => {
+      if(day.toUpperCase() in professional.rawWorkingDays){
+        ret.push(professional)
+      } 
+    })
+    return ret
+  }
+
+  @action
+  openHours( day ) {
+    if(this.professionals.length == 0){
+      return null
+    }
+    let ret = []
+    let earliest = []
+    let latest = []
+    this.professionals.map(professional => {
+      if(day.toUpperCase() in professional.rawWorkingDays){
+        let hours = professional.filteredWorkingHours(day)
+        earliest.push(hours[0])
+        latest.push(hours[hours.length -1])
+      } 
+    })
+    let earliestMoments = earliest.map( d => moment(d.toString(),"LT"))
+    let latestMoments = latest.map( d => moment(d.toString(),"LT"))
+
+    let currDate = moment.min(earliestMoments).startOf('minute').subtract(60, 'minutes');
+    let lastDate = moment.max(latestMoments).startOf('minute').add(60, 'minutes');
+
+    while (currDate.add(60, 'minutes').diff(lastDate, 'minutes') < 0) {
+      ret.push(currDate.clone().format('HH:mm'));
+    }
+    return ret
   }
 
   @computed

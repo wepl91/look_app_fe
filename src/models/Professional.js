@@ -84,6 +84,25 @@ export default class Professional extends Model {
     return ret
   }
 
+  @action
+  filteredWorkingHours( receivedDay ) {
+    let ret = []
+    let currDate = null
+    let lastDate = null
+
+    this.workingHours.map(day => {
+      if(day.days.name == receivedDay.toUpperCase()){
+        currDate = moment(day.beginHour.toString(),"LT").startOf('minute').subtract(60, 'minutes');
+        lastDate = moment(day.endHour.toString(),"LT").startOf('minute').add(60, 'minutes');
+      }
+    })
+
+    while (currDate.add(60, 'minutes').diff(lastDate, 'minutes') < 0) {
+      ret.push(currDate.clone().format('HH:mm'));
+    }
+    return ret
+  }
+
   @computed
   get cookedWorkingDays() {
     const ret = [];

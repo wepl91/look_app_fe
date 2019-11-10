@@ -21,13 +21,13 @@ import { observer } from 'mobx-react';
 
 import startCase from 'lodash/startCase';
 
-import { horarios } from '../../lib/Mocks';
-
 import moment from 'moment';
 
 import { translate } from '../../lib/Translator';
 
 import { ClientSuggest, ProfessionalSuggest } from '../../components/Suggest';
+
+import { horarios } from '../../lib/Mocks'
 
 @observer
 class AppointmentsForm extends Component {
@@ -178,6 +178,15 @@ class AppointmentsForm extends Component {
     }
     return hash;
   }
+
+  availableProfessionals(){
+    if(this.state.branch){
+      //siempre en inglés por las dudas que cambiemos algo al traducir
+      return this.state.branch.filterProfessionals(this.state.date.locale('en').format('dddd'))
+    }else{
+      return null
+    }
+  }
   
   renderServices() {
     // El randomizer lo que hace es cambiar la key para que React vea que ocurrió un cambio en el checkbox. No usé Math.Random() por que rompía el Checkbox
@@ -212,7 +221,7 @@ class AppointmentsForm extends Component {
             key={ this.state.branch } 
             disabled={ isDisabled || canNotEdit} 
             onChange={ this.handleProfessional }
-            professionals={ this.state.branch ? this.state.branch.professionals : null} 
+            professionals={ this.availableProfessionals() } 
             value={ this.state.professional } />
       </Field>)
   }
@@ -258,12 +267,26 @@ class AppointmentsForm extends Component {
       </Field>)
   }
 
+  availableHours(){
+    if(this.state.branch){
+      //siempre en inglés por las dudas que cambiemos algo al traducir
+      if(this.state.professional){
+        return this.state.professional.filteredWorkingHours(this.state.date.locale('en').format('dddd'))
+      }else{
+        return this.state.branch.openHours(this.state.date.locale('en').format('dddd'))
+      }
+    }else{
+      return null
+    }
+  }
+
   renderHourPicker() {
+    const isDisabled = !this.state.branch;
     const { appointment, canNotEdit } = this.props;
     return(
       <Field className="ml-5" label={ this.getText('¿A que hora querés venir?') } labelNote={ this.getText('Seleccioná un horario') }>
         <Select 
-          disabled={ canNotEdit }
+          disabled={ isDisabled || canNotEdit }
           key={ this.state }
           maxHeight="120px" 
           placeholder={ this.getText('Horarios') } 
@@ -271,7 +294,8 @@ class AppointmentsForm extends Component {
           icon={ faChevronDown }
           onChange={ this.handleHour } 
           value={ appointment && appointment.beginningTime }
-          options={ horarios() }/>
+          // options={ horarios() }
+          options={ this.availableHours() }/>
       </Field>)
   }
 
