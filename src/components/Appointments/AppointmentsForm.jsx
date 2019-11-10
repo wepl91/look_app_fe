@@ -214,20 +214,6 @@ class AppointmentsForm extends Component {
       </Field> )   
   }
 
-  renderProfessionals() {
-    const isDisabled = !this.state.branch;
-    const { canNotEdit } = this.props;
-    return(
-      <Field className="ml-5" label={ this.getText('¿Por quién querés ser atendido?') } labelNote={ this.getText('Seleccioná un profesional') }>
-          <ProfessionalSuggest 
-            key={ this.state.branch } 
-            disabled={ isDisabled || canNotEdit} 
-            onChange={ this.handleProfessional }
-            professionals={ this.availableProfessionals() } 
-            value={ this.state.professional } />
-      </Field>)
-  }
-
   renderClients() {
     const { appointment, edit, canNotEdit } = this.props;
     return(
@@ -275,12 +261,27 @@ class AppointmentsForm extends Component {
     return(
       <Field className="ml-5" label={ this.getText('¿A que hora querés venir?') } labelNote={ this.getText('Seleccioná un horario') }>
       <HourSelector
+          key={ this.state.branch } 
           disabled={ isDisabled || canNotEdit }
           onChange={ this.handleHour } 
           value={ appointment && appointment.beginningTime }
           professional={ this.state.professional }
           branch={ this.state.branch }
           day={ this.state.date.locale('en').format('dddd') }/>
+      </Field>)
+  }
+
+  renderProfessionals() {
+    const isDisabled = !this.state.branch;
+    const { canNotEdit } = this.props;
+    return(
+      <Field className="ml-5" label={ this.getText('¿Por quién querés ser atendido?') } labelNote={ this.getText('Seleccioná un profesional') }>
+          <ProfessionalSuggest 
+            key={ this.state.branch } 
+            disabled={ isDisabled || canNotEdit} 
+            onChange={ this.handleProfessional }
+            professionals={ this.availableProfessionals() } 
+            value={ this.state.professional } />
       </Field>)
   }
 

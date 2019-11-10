@@ -30,21 +30,38 @@ class HourSelector extends Component {
     this.branch = props.branch;
     this.day = props.day;
     this.value = props.value;
+
     this.availableHours = this.availableHours.bind(this);
+
+    this.state = {
+      hours: this.availableHours(),
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.professional != this.props.professional) {
       this.professional = this.props.professional;
+      this.setState({
+        hours: this.availableHours()
+      })
     }
     if (prevProps.branch != this.props.branch) {
       this.branch = this.props.branch;
+      this.setState({
+        hours: this.availableHours()
+      })
     }
     if (prevProps.day != this.props.day) {
       this.day = this.props.day;
+      this.setState({
+        hours: this.availableHours()
+      })
     }
     if (prevProps.value != this.props.value) {
       this.value = this.props.value;
+      this.setState({
+        hours: this.availableHours()
+      })
     }
   }
 
@@ -66,17 +83,18 @@ class HourSelector extends Component {
 
   render() {
     const { disabled } = this.props;
+    debugger
     return(
       <Select 
       disabled={ disabled }
-      key={ this.branch || this.professional || this.day }
+      key={ this.state.hours }
       maxHeight="120px" 
       placeholder={ this.getText('Horarios') } 
       borderless 
       icon={ faChevronDown }
       onChange={ this.props.onChange } 
       value={ this.props.value }
-      options={ this.availableHours() }/>
+      options={ this.state.hours }/>
     )
   }
 }
