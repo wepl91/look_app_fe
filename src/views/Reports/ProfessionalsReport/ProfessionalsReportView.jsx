@@ -67,7 +67,6 @@ class ProfessionalsReportView extends Component {
             return `Total facturado: $${tooltipItem.yLabel}`
           },
           title: function(tooltipItem) {
-            debugger
             return `Ingresos generados por ${tooltipItem[0].xLabel}`
           } 
         }
