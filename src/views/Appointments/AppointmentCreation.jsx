@@ -146,7 +146,7 @@ class AppointmentCreation extends Component {
           <Column isSize={ 5 } className="pl-5">
             <br />
             <br />
-            <AppointmentsForm appointment={ this.newAppointment } onChange={ this.handleChange }/>
+            <AppointmentsForm appointment={ this.newAppointment } onChange={ this.handleChange } withDate={ true }/>
             <Button className="ml-5 mt-5" onClick={ this.handleClick } kind="outline" disabled={ this.getDisabled() }>{ this.getText('Reservar turno') }</Button>
           </Column>
           <Column isSize={ 7 } className="has-text-right">

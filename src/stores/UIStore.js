@@ -18,6 +18,9 @@ export default class UIStore extends Store {
 
     // initialize static value lists
     this.language = localStorage.getItem('language');
+    appStore.stores.get('configs').search({}, 'configs', true).andThen( configsResponse => {
+      this.setConfigs(configsResponse.toArray());
+    });
   }
 
 

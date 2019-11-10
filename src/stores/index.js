@@ -8,3 +8,4 @@ export { default as BranchesStore      } from './BranchesStore'
 export { default as ServicesStore      } from './ServicesStore';
 export { default as ProfessionalsStore } from './ProfessionalsStore';
 export { default as AppointmentsStore  } from './AppointmentsStore';
+export { default as ReportsStore       } from './ReportsStore';

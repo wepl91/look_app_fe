@@ -46,7 +46,7 @@ export default class Professional extends Model {
 
   @computed
   get fullName() {
-    return `${ this.name || '' } ${ this.lastName || '' }`;
+    return `${ startCase(this.name) || '' } ${ startCase(this.lastName) || '' }`;
   }
 
   @computed
@@ -66,6 +66,11 @@ export default class Professional extends Model {
     const ret = [];
     this.services.map( service => (ret.push(service.id)))
     return ret;
+  }
+
+  @computed
+  get cookedBranchId() {
+    return this.branch instanceof Object ? this.branch.id : this.branch;
   }
 
   @computed

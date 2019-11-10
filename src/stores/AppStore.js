@@ -10,7 +10,8 @@ import {
   AppointmentsStore,
   ClientsStore,
   BranchesStore,
-  ConfigsStore
+  ConfigsStore,
+  ReportsStore,
 } from './';
 
 export default class AppStore {
@@ -48,6 +49,7 @@ export default class AppStore {
     this.stores.set('services',      new ServicesStore(this.APIClient, this));
     this.stores.set('branches',      new BranchesStore(this.APIClient, this));
     this.stores.set('configs',       new ConfigsStore(this.APIClient, this));
+    this.stores.set('reports',       new ReportsStore(this.APIClient, this));
     this.stores.set('professionals', new ProfessionalsStore(this.APIClient, this));
     this.stores.set('appointments',  new AppointmentsStore(this.APIClient, this));
    
@@ -108,9 +110,6 @@ export default class AppStore {
 
   @action
   authenticate( user, password ) {
-    this.stores.get('configs').search({}, 'configs').andThen( configsResponse => {
-      this.stores.get('ui').setConfigs(configsResponse.toArray());
-    });
     return this.APIClient.authenticate(user, password)
   }
 

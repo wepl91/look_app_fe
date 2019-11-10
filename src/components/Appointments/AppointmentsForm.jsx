@@ -55,7 +55,7 @@ class AppointmentsForm extends Component {
 
   componentDidMount() {
     this.setState({
-      branches: this.props.store.branches.search({}, 'branches-appointment-list-view'),
+      branches: this.props.store.branches.search({}, 'branches-appointment-list-view', true),
       clients: !this.props.edit ? this.props.store.clients.search({}, 'clients-appointment-list-view', true) : null,
     })
   }

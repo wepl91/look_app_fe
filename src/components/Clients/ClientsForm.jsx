@@ -63,7 +63,7 @@ class ClientsForm extends Component {
             </Column>
           </Columns>
         </Field>
-        <Field label={ this.getText('Documento') } labelNote="¿Cuál es el dni del nuevo cliente?">
+        <Field label={ this.getText('Documento') } labelNote={  this.getText('¿Cuál es el dni del nuevo cliente?') }>
           <TextInput placeholder="11.111.111" onChange={ this.handleChange } name="DNI" validate={ (value) => (dniRegex.test(value)) } value={ client.DNI } className="is-fullwidth" />
         </Field>
         <Field label="Email" labelNote={ this.getText('¿Cuál es el email del nuevo cliente?') }>

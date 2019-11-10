@@ -8,10 +8,10 @@ export const translate = (str, lang) => {
     'Nuevo cliente': 'New customer',
     'Creando..':'Creating..',
     'Crear cliente': 'Create customer',
-    'Nombre y Apellido': 'Name & Lastname',
+    'Nombre y Apellido': 'Name & Last Name',
     '¿Cómo se llama el nuevo cliente?': 'What is the name of the new customer?',
     'Nombre': 'Name',
-    'Apellido': 'Lastname',
+    'Apellido': 'Last Name',
     'Documento': 'Document',
     '¿Cuál es el email del nuevo cliente?': 'What is the email of the new customer?',
     'Teléfono principal': 'Primary phone number',
@@ -83,16 +83,17 @@ export const translate = (str, lang) => {
     'Nuevo profesional': 'New professional',
     'Agregar profesional': 'Add professional',
     'El profesional fue agregado exitosamente!': 'The professional was successfully added!',
-    '¿Qué servicios ofrece?': 'What services do you offer?',
+    '¿Qué servicios ofrece?': 'What services does the professional offer?',
     'Seleccioná los servicios': 'Choose the services',
-    '¿En qué días y horarios va a trabajar?': 'What days and times will you work?',
+    '¿En qué días y horarios va a trabajar?': 'What days and times will the professional work?',
     'Seleccioná los horarios semanales': 'Select the weekly schedules',
     'Los horarios y/o días ingresados son incorrectos': 'The schedules and/or days entered are incorrect',
     'Entrada': 'Entry',
     'Salida': 'Exit',
-    'Corte': 'Cut',
-    'Tintura': 'Dyeing',
-    'Peinado': 'HairStyle',
+    // Saco las traducciones de los servicios ya que dependen del input del usuario al crearlos
+    // 'Corte': 'Cut',
+    // 'Tintura': 'Dyeing',
+    // 'Peinado': 'HairStyle',
     'Turnos': 'Appointments',
     'Nuevo turno': 'New appointment',
     'Reportes': 'Reports',
@@ -227,8 +228,10 @@ export const translate = (str, lang) => {
     'El campo está vacío': 'The field is empty',
     'El cliente no cuenta con puntos suficientes': 'The costumer doesn\'t have enough points',
     'El monto ingresado no es válido': 'The entered amount is invalid',
-    'Ups! Parece que hubo problema! El profesional seleccionado no trabaja en el horario o dia seleccionado!': 'Ups! It seems there was a problem! The selected professional is not working on the selected date or at the selected hour!'
-    
+    'Ups! Parece que hubo problema! El profesional seleccionado no trabaja en el horario o dia seleccionado!': 'Ups! It seems there was a problem! The selected professional is not working on the selected date or at the selected hour!',
+    '¿En qué sucursal va a trabajar el ususario?': 'In which branch is the user going to work?',
+    '¿Cuál es el dni del nuevo cliente?': 'What\'s the new customer\'s Document number?',
+    '¿En qué sucursal va a atender?': 'In which branch is the professional going to work?'
   }
 
   /**

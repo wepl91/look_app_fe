@@ -37,7 +37,7 @@ class ClientSuggest extends Component {
   }
 
   handleInput( sender, value, name ) {
-    const filtered = value == '' ? this.clients : this.clients.filter( client => client.fullName.includes(value)) 
+    const filtered = value == '' ? this.clients : this.clients.filter( client => client.fullName.toLowerCase().includes(value.toLowerCase())) 
     this.setState({
       suggest: filtered,
       value: value,

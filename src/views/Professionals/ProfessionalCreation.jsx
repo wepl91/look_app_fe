@@ -154,7 +154,7 @@ class ProfessionalCreation extends Component {
             <Button onClick={ this.handleClick } className="ml-4" kind="outline" disabled={ this.getDisabled() }>{ this.getText('Agregar profesional') }</Button>
           </Column>
           <Column isSize={6}>
-            <SvgDraw className={"has-text-centered"} style={{ height: '600px', width: '700px'}}/>
+            <SvgDraw className={"has-text-centered"} style={{ height: '90%', width: '90%'}}/>
           </Column>
         </Columns>
       </React.Fragment> )

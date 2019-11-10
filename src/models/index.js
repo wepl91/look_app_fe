@@ -7,3 +7,4 @@ export { default as Configs      } from './Configs';
 export { default as Professional } from './Professional';
 export { default as UISettings   } from './UISettings';
 export { default as Appointment  } from './Appointment';
+export { default as Reports      } from './Reports';
