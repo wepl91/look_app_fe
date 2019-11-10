@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import moment from 'moment';
+import * as moment from 'moment/moment';
 
 import { withToastManager } from 'react-toast-notifications';
 
@@ -545,7 +545,7 @@ class AppointmentModal extends Component {
           <ModalHeader>
             <Level>
               <LevelLeft>
-                <Title>{ this.state.renderCreate ? this.getText('Nuevo turno') : `${ moment(date). locale(this.getLang()).format('LL') }` }</Title>
+                <Title>{ this.state.renderCreate ? this.getText('Nuevo turno') : `${ moment(date).format('DD/MM/YYYY') }` }</Title>
               </LevelLeft>
               <LevelRight>
               <Button icon="plus" kind="link" size="xl" onClick={ this.handleClose }>
