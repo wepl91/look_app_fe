@@ -6,7 +6,8 @@ import { TransitionGroup, CSSTransition } from "react-transition-group";
 import '../../styles/styles.scss';
 
 import {
-  ProfessionalsReportView
+  ProfessionalsReportView,
+  ServicesReportView
 } from './'
 
 class ReportsRouter extends Component {
@@ -23,8 +24,8 @@ class ReportsRouter extends Component {
               <section className="transition-wrapper">
                 <Switch location={ location }>
                   <Route path ={ `${path}/reports/professionals`      }  component={ ProfessionalsReportView } />
-                  <Route path ={ `${path}/reports/services`           }  component={ null } />
-                  <Route path ={ `${path}/reports/professionals` }  component={ null } />
+                  <Route path ={ `${path}/reports/services`           }  component={ ServicesReportView      } />
+                  <Route path ={ `${path}/reports`                    }  component={ ProfessionalsReportView } />
                 </Switch>
             </section>
           </CSSTransition>
