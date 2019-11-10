@@ -97,6 +97,9 @@ export default class Professional extends Model {
       }
     })
 
+    if(!currDate || !lastDate){
+      return null
+    }
     while (currDate.add(60, 'minutes').diff(lastDate, 'minutes') < 0) {
       ret.push(currDate.clone().format('HH:mm'));
     }

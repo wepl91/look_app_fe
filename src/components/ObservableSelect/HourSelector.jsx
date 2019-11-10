@@ -83,17 +83,16 @@ class HourSelector extends Component {
 
   render() {
     const { disabled } = this.props;
-    debugger
     return(
       <Select 
-      disabled={ disabled }
+      disabled={ disabled || this.state.hours == null }
       key={ this.state.hours }
       maxHeight="120px" 
       placeholder={ this.getText('Horarios') } 
       borderless 
       icon={ faChevronDown }
+      className="is-fullwidth" 
       onChange={ this.props.onChange } 
-      value={ this.props.value }
       options={ this.state.hours }/>
     )
   }

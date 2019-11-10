@@ -29,8 +29,6 @@ import { ClientSuggest, ProfessionalSuggest } from '../../components/Suggest';
 
 import { HourSelector } from '../../components/ObservableSelect'
 
-import { horarios } from '../../lib/Mocks'
-
 @observer
 class AppointmentsForm extends Component {
   constructor(props) {
@@ -236,6 +234,7 @@ class AppointmentsForm extends Component {
           placeholder={ this.getText('Sucursales') } 
           borderless 
           icon={ faChevronDown } 
+          className="is-fullwidth" 
           onChange={ this.handleBranch }
           value={ this.state.branch ? this.state.branch.id : null }
           options={ this.getBranchesList() } />
@@ -274,6 +273,7 @@ class AppointmentsForm extends Component {
   renderProfessionals() {
     const isDisabled = !this.state.branch;
     const { canNotEdit } = this.props;
+
     return(
       <Field className="ml-5" label={ this.getText('¿Por quién querés ser atendido?') } labelNote={ this.getText('Seleccioná un profesional') }>
           <ProfessionalSuggest 

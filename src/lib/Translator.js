@@ -184,7 +184,7 @@ export const translate = (str, lang) => {
     '¿Cuál de nuestros servicios requerís?': 'Which of our services do you require?',
     'Seleccioná un servicio': 'Choose a service',
     'No hay servicios existentes para ofrecer.': 'There are no existing services to offer.',
-    '¿Por quién querés ser atendido?': 'Who do you want to be treated for?',
+    '¿Por quién querés ser atendido?': 'Who do you want to treat you?',
     'Seleccioná un profesional': 'Choose a professional',
     '¿Quién quiere ser atendido?': 'Who wants to be treated?',
     'Seleccioná un cliente': 'Choose a customer',

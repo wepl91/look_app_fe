@@ -79,9 +79,6 @@ export default class Branch extends Model {
 
   @action
   openHours( day ) {
-    if(this.professionals.length == 0){
-      return null
-    }
     let ret = []
     let earliest = []
     let latest = []
@@ -100,6 +97,10 @@ export default class Branch extends Model {
 
     while (currDate.add(60, 'minutes').diff(lastDate, 'minutes') < 0) {
       ret.push(currDate.clone().format('HH:mm'));
+    }
+
+    if(ret.length == 1){
+      return null
     }
     return ret
   }
