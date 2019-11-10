@@ -115,7 +115,10 @@ class AppointmentCreation extends Component {
     }
     else if (name == 'date') {
       this.newAppointment.dayHour.year(value.get('year'));
-      this.newAppointment.dayHour.date(value.get('date'));  
+      this.newAppointment.dayHour.date(value.get('date'));
+      this.setState({
+        areHoursSelected: false
+      })  
     }
     else {
       this.newAppointment[name] = value

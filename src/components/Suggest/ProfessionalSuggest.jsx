@@ -45,7 +45,7 @@ class ProfessionalSuggest extends Component {
     if (value == this.getText('- Ninguno -')) {
       this.props.onChange && this.props.onChange(null);
     }
-    const filtered = value == '' || !value ? this.professionals : this.professionals.filter( professional => professional.fullName.includes(value)) 
+    const filtered = value == '' || !value ? this.professionals : this.professionals.filter( professional => professional.fullName.toLowerCase().includes(value.toLowerCase())) 
     this.suggest = filtered;
     this.value = value;
   }

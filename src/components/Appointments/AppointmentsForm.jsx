@@ -21,13 +21,13 @@ import { observer } from 'mobx-react';
 
 import startCase from 'lodash/startCase';
 
-import { horarios } from '../../lib/Mocks';
-
 import moment from 'moment';
 
 import { translate } from '../../lib/Translator';
 
 import { ClientSuggest, ProfessionalSuggest } from '../../components/Suggest';
+
+import { HourSelector } from '../../components/ObservableSelect'
 
 @observer
 class AppointmentsForm extends Component {
@@ -178,6 +178,15 @@ class AppointmentsForm extends Component {
     }
     return hash;
   }
+
+  availableProfessionals(){
+    if(this.state.branch){
+      //siempre en inglés por las dudas que cambiemos algo al traducir
+      return this.state.branch.filterProfessionals(this.state.date.locale('en').format('dddd'))
+    }else{
+      return null
+    }
+  }
   
   renderServices() {
     // El randomizer lo que hace es cambiar la key para que React vea que ocurrió un cambio en el checkbox. No usé Math.Random() por que rompía el Checkbox
@@ -203,20 +212,6 @@ class AppointmentsForm extends Component {
       </Field> )   
   }
 
-  renderProfessionals() {
-    const isDisabled = !this.state.branch;
-    const { canNotEdit } = this.props;
-    return(
-      <Field className="ml-5" label={ this.getText('¿Por quién querés ser atendido?') } labelNote={ this.getText('Seleccioná un profesional') }>
-          <ProfessionalSuggest 
-            key={ this.state.branch } 
-            disabled={ isDisabled || canNotEdit} 
-            onChange={ this.handleProfessional }
-            professionals={ this.state.branch ? this.state.branch.professionals : null} 
-            value={ this.state.professional } />
-      </Field>)
-  }
-
   renderClients() {
     const { appointment, edit, canNotEdit } = this.props;
     return(
@@ -239,6 +234,7 @@ class AppointmentsForm extends Component {
           placeholder={ this.getText('Sucursales') } 
           borderless 
           icon={ faChevronDown } 
+          className="is-fullwidth" 
           onChange={ this.handleBranch }
           value={ this.state.branch ? this.state.branch.id : null }
           options={ this.getBranchesList() } />
@@ -259,19 +255,33 @@ class AppointmentsForm extends Component {
   }
 
   renderHourPicker() {
+    const isDisabled = !this.state.branch;
     const { appointment, canNotEdit } = this.props;
     return(
       <Field className="ml-5" label={ this.getText('¿A que hora querés venir?') } labelNote={ this.getText('Seleccioná un horario') }>
-        <Select 
-          disabled={ canNotEdit }
-          key={ this.state }
-          maxHeight="120px" 
-          placeholder={ this.getText('Horarios') } 
-          borderless 
-          icon={ faChevronDown }
+      <HourSelector
+          key={ this.state.branch } 
+          disabled={ isDisabled || canNotEdit }
           onChange={ this.handleHour } 
           value={ appointment && appointment.beginningTime }
-          options={ horarios() }/>
+          professional={ this.state.professional }
+          branch={ this.state.branch }
+          day={ this.state.date.locale('en').format('dddd') }/>
+      </Field>)
+  }
+
+  renderProfessionals() {
+    const isDisabled = !this.state.branch;
+    const { canNotEdit } = this.props;
+
+    return(
+      <Field className="ml-5" label={ this.getText('¿Por quién querés ser atendido?') } labelNote={ this.getText('Seleccioná un profesional') }>
+          <ProfessionalSuggest 
+            key={ this.state.branch } 
+            disabled={ isDisabled || canNotEdit} 
+            onChange={ this.handleProfessional }
+            professionals={ this.availableProfessionals() } 
+            value={ this.state.professional } />
       </Field>)
   }
 
