@@ -27,6 +27,8 @@ import { translate } from '../../lib/Translator';
 
 import { ClientSuggest, ProfessionalSuggest } from '../../components/Suggest';
 
+import { HourSelector } from '../../components/ObservableSelect'
+
 import { horarios } from '../../lib/Mocks'
 
 @observer
@@ -267,35 +269,18 @@ class AppointmentsForm extends Component {
       </Field>)
   }
 
-  availableHours(){
-    if(this.state.branch){
-      //siempre en inglés por las dudas que cambiemos algo al traducir
-      if(this.state.professional){
-        return this.state.professional.filteredWorkingHours(this.state.date.locale('en').format('dddd'))
-      }else{
-        return this.state.branch.openHours(this.state.date.locale('en').format('dddd'))
-      }
-    }else{
-      return null
-    }
-  }
-
   renderHourPicker() {
     const isDisabled = !this.state.branch;
     const { appointment, canNotEdit } = this.props;
     return(
       <Field className="ml-5" label={ this.getText('¿A que hora querés venir?') } labelNote={ this.getText('Seleccioná un horario') }>
-        <Select 
+      <HourSelector
           disabled={ isDisabled || canNotEdit }
-          key={ this.state.professional }
-          maxHeight="120px" 
-          placeholder={ this.getText('Horarios') } 
-          borderless 
-          icon={ faChevronDown }
           onChange={ this.handleHour } 
           value={ appointment && appointment.beginningTime }
-          // options={ horarios() }
-          options={ this.availableHours() }/>
+          professional={ this.state.professional }
+          branch={ this.state.branch }
+          day={ this.state.date.locale('en').format('dddd') }/>
       </Field>)
   }
 
