@@ -46,7 +46,7 @@ export default class Professional extends Model {
 
   @computed
   get fullName() {
-    return `${ this.name || '' } ${ this.lastName || '' }`;
+    return `${ startCase(this.name) || '' } ${ startCase(this.lastName) || '' }`;
   }
 
   @computed

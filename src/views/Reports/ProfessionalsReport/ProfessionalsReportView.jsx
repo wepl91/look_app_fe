@@ -23,19 +23,44 @@ import {
   DateTimePicker,
 } from 'shipnow-mercurio';
 
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
+
 @observer
 class ProfessionalsReportView extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      data: null,
+      branches: null,
+    }
+
+    this.handleChangeBranch = this.handleChangeBranch.bind(this);
   }
+
+  handleChangeBranch(sender, value, name, valid) {
+    this.setState({
+      data: this.props.store.reports.getProfessionalsReport({branchId: value}),
+    })
+  }
+
+  
+  componentDidMount() {
+    this.setState({
+      data: this.props.store.reports.getProfessionalsReport({}),
+      branches: this.props.store.branches.search({}, 'branches-list', true),
+    })
+  }
+  
 
   getText( text ) {
     return translate(text, this.props.store.ui.language)
   }
 
   getChartData() {
+    debugger
     return {
-      labels: ['Juan', 'Pedro', 'Bruno', 'Walter', 'Jeremias', 'Nicolas', 'Agustin'],
+      labels: this.state.data.toArray().map(item => (item.professional.fullName)),
       datasets: [
         {
           label: 'Ingresos',
@@ -44,7 +69,7 @@ class ProfessionalsReportView extends Component {
           borderWidth: 1,
           hoverBackgroundColor: 'rgba(255,99,132,0.4)',
           hoverBorderColor: 'rgba(255,99,132,1)',
-          data: [65.5, 59, 80, 81, 56, 55, 49],
+          data: this.state.data.toArray().map(item => (parseFloat(item.totalAmount))),
         }
       ]
     };
@@ -73,45 +98,54 @@ class ProfessionalsReportView extends Component {
       }
     }
   }
-
   render() {
-    return(
-      <React.Fragment>
-        <Level>
-          <LevelLeft>
-            <Title>{ this.getText('Reporte de profesionales') }</Title>
-          </LevelLeft>
-        </Level>
-        <hr/>
-          <Columns>
-            <Column isSize={ 3 }>
-              <Field label={ this.getText('¿Querés filtrar y ver ingresos por sucursal?') }>
+    const isReportDataLoaded = this.state.data && this.state.data.isOk();
+    const isBranchesLoaded = this.state.branches && this.state.branches.isOk();
+    if (isReportDataLoaded && isBranchesLoaded) {
+      return(
+        <React.Fragment>
+          <Level>
+            <LevelLeft>
+              <Title>{ this.getText('Reporte de profesionales') }</Title>
+            </LevelLeft>
+          </Level>
+          <hr/>
+            <Columns>
+              <Column isSize={ 3 }>
+                <Field label={ this.getText('¿Querés filtrar y ver ingresos por sucursal?') }>
                 <Select 
-                  className="is-fullwidth"
-                  borderless
-                  placeholder={this.getText('Sucursal')}/>
-              </Field>
-            </Column>
-            <Column isSize={ 3 }>
-              <Field label={ this.getText('Desde') }>
-                <DateTimePicker />
-              </Field>
-            </Column>
-            <Column isSize={ 3 }>
-              <Field label={ this.getText('Hasta') }>
-                <DateTimePicker />
-              </Field>
-            </Column>
+                  className="is-fullwidth" 
+                  placeholder="Sucursales" 
+                  name="branch" 
+                  borderless 
+                  icon={ faChevronDown } 
+                  options={ this.state.branches.toArray().map(branch => ({key: branch.name || branch.cookedAddress, value: branch.id})) } 
+                  onChange={this.handleChangeBranch} />
+                </Field>
+              </Column>
+              <Column isSize={ 3 }>
+                <Field label={ this.getText('Desde') }>
+                  <DateTimePicker />
+                </Field>
+              </Column>
+              <Column isSize={ 3 }>
+                <Field label={ this.getText('Hasta') }>
+                  <DateTimePicker />
+                </Field>
+              </Column>
+            </Columns>
+          <Columns className="pt-5">
+          <Bar
+            key={ this.state.data }
+            data={this.getChartData()}
+            width={100}
+            height={450}
+            options={this.getChartConfig()}
+        />
           </Columns>
-        <Columns className="pt-5">
-        <Bar
-          data={this.getChartData()}
-          width={100}
-          height={450}
-          options={this.getChartConfig()}
-      />
-        </Columns>
-      </React.Fragment> )
+        </React.Fragment> );
+    }
+    return null
   }
 }
 
