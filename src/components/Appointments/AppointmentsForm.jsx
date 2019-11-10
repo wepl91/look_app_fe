@@ -287,7 +287,7 @@ class AppointmentsForm extends Component {
       <Field className="ml-5" label={ this.getText('¿A que hora querés venir?') } labelNote={ this.getText('Seleccioná un horario') }>
         <Select 
           disabled={ isDisabled || canNotEdit }
-          key={ this.state }
+          key={ this.state.professional }
           maxHeight="120px" 
           placeholder={ this.getText('Horarios') } 
           borderless 
