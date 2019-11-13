@@ -22,8 +22,17 @@ import { withStore } from '../../hocs'
 
 import { AppointmentCalendar } from '../../components/Appointments';
 
+import { ConfirmationModal } from '../../components/ConfirmationModal';
+
 import startCase from 'lodash/startCase';
-import { faChevronCircleLeft, faChevronCircleRight, faSpinner, faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import { 
+    faChevronCircleLeft, 
+    faChevronCircleRight, 
+    faSpinner, 
+    faChevronDown,
+    
+} from '@fortawesome/free-solid-svg-icons'
+
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
 import { translate } from '../../lib/Translator';
@@ -32,18 +41,24 @@ class AppointmentsList extends Component {
     constructor(props) {
         super(props);
 
-        this.chunk              = this.chunk.bind(this);
-        this.handleYear         = this.handleYear.bind(this);
-        this.handleMonth        = this.handleMonth.bind(this);
-        this.handleReload       = this.handleReload.bind(this);
-        this.getDatesInMonth    = this.getDatesInMonth.bind(this);
-        this.handleProfessional = this.handleProfessional.bind(this);
+        this.chunk                    = this.chunk.bind(this);
+        this.handleYear               = this.handleYear.bind(this);
+        this.handleMonth              = this.handleMonth.bind(this);
+        this.handleReload             = this.handleReload.bind(this);
+        this.getDatesInMonth          = this.getDatesInMonth.bind(this);
+        this.handleProfessional       = this.handleProfessional.bind(this);
+        this.handleCancelAppointments = this.handleCancelAppointments.bind(this);
 
         this.state = {
             appointments: null,
             professionals: null,
             filterProf: 'null',
+            showCancelModal: false,
         }
+    }
+
+    handleCancelAppointments() {
+        debugger
     }
 
     componentDidMount() {
@@ -116,15 +131,28 @@ class AppointmentsList extends Component {
         return translate(text, this.props.store.ui.language)
     }
 
-    renderLoader() {
+    renderCancelModal() {
+        return(
+            <ConfirmationModal
+                content={ this.getText('¿Estás seguro que querés cancelar todos los turnos de hoy?') }
+                onCancel={() => (this.setState({showCancelModal: false,}))}
+                onAccept={ this.handleCancelAppointments }
+                acceptWording={ this.getText('Sí') }
+                cancelWording={ this.getText('No') }
+            />
+        )
+    }
 
+    renderLoader() {
         return (
             <React.Fragment>
                 <Level className="pl-3 pr-3">
                     <LevelLeft style={{ paddingRight: '6px' }}>
                         <Title>{ this.getText('Calendario de turnos') }</Title>
                     </LevelLeft>
-                    <LevelRight></LevelRight>
+                    <LevelRight>
+                        <Button disabled>{ this.getText('Cancelar turno de hoy') }</Button>
+                    </LevelRight>
                 </Level>
                 <hr />
                 <Columns className="pl-4 pr-3">
@@ -154,7 +182,9 @@ class AppointmentsList extends Component {
                     <LevelLeft style={{ paddingRight: '6px' }}>
                         <Title>{this.getText('Calendario de turnos')}</Title>
                     </LevelLeft>
-                    <LevelRight></LevelRight>
+                    <LevelRight>
+                        <Button onClick={ () => (this.setState({ showCancelModal: true })) }>{ this.getText('Cancelar turno de hoy') }</Button>
+                    </LevelRight>
                 </Level>
                 <hr />
                 <Columns className="pl-4 pr-3">
@@ -195,6 +225,7 @@ class AppointmentsList extends Component {
                     </Column>
                 </Columns>
                 <AppointmentCalendar onReload={this.handleReload} key={this.state.datesInWeeks} weeks={this.state.datesInWeeks} appointments={this.state.appointments.toArray()} />
+                { this.state.showCancelModal && this.renderCancelModal() }
             </React.Fragment>)
     }
 }
