@@ -62,6 +62,7 @@ export const translate = (str, lang) => {
     '- sin teléfono -': '- without phone -',
     '- sin email -': '- without email -',
     '- Sin servicios -': '- without services',
+    '- sin fecha -' : '- without date -',
     'Modificar sucursal': 'Edit branch',
     'Guardando..': 'Saving..',
     'Cargando profesionales..': 'Loading professionals..',
@@ -232,7 +233,23 @@ export const translate = (str, lang) => {
     'Ups! Parece que hubo problema! El profesional seleccionado no trabaja en el horario o dia seleccionado!': 'Ups! It seems there was a problem! The selected professional is not working on the selected date or at the selected hour!',
     '¿En qué sucursal va a trabajar el ususario?': 'In which branch is the user going to work?',
     '¿Cuál es el dni del nuevo cliente?': 'What\'s the new customer\'s Document number?',
-    '¿En qué sucursal va a atender?': 'In which branch is the professional going to work?'
+    '¿En qué sucursal va a atender?': 'In which branch is the professional going to work?',
+    'Promociones' : 'Discounts',
+    'Nueva promoción' : 'New discount',
+    'Beneficio' : 'Benefit',
+    'x puntos' : 'x points',
+    '% de descuento' : '% off',
+    'Fecha de inicio' : 'Starting date',
+    'Fecha de finalización' : 'Ending date',
+    'Servicios incluidos' : 'Included services',
+    'Activa' : 'Active',
+    'Cargando las promociones..' : 'Loading discounts..',
+    'Listado de promociones' : 'Discounts List',
+    'La promoción ha sido creada exitosamente!' : 'The discount was successfully created!',
+    'Crear promoción' : 'Create discount',
+    'Los cambios se han guardado exitosamente!' : 'The changes have been saved successfully!',
+    'Modificar promoción' : 'Modify discount',
+    '¿Qué servicios incluye?' : 'Which services are included?'
   }
 
   /**

@@ -46,6 +46,11 @@ import {
   ReportsRouter,
 } from '../Reports';
 
+import { 
+  DiscountsMenu, 
+  DiscountsRouter 
+} from '../Discounts';
+
 import {
   AccountanciesRouter,
 } from '../Accountancies';
@@ -99,6 +104,7 @@ class AppRouter extends Component {
             <ProfessionalsMenu />
             <UsersMenu         />
             <ClientsMenu       />
+            <DiscountsMenu     />
             <ReportsMenu       />
             <div className="menu_button">
             <Button kind="link" key={ this.state.expanded } invert size="lg" onClick={ () => (this.setState(preState => ({expanded: !preState.expanded})))} icon={ this.state.expanded ? faBars : faBars }/>
@@ -114,6 +120,7 @@ class AppRouter extends Component {
               <UsersRouter         />
               <ClientsRouter       />
               <AccountanciesRouter />
+              <DiscountsRouter       />
             </LayoutContent>
           </Layout>
         </React.Fragment> )
