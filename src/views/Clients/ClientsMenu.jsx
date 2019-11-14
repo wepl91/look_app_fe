@@ -4,7 +4,7 @@ import { LayoutMenuLinkGroup, LayoutMenuLink } from 'shipnow-mercurio';
 import withStore from '../../hocs/withStore';
 import { withRouter } from 'react-router';
 
-import { faChild, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faChild, faPlus, faPiggyBank } from "@fortawesome/free-solid-svg-icons";
 
 import { translate } from '../../lib/Translator';
 
@@ -35,6 +35,7 @@ class ClientsMenu extends Component {
       <LayoutMenuLinkGroup icon={ faChild } label={ this.getText('Clientes') } basePath={ `${path}/clients` }>
         <LayoutMenuLink icon={ faChild } to={ `${path}/clients/list` }>{ this.getText('Listado') }</LayoutMenuLink>
         <LayoutMenuLink icon={ faPlus } to={ `${path}/clients/new`  }>{ this.getText('Nuevo cliente') }</LayoutMenuLink>
+        <LayoutMenuLink icon={ faPiggyBank } to={ `${path}/clients/accountancy`  }>{ this.getText('Cuentas corrientes') }</LayoutMenuLink>
       </LayoutMenuLinkGroup> )
   };
 

@@ -6,12 +6,14 @@ import {
 
 import { 
   Professional, 
-  Branch 
+  Branch,
+  Service
 } from '../models';
 
 import { 
   ProfessionalsStore, 
-  BranchesStore 
+  BranchesStore,
+  ServicesStore,
 } from '../stores'
 
 export default class Reports extends Model {
@@ -25,6 +27,9 @@ export default class Reports extends Model {
     }
     if (this.branch) {
       this.branch = new Branch(this.branch, BranchesStore);
+    }
+    if (this.service) {
+      this.service = new Service(this.service, ServicesStore);
     }
   }
   
