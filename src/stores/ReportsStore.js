@@ -21,7 +21,6 @@ export default class ReportsStore extends Store {
   getProfessionalsReport(params) {
     let collection = new Colection(this, `professional-reports-${params}`);
     this.adapter.post('/professionalsreports',params).then( response => {
-      console.dir(response)
       response.results.forEach( (res, index) => {
         res['id'] = index;
         collection.add(new Reports(res, this));
@@ -35,7 +34,6 @@ export default class ReportsStore extends Store {
   getServicesReport(params) {
     let collection = new Colection(this, `professional-reports-${params}`);
     this.adapter.post('/servicesreports',params).then( response => {
-      console.dir(response)
       response.results.forEach( (res, index) => {
         res['id'] = index;
         collection.add(new Reports(res, this));
