@@ -119,7 +119,7 @@ class AccountanciesView extends Component {
         </React.Fragment> )
     }
 
-    return <Table data={data} columns={columns} /> 
+    return <Table data={data} columns={columns} striped={ false }/> 
   }
 
   render() {
