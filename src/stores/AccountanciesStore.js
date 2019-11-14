@@ -1,5 +1,6 @@
 import { Store } from '../lib';
-import { Accountancy } from '../models'; 
+import { Accountancy, Movement } from '../models'; 
+import { ModementsStore, MovementsStore } from '../stores';
 import { action } from 'mobx';
 
 import Colection from '../lib/Collection';
@@ -15,13 +16,16 @@ export default class AccountanciesStore extends Store {
   }
 
   @action
-  get( id ) {
-    let collection = new Colection(this, `accountancy-client-${id}`);
-    this.adapter.get(`/accoutancy/${id}`).then( response => {
-      response.results.forEach( (res, index) => {
-        res['id'] = index;
-        collection.add(new Accountancy(res, this));
+  async get( id ) {
+    let data = {};
+    let movements = [];
+    await this.adapter.get(`/accountancy/${id}`).then( response => {
+      response.results.accountMovements.forEach( movement => {
+        movements.push(new Movement(movement, MovementsStore));
       });
     });
+    data['movements'] = movements;
+
+    return new Accountancy(data, this);
   }
 }

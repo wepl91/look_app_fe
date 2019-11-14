@@ -10,3 +10,4 @@ export { default as ProfessionalsStore } from './ProfessionalsStore';
 export { default as AppointmentsStore  } from './AppointmentsStore';
 export { default as ReportsStore       } from './ReportsStore';
 export { default as AccountanciesStore } from './AccountanciesStore';
+export { default as MovementsStore     } from './MovementsStore';
