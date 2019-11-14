@@ -32,7 +32,7 @@ export default class ReportsStore extends Store {
   
   @action
   getServicesReport(params) {
-    let collection = new Colection(this, `professional-reports-${params}`);
+    let collection = new Colection(this, `services-reports-${params}`);
     this.adapter.post('/servicesreports',params).then( response => {
       response.results.forEach( (res, index) => {
         res['id'] = index;
