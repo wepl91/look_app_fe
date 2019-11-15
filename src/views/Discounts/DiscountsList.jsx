@@ -129,8 +129,8 @@ class DiscountsList extends Component {
       {
         label: this.getText('Beneficio'),
         content: (data) => (<Text>{ 
-          !data.pointFactor && !data.discount ? this.getText('- sin beneficio -') :
-            data.type=='POINT' ? data.pointFactor + this.getText('x puntos') : data.discount + this.getText('% de descuento')
+          !data.discount ? this.getText('- sin beneficio -') :
+            data.type=='POINT' ? data.discount + this.getText('x puntos') : data.discount + this.getText('% de descuento')
           }</Text>),
         size: 'is-1'
       },

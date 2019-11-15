@@ -249,7 +249,18 @@ export const translate = (str, lang) => {
     'Crear promoción' : 'Create discount',
     'Los cambios se han guardado exitosamente!' : 'The changes have been saved successfully!',
     'Modificar promoción' : 'Modify discount',
-    '¿Qué servicios incluye?' : 'Which services are included?'
+    '¿Qué servicios incluye?' : 'Which services are included?',
+    'Beneficio' : 'Benefit',
+    '¿Qué tipo de beneficio ofrece la promoción?' : 'What kind of benefit does the discount offer?',
+    'Descuento en el pago' : 'Payment discount',
+    'Multiplicador de puntos' : 'Points multiplier',
+    'Descuento' : 'Discount',
+    'Multiplicador' : 'Multiplier',
+    'Desde' : 'From',
+    'Hasta' : 'To',
+    '¿Cuándo inicia la promoción?' : 'When does the discount start?',
+    '¿Cuándo finaliza la promoción?' : 'When does the discount end?',
+    'Los días ingresados son incorrectos' : 'The days entered are incorrect'
   }
 
   /**

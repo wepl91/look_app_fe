@@ -14,7 +14,6 @@ export default class Discount extends Model {
       status: '',
       type: '',
       discount: 0,
-      pointFactor: 0,
       startDate: '',
       endDate: '',
       services: []
@@ -27,7 +26,7 @@ export default class Discount extends Model {
 
   @computed
   get isActive() {
-    return this.status.name == 'ACTIVE';
+    return this.status == 'ACTIVE';
   }
 
   @computed
@@ -41,6 +40,22 @@ export default class Discount extends Model {
   }
 
   @computed
+  get rawStartingDate(){
+    if(this.startDate != ''){
+      return moment(this.startDate)
+    }
+    return null
+  }
+
+  @computed
+  get rawEndingDate(){
+    if(this.endDate != ''){
+      return moment(this.endDate)
+    }
+    return null
+  }
+
+  @computed
   get discountServicesIds() {
     const ret = [];
     this.services.map( service => (ret.push(service.id)))
@@ -51,6 +66,7 @@ export default class Discount extends Model {
   get discountedServices() {
     const ret = [];
     this.services.map( service => (ret.push(startCase(service.name))))
+    console.log(ret)
     return ret;
   }
 
@@ -78,5 +94,6 @@ export default class Discount extends Model {
       }
     });
     this.services = cleanServices;
+    return this;
   }
 }

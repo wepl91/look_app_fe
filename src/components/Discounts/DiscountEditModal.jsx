@@ -11,6 +11,8 @@ import { observer } from 'mobx-react';
 
 import { translate } from '../../lib/Translator';
 
+import { withStore } from '../../hocs';
+
 import {
   Modal,
   ModalContent,
@@ -121,7 +123,7 @@ class DiscountsEditModal extends Component {
   }
 
   getDisabled() {
-    return !(this.state.validName && this.state.validDiscount && this.state.validMultiplier && this.state.validStartingDate && this.state.validEndingDate && this.newDiscount.status !== '')
+    return !(this.state.validName && this.state.validDiscount && this.state.validMultiplier && this.state.validStartingDate && this.state.validEndingDate && this.modifiedDiscount.status !== '')
   }
 
   getText( text ) {
@@ -168,4 +170,5 @@ DiscountsEditModal.defaultProps = {
   onClose: null,
 }
 
-export default withToastManager(DiscountsEditModal)
+export default withToastManager(withStore(DiscountsEditModal))
+

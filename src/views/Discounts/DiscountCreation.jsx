@@ -16,7 +16,7 @@ import {
   Title
 } from 'shipnow-mercurio';
 
-import { ReactComponent as SvgDraw } from '../../assets/undraw_personal_info_0okl.svg';
+import { ReactComponent as SvgDraw } from '../../assets/undraw_discount_d4bd.svg';
 
 import { DiscountsForm } from '../../components/Discounts';
 
@@ -59,7 +59,7 @@ class DiscountCreation extends Component {
   }
 
   handleChange( name, value, valid ) {
-    this.newDiscount[name] = value;
+    
     if(name=='name'){
       this.setState({
         validName: valid.type == 'success',
@@ -72,8 +72,9 @@ class DiscountCreation extends Component {
     } 
     else if(name=='multiplier'){
       this.setState({
-        validMultiplier: valid.type == 'success',
+        validMultiplier: valid,
       })
+      // name = 'discount'
     } 
     else if(name=='startingDate'){
       this.setState({
@@ -85,7 +86,82 @@ class DiscountCreation extends Component {
         validEndingDate: valid.type == 'success',
       })
     }
+    this.newDiscount[name] = value;
   }
+
+
+  // handleChange( name, value, valid ) {
+    
+  //   if(name=='name'){
+  //     this.setState({
+  //       validName: valid.type == 'success',
+  //     })
+  //   }
+  //   else if(name=='discount'){
+  //     this.setState({
+  //       validDiscount: valid.type == 'success',
+  //     })
+  //   } 
+  //   else if(name=='startingDate'){
+  //     this.setState({
+  //       validStartingDate: valid.type == 'success',
+  //     })
+  //   } 
+  //   else if(name=='endingDate'){
+  //     this.setState({
+  //       validEndingDate: valid.type == 'success',
+  //     })
+  //   }
+
+  //   if(name=='multiplier'){
+  //     this.setState({
+  //       validMultiplier: valid,
+  //     })
+  //     // this.newDiscount['discount'] = value;
+  //     this.newDiscount.multiplier = value
+  //   }else{
+  //     this.newDiscount[name] = value;
+  //   } 
+  // }
+
+  
+  // handleChange( name, value, valid ) {
+    
+  //   if(name=='name'){
+  //     this.setState({
+  //       validName: valid.type == 'success',
+  //     })
+  //   }
+  //   else if(name=='discount'){
+  //     this.setState({
+  //       validDiscount: valid.type == 'success',
+  //     })
+  //   } 
+  //   else if(name=='multiplier'){
+  //     this.setState({
+  //       validMultiplier: valid,
+  //     })
+  //     name = 'discount'
+  //   } 
+  //   else if(name=='startingDate'){
+  //     this.setState({
+  //       validStartingDate: valid.type == 'success',
+  //     })
+  //   } 
+  //   else if(name=='endingDate'){
+  //     this.setState({
+  //       validEndingDate: valid.type == 'success',
+  //     })
+  //   }
+
+  //   if(name == 'multiplier'){
+  //     this.newDiscount['discount'] = value;
+  //   }else{
+  //     this.newDiscount[name] = value;
+  //   }
+
+  // }
+
 
   handleSave() {
     const { toastManager } = this.props;
