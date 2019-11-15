@@ -4,7 +4,6 @@ import {
   computed,
 } from 'mobx'
 
-import startCase from 'lodash/startCase';
 import moment from 'moment';
 
 export default class Discount extends Model {
@@ -33,18 +32,25 @@ export default class Discount extends Model {
 
   @computed
   get cookedStartingDate(){
-    return moment(this.startDate)
+    return moment(this.startDate).format('DD/MM/YYYY')
   }
 
   @computed
   get cookedEndingDate(){
-    return moment(this.endDate)
+    return moment(this.endDate).format('DD/MM/YYYY')
   }
 
   @computed
   get discountServicesIds() {
     const ret = [];
     this.services.map( service => (ret.push(service.id)))
+    return ret;
+  }
+
+  @computed
+  get discountedServices() {
+    const ret = [];
+    this.services.map( service => (ret.push(startCase(service.name))))
     return ret;
   }
 
@@ -72,10 +78,5 @@ export default class Discount extends Model {
       }
     });
     this.services = cleanServices;
-
-    // if (this.branch instanceof Object) {
-    //   this.branch = this.branch.id;
-    // }
-    // return this;
   }
 }

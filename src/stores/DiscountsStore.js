@@ -2,7 +2,7 @@ import { Store } from '../lib';
 import { Discount } from '../models'; 
 
 export default class DiscountsStore extends Store {
-  urlRoot = '/discounts';
+  urlRoot = '/promotions';
   model = Discount;
 
   constructor(adapter, appStore) {

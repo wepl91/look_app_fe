@@ -16,6 +16,7 @@ import {
   Table,
   Button,
   SelectableIcon,
+  Toggle
 } from 'shipnow-mercurio';
 
 import {
@@ -113,7 +114,7 @@ class DiscountsList extends Component {
 
   renderTable() {
     const data = this.state.discounts.toArray();
-
+    
     const columns = [
       {
         label: '',

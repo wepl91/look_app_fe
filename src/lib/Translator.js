@@ -61,7 +61,7 @@ export const translate = (str, lang) => {
     '- sin dirección -': '- without address -',
     '- sin teléfono -': '- without phone -',
     '- sin email -': '- without email -',
-    '- Sin servicios -': '- without services',
+    '- Sin servicios -': '- without services -',
     '- sin fecha -' : '- without date -',
     'Modificar sucursal': 'Edit branch',
     'Guardando..': 'Saving..',
