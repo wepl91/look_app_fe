@@ -56,6 +56,8 @@ class DiscountsForm extends Component {
     this.setState({
       services: this.props.store.services.search({}, 'services-discount-creation-view', true),
     })
+    this.props.onChange && this.props.onChange('startDate', this.state.startingDate)
+    this.props.onChange && this.props.onChange('endDate', this.state.endingDate);
   }
 
   handleChange(sender, value, name, valid) {
@@ -85,31 +87,9 @@ class DiscountsForm extends Component {
   renderSkeleton() {
     return (
       <React.Fragment>
-        <Field className="pl-4 pr-4" label={ this.getText('Nombre') }>
+        <Field label={ this.getText('Nombre') }>
               <TextInput name="name" className="is-fullwidth" disabled />
         </Field>
-        <Field label={ this.getText('Beneficio') } labelNote={ this.getText('¿Qué tipo de beneficio ofrece la promoción?') }>
-          <Text className="ml-1" size="md" weight="medium">
-            <input 
-              className="ml-1 mr-1" 
-              type="radio" 
-              value="DISCOUNT" 
-              disabled
-              />
-          </Text>
-          <Text className="ml-1 mt-1 mb-1" size="md" weight="medium">
-          <input 
-              className="ml-1 mr-1" 
-              type="radio" 
-              value="POINT" 
-              disabled
-              />
-          </Text>
-        </Field>
-       <Field className="pl-4 pr-4" label={ this.getText('Descuento') }>
-          <TextInput name="discount" className="is-fullwidth" disabled />
-        </Field>
-        
         <Field label={ this.getText('Desde') }>
           <DateTimePicker 
             name="fromDate" 
@@ -120,12 +100,46 @@ class DiscountsForm extends Component {
             name="toDate"
             disabled />
         </Field>
-        <Field className="pl-5 pr-5" label={ this.getText('¿Qué servicios incluye?') } labelNote={ this.getText('Seleccioná los servicios') }>
-          <Checkbox className="pt-1" checked={ false } >...</Checkbox>
-          <Checkbox className="pt-1" checked={ false } >...</Checkbox>
-          <Checkbox className="pt-1" checked={ false } >...</Checkbox>
+        <Field label={ this.getText('Beneficio') } labelNote={ this.getText('¿Qué tipo de beneficio ofrece la promoción?') }>
+        <Columns isCentered isVCentered>
+          <Column>
+            <Text className="ml-1" size="md" weight="medium">
+            <input 
+              className="ml-1 mr-1" 
+              type="radio" 
+              value="DISCOUNT" 
+              disabled
+              />
+              ...
+              </Text>
+              <Text className="ml-1 mt-1 mb-1" size="md" weight="medium">
+              <input 
+              className="ml-1 mr-1" 
+              type="radio" 
+              value="POINT" 
+              disabled
+              />
+              ...
+            </Text>
+          </Column>
+          <Column>
+            { this.state.type == 'DISCOUNT' && 
+            <Columns isCentered isVCentered>
+              <Column>
+              <TextInput name="discount" className="is-fullwidth" disabled />
+              </Column>
+              <Column>
+                <Text className="is-fullwidth" >%</Text>
+              </Column>
+            </Columns>}
+          </Column>
+        </Columns>
         </Field>
-
+        <Field label={ this.getText('¿Qué servicios incluye?') } labelNote={ this.getText('Seleccioná los servicios') }>
+          <Checkbox className="pt-1 ml-1" checked={ false } >...</Checkbox>
+          <Checkbox className="pt-1 ml-1" checked={ false } >...</Checkbox>
+          <Checkbox className="pt-1 ml-1" checked={ false } >...</Checkbox>
+        </Field>
       </React.Fragment>)
   }
 
@@ -237,8 +251,7 @@ class DiscountsForm extends Component {
                         className="ml-1 mr-1" 
                         type="radio" 
                         value={ 2 }
-                        onChange={ this.handleMultiplier(2) }
-                        // name="discount"
+                        onChange={ () => this.handleMultiplier(2) }
                         checked={ discount && discount.type == 'POINT' && discount.discount == 2 } />
                         2x
                     </Text>
@@ -247,8 +260,7 @@ class DiscountsForm extends Component {
                         className="ml-1 mr-1" 
                         type="radio" 
                         value={ 3 }
-                        onChange={ this.handleMultiplier(3) }
-                        // name="discount" 
+                        onChange={ () => this.handleMultiplier(3) }
                         checked={ discount && discount.type == 'POINT' && discount.discount == 3 } />
                         3x
                     </Text>
@@ -259,8 +271,7 @@ class DiscountsForm extends Component {
                         className="ml-1 mr-1" 
                         type="radio" 
                         value={ 4 } 
-                        onChange={ this.handleMultiplier(4) }
-                        // name="discount" 
+                        onChange={ () => this.handleMultiplier(4) }
                         checked={ discount && discount.type == 'POINT' && discount.discount == 4 } />
                         4x
                     </Text>
@@ -269,8 +280,7 @@ class DiscountsForm extends Component {
                         className="ml-1 mr-1" 
                         type="radio" 
                         value={ 5 } 
-                        onChange={ this.handleMultiplier(5) }
-                        // name="discount" 
+                        onChange={ () => this.handleMultiplier(5) }
                         checked={ discount && discount.type == 'POINT' && discount.discount == 5 } />
                         5x
                     </Text>

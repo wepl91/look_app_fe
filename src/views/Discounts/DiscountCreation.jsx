@@ -41,9 +41,8 @@ class DiscountCreation extends Component {
       loaded: false,
       validName: false,
       validDiscount: false,
-      validMultiplier: false,
-      validStartingDate: false,
-      validEndingDate: false
+      validStartingDate: true,
+      validEndingDate: true
     }
 
     this.handleSave   = this.handleSave.bind(this);
@@ -59,7 +58,6 @@ class DiscountCreation extends Component {
   }
 
   handleChange( name, value, valid ) {
-    
     if(name=='name'){
       this.setState({
         validName: valid.type == 'success',
@@ -72,9 +70,9 @@ class DiscountCreation extends Component {
     } 
     else if(name=='multiplier'){
       this.setState({
-        validMultiplier: valid,
+        validDiscount: valid,
       })
-      // name = 'discount'
+      name = 'discount'
     } 
     else if(name=='startingDate'){
       this.setState({
@@ -86,88 +84,18 @@ class DiscountCreation extends Component {
         validEndingDate: valid.type == 'success',
       })
     }
+    else if(name=='type'){
+      this.newDiscount['discount'] = ''
+    }
     this.newDiscount[name] = value;
   }
-
-
-  // handleChange( name, value, valid ) {
-    
-  //   if(name=='name'){
-  //     this.setState({
-  //       validName: valid.type == 'success',
-  //     })
-  //   }
-  //   else if(name=='discount'){
-  //     this.setState({
-  //       validDiscount: valid.type == 'success',
-  //     })
-  //   } 
-  //   else if(name=='startingDate'){
-  //     this.setState({
-  //       validStartingDate: valid.type == 'success',
-  //     })
-  //   } 
-  //   else if(name=='endingDate'){
-  //     this.setState({
-  //       validEndingDate: valid.type == 'success',
-  //     })
-  //   }
-
-  //   if(name=='multiplier'){
-  //     this.setState({
-  //       validMultiplier: valid,
-  //     })
-  //     // this.newDiscount['discount'] = value;
-  //     this.newDiscount.multiplier = value
-  //   }else{
-  //     this.newDiscount[name] = value;
-  //   } 
-  // }
-
-  
-  // handleChange( name, value, valid ) {
-    
-  //   if(name=='name'){
-  //     this.setState({
-  //       validName: valid.type == 'success',
-  //     })
-  //   }
-  //   else if(name=='discount'){
-  //     this.setState({
-  //       validDiscount: valid.type == 'success',
-  //     })
-  //   } 
-  //   else if(name=='multiplier'){
-  //     this.setState({
-  //       validMultiplier: valid,
-  //     })
-  //     name = 'discount'
-  //   } 
-  //   else if(name=='startingDate'){
-  //     this.setState({
-  //       validStartingDate: valid.type == 'success',
-  //     })
-  //   } 
-  //   else if(name=='endingDate'){
-  //     this.setState({
-  //       validEndingDate: valid.type == 'success',
-  //     })
-  //   }
-
-  //   if(name == 'multiplier'){
-  //     this.newDiscount['discount'] = value;
-  //   }else{
-  //     this.newDiscount[name] = value;
-  //   }
-
-  // }
-
 
   handleSave() {
     const { toastManager } = this.props;
     this.setState({
       isSaving: true,
     }, () => {
+      this.newDiscount.status = 'ACTIVE'
       this.newDiscount.save().andThen( (savedDiscount, responseError) => {
         if (responseError) {
           toastManager.add(this.getText('Ups! Parece que hubo un error al guardar!'), {
@@ -192,7 +120,7 @@ class DiscountCreation extends Component {
   }
 
   getDisabled() {
-    return !(this.state.validName && this.state.validDiscount && this.state.validMultiplier && this.state.validStartingDate && this.state.validEndingDate && this.newDiscount.status !== '')
+    return !(this.state.validName && this.state.validDiscount && this.state.validStartingDate && this.state.validEndingDate && this.newDiscount.services.length > 0)
   }
 
   getText( text ) {
