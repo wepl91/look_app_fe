@@ -131,18 +131,6 @@ class AppointmentsList extends Component {
         return translate(text, this.props.store.ui.language)
     }
 
-    renderCancelModal() {
-        return(
-            <ConfirmationModal
-                content={ this.getText('¿Estás seguro que querés cancelar todos los turnos de hoy?') }
-                onCancel={() => (this.setState({showCancelModal: false,}))}
-                onAccept={ this.handleCancelAppointments }
-                acceptWording={ this.getText('Sí') }
-                cancelWording={ this.getText('No') }
-            />
-        )
-    }
-
     renderLoader() {
         return (
             <React.Fragment>
@@ -182,9 +170,6 @@ class AppointmentsList extends Component {
                     <LevelLeft style={{ paddingRight: '6px' }}>
                         <Title>{this.getText('Calendario de turnos')}</Title>
                     </LevelLeft>
-                    <LevelRight>
-                        <Button onClick={ () => (this.setState({ showCancelModal: true })) }>{ this.getText('Cancelar turno de hoy') }</Button>
-                    </LevelRight>
                 </Level>
                 <hr />
                 <Columns className="pl-4 pr-3">
@@ -225,7 +210,6 @@ class AppointmentsList extends Component {
                     </Column>
                 </Columns>
                 <AppointmentCalendar onReload={this.handleReload} key={this.state.datesInWeeks} weeks={this.state.datesInWeeks} appointments={this.state.appointments.toArray()} />
-                { this.state.showCancelModal && this.renderCancelModal() }
             </React.Fragment>)
     }
 }

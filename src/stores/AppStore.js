@@ -12,7 +12,8 @@ import {
   BranchesStore,
   ConfigsStore,
   ReportsStore,
-  AccountanciesStore
+  AccountanciesStore,
+  MovementsStore,
 } from './';
 
 export default class AppStore {
@@ -54,6 +55,7 @@ export default class AppStore {
     this.stores.set('professionals',  new ProfessionalsStore(this.APIClient, this));
     this.stores.set('appointments',   new AppointmentsStore(this.APIClient, this));
     this.stores.set('accountancies',  new AccountanciesStore(this.APIClient, this));
+    this.stores.set('movements',      new MovementsStore(this.APIClient, this));
    
     // UI stores
     this.stores.set('ui', new UIStore(this.localStorageClient, this));

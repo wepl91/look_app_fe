@@ -17,7 +17,6 @@ import {
 import {
   Title,
   Field,
-  Select,
   Table,
   Text,
   Button,
@@ -25,11 +24,22 @@ import {
   SelectableIcon,
 } from 'shipnow-mercurio';
 
-import { ClientSuggest } from '../../components/Suggest';
+import { 
+  ClientSuggest 
+} from '../../components/Suggest';
 
-import { faSpinner, faPiggyBank } from '@fortawesome/free-solid-svg-icons'
+import { 
+  faSpinner, 
+  faPiggyBank 
+} from '@fortawesome/free-solid-svg-icons'
 
-import { ReactComponent as SvgDraw } from '../../assets/undraw_finance_0bdk.svg';
+import { 
+  ReactComponent as SvgDraw 
+} from '../../assets/undraw_finance_0bdk.svg';
+
+import {
+  AppointmentDetailsModal
+} from '../../components/Appointments';
 
 import moment from 'moment';
 
@@ -43,14 +53,36 @@ class AccountanciesView extends Component {
       clients: null,
       accountancy: null,
       isLoading: true,
+      appointment: null,
+      showModal: false,
     }
 
     this.handleChangeClient = this.handleChangeClient.bind(this);
+    this.handleCloseModal   = this.handleCloseModal.bind(this);
+  }
+
+  handleCloseModal( reload = false ) {
+    if (reload) {
+      this.sendRequest();
+    }
+    else {
+      this.setState({
+        showModal: false,
+        appointment: null,
+      });
+    }
   }
 
   handleChangeClient( client ) {
     this.setState({
       client,
+    })
+  }
+
+  handleModal( appointment ) {
+    this.setState({
+      showModal: true,
+      appointment: appointment,
     })
   }
 
@@ -73,7 +105,8 @@ class AccountanciesView extends Component {
       this.props.store.accountancies.get(this.state.client.id).then(res => {
         this.setState({
           accountancy: res,
-          isLoading:false
+          isLoading:false,
+          showModal: false,
         });
       });
     });
@@ -81,6 +114,10 @@ class AccountanciesView extends Component {
 
   getText(text) {
     return translate(text, this.props.store.ui.language)
+  }
+
+  renderModal() {
+    return <AppointmentDetailsModal appointment={ this.state.appointment } onClose={ this.handleCloseModal }/>
   }
 
   renderTable() {
@@ -102,12 +139,17 @@ class AccountanciesView extends Component {
       {
         label: 'Fecha de pago',
         content: (data) => (<Text>{ moment(data.dateCreated).format('DD-MM-YYYY HH:mm') }</Text>),
-        size: 'is-5',
+        size: 'is-4',
       },
       {
         label: 'Fecha del turno',
-        content: (data) => (<Button kind="link">{ moment(data.appointment.dateCreated).format('DD-MM-YYYY') }</Button>),
+        content: (data) => (<Button kind="link" onClick={ () => (this.handleModal(data.appointment)) }>{ moment(data.appointment.dateCreated).format('DD-MM-YYYY') }</Button>),
         size: 'is-4',
+      },
+      {
+        label: 'Monto',
+        content: (data) => (<Text>{ `$${data.amount}` }</Text>),
+        size: 'is-3',
       },
     ];
 
@@ -151,6 +193,7 @@ class AccountanciesView extends Component {
             { this.renderTable() }
           </Column>
         </Columns>
+        { this.state.showModal && this.renderModal() }
       </React.Fragment> )
   }
 }

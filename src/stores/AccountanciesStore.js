@@ -21,7 +21,7 @@ export default class AccountanciesStore extends Store {
     let movements = [];
     await this.adapter.get(`/accountancy/${id}`).then( response => {
       response.results.accountMovements.forEach( movement => {
-        movements.push(new Movement(movement, MovementsStore));
+        movements.push(new Movement(movement, this.appStore.stores.get('movements')));
       });
     });
     data['movements'] = movements;

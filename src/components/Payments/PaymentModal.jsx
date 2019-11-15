@@ -199,7 +199,7 @@ class PaymentsModal extends Component {
           <ModalHeader>
             <Level>
               <LevelLeft>
-                <Title>{ `${ moment(date).format('LL') }` }</Title>
+                <Title>{ date && `${ moment(date).format('DD-MM-YYYY') }` }</Title>
               </LevelLeft>
               <LevelRight>
               <Button icon="plus" name="cancelled" kind="link" size="xl" onClick={() => this.handlePay('cancelled') }>

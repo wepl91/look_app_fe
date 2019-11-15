@@ -164,6 +164,7 @@ export default class Appointment extends Model {
     params['appointmentId'] = parseInt(this.id,10);
     params['clientId'] = parseInt(this.clientID,10);
     params['currency'] = 'ARS';
+    debugger
     return this.appStore.APIClient.sendRequest(`/appointments/${ this.id }/pay`, 'POST', params);
   }
 
