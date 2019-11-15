@@ -84,6 +84,32 @@ class DiscountsForm extends Component {
     this.props.onChange && this.props.onChange('services', newArray, newArray.length !== 0)
   }
 
+  handleDate( sender, value, name ){
+    if(name == 'fromDate'){
+      this.setState({
+        startingDate: value,
+      })
+      this.props.onChange && this.props.onChange('startDate', value, moment(value).isBefore(moment(this.state.endingDate)));
+    }else{
+      this.setState({
+        endingDate: value
+      })
+      this.props.onChange && this.props.onChange('endDate', value, moment(value).isAfter(moment(this.state.endingDate)));
+    }
+  }
+
+  handleMultiplier( multiplier ) {
+    this.props.onChange && this.props.onChange('multiplier', multiplier, true);
+  }
+
+  getText( text ) {
+    return translate(text, this.props.store.ui.language)
+  }
+
+  areDatesValid(){
+    return moment(this.state.startingDate).isBefore(moment(this.state.endingDate))
+  }
+
   renderSkeleton() {
     return (
       <React.Fragment>
@@ -141,33 +167,6 @@ class DiscountsForm extends Component {
           <Checkbox className="pt-1 ml-1" checked={ false } >...</Checkbox>
         </Field>
       </React.Fragment>)
-  }
-
-  getText( text ) {
-    return translate(text, this.props.store.ui.language)
-  }
-
-  handleDate( sender, value, name ){
-    if(name == 'fromDate'){
-      this.setState({
-        startingDate: value,
-      })
-      this.props.onChange && this.props.onChange('startDate', value, moment(value).isBefore(moment(this.state.endingDate)));
-    }else{
-      this.setState({
-        endingDate: value
-      })
-      this.props.onChange && this.props.onChange('endDate', value, moment(value).isAfter(moment(this.state.endingDate)));
-    }
-  }
-
-  areDatesValid(){
-    return moment(this.state.startingDate).isBefore(moment(this.state.endingDate))
-  }
-
-
-  handleMultiplier( multiplier ) {
-    this.props.onChange && this.props.onChange('multiplier', multiplier, true);
   }
 
   render() {
