@@ -56,8 +56,8 @@ class DiscountsForm extends Component {
     this.setState({
       services: this.props.store.services.search({}, 'services-discount-creation-view', true),
     })
-    this.props.onChange && this.props.onChange('startDate', this.state.startingDate)
-    this.props.onChange && this.props.onChange('endDate', this.state.endingDate);
+    this.props.onChange && this.props.onChange('startDate', this.state.startingDate, true)
+    this.props.onChange && this.props.onChange('endDate', this.state.endingDate, true);
   }
 
   handleChange(sender, value, name, valid) {
@@ -152,12 +152,12 @@ class DiscountsForm extends Component {
       this.setState({
         startingDate: value,
       })
-      this.props.onChange && this.props.onChange('startDate', value);
+      this.props.onChange && this.props.onChange('startDate', value, moment(value).isBefore(moment(this.state.endingDate)));
     }else{
       this.setState({
         endingDate: value
       })
-      this.props.onChange && this.props.onChange('endDate', value);
+      this.props.onChange && this.props.onChange('endDate', value, moment(value).isAfter(moment(this.state.endingDate)));
     }
   }
 

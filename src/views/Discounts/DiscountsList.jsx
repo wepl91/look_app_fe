@@ -7,7 +7,9 @@ import { observer } from 'mobx-react';
 
 import startCase from 'lodash/startCase';
 
-import { faSpinner, faPercent, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+
+import { faSpinner, faPercent, faPencilAlt, faChevronDown, faDotCircle } from "@fortawesome/free-solid-svg-icons";
 
 import {
   Loader,
@@ -16,7 +18,10 @@ import {
   Table,
   Button,
   SelectableIcon,
-  Toggle
+  Toggle,
+  Dropdown,
+  DropdownToggle,
+  DropdownPanel
 } from 'shipnow-mercurio';
 
 import {

@@ -6,6 +6,8 @@ import {
 
 import moment from 'moment';
 
+import startCase from 'lodash/startCase';
+
 export default class Discount extends Model {
   constructor( attributes, store ) {
 
@@ -66,7 +68,6 @@ export default class Discount extends Model {
   get discountedServices() {
     const ret = [];
     this.services.map( service => (ret.push(startCase(service.name))))
-    console.log(ret)
     return ret;
   }
 

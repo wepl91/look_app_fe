@@ -44,7 +44,6 @@ class DiscountsEditModal extends Component {
       reload: true,
       validName: true,
       validDiscount: true,
-      validMultiplier: true,
       validStartingDate: true,
       validEndingDate: true
     }
@@ -92,18 +91,22 @@ class DiscountsEditModal extends Component {
     } 
     else if(name=='multiplier'){
       this.setState({
-        validMultiplier: valid.type == 'success',
+        validDiscount: valid,
       })
+      name = 'discount'
     } 
-    else if(name=='startingDate'){
+    else if(name=='startDate'){
       this.setState({
-        validStartingDate: valid.type == 'success',
+        validStartingDate: valid,
       })
     } 
-    else if(name == 'endingDate'){
+    else if(name=='endDate'){
       this.setState({
         validEndingDate: valid,
       })
+    }
+    else if(name=='type'){
+      discount['discount'] = ''
     }
 
     discount[name] = value;
@@ -123,7 +126,7 @@ class DiscountsEditModal extends Component {
   }
 
   getDisabled() {
-    return !(this.state.validName && this.state.validDiscount && this.state.validMultiplier && this.state.validStartingDate && this.state.validEndingDate && this.modifiedDiscount.status !== '')
+    return !(this.state.validName && this.state.validDiscount && this.state.validStartingDate && this.state.validEndingDate && this.modifiedDiscount.services.length > 0)
   }
 
   getText( text ) {

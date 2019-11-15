@@ -74,14 +74,15 @@ class DiscountCreation extends Component {
       })
       name = 'discount'
     } 
-    else if(name=='startingDate'){
+    else if(name=='startDate'){
+      console.log(valid)
       this.setState({
-        validStartingDate: valid.type == 'success',
+        validStartingDate: valid,
       })
     } 
-    else if(name=='endingDate'){
+    else if(name=='endDate'){
       this.setState({
-        validEndingDate: valid.type == 'success',
+        validEndingDate: valid,
       })
     }
     else if(name=='type'){
