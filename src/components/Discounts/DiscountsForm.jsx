@@ -208,7 +208,7 @@ class DiscountsForm extends Component {
             <Field label={ this.getText('Beneficio') } labelNote={ this.getText('¿Qué tipo de beneficio ofrece la promoción?') }>
             <Columns isCentered isVCentered>
               <Column>
-                <Text className="ml-1" size="md" weight="medium">
+                <Text className="ml-1 mt-1" size="md" weight="medium">
                     <input 
                       className="ml-1 mr-1" 
                       type="radio" 
@@ -235,11 +235,11 @@ class DiscountsForm extends Component {
                     value={ discount && discount.discount } 
                     name="discount" 
                     validate={ (value) => (priceRegex.test(value) && value <= 100 && value >= 1) } 
-                    className="is-fullwidth ml-2" 
+                    className="is-fullwidth ml-2 mb-3" 
                     onChange={ this.handleChange } />
                   </Column>
                   <Column>
-                    <Text className="is-fullwidth" >%</Text>
+                    <Text className="is-fullwidth mb-3" >%</Text>
                   </Column>
                 </Columns>}
                 { this.state.type == 'POINT' && <React.Fragment>
@@ -254,7 +254,9 @@ class DiscountsForm extends Component {
                         checked={ discount && discount.type == 'POINT' && discount.discount == 2 } />
                         2x
                     </Text>
-                    <Text className="ml-1 mt-1 mb-1" size="md" weight="medium">
+                  </Column>
+                  <Column >
+                    <Text className="ml-1" size="md" weight="medium">
                       <input 
                         className="ml-1 mr-1" 
                         type="radio" 
@@ -264,7 +266,7 @@ class DiscountsForm extends Component {
                         3x
                     </Text>
                   </Column>
-                  <Column>
+                  <Column >
                     <Text className="ml-1" size="md" weight="medium">
                       <input 
                         className="ml-1 mr-1" 
@@ -274,7 +276,9 @@ class DiscountsForm extends Component {
                         checked={ discount && discount.type == 'POINT' && discount.discount == 4 } />
                         4x
                     </Text>
-                    <Text className="ml-1 mt-1 mb-1" size="md" weight="medium">
+                  </Column>
+                  <Column >
+                    <Text className="ml-1" size="md" weight="medium">
                       <input 
                         className="ml-1 mr-1" 
                         type="radio" 
