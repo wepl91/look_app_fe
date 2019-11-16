@@ -92,10 +92,6 @@ export const translate = (str, lang) => {
     'Los horarios y/o días ingresados son incorrectos': 'The schedules and/or days entered are incorrect',
     'Entrada': 'Entry',
     'Salida': 'Exit',
-    // Saco las traducciones de los servicios ya que dependen del input del usuario al crearlos
-    // 'Corte': 'Cut',
-    // 'Tintura': 'Dyeing',
-    // 'Peinado': 'HairStyle',
     'Turnos': 'Appointments',
     'Nuevo turno': 'New appointment',
     'Reportes': 'Reports',
@@ -260,7 +256,24 @@ export const translate = (str, lang) => {
     'Hasta' : 'To',
     '¿Cuándo inicia la promoción?' : 'When does the discount start?',
     '¿Cuándo finaliza la promoción?' : 'When does the discount end?',
-    'Los días ingresados son incorrectos' : 'The days entered are incorrect'
+    'Los días ingresados son incorrectos' : 'The days entered are incorrect',
+    '¿Querés filtrar y ver ingresos por sucursal?': 'Do you want to filter and view revenue by branch?',
+    'Ordernamiento': 'Ordering',
+    'Ascendiente': 'Ascendant',
+    'Descendiente': 'Descendant',
+    'Ingresos por profesionales': 'Revenue by professionals', 
+    'Reporte de profesionales': 'Professionals report',
+    'Reporte de servicios': 'Services report',
+    'Ordenar por:': 'Sort by:',
+    'Ingresos': 'Income',
+    'Veces consumidas': 'Consumption',
+    'Ingresos por servicios': 'Services revenues',
+    'Configuración de puntos promocionales': 'Configuración de puntos promocionales',
+    'Valor de puntos promocionales para pagar': 'Value of promotional points to pay',
+    'Valor de puntos promocionales para asignar': 'Value of promotional points to assign',
+    'Cantidad de puntos necesarios para representar 1$': 'Quantity of points needed to represent $ 1',
+    'No se ha podido enviar la reserva del turno a través de Google Calendar': 'Failed to send appointment reservation through Google Calendar',
+    'Se ha enviado la reserva del turno a través de Google Calendar': 'Appointment reservation has been sent through Google Calendar'
   }
 
   /**
