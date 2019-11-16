@@ -1,15 +1,28 @@
 import { action, observable, computed } from 'mobx';
 import { RESTClient, LocalStorageClient } from '../lib';
 
-import { UIStore } from './';
+import { 
+  UIStore, 
+  UsersStore,
+  RolesStore,
+  ServicesStore,
+  ProfessionalsStore,
+  AppointmentsStore,
+  ClientsStore,
+  BranchesStore,
+  ConfigsStore,
+  ReportsStore,
+  AccountanciesStore,
+  DiscountsStore
+} from './';
 
 export default class AppStore {
   @observable isLoading = true;
   @observable loggedInUser = null;
   @observable serviceErrors = []
 
-  api_token_key   = `la_${process.env.LOOK_APP_BE}_token`;
-  logged_user_key = `la_${process.env.LOOK_APP_BE}_user`;
+  api_token_key   = `la_${"http://localhost:8080"}_token`;
+  logged_user_key = `la_${"http://localhost:8080"}_user`;
   settings = {
     refreshRate: 5, // in minutes
   };
@@ -20,9 +33,11 @@ export default class AppStore {
     const storedToken = localStorage.getItem(this.api_token_key);
     const storedUser  = localStorage.getItem(this.logged_user_key);
 
+    //Set by default when app is up in spanish
+
     
     // create adapters
-    this.APIClient          = new RESTClient(process.env.LOOK_APP_BE, storedToken);
+    this.APIClient = new RESTClient("http://localhost:8080", storedToken);
                                                                                         
     this.localStorageClient = new LocalStorageClient('la');
 
@@ -30,7 +45,17 @@ export default class AppStore {
     this.stores = new Map();
 
     // Domain stores
-    //EJ: this.stores.set('users', new UsersStore(this.APIClient, this));
+    this.stores.set('users',          new UsersStore(this.APIClient, this));
+    this.stores.set('roles',          new RolesStore(this.APIClient, this));
+    this.stores.set('clients',        new ClientsStore(this.APIClient, this));
+    this.stores.set('services',       new ServicesStore(this.APIClient, this));
+    this.stores.set('branches',       new BranchesStore(this.APIClient, this));
+    this.stores.set('configs',        new ConfigsStore(this.APIClient, this));
+    this.stores.set('reports',        new ReportsStore(this.APIClient, this));
+    this.stores.set('professionals',  new ProfessionalsStore(this.APIClient, this));
+    this.stores.set('appointments',   new AppointmentsStore(this.APIClient, this));
+    this.stores.set('accountancies',  new AccountanciesStore(this.APIClient, this));
+    this.stores.set('discounts',      new DiscountsStore(this.APIClient, this));
    
     // UI stores
     this.stores.set('ui', new UIStore(this.localStorageClient, this));
@@ -47,10 +72,10 @@ export default class AppStore {
 
 
     // is already a session open?
-    if ( storedToken && storedUser ) {
-
+    //if ( storedToken && storedUser ) {
+      if ( storedUser ) {
+      this.isLoading = false;
       this.users.get(storedUser).andThen( ( res, err ) => {
-
         if (err) {
           // something went terrible wrong.... 
           this.signOut();
@@ -89,7 +114,7 @@ export default class AppStore {
 
   @action
   authenticate( user, password ) {
-    return this.APIClient.authenticate(user, password, '/users/authentication')
+    return this.APIClient.authenticate(user, password)
   }
 
   @action
@@ -99,7 +124,7 @@ export default class AppStore {
     // save the info in storage
     localStorage.setItem(this.api_token_key, this.APIClient.token);
     localStorage.setItem(this.logged_user_key, this.loggedInUser.id);
-
+    localStorage.setItem('language', 'Español');
   }
 
   @action
@@ -113,6 +138,7 @@ export default class AppStore {
 
   @action
   setCurrentUser( user ) {
+    this.isLoading = false;
     this.loggedInUser = user;
   }
 

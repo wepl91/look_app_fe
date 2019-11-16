@@ -1,17 +1,19 @@
 .appointment_card {
-  display: table;
-  width: 14%; 
+  width: 13.35%; 
   height: 150px;
+  margin-right: 8px;
+  margin-top:8px
+}
+
+.appointment_card_panel {
   padding: 2px;
-  margin: 8px;
+  height: 100%;
 }
 
-.appointment_card_appointment_approved {
+.appointment_card_appointment {
   width: 100%;
   border-style: solid;
   border-width: 1px;
-  border-color: rgb(4, 161, 4);
-  background-color: rgb(96, 202, 96);
   border-radius: 5px;
   height: 15px;
   margin-bottom: 4px; 
@@ -21,19 +23,38 @@
   align-items: center;
   justify-items: center;
 }
-
-.appointment_card_appointment_cancelled {
-  width: 100%;
-  border-style: solid;
-  border-width: 1px;
-  border-color: rgb(161, 4, 4);
-  background-color: rgb(202, 96, 96);
-  border-radius: 5px;
-  height: 15px;
-  margin-bottom: 4px; 
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  align-items: center;
-  justify-items: center;
+#approved {
+ background-color: #BCF1CF;
+  border-color: #BCF1CF;
 }
+  
+#open {
+  border-color: #BBE1F9;
+  background-color: #BBE1F9;
+}
+
+#cancelled {
+  border-color: #FFC3CF;
+  background-color: #FFC3CF;
+}
+
+#warning {
+  border-color: rgb(255, 244, 195);
+  background-color: rgb(255, 244, 195);
+}
+
+.empty_draw {
+  height: 400px;
+  width: 100%;
+}
+
+#subtotalLine {
+  /* color: #520000; */
+  width: 35%;
+  border: 0;
+  height: 1px;
+  margin: 3% 0 1% 24%;
+  background-image: linear-gradient(to left, #520000, #FFFFFF);
+}
+
+

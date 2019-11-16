@@ -10,12 +10,17 @@ export default class UIStore extends Store {
 
   model = UISettings;
   urlRoot = 'UI';
+  @observable language;
+  @observable configs
 
   constructor(adapter, appStore) {
     super(adapter, appStore);
 
     // initialize static value lists
-    this.language = 'ESP'; 
+    this.language = localStorage.getItem('language');
+    appStore.stores.get('configs').search({}, 'configs', true).andThen( configsResponse => {
+      this.setConfigs(configsResponse.toArray());
+    });
   }
 
 
@@ -34,6 +39,23 @@ export default class UIStore extends Store {
     this.routes[route] = label;
   }
 
+  @action
+  setLanguageToSpanish() {
+    localStorage['language'] = 'Español';
+    this.language = 'Español';
+  }
+
+  @action
+  setLanguageToEnglish() {
+    localStorage['language'] = 'Ingles';
+    this.language = 'Ingles';
+  }
+
+  @action
+  setConfigs(config) {
+    this.configs = config;
+  }
+
   define(list, value) {
     const found = this.lists[list].find( x => x.value == value );
 
@@ -47,6 +69,18 @@ export default class UIStore extends Store {
     }
 
     return new UISettings({}, this);
+  }
+
+  getChange( type ){
+    let ret = 0
+    if (this.configs){
+      this.configs.forEach((element) =>
+        {if (element.key == type){
+          ret = element
+        }}
+      )
+    }
+    return ret
   }
 
 }

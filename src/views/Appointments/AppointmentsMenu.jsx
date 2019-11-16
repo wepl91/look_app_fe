@@ -7,6 +7,11 @@ import { withRouter } from 'react-router';
 import { faCalendarAlt, faChartBar, faPlus } from "@fortawesome/free-solid-svg-icons";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
+import { translate } from '../../lib/Translator';
+
+import { observer } from 'mobx-react'
+
+@observer
 class AppointmentsMenu extends Component {
 
   constructor(props) {
@@ -20,14 +25,17 @@ class AppointmentsMenu extends Component {
 
   }
 
+  getText( text ) {
+    return translate(text, this.props.store.ui.language)
+  }
+
   render() {
     const path = this.props.match.path;
 
     return(
-      <LayoutMenuLinkGroup icon={ faCalendarAlt } label="Turnos" basePath={ `${path}/appointments` }>
-        <LayoutMenuLink icon={ faCalendarAlt } to={ `${path}/appointments/list`   }>Listado</LayoutMenuLink>
-        <LayoutMenuLink icon={ faPlus } to={ `${path}/appointments/new`           }>Nuevo turno</LayoutMenuLink>
-        <LayoutMenuLink icon={ faChartBar } to={ `${path}/appointments/reports`   }>Reportes</LayoutMenuLink>
+      <LayoutMenuLinkGroup icon={ faCalendarAlt } label={ this.getText('Turnos') } basePath={ `${path}/appointments` }>
+        <LayoutMenuLink icon={ faCalendarAlt } to={ `${path}/appointments/list`   }>{ this.getText('Listado') }</LayoutMenuLink>
+        <LayoutMenuLink icon={ faPlus } to={ `${path}/appointments/new`           }>{ this.getText('Nuevo turno') }</LayoutMenuLink>
       </LayoutMenuLinkGroup> )
   };
 

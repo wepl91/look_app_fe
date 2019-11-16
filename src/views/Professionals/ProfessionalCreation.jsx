@@ -1,51 +1,138 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router';
 
 import {
   Column,
   Columns,
   Level,
-  LevelLeft,
-  Checkbox
+  LevelLeft
 } from 'bloomer';
 
 import {
   Button,
-  Select,
-  Field,
-  TextInput,
-  Title,
-  Text
+  Title
 } from 'shipnow-mercurio';
 
-import { WorkingHoursSelector } from '../../components/Professionals';
-
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-
-import { sucursales, servicios, horariosFormateados } from '../../lib/Mocks';
-
 import { ReactComponent as SvgDraw } from '../../assets/undraw_online_cv_qy9w.svg';
-import moment from 'moment';
 
+import { ProfessionalsForm } from '../../components/Professionals/';
+
+import { withToastManager } from 'react-toast-notifications';
+import withStore from '../../hocs/withStore';
+
+
+import { Professional } from '../../models';
+import { observer } from 'mobx-react';
+
+import { translate } from '../../lib/Translator'; 
+
+@observer
 class ProfessionalCreation extends Component {
+
+  newProfessional
+
   constructor(props) {
     super(props);
 
     this.state = {
-      startingTime: '',
-      finishingTime: '',
-      validTimeRange: false
+      validName: false,
+      validLastName: false,
+      validPhone: false,
+      validMail: false,
+      validServices: false,
+      validHours: false
     }
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  handleChange(receivedTime){
-    this.setState({ startingTime:  receivedTime[0] });
-    this.setState({ finishingTime:  receivedTime[1] });
+  componentDidMount(){
+    this.newProfessional = this.getProfessional();
   }
 
-  componentDidUpdate(prevProps, prevState){
-    if (this.state.startingTime != prevState.startingTime || this.state.finishingTime != prevState.finishingTime) {
-      this.setState({validTimeRange: moment(this.state.startingTime,'HH:mm').isBefore(moment(this.state.finishingTime,'HH:mm'))})
+  handleClick() {
+    const { toastManager } = this.props;
+    const professional = this.getProfessional();
+    professional.status = 'ACTIVE';
+
+    professional.save().andThen( (savedProfessional, responseError) => {
+      if (responseError) {
+        toastManager.add( this.getText('Ups! Parece que hubo un error al guardar!'), {
+          appearance: 'error',
+          autoDismiss: true,
+          pauseOnHover: false,
+        });
+      }
+      else {
+        toastManager.add(this.getText('El profesional fue agregado exitosamente!'), {
+          appearance: 'success',
+          autoDismiss: true,
+          pauseOnHover: false,
+        });
+        this.props.history.push('list');
+      }
+    })
+  }
+
+  handleChange( name, value, valid ) {
+    const professional = this.getProfessional();
+    if (name == 'name') {
+      this.setState({
+        validName: valid.type == 'success',
+      })
+    } 
+    else if(name == 'lastName'){
+      this.setState({
+        validLastName: valid.type == 'success',
+      })
+    } 
+    else if(name=='phone'){
+      this.setState({
+        validPhone: valid.type == 'success',
+      })
+    } 
+    else if(name=='email'){
+      this.setState({
+        validMail: valid.type == 'success',
+      })
+    } 
+    else if(name == 'services'){
+      this.setState({
+        validServices: valid,
+      })
+    } 
+    if(name == 'hours'){
+      professional.workingHours = value
+      this.setState({
+        validHours: valid,
+      })
+    }
+    else{
+      professional[name] = value;
+      this.setState( prevState => ({
+        reload: !prevState.reload
+      }))
+    }
+  }
+
+  getDisabled() {
+    return !(this.state.validName && this.state.validLastName && this.state.validPhone && this.state.validMail && this.state.validServices && this.state.validHours)
+  }
+
+  getText( text ) {
+    return translate(text, this.props.store.ui.language)
+  }
+
+  getProfessional() {
+    if (this.newProfessional) {
+      return this.newProfessional;
+    }
+    else if (this.props.professional){
+      this.newProfessional = this.props.professional.clone();
+      return this.newProfessional;
+    }else{
+      this.newProfessional = new Professional({}, this.props.store.professionals);
+      return this.newProfessional;
     }
   }
 
@@ -54,47 +141,24 @@ class ProfessionalCreation extends Component {
       <React.Fragment>
         <Level>
           <LevelLeft>
-            <Title>Nuevo profesional</Title>
+            <Title>{ this.getText('Nuevo profesional') }</Title>
           </LevelLeft>
         </Level>
         <hr/>
         <Columns>
-          <Column className="pl-5 pr-5" isSize={5}>
-            <Field className="pl-5 pr-5" label="Nombre">
-              <TextInput className="is-fullwidth" />
-            </Field>
-            <Field className="pl-5 pr-5" label="Apellido">
-              <TextInput className="is-fullwidth" />
-            </Field>
-            <Field className="pl-5 pr-5" label="Teléfono">
-              <TextInput className="is-fullwidth" />
-            </Field>
-            <Field className="pl-5 pr-5" label="Mail">
-              <TextInput className="is-fullwidth" />
-            </Field>
-            <Field className="pl-5 pr-5" label="¿En qué sucursal va a atender?" labelNote="Seleccioná una sucursal">
-              <Select className="is-fullwidth" placeholder="Sucursales" borderless icon={ faChevronDown } options={ sucursales().map(sucursal => ({key: sucursal.address, value: sucursal.id})) } />
-            </Field>
-            <Field className="pl-5 pr-5" label="Horarios de trabajo" labelNote="Seleccioná los horarios semanales">
-              <WorkingHoursSelector onChange={ this.handleChange } name="hours" startingDate={ moment('05-17-2018 02:30 PM', 'MM-DD-YYYY hh:mm A') } finishingDate={ moment('05-17-2018 06:00 PM', 'MM-DD-YYYY hh:mm A') }/>
-            </Field>
-            <Field className="pl-5 pr-5" label="¿Qué servicios ofrece?" labelNote="Seleccioná los servicios">
-              {servicios().map((servicio, index) => (
-                <Checkbox className="pt-1" isFullWidth><Text className="pl-1">{servicio.name}</Text></Checkbox>
-              ))}
-            </Field>
+          <Column className="pr-4" isSize={6}>
+            <ProfessionalsForm onChange={ this.handleChange } />
             <br/>
             <br/>
             <br/>
-            <br/>
-            <Button className="ml-5" kind="outline" disabled={!this.state.validTimeRange}>Agregar profesional</Button>
+            <Button onClick={ this.handleClick } className="ml-4" kind="outline" disabled={ this.getDisabled() }>{ this.getText('Agregar profesional') }</Button>
           </Column>
-          <Column>
-            <SvgDraw style={{ height: '85%', width: '85%' }}/>
+          <Column isSize={6}>
+            <SvgDraw className={"has-text-centered"} style={{ height: '90%', width: '90%'}}/>
           </Column>
         </Columns>
       </React.Fragment> )
   }
 }
 
-export default ProfessionalCreation;
+export default withToastManager(withStore(withRouter(ProfessionalCreation)));

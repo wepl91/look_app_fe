@@ -8,7 +8,7 @@ export default class UISettings extends Model {
       layout: {
         expandedMenu: true,
       },
-      language: 'spn'
+      language: 'Español'
     };
 
     let attrs = Object.assign( defaultAttributes, attributes );

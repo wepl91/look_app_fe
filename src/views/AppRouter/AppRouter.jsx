@@ -6,12 +6,58 @@ import { observer } from 'mobx-react';
 import withStore from '../../hocs/withStore';
 
 import { SignIn } from '../Session';
-import { UsersMenu, UsersRouter } from '../Users'
-import { AppointmentsMenu, AppointmentsList, AppointmentsRouter } from '../Appointments';
-import { ServicesMenu, ServicesList, ServicesRouter } from '../Services'
-import { ProfessionalsMenu, ProfessionalsList, ProfessionalsRouter } from '../Professionals'
+
+import {
+  HomeRouter
+} from '../Home';
+
+import {
+  BranchesRouter,
+  BranchesMenu,
+} from '../Branches'
+
+import { 
+  UsersMenu, 
+  UsersRouter
+} from '../Users'
+
+import { 
+  AppointmentsMenu, 
+  AppointmentsRouter 
+} from '../Appointments';
+
+import { 
+  ServicesMenu, 
+  ServicesRouter 
+} from '../Services';
+
+import { 
+  ProfessionalsMenu, 
+  ProfessionalsRouter 
+} from '../Professionals';
+
+import {
+  ClientsMenu,
+  ClientsRouter
+} from '../Clients';
+
+import {
+  ReportsMenu,
+  ReportsRouter,
+} from '../Reports';
+
+import { 
+  DiscountsMenu, 
+  DiscountsRouter 
+} from '../Discounts';
+
+import {
+  AccountanciesRouter,
+} from '../Accountancies';
 
 import LanguageDropdown from '../../components/LanguageDropdown/LanguageDropdown';
+
+import { UserLoggedDropdown } from '../../components/Users';
 
 import { 
   Layout, 
@@ -24,15 +70,10 @@ import {
   Button
 } from 'shipnow-mercurio'
 
-import { faChevronCircleLeft, faChevronCircleRight } from "@fortawesome/free-solid-svg-icons";
+import { faChevronCircleLeft, faChevronCircleRight, faBars } from "@fortawesome/free-solid-svg-icons";
 
 import './style.css'
 
-const FakeContent = withRouter( (props) => (
-  <div>
-    <Title>{ props.location.pathname }</Title>
-  </div>
-));
 @observer
 class AppRouter extends Component {
   constructor(props) {
@@ -44,33 +85,42 @@ class AppRouter extends Component {
   }
 
   render() {
-   // if (this.props.store.loggedInUser) {
-     if (true) {
+   if (this.props.store.loggedInUser) {
       return(
         <React.Fragment>
           <Layout expandedMenu={ this.state.expanded }>
-            <LayoutNavbar logo="https://thumbs.dreamstime.com/z/logotipo-de-la-barber%C3%ADa-en-c%C3%ADrculo-74419610.jpg">
+            <LayoutNavbar>
               <LayoutNavbarStart>
-
+                <LanguageDropdown /> 
               </LayoutNavbarStart>
               <LayoutNavbarEnd>
-               {/* <LanguageDropdown /> */}
+               <UserLoggedDropdown user={ this.props.store.loggedInUser }/>
               </LayoutNavbarEnd>
             </LayoutNavbar>
             <LayoutMenu>
-              <AppointmentsMenu  />
-              <ServicesMenu      />
-              <ProfessionalsMenu />
-              <UsersMenu         />
-              <div className={ this.state.expanded ? 'menu_button_expanded' : 'menu_button' }>
-                <Button kind="link" key={ this.state.expanded } invert size="lg" onClick={ () => (this.setState(preState => ({expanded: !preState.expanded})))} icon={ this.state.expanded ? faChevronCircleRight : faChevronCircleLeft }/>
-              </div>  
+            <AppointmentsMenu  />
+            <BranchesMenu      />
+            <ServicesMenu      />
+            <ProfessionalsMenu />
+            <UsersMenu         />
+            <ClientsMenu       />
+            <DiscountsMenu     />
+            <ReportsMenu       />
+            <div className="menu_button">
+            <Button kind="link" key={ this.state.expanded } invert size="lg" onClick={ () => (this.setState(preState => ({expanded: !preState.expanded})))} icon={ this.state.expanded ? faBars : faBars }/>
+            </div>  
             </LayoutMenu>
             <LayoutContent>
-                <AppointmentsRouter  />
-                <ServicesRouter      />
-                <ProfessionalsRouter />
-                <UsersRouter         />
+              <HomeRouter          />
+              <ReportsRouter       />
+              <AppointmentsRouter  />
+              <BranchesRouter      />
+              <ServicesRouter      />
+              <ProfessionalsRouter />
+              <UsersRouter         />
+              <ClientsRouter       />
+              <AccountanciesRouter />
+              <DiscountsRouter       />
             </LayoutContent>
           </Layout>
         </React.Fragment> )

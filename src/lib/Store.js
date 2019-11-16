@@ -100,7 +100,7 @@ export default class Store {
 
   @action
   getAll( limit = 1000 ) {
-    return this.search({ per_page: limit }, 'all');
+    return this.search({ per_page: limit }, 'all', true);
   }
 
   @action
@@ -225,7 +225,6 @@ export default class Store {
     model.beginUpdate();
 
     if ( model.isNew ) {
-
       this.adapter.post( apiPath || this.modelRoot, model )
         .then(
           (res) => {

@@ -11,13 +11,26 @@ import {
 import {
   Level,
   LevelLeft,
-  LevelRight
+  LevelRight,
 } from 'bloomer';
 
 import { AppointmentModal } from './'
 
 import startCase from 'lodash/startCase';
 
+import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
+
+import moment from 'moment';
+
+import AppointmentCell from './AppointmentCell';
+
+import { observer } from 'mobx-react';
+
+import { translate } from '../../lib/Translator';
+
+import { withStore } from '../../hocs';
+
+@observer
 class AppointmentCard extends Component {
   constructor(props) {
     super(props);
@@ -39,55 +52,64 @@ class AppointmentCard extends Component {
     }
   }
 
-  handleClick() {
+  handleClick( reload ) {
     this.setState(prevState => ({
       showModal: !prevState.showModal
     }))
+    if (reload == true) {
+      this.props.onReload && this.props.onReload()
+    }
+  }
+
+  isToday( date ) {
+    return moment(date).isSame(moment(), 'day') && moment(date).isSame(moment(), 'month') && moment(date).isSame(moment(), 'year')
+  } 
+
+  isSunday( date ) {
+    return moment(date).weekday() == 1;
+  }
+
+  getTurnos() {
+    return this.props.appointments.filter( appointment => ( 
+      appointment.dayHour.isSame(this.state.date, 'day') && 
+      appointment.dayHour.isSame(this.state.date, 'month') && 
+      appointment.dayHour.isSame(this.state.date, 'year')))
+  }
+
+  getText(text) {
+    return translate(text, this.props.store.ui.language)
   }
   
-
   render() {
-    const turnos = [
-      {
-        name: 'Marta',
-        hour: '13:00',
-        status: 'approved'
-      },
-      {
-        name: 'Juan',
-        hour: '15:00',
-        status: 'approved'
-      },
-      {
-        name: 'Ivan',
-        hour: '17:00',
-        status: 'cancelled'
-      }
-    ]
+    const turnos = this.getTurnos();
     return(
-      <React.Fragment>
-        <Panel className="appointment_card" key={ this.state.date }>
+      <div className="appointment_card">
+        <Panel invert={ this.isToday(this.state.date) } className="appointment_card_panel" key={ this.state.date }>
           <Level>
             <LevelLeft>
-              <Text key={ this.state.reload } weight="medium" color="primaryDark">{`${ startCase(this.state.date.format('ddd')) } ${ this.state.date.format('D') }`}</Text>
+              <Text className="ml-1" size="md" key={ this.state.reload } weight="medium" color="primaryDark">{`${ this.getText(startCase(this.state.date.format('dddd'))) } ${ this.state.date.format('D') }`}</Text>
             </LevelLeft>
             <LevelRight>
-              <Text size="sm"className="appointment_card_see_more mr-1" onClick={ this.handleClick }>Ver mas</Text>
+              <Button icon={ faEllipsisH } kind="link" onClick={ this.handleClick }/>
             </LevelRight>
           </Level>
-          { turnos.map( turno => <div className={ turno.status == 'cancelled' ? 'appointment_card_appointment_cancelled' : 'appointment_card_appointment_approved'}><Text size="xs">{ `${ turno.name } a las ${ turno.hour }` }</Text></div>) }
+          { turnos.map( (turno, index) => index < 4 && <AppointmentCell appointment={ turno } />) }
           </Panel> 
         { this.state.showModal && <AppointmentModal appointments={ turnos } date={ this.state.date } onClose={ this.handleClick } /> }
-      </React.Fragment> )
+      </div> )
   } 
 }
 
 AppointmentCard.PropTypes = {
   date: PropTypes.object,
+  appointments: PropTypes.array,
+  onReload: PropTypes.func,
 }
 
 AppointmentCard.defaultProps = {
-  date: null
+  date: null,
+  appointments: null,
+  onReload: null
 }
 
-export default AppointmentCard;
+export default withStore(AppointmentCard);

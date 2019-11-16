@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { DropdownMenuItem, Button, DropdownMenu, Dropdown, DropdownToggle } from 'shipnow-mercurio';
 import { withStore } from '../../hocs';
+import { translate } from '../../lib/Translator';
 
 class LanguageDropdown extends Component {
   constructor(props) {
@@ -9,12 +10,17 @@ class LanguageDropdown extends Component {
     this.handleChange = this.handleChange.bind(this);
 
     this.state = {
-      languag: this.props.store.ui.language
+      language: this.props.store.ui.language
     }
   }
 
   handleChange( sender, value, name ) {
-    this.props.store.ui.language = value;
+    if (value == 'ESP') {
+      this.props.store.ui.setLanguageToSpanish();
+    }
+    else {
+      this.props.store.ui.setLanguageToEnglish();
+    }
     this.setState({
       language: this.props.store.ui.language
     })
@@ -24,11 +30,11 @@ class LanguageDropdown extends Component {
     return(
         <Dropdown direction="bottom-left">
           <DropdownToggle>
-            <Button kind="link" invert >{ `Idioma: ${ this.props.store.ui.language }` }</Button>
+            <Button kind="link" invert >{ `${ translate('Idioma', this.props.store.ui.language)}: ${ translate(this.props.store.ui.language, this.props.store.ui.language)}` }</Button>
           </DropdownToggle>
           <DropdownMenu>
-            <DropdownMenuItem onClick={ this.handleChange } name="ESP" value="ESP">Español</DropdownMenuItem>
-            <DropdownMenuItem onClick={ this.handleChange } name="ENG" value="ENG">English</DropdownMenuItem>
+            <DropdownMenuItem onClick={ this.handleChange } name="ESP" value="ESP">{ translate('Español', this.props.store.ui.language) }</DropdownMenuItem>
+            <DropdownMenuItem onClick={ this.handleChange } name="ENG" value="ENG">{ translate('Ingles', this.props.store.ui.language) }</DropdownMenuItem>
           </DropdownMenu> 
         </Dropdown> )
   }
