@@ -15,7 +15,8 @@ export default class Discount extends Model {
       name: '',
       status: '',
       type: '',
-      discount: 0,
+      discount: null,
+      pointFactor: null,
       startDate: '',
       endDate: '',
       services: []

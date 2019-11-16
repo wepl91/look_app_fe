@@ -98,8 +98,8 @@ class DiscountsForm extends Component {
     }
   }
 
-  handleMultiplier( multiplier ) {
-    this.props.onChange && this.props.onChange('multiplier', multiplier, true);
+  handleMultiplier( pointFactor ) {
+    this.props.onChange && this.props.onChange('pointFactor', pointFactor, true);
   }
 
   getText( text ) {
@@ -250,8 +250,8 @@ class DiscountsForm extends Component {
                         className="ml-1 mr-1" 
                         type="radio" 
                         value={ 2 }
-                        onChange={ () => this.handleMultiplier(2) }
-                        checked={ discount && discount.type == 'POINT' && discount.discount == 2 } />
+                        onChange={ () => this.handleMultiplier( 2 ) }
+                        checked={ discount && discount.type == 'POINT' && discount.pointFactor == 2 } />
                         2x
                     </Text>
                   </Column>
@@ -261,8 +261,8 @@ class DiscountsForm extends Component {
                         className="ml-1 mr-1" 
                         type="radio" 
                         value={ 3 }
-                        onChange={ () => this.handleMultiplier(3) }
-                        checked={ discount && discount.type == 'POINT' && discount.discount == 3 } />
+                        onChange={ () => this.handleMultiplier( 3 ) }
+                        checked={ discount && discount.type == 'POINT' && discount.pointFactor == 3 } />
                         3x
                     </Text>
                   </Column>
@@ -272,8 +272,8 @@ class DiscountsForm extends Component {
                         className="ml-1 mr-1" 
                         type="radio" 
                         value={ 4 } 
-                        onChange={ () => this.handleMultiplier(4) }
-                        checked={ discount && discount.type == 'POINT' && discount.discount == 4 } />
+                        onChange={ () => this.handleMultiplier( 4 ) }
+                        checked={ discount && discount.type == 'POINT' && discount.pointFactor == 4 } />
                         4x
                     </Text>
                   </Column>
@@ -283,8 +283,8 @@ class DiscountsForm extends Component {
                         className="ml-1 mr-1" 
                         type="radio" 
                         value={ 5 } 
-                        onChange={ () => this.handleMultiplier(5) }
-                        checked={ discount && discount.type == 'POINT' && discount.discount == 5 } />
+                        onChange={ () => this.handleMultiplier( 5 ) }
+                        checked={ discount && discount.type == 'POINT' && discount.pointFactor == 5 } />
                         5x
                     </Text>
                   </Column>

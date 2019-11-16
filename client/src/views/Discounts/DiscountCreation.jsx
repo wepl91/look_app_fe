@@ -68,11 +68,10 @@ class DiscountCreation extends Component {
         validDiscount: valid.type == 'success',
       })
     } 
-    else if(name=='multiplier'){
+    else if(name=='pointFactor'){
       this.setState({
         validDiscount: valid,
       })
-      name = 'discount'
     } 
     else if(name=='startDate'){
       this.setState({
@@ -84,15 +83,16 @@ class DiscountCreation extends Component {
         validEndingDate: valid,
       })
     }
-    else if(name=='type'){
-      this.newDiscount['discount'] = ''
+    if(name=='type'){
+      this.newDiscount[name] = value
+      this.newDiscount['discount'] = null
+      this.newDiscount['pointFactor'] = null
+      this.setState({
+        validDiscount: false,
+      })
+    }else{
+      this.newDiscount[name] = value;
     }
-    // if(name == 'type'){
-    //   this.newDiscount.updateType(value)
-    // }else{
-    //   this.newDiscount[name] = value;
-    // }
-    this.newDiscount[name] = value;
   }
 
   handleSave() {

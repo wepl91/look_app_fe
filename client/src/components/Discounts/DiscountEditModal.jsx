@@ -83,17 +83,16 @@ class DiscountsEditModal extends Component {
       this.setState({
         validName: valid.type == 'success',
       })
-    } 
+    }
     else if(name=='discount'){
       this.setState({
         validDiscount: valid.type == 'success',
       })
     } 
-    else if(name=='multiplier'){
+    else if(name=='pointFactor'){
       this.setState({
         validDiscount: valid,
       })
-      name = 'discount'
     } 
     else if(name=='startDate'){
       this.setState({
@@ -105,11 +104,18 @@ class DiscountsEditModal extends Component {
         validEndingDate: valid,
       })
     }
-    else if(name=='type'){
-      discount['discount'] = ''
+
+    if(name=='type'){
+      discount[name] = value
+      discount['discount'] = null
+      discount['pointFactor'] = null
+      this.setState({
+        validDiscount: false,
+      })
+    }else{
+      discount[name] = value;
     }
 
-    discount[name] = value;
     this.setState( prevState => ({
       reload: !prevState.reload
     }))
