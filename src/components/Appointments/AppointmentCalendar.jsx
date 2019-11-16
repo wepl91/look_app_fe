@@ -12,7 +12,7 @@ import { withStore } from '../../hocs';
 import { observer } from 'mobx-react';
 
 import { translate } from '../../lib/Translator';
-
+//Some comment
 @observer
 class AppointmentCalendar extends Component {
   constructor(props) {
