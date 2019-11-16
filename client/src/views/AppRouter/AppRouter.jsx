@@ -55,6 +55,11 @@ import {
   AccountanciesRouter,
 } from '../Accountancies';
 
+import {
+  ConfigurationMenu,
+  ConfigurationRouter
+} from '../Configuration'
+
 import LanguageDropdown from '../../components/LanguageDropdown/LanguageDropdown';
 
 import { UserLoggedDropdown } from '../../components/Users';
@@ -106,6 +111,7 @@ class AppRouter extends Component {
             <ClientsMenu       />
             <DiscountsMenu     />
             <ReportsMenu       />
+            <ConfigurationMenu />
             <div className="menu_button">
             <Button kind="link" key={ this.state.expanded } invert size="lg" onClick={ () => (this.setState(preState => ({expanded: !preState.expanded})))} icon={ this.state.expanded ? faBars : faBars }/>
             </div>  
@@ -120,7 +126,8 @@ class AppRouter extends Component {
               <UsersRouter         />
               <ClientsRouter       />
               <AccountanciesRouter />
-              <DiscountsRouter       />
+              <DiscountsRouter     />
+              <ConfigurationRouter />
             </LayoutContent>
           </Layout>
         </React.Fragment> )
