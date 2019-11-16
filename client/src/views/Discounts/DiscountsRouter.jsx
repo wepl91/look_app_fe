@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
-import { DiscountsList, DiscountCreation } from './'
+import { DiscountsList, DiscountCreation } from '.'
 import '../../styles/styles.scss';
 
 class DiscountsRouter extends Component {

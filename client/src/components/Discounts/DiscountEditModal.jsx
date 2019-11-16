@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { DiscountsForm } from './';
+import { DiscountsForm } from '.';
 
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
