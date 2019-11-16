@@ -4,7 +4,6 @@ export default class MiddleClient {
   }
 
   sendInvite(data) {
-    debugger
     return fetch(`${this.baseUrl}/google_invite/send`, {
       method: 'POST',
       body: JSON.stringify(data), // data can be {object}!

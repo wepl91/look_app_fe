@@ -21,6 +21,9 @@ const key = "AIzaSyDKurLTdc7-UR2x8OrBUYOyaFr5SBvRWjc";
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+/**
+ * list events in calendar
+ */
 app.get('/api/google_calendar/events', (req, res) => {
   nylas.events.list().then(events => {
     res.send({
@@ -28,6 +31,10 @@ app.get('/api/google_calendar/events', (req, res) => {
     })
   });
 })
+
+/**
+ * Create an event
+ */
 app.post('/api/google_invite/send', (req, res) => {
   let event = nylas.events.build();
 
@@ -37,9 +44,9 @@ app.post('/api/google_invite/send', (req, res) => {
  
   event.title = "Reserva de turno en Look App!";
   event.owner = "look.app.ok@gmail.com";
-  event.location = req.body.location//'Universidad Nacional General Sarmiento';
-  event.participants = req.body.participants//[{ email: 'pedrog4747@gmail.com' }, { email: 'walter.pereyra.lopez91@gmail.com' }];
-  event.description = req.body.description//'La rompemos en la demo con Javi!';
+  event.location = req.body.location;
+  event.participants = req.body.participants;
+  event.description = req.body.description;
   event.calendarId = calendarID;
 
   try {
@@ -49,15 +56,18 @@ app.post('/api/google_invite/send', (req, res) => {
         status: 'ok',
       })
     })
-      // .catch(error => {
-      //   res.send({
-      //     status: 'error',
-      //     description: error,
-      //   });
-      // });
+    .catch(error => {
+      res.send({
+        status: 'error',
+        description: error,
+      });
+    });
   }
   catch(error) {
-    console.log(error);
+    res.send({
+      status: 'error',
+      description: error,
+    });
   }
 
 });

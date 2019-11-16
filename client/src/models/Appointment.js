@@ -166,7 +166,7 @@ export default class Appointment extends Model {
     params['appointmentId'] = parseInt(this.id,10);
     params['clientId'] = parseInt(this.clientID,10);
     params['currency'] = 'ARS';
-    debugger
+
     return this.appStore.APIClient.sendRequest(`/appointments/${ this.id }/pay`, 'POST', params);
   }
 
@@ -256,12 +256,10 @@ export default class Appointment extends Model {
 
   @action
   sendInvite() {
-    debugger
     //If there is no client or client has no email or email client is not gmail domain, we do not send invite
     if (!this.client || !this.client.email || !this.client.email.includes('gmail.com')) {
       return;
     }
-    debugger
     const middleClient = new MiddleClient();
     const data = {};
     data['location'] = this.branch.cookedAddress;

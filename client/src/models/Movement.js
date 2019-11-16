@@ -19,7 +19,6 @@ export default class Movement extends Model {
 
   afterSetData() {
     if (this.appointment) {
-      debugger
       this.appointment = new Appointment(this.appointment, this.appStore.stores.get('appointments'));
     }
   }

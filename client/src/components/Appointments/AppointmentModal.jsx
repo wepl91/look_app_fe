@@ -236,7 +236,6 @@ class AppointmentModal extends Component {
             autoDismiss: true,
             pauseOnHover: false,
           });
-          debugger
           if (isNew) {
             this.sendGCInvite(savedAppointment);
           }
