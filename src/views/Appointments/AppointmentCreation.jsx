@@ -106,7 +106,7 @@ class AppointmentCreation extends Component {
   
   handleChange( name, value ) {
     if (name == 'hour') {
-      this.newAppointment.dayHour.hour(value);
+      this.newAppointment.dayHour.hour(value.substring(0, 2));
       this.newAppointment.dayHour.minute(0);
       this.newAppointment.dayHour.second(0);
       this.setState({

@@ -250,7 +250,7 @@ class AppointmentModal extends Component {
     })
     const appointment = this.state.renderDetails ? this.getAppointment() : this.newAppointment;
     if (name == 'hour') {
-      appointment.dayHour.hour(value);
+      appointment.dayHour.hour(value.substring(0, 2));
       appointment.dayHour.minute(0);
       appointment.dayHour.second(0);
       this.setState({
