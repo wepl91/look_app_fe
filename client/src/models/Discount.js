@@ -26,9 +26,15 @@ export default class Discount extends Model {
     super(attrs, store);
   }
 
+  afterSetData() {
+    if (this.type instanceof Object) {
+      this.type = this.type.name
+    }
+  }
+
   @computed
   get isActive() {
-    return this.status == 'ACTIVE';
+    return this.status.name == 'ACTIVE';
   }
 
   @computed
@@ -95,6 +101,7 @@ export default class Discount extends Model {
       }
     });
     this.services = cleanServices;
+
     return this;
   }
 }
