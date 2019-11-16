@@ -35,9 +35,9 @@ export default class RESTClient {
     return this.sendRequest( authPath, 'POST', { password_reset_token: token, password: password }, false );
   }
 
-  search(uriPath, filters = {}, secure = true) {
+  search(uriPath, filters = {}, secure = true, prefix = true) {
     return this.sendRequest(
-        `${uriPath}${Object.keys(filters).length > 0 ? '/search' : ''}${this.getFiltersUrl(filters)}`,
+        `${uriPath}${Object.keys(filters).length > 0 && prefix ? '/search' : ''}${this.getFiltersUrl(filters)}`,
         'GET',
         null,
         secure);

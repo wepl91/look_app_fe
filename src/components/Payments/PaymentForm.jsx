@@ -161,7 +161,6 @@ class PaymentForm extends Component {
 
   render() {
     const { client } = this.props;
-    console.log(this.props.clientPoints)
     return(
       <React.Fragment>
         <Field label={ this.getText('Tipo de pago') } labelNote={ this.getText('¿De qué manera desea realizar el pago?') } size="lg">

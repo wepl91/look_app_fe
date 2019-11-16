@@ -23,7 +23,9 @@ import {
   DateTimePicker,
 } from 'shipnow-mercurio';
 
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+
+import moment from 'moment';
 
 @observer
 class ProfessionalsReportView extends Component {
@@ -31,23 +33,69 @@ class ProfessionalsReportView extends Component {
     super(props);
 
     this.state = {
+      sort: 'asc',
       data: null,
       branches: null,
+      fromDate: moment().startOf('month'),
+      toDate: moment(),
+      branch: null,
     }
 
-    this.handleChangeBranch = this.handleChangeBranch.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSort   = this.handleSort.bind(this);
   }
 
-  handleChangeBranch(sender, value, name, valid) {
+  handleSort(sort) {
     this.setState({
-      data: this.props.store.reports.getProfessionalsReport({branchId: value}),
+      sort,
     })
   }
 
-  
-  componentDidMount() {
+  handleChange(sender, value, name, valid) {
+    if (name == 'branch' && value == 'null') {
+      this.setState({
+        branch: null,
+      })
+    }
+    else {
+      this.setState({
+        [name]: value,
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.branch != this.state.branch) {
+      this.sendRequest();
+    }  
+    if (prevState.toDate != this.state.toDate) {
+      this.sendRequest();
+    }  
+    if (prevState.fromDate != this.state.fromDate) {
+      this.sendRequest();
+    }  
+  }
+
+  sendRequest() {
+    const reqParams = {};
+    if (this.state.branch) {
+      reqParams['branchId'] = this.state.branch;
+    }
+    if (this.state.toDate) {
+      reqParams['toDate'] = this.state.toDate;
+    }
+    if (this.state.fromDate) {
+      reqParams['fromDate'] = this.state.fromDate;
+    }
+
     this.setState({
-      data: this.props.store.reports.getProfessionalsReport({}),
+      data: this.props.store.reports.getProfessionalsReport(reqParams)
+    })
+  }
+
+  componentDidMount() {
+    this.sendRequest();
+    this.setState({
       branches: this.props.store.branches.search({}, 'branches-list', true),
     })
   }
@@ -57,10 +105,19 @@ class ProfessionalsReportView extends Component {
     return translate(text, this.props.store.ui.language)
   }
 
+  sort(data) {
+    if (this.state.sort == 'asc') {
+      return data.sort((a, b) => b.totalAmount - a.totalAmount);
+    }
+    else {
+      return data.sort((a, b) => a.totalAmount - b.totalAmount);
+    }
+  }
+
   getChartData() {
-    debugger
+    const sortedData = this.sort(this.state.data.toArray());
     return {
-      labels: this.state.data.toArray().map(item => (item.professional.fullName)),
+      labels: sortedData.map(item => (item.professional.fullName)),
       datasets: [
         {
           label: 'Ingresos',
@@ -69,7 +126,7 @@ class ProfessionalsReportView extends Component {
           borderWidth: 1,
           hoverBackgroundColor: 'rgba(255,99,132,0.4)',
           hoverBorderColor: 'rgba(255,99,132,1)',
-          data: this.state.data.toArray().map(item => (parseFloat(item.totalAmount))),
+          data: sortedData.map(item => (parseFloat(item.totalAmount))),
         }
       ]
     };
@@ -95,9 +152,37 @@ class ProfessionalsReportView extends Component {
             return `Ingresos generados por ${tooltipItem[0].xLabel}`
           } 
         }
+      },
+      scales: {
+        xAxes: [
+          {
+            stacked: true
+          }
+        ],
+        yAxes: [
+          {
+            stacked: true
+          }
+        ]
       }
     }
   }
+
+  getBranchesList() {
+    const ret = [];
+    ret.push({
+      key: this.getText('- Ninguna -'),
+      value: 'null',
+    })
+    this.state.branches.toArray().forEach(branch => {
+      ret.push({
+          key: branch.name || branch.cookedAddress, 
+          value: branch.id
+        });
+      });
+    return ret;
+  }
+
   render() {
     const isReportDataLoaded = this.state.data && this.state.data.isOk();
     const isBranchesLoaded = this.state.branches && this.state.branches.isOk();
@@ -117,20 +202,51 @@ class ProfessionalsReportView extends Component {
                   className="is-fullwidth" 
                   placeholder="Sucursales" 
                   name="branch" 
-                  borderless 
+                  borderless
+                  value={ !this.state.branch ? 'null' : this.state.branch }
                   icon={ faChevronDown } 
-                  options={ this.state.branches.toArray().map(branch => ({key: branch.name || branch.cookedAddress, value: branch.id})) } 
-                  onChange={this.handleChangeBranch} />
+                  options={ this.getBranchesList() } 
+                  onChange={this.handleChange} />
                 </Field>
               </Column>
               <Column isSize={ 3 }>
                 <Field label={ this.getText('Desde') }>
-                  <DateTimePicker />
+                  <DateTimePicker 
+                    name="fromDate" 
+                    onChange={ this.handleChange } 
+                    value={ this.state.fromDate }/>
                 </Field>
               </Column>
               <Column isSize={ 3 }>
                 <Field label={ this.getText('Hasta') }>
-                  <DateTimePicker />
+                  <DateTimePicker 
+                    name="toDate"
+                    onChange={ this.handleChange } 
+                    value={ this.state.toDate } />
+                </Field>
+              </Column>
+              <Column isSize={ 3 }>
+                <Field label={ this.getText('Ordernamiento') }>
+                  <div style={{display: 'flex', flexDirection:'column'}}>
+                    <div style={{display: 'flex', flexDirection:'row', alignItems: 'center'}}>
+                      <input 
+                        className="ml-1 mr-1" 
+                        type="radio" 
+                        value="asc" 
+                        onChange={ () => (this.handleSort('asc')) }
+                        checked={ this.state.sort == 'asc'} />
+                        { this.getText('Ascendiente') }
+                    </div>
+                    <div style={{display: 'flex', flexDirection:'row', alignItems: 'center', marginTop: '8px'}}>
+                      <input 
+                        className="ml-1 mr-1" 
+                        type="radio" 
+                        value="desc" 
+                        onChange={ () => (this.handleSort('desc')) }
+                        checked={ this.state.sort == 'desc'} />
+                        { this.getText('Descendiente') }
+                    </div>
+                  </div>
                 </Field>
               </Column>
             </Columns>

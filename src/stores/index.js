@@ -9,3 +9,5 @@ export { default as ServicesStore      } from './ServicesStore';
 export { default as ProfessionalsStore } from './ProfessionalsStore';
 export { default as AppointmentsStore  } from './AppointmentsStore';
 export { default as ReportsStore       } from './ReportsStore';
+export { default as AccountanciesStore } from './AccountanciesStore';
+export { default as DiscountsStore     } from './DiscountsStore';

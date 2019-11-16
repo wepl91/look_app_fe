@@ -257,6 +257,7 @@ class AppointmentsForm extends Component {
   renderHourPicker() {
     const isDisabled = !this.state.branch;
     const { appointment, canNotEdit } = this.props;
+    //puedo poner el value en el state y en un component did update si cambia la sucursal o el profesional o el dia, poner el value en null
     return(
       <Field className="ml-5" label={ this.getText('¿A que hora querés venir?') } labelNote={ this.getText('Seleccioná un horario') }>
       <HourSelector

@@ -19,8 +19,23 @@ export default class ReportsStore extends Store {
 
   @action
   getProfessionalsReport(params) {
-    let collection = new Colection(this, 'professionals-report');
-    this.adapter.sendRequest('/reportProfessional','GET', params, false,).then( response => {
+    let collection = new Colection(this, `professional-reports-${params}`);
+    this.adapter.post('/professionalsreports',params).then( response => {
+      console.dir(response)
+      response.results.forEach( (res, index) => {
+        res['id'] = index;
+        collection.add(new Reports(res, this));
+      });
+    });
+    collection._status = 'ok';
+    return collection;
+  }
+  
+  @action
+  getServicesReport(params) {
+    let collection = new Colection(this, `professional-reports-${params}`);
+    this.adapter.post('/servicesreports',params).then( response => {
+      console.dir(response)
       response.results.forEach( (res, index) => {
         res['id'] = index;
         collection.add(new Reports(res, this));
