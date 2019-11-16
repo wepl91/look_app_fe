@@ -16,6 +16,8 @@ import { withStore } from '../../hocs';
 
 import { observer } from 'mobx-react';
 
+import moment from 'moment';
+
 @observer
 class HourSelector extends Component {
   @observable professional;
@@ -83,6 +85,8 @@ class HourSelector extends Component {
 
   render() {
     const { disabled } = this.props;
+    let difference = Math.abs(Math.floor(moment.duration(moment(this.props.value,"LT").diff(moment())).asMinutes()));
+
     return(
       <Select 
       disabled={ disabled || this.state.hours == null }
@@ -90,7 +94,7 @@ class HourSelector extends Component {
       maxHeight="120px" 
       placeholder={ this.getText('Horarios') } 
       borderless
-      value={ this.props.value } 
+      value={ difference > 1 ? this.props.value : null} 
       icon={ faChevronDown }
       className="is-fullwidth" 
       onChange={ this.props.onChange } 
