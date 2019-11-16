@@ -515,6 +515,8 @@ class AppointmentModal extends Component {
   }
 
   getDisabled() {
+    // const appointment = this.state.renderDetails ? this.getAppointment() : this.newAppointment;
+    // return !(appointment && appointment.services.length > 0 && !this.state.buttonDisabled)
     if(this.newAppointment){
       return !(this.newAppointment.services.length > 0 && !this.state.buttonDisabled)
     }
