@@ -1,0 +1,12 @@
+export { default as User         } from './User';
+export { default as Role         } from './Role';
+export { default as Client       } from './Client';
+export { default as Branch       } from './Branch';
+export { default as Service      } from './Service';
+export { default as Configs      } from './Configs';
+export { default as Professional } from './Professional';
+export { default as UISettings   } from './UISettings';
+export { default as Appointment  } from './Appointment';
+export { default as Reports      } from './Reports';
+export { default as Accountancy  } from './Accountancy';
+export { default as Movement     } from './Movement';
