@@ -82,6 +82,7 @@ class AppointmentModal extends Component {
       showTicketModal: false,
       buttonDisabled: true,
       showPaymentModal: false,
+      updateState: false,
       confirmationData: {
         accept: null,
         cancel: null,
@@ -245,15 +246,23 @@ class AppointmentModal extends Component {
 
   handleChange( name, value ) {
     this.setState({
-      buttonDisabled: false
+      updateState: true
     })
     const appointment = this.state.renderDetails ? this.getAppointment() : this.newAppointment;
     if (name == 'hour') {
       appointment.dayHour.hour(value);
       appointment.dayHour.minute(0);
       appointment.dayHour.second(0);
+      this.setState({
+        buttonDisabled: false
+      })
     }
     else {
+      if(name=='branch'){
+        this.setState({
+          buttonDisabled: true
+        })
+      }
       appointment[name] = value
     }
   }
@@ -506,7 +515,13 @@ class AppointmentModal extends Component {
   }
 
   getDisabled() {
-    return this.state.appointment && !(this.state.appointment.services.length > 0 && !this.state.buttonDisabled)
+    if(this.newAppointment){
+      return !(this.newAppointment.services.length > 0 && !this.state.buttonDisabled)
+    }
+    if (this.modifiedAppointment){
+      return !(this.modifiedAppointment.services.length > 0 && !this.state.buttonDisabled)
+    }
+    return true
   }
 
   getCreateDisabled() {
@@ -563,7 +578,7 @@ class AppointmentModal extends Component {
             <Level>
               <LevelLeft>
                 { this.state.renderCreate && 
-                <Button kind="outline" onClick={ this.handleSave }>{ this.getText('Reservar turno') }</Button> }
+                <Button kind="outline" onClick={ this.handleSave } disabled={ this.getDisabled() }>{ this.getText('Reservar turno') }</Button> }
                 { this.state.renderDetails &&
                   ( this.state.isSaving ? 
                     <Button kind="outline" disable icon={ faSpinner } pulse>{ this.getText('Guardando..') }</Button> : 
