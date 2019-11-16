@@ -245,6 +245,11 @@ class AppointmentModal extends Component {
   }
 
   handleChange( name, value ) {
+    if(this.state.renderDetails){
+      this.setState({
+        buttonDisabled: false
+      })
+    }
     this.setState({
       updateState: true
     })
@@ -273,7 +278,7 @@ class AppointmentModal extends Component {
       renderCreate : false,
       renderList   : false,
       renderDetails: true,
-      appointment: appointment,
+      appointment: appointment
     })
   }
 

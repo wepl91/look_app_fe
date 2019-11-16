@@ -89,7 +89,8 @@ class HourSelector extends Component {
       key={ this.state.hours }
       maxHeight="120px" 
       placeholder={ this.getText('Horarios') } 
-      borderless 
+      borderless
+      value={ this.props.value } 
       icon={ faChevronDown }
       className="is-fullwidth" 
       onChange={ this.props.onChange } 
