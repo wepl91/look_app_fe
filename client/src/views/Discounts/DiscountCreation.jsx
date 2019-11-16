@@ -87,6 +87,11 @@ class DiscountCreation extends Component {
     else if(name=='type'){
       this.newDiscount['discount'] = ''
     }
+    // if(name == 'type'){
+    //   this.newDiscount.updateType(value)
+    // }else{
+    //   this.newDiscount[name] = value;
+    // }
     this.newDiscount[name] = value;
   }
 
