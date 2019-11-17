@@ -224,7 +224,6 @@ class PaymentsModal extends Component {
       
     });
 
-    console.log(list)
     return(
       <React.Fragment>
         {list}

@@ -217,7 +217,6 @@ class AppointmentsForm extends Component {
 
   renderSubtotal(){
     let discountedSubtotal = this.state.subtotal
-    let multiplier = 0
     let list = [];
     this.state.discounts.toArray().forEach( discount => {
       if (discount.isActive) {
@@ -231,10 +230,9 @@ class AppointmentsForm extends Component {
                 </Panel>)
             }
             if(discount.type.name == 'POINT'){
-              multiplier = multiplier + discount.pointFactor
               list.push(
                 <Panel className="has-text-centered mr-3 ml-3 mt-1" invert color="success" style={{ padding: '2px' }}>
-                  <Text size="md" weight="medium">{ `${this.getText('Promoción ')} "${ discount.name }" :${ this.getText('los puntos del turno se multiplican por ') } ${ multiplier}` }</Text>
+                  <Text size="md" weight="medium">{ `${this.getText('Promoción ')} "${ discount.name }" :${ this.getText('los puntos del turno se multiplican por ') } ${ discount.pointFactor}` }</Text>
                 </Panel>)
             }
           }
