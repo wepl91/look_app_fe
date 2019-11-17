@@ -222,14 +222,14 @@ class AppointmentsForm extends Component {
       if (discount.isActive) {
         discount.services.forEach( discountedService =>{
           if(this.state.selectedServices.includes(discountedService.id)){
-            if(discount.type.name == 'DISCOUNT'){
+            if(discount.type == 'DISCOUNT'){
               discountedSubtotal = discountedSubtotal - ((discountedService.price * discount.discount)/100)
               list.push(
                 <Panel className="has-text-centered mr-3 ml-3 mt-1" invert color="success" style={{ padding: '2px' }}>
                   <Text size="md" weight="medium">{ `${this.getText('Promoción ')} "${ discount.name }" (${ discount.discount }${ this.getText('% de descuento en ')} ${discountedService.name})` }</Text>
                 </Panel>)
             }
-            if(discount.type.name == 'POINT'){
+            if(discount.type == 'POINT'){
               list.push(
                 <Panel className="has-text-centered mr-3 ml-3 mt-1" invert color="success" style={{ padding: '2px' }}>
                   <Text size="md" weight="medium">{ `${this.getText('Promoción ')} "${ discount.name }" :${ this.getText('los puntos del turno se multiplican por ') } ${ discount.pointFactor}` }</Text>
