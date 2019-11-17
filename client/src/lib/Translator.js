@@ -289,7 +289,9 @@ export const translate = (str, lang) => {
     'Selecciona un cliente para ver su cuenta' : 'Select a customer to see his balance',
     'Configuración' : 'Settings',
     'Puntos promocionales' : 'Transaction points',
-    'Base de datos' : 'Database'
+    'Base de datos' : 'Database',
+    'Total restante: $' : 'Remaining total: $',
+    'Total abonado: $' : 'Paid for: $'
   }
 
   /**

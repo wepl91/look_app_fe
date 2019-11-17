@@ -240,6 +240,20 @@ class PaymentsModal extends Component {
     )
   }
 
+  getFormTotal(){
+    const { appointment } = this.state;
+    if (appointment.payments.length > 0) {
+      let paid = 0;
+      appointment.payments.forEach(payment => {
+        paid += parseFloat(payment.amount);
+      });
+      return appointment.totalToPay - paid
+    }
+    else{
+     return appointment.totalToPay
+    }
+  }
+
   render() {
     const { date } = this.props
     const { appointment } = this.state
@@ -267,7 +281,8 @@ class PaymentsModal extends Component {
                   <Title className="mt-1" size="md">{ `${appointment.clientPoints != '' ? appointment.clientPoints : 0}  ${ this.getText('puntos disponibles ') } ${ ' ($ '} ${ this.props.store.ui.getChange('changePurchase').convertPoints(appointment.clientPoints) }${ ')'}`}</Title>
                   { this.renderDiscounts() }
                   <PaymentForm 
-                    totalAmount={ appointment.totalToPay } 
+                    // totalAmount={ appointment.totalToPay } 
+                    totalAmount={ this.getFormTotal() } 
                     clientPoints={ appointment.clientPoints != null ? appointment.clientPoints : 0 } 
                     client={ appointment.client }
                     onChange={ this.handlePaymentData }></PaymentForm>
