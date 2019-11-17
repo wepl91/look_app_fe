@@ -150,7 +150,7 @@ class UsersList extends Component {
       },
       {
         label: this.getText('Sucursal'),
-        content: (data) => (<Text>{data.branch ? `${data.branch.name || data.branch.cookedAddress}` : '- sin sucursal -'}</Text>),
+        content: (data) => (<Text>{data.branch ? `${data.branch.name || data.branch.cookedAddress}` : this.getText('- sin sucursal -')}</Text>),
         size: 'is-2',
       },
       {

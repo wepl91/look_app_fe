@@ -268,7 +268,7 @@ export const translate = (str, lang) => {
     'Ingresos': 'Income',
     'Veces consumidas': 'Consumption',
     'Ingresos por servicios': 'Services revenues',
-    'Configuración de puntos promocionales': 'Configuración de puntos promocionales',
+    'Configuración de puntos promocionales': 'Transaction awarded points settings',
     'Valor de puntos promocionales para pagar': 'Value of promotional points to pay',
     'Valor de puntos promocionales para asignar': 'Value of promotional points to assign',
     'Cantidad de puntos necesarios para representar 1$': 'Quantity of points needed to represent $ 1',
@@ -281,7 +281,12 @@ export const translate = (str, lang) => {
     'Ahorrados ' : 'Saved ',
     'en ' : 'in ',
     'con la promo: ' : 'using discount: ',
-    'Multiplicados los puntos por ' : 'Multiplied points by '
+    'Multiplicados los puntos por ' : 'Multiplied points by ',
+    '- sin sucursal -' : '- without branch -',
+    '- Ninguna -' : '- None -',
+    'Configuración de base de datos' : 'Database settings',
+    'Cuenta corriente de clientes' : 'Customer\'s payments balance',
+    'Selecciona un cliente para ver su cuenta' : 'Select a customer to see his balance'
   }
 
   /**
