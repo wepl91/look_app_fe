@@ -216,37 +216,35 @@ class AppointmentsForm extends Component {
   }
 
   renderSubtotal(){
-    let discountedSubotal = this.state.subtotal
-    // let discountPercentage = 0
+    let discountedSubtotal = this.state.subtotal
+    let multiplier = 0
     let list = [];
     this.state.discounts.toArray().forEach( discount => {
       if (discount.isActive) {
         discount.services.forEach( discountedService =>{
           if(this.state.selectedServices.includes(discountedService.id)){
             if(discount.type == 'DISCOUNT'){
-              // discountPercentage = discountPercentage + discount.discount
-              discountedSubotal = discountedSubotal - ((discountedService.price * discount.discount)/100)
+              discountedSubtotal = discountedSubtotal - ((discountedService.price * discount.discount)/100)
               list.push(
                 <Panel className="has-text-centered mr-3 ml-3 mt-1" invert color="success" style={{ padding: '2px' }}>
                   <Text size="md" weight="medium">{ `${this.getText('Promoción ')} "${ discount.name }" (${ discount.discount }${ this.getText('% de descuento en ')} ${discountedService.name})` }</Text>
                 </Panel>)
             }
             if(discount.type == 'POINT'){
+              multiplier = multiplier + discount.pointFactor
               list.push(
                 <Panel className="has-text-centered mr-3 ml-3 mt-1" invert color="success" style={{ padding: '2px' }}>
-                  <Text size="md" weight="medium">{ `${this.getText('Promoción ')} "${ discount.name }" :${ this.getText('los puntos del turno se multiplican por ') } ${ discount.pointFactor}` }</Text>
+                  <Text size="md" weight="medium">{ `${this.getText('Promoción ')} "${ discount.name }" :${ this.getText('los puntos del turno se multiplican por ') } ${ multiplier}` }</Text>
                 </Panel>)
             }
           }
         })
       }
     });
-    // discountedSubotal = discountedSubotal - ((discountedSubotal * discountPercentage)/100)
-
     return(
       <React.Fragment>
         {list}
-        <Text className="has-text-centered ml-2" weight="medium" color="primaryDark"><hr id="subtotalLine"/>Subtotal: ${discountedSubotal}</Text>
+        <Text className="has-text-centered ml-2" weight="medium" color="primaryDark"><hr id="subtotalLine"/>Subtotal: ${discountedSubtotal}</Text>
       </React.Fragment>
     )
   }
