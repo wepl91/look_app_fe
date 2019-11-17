@@ -196,8 +196,17 @@ class PaymentsModal extends Component {
     if(appointment.totalToPay != appointment.totalPrice){
       ret.push(<Title size="md" className="mt-1 mb-1">{ `${ this.getText('Costo total: $') } ${appointment.totalPrice}` }</Title>)
     }
-    ret.push(<Title size="md" className="mt-1 mb-1">{ `${ this.getText('Total a abonar: $') } ${appointment.totalToPay}` }</Title>)
 
+    if (appointment.payments.length > 0) {
+      let paid = 0;
+      appointment.payments.forEach(payment => {
+        paid += parseFloat(payment.amount);
+      });
+      ret.push(<Title size="md" className="mt-1 mb-1">{ `${ this.getText('Total restante: $') } ${appointment.totalToPay - paid}` }</Title>)
+    }
+    else{
+      ret.push(<Title size="md" className="mt-1 mb-1">{ `${ this.getText('Total a abonar: $') } ${appointment.totalToPay}` }</Title>)
+    }
 
     return ret
   }
