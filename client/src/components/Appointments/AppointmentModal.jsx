@@ -532,7 +532,12 @@ class AppointmentModal extends Component {
   }
 
   getDisabled() {
-    return this.state.appointment && !(this.state.appointment.services.length > 0 && !this.state.buttonDisabled)
+    if(this.getAppointment()){
+      return !this.getAppointment().services.length > 0 || this.state.buttonDisabled
+    }else{
+      return true
+    }
+
   }
 
   getCreateDisabled() {

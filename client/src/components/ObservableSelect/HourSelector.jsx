@@ -83,6 +83,13 @@ class HourSelector extends Component {
     }
   }
 
+  getCleanedAppointment(){
+    if(this.availableHours().includes(this.props.value)){
+      return this.props.value
+    }
+    return null
+  }
+
   render() {
     const { disabled } = this.props;
     let difference = Math.abs(Math.floor(moment.duration(moment(this.props.value,"LT").diff(moment())).asMinutes()));
@@ -94,7 +101,7 @@ class HourSelector extends Component {
       maxHeight="120px" 
       placeholder={ this.getText('Horarios') } 
       borderless
-      value={ difference > 2 ? this.props.value : null} 
+      value={ difference > 2 ? this.getCleanedAppointment() : null} 
       icon={ faChevronDown }
       className="is-fullwidth" 
       onChange={ this.props.onChange } 
