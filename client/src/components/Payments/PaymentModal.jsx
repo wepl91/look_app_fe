@@ -178,16 +178,58 @@ class PaymentsModal extends Component {
     return null;
   }
 
-  renderPending() {
+  // renderPending() {
+  //   const { appointment } = this.state;
+  //   if (appointment.payments.length > 0) {
+  //     let paid = 0;
+  //     appointment.payments.forEach(payment => {
+  //       paid += parseFloat(payment.amount);
+  //     });
+  //     return <Title size="md" className="mt-1 mb-1">{ `${ this.getText('Total restante: $') } ${appointment.totalToPay - paid}` }</Title>
+  //   }
+  //   return null;
+  // }
+
+  renderTotals(){
     const { appointment } = this.state;
-    if (appointment.payments.length > 0) {
-      let paid = 0;
-      appointment.payments.forEach(payment => {
-        paid += parseFloat(payment.amount);
-      });
-      return <Title size="md" className="mt-1 mb-1">{ `${ this.getText('Total restante: $') } ${appointment.totalPrice - paid}` }</Title>
+    let ret = []
+    if(appointment.totalToPay != appointment.totalPrice){
+      ret.push(<Title size="md" className="mt-1 mb-1">{ `${ this.getText('Costo total: $') } ${appointment.totalPrice}` }</Title>)
     }
-    return null;
+    ret.push(<Title size="md" className="mt-1 mb-1">{ `${ this.getText('Total a abonar: $') } ${appointment.totalToPay}` }</Title>)
+
+
+    return ret
+  }
+
+  renderDiscounts(){
+    const { appointment } = this.state;
+    let list = [];
+    appointment.promotions.forEach( discount => {
+      discount.services.forEach( discountedService =>{
+        if(discount.type.name == 'DISCOUNT'){
+          let savings = (discount.discount * discountedService.price) /100
+          list.push(
+            <Panel className="has-text-centered mr-3 ml-3 mb-1" invert color="success" style={{ padding: '2px' }}>
+              <Text size="md" weight="medium">{ `${this.getText('Ahorrados ')} $${ savings } ${ this.getText('en ')} ${discountedService.name} ${this.getText('con la promo: ')} "${ discount.name }"` }</Text>
+            </Panel>)
+        }
+        if(discount.type.name == 'POINT'){
+          list.push(
+            <Panel className="has-text-centered mr-3 ml-3 mb-1" invert color="success" style={{ padding: '2px' }}>
+              <Text size="md" weight="medium">{ `${this.getText('Multiplicados los puntos por ')} ${ discount.pointFactor } ${this.getText('con la promo: ')} "${ discount.name }"` }</Text>
+            </Panel>)
+        }
+      })
+      
+    });
+
+    console.log(list)
+    return(
+      <React.Fragment>
+        {list}
+      </React.Fragment>
+    )
   }
 
   render() {
@@ -211,12 +253,13 @@ class PaymentsModal extends Component {
           <ModalContent>
               <Columns>
                 <Column isSize={ 5 }>
-                  <Title size="md" className="mb-1">{ `${ this.getText('Total a abonar: $') } ${appointment.totalPrice}` }</Title>
+                  { this.renderTotals() }
                   { this.renderPartial() }
-                  { this.renderPending() }
+                  {/* { this.renderPending() } */}
                   <Title className="mt-1" size="md">{ `${appointment.clientPoints != null ? appointment.clientPoints : 0}  ${ this.getText('puntos disponibles ') } ${ ' ($ '} ${ this.props.store.ui.getChange('changePurchase').convertPoints(appointment.clientPoints) }${ ')'}`}</Title>
+                  { this.renderDiscounts() }
                   <PaymentForm 
-                    totalAmount={ appointment.totalPrice } 
+                    totalAmount={ appointment.totalToPay } 
                     clientPoints={ appointment.clientPoints != null ? appointment.clientPoints : 0 } 
                     client={ appointment.client }
                     onChange={ this.handlePaymentData }></PaymentForm>

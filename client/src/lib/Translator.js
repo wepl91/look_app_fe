@@ -276,7 +276,12 @@ export const translate = (str, lang) => {
     'Se ha enviado la reserva del turno a través de Google Calendar': 'Appointment reservation has been sent through Google Calendar',
     'Promoción ': 'Discount ',
     'los puntos del turno se multiplican por ' : 'appointment points are multiplied by ',
-    '% de descuento en ' : '% off in '
+    '% de descuento en ' : '% off in ',
+    'Costo total: $' : 'Total price: $',
+    'Ahorrados ' : 'Saved ',
+    'en ' : 'in ',
+    'con la promo: ' : 'using discount: ',
+    'Multiplicados los puntos por ' : 'Multiplied points by '
   }
 
   /**
