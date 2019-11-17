@@ -273,7 +273,10 @@ export const translate = (str, lang) => {
     'Valor de puntos promocionales para asignar': 'Value of promotional points to assign',
     'Cantidad de puntos necesarios para representar 1$': 'Quantity of points needed to represent $ 1',
     'No se ha podido enviar la reserva del turno a través de Google Calendar': 'Failed to send appointment reservation through Google Calendar',
-    'Se ha enviado la reserva del turno a través de Google Calendar': 'Appointment reservation has been sent through Google Calendar'
+    'Se ha enviado la reserva del turno a través de Google Calendar': 'Appointment reservation has been sent through Google Calendar',
+    'Promoción ': 'Discount ',
+    'los puntos del turno se multiplican por ' : 'appointment points are multiplied by ',
+    '% de descuento en ' : '% off in '
   }
 
   /**

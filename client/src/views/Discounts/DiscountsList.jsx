@@ -124,12 +124,10 @@ class DiscountsList extends Component {
       {
         label: '',
         content: (data) => (<SelectableIcon  className="ml-2" icon={ faPercent } readOnly/>),
-        size: 'is-1',
       },
       {
         label: this.getText('Nombre'),
         content: (data) => (<Text>{ startCase( data.name ) || this.getText('- sin nombre -') }</Text>),
-        size: 'is-2'
       },
       {
         label: this.getText('Beneficio'),
@@ -137,17 +135,14 @@ class DiscountsList extends Component {
           !data.discount && !data.pointFactor ? this.getText('- sin beneficio -') :
             data.type=='POINT' ? data.pointFactor + this.getText('x puntos') : data.discount + this.getText('% de descuento')
           }</Text>),
-        size: 'is-1'
       },
       {
         label: this.getText('Fecha de inicio'),
         content: (data) => (<Text>{ data.cookedStartingDate || this.getText('- sin fecha -') }</Text>),
-        size: 'is-2',
       },
       {
         label: this.getText('Fecha de finalización'),
         content: (data) => (<Text>{ data.cookedEndingDate || this.getText('- sin fecha -') }</Text>),
-        size: 'is-2',
       },
       {
         label: this.getText('Servicios incluidos'),
@@ -173,12 +168,10 @@ class DiscountsList extends Component {
       {
         label: this.getText('Activa'),
         content: (data) => (<Toggle checked={ data.isActive } checkedColor="success" unCheckedColor="delete" onChange={ () => (data.isActive ? this.handleInactivate(data) : this.handleActivate(data)) }/>),
-        size: 'is-1',
       },
       {
         label: '',
         content: (data) => (<Button icon={ faPencilAlt } kind="link" onClick={ () => (this.handleShowModal(data)) } />),
-        size: 'is-1',
         align: 'center'
       },
     ]

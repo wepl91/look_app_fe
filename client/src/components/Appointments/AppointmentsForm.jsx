@@ -54,9 +54,12 @@ class AppointmentsForm extends Component {
   }
 
   componentDidMount() {
+    // const searchFilter = value != 'null' ? { professional: value } : {}
+    const searchFilter = {date: this.state.date}
     this.setState({
       branches: this.props.store.branches.search({}, 'branches-appointment-list-view', true),
       clients: !this.props.edit ? this.props.store.clients.search({}, 'clients-appointment-list-view', true) : null,
+      discounts: this.props.store.discounts.search(searchFilter, 'discount-list-view', true)
     })
   }
 
@@ -208,8 +211,44 @@ class AppointmentsForm extends Component {
                 {`${ startCase(service.name) } - $${ service.price }`}
               </Checkbox> )) : 
           <Text size="md" weight="medium" className="ml-2 mt-1">{ this.getText('No hay servicios existentes para ofrecer.') }</Text> }
-        <Text className="has-text-centered ml-2" weight="medium" color="primaryDark"><hr id="subtotalLine"/>Subtotal: ${this.state.subtotal}</Text>
+          {this.renderSubtotal()}
       </Field> )   
+  }
+
+  renderSubtotal(){
+    let discountedSubotal = this.state.subtotal
+    // let discountPercentage = 0
+    let list = [];
+    this.state.discounts.toArray().forEach( discount => {
+      if (discount.isActive) {
+        discount.services.forEach( discountedService =>{
+          if(this.state.selectedServices.includes(discountedService.id)){
+            if(discount.type == 'DISCOUNT'){
+              // discountPercentage = discountPercentage + discount.discount
+              discountedSubotal = discountedSubotal - ((discountedService.price * discount.discount)/100)
+              list.push(
+                <Panel className="has-text-centered mr-3 ml-3 mt-1" invert color="success" style={{ padding: '2px' }}>
+                  <Text size="md" weight="medium">{ `${this.getText('Promoción ')} "${ discount.name }" (${ discount.discount }${ this.getText('% de descuento en ')} ${discountedService.name})` }</Text>
+                </Panel>)
+            }
+            if(discount.type == 'POINT'){
+              list.push(
+                <Panel className="has-text-centered mr-3 ml-3 mt-1" invert color="success" style={{ padding: '2px' }}>
+                  <Text size="md" weight="medium">{ `${this.getText('Promoción ')} "${ discount.name }" :${ this.getText('los puntos del turno se multiplican por ') } ${ discount.pointFactor}` }</Text>
+                </Panel>)
+            }
+          }
+        })
+      }
+    });
+    // discountedSubotal = discountedSubotal - ((discountedSubotal * discountPercentage)/100)
+
+    return(
+      <React.Fragment>
+        {list}
+        <Text className="has-text-centered ml-2" weight="medium" color="primaryDark"><hr id="subtotalLine"/>Subtotal: ${discountedSubotal}</Text>
+      </React.Fragment>
+    )
   }
 
   renderClients() {
@@ -349,8 +388,9 @@ class AppointmentsForm extends Component {
   render() {
     const isBranchesLoaded = this.state.branches && this.state.branches.isOk();
     const clientsLoaded = !this.props.edit ? this.state.clients && this.state.clients.isOk() : true;
+    const isDiscountsLoaded = this.state.discounts && this.state.discounts.isOk();
     
-    if (!isBranchesLoaded || !clientsLoaded) {
+    if (!isBranchesLoaded || !clientsLoaded || !isDiscountsLoaded) {
       return this.renderSkeleton();
     }
     
