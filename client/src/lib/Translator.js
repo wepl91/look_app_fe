@@ -286,7 +286,10 @@ export const translate = (str, lang) => {
     '- Ninguna -' : '- None -',
     'Configuración de base de datos' : 'Database settings',
     'Cuenta corriente de clientes' : 'Customer\'s payments balance',
-    'Selecciona un cliente para ver su cuenta' : 'Select a customer to see his balance'
+    'Selecciona un cliente para ver su cuenta' : 'Select a customer to see his balance',
+    'Configuración' : 'Settings',
+    'Puntos promocionales' : 'Transaction points',
+    'Base de datos' : 'Database'
   }
 
   /**
