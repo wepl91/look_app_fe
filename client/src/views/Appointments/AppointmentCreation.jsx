@@ -120,6 +120,11 @@ class AppointmentCreation extends Component {
         areHoursSelected: false
       })  
     }
+    if (name == 'professional'){
+      this.setState({
+        areHoursSelected: false
+      }) 
+    }
     else {
       this.newAppointment[name] = value
     }

@@ -94,7 +94,7 @@ class HourSelector extends Component {
       maxHeight="120px" 
       placeholder={ this.getText('Horarios') } 
       borderless
-      value={ difference > 1 ? this.props.value : null} 
+      value={ difference > 2 ? this.props.value : null} 
       icon={ faChevronDown }
       className="is-fullwidth" 
       onChange={ this.props.onChange } 
