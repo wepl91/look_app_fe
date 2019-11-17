@@ -291,7 +291,8 @@ export const translate = (str, lang) => {
     'Puntos promocionales' : 'Transaction points',
     'Base de datos' : 'Database',
     'Total restante: $' : 'Remaining total: $',
-    'Total abonado: $' : 'Paid for: $'
+    'Total abonado: $' : 'Paid for: $',
+    'Cuentas corrientes' : 'Payments balance'
   }
 
   /**
