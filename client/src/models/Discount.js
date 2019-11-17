@@ -8,10 +8,6 @@ import moment from 'moment';
 
 import startCase from 'lodash/startCase';
 
-import { Service } from '../models';
-
-import { ServicesStore } from '../stores';
-
 export default class Discount extends Model {
   constructor( attributes, store ) {
 
@@ -35,7 +31,6 @@ export default class Discount extends Model {
     if (this.type instanceof Object) {
       this.type = this.type.name
     }
-    this.clean()
   }
 
   @computed
@@ -72,18 +67,14 @@ export default class Discount extends Model {
   @computed
   get discountServicesIds() {
     const ret = [];
-    this.services.map( service => (ret.push(service)))
+    this.services.map( service => (ret.push(service.id)))
     return ret;
   }
 
   @computed
-  get discountedServices() { //REVISAR ESTO
-    const serv = [];
+  get discountedServices() {
     const ret = [];
-
-    this.services.map( service => (serv.push(new Service(service, ServicesStore))))
-    serv.map( service => (ret.push(startCase(service.name))))
-
+    this.services.map( service => (ret.push(startCase(service.name))))
     return ret;
   }
 
