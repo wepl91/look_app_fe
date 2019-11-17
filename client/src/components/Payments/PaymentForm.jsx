@@ -164,7 +164,7 @@ class PaymentForm extends Component {
     return(
       <React.Fragment>
         <Field label={ this.getText('Tipo de pago') } labelNote={ this.getText('¿De qué manera desea realizar el pago?') } size="lg">
-          { client.canPayMixed && 
+          { client && client.canPayMixed && 
             <Text className="ml-1 mt-2" weight="medium" size="lg">
               <input 
                 className="ml-1 mr-1" 
@@ -192,7 +192,7 @@ class PaymentForm extends Component {
                 checked={ this.state.paymentType == 'points'} />
               { this.getText('Puntos') }
           </Text>
-          { client.canPayMixed &&
+          { client && client.canPayMixed &&
             <Text className="ml-1 mt-2" size="lg" weight="medium">
               <input 
                 className="ml-1 mr-1" 

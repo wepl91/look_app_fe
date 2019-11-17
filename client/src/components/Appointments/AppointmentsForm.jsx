@@ -232,7 +232,7 @@ class AppointmentsForm extends Component {
             if(discount.type == 'POINT'){
               list.push(
                 <Panel className="has-text-centered mr-3 ml-3 mt-1" invert color="success" style={{ padding: '2px' }}>
-                  <Text size="md" weight="medium">{ `${this.getText('Promoción ')} "${ discount.name }" :${ this.getText('los puntos del turno se multiplican por ') } ${ discount.pointFactor}` }</Text>
+                  <Text size="md" weight="medium">{ `${this.getText('Promoción ')} "${ discount.name }": ${ this.getText('los puntos del turno se multiplican por ') } ${ discount.pointFactor}` }</Text>
                 </Panel>)
             }
           }
