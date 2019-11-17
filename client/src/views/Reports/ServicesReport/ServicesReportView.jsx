@@ -190,6 +190,21 @@ class ServicesReportView extends Component {
     }];
   }
 
+  getBranchesList() {
+    const ret = [];
+    ret.push({
+      key: this.getText('- Ninguna -'),
+      value: 'null',
+    })
+    this.state.branches.toArray().forEach(branch => {
+      ret.push({
+          key: branch.name || branch.cookedAddress, 
+          value: branch.id
+        });
+      });
+    return ret;
+  }
+
   render() {
     const isReportDataLoaded = this.state.data && this.state.data.isOk();
     const isBranchesLoaded = this.state.branches && this.state.branches.isOk();
@@ -209,6 +224,10 @@ class ServicesReportView extends Component {
                 icon={ faChevronDown } 
                 className="is-fullwidth"
                 borderless
+                name="branch" 
+                onChange={this.handleChange}
+                value={ !this.state.branch ? 'null' : this.state.branch }
+                options={ this.getBranchesList() } 
                 placeholder={this.getText('Sucursal')} />
             </Field>
           </Column>
