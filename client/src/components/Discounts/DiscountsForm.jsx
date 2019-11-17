@@ -245,11 +245,11 @@ class DiscountsForm extends Component {
                   </Column>
                 </Columns>}
                 { this.state.type == 'POINT' && <React.Fragment>
-                <Columns  isCentered isVCentered>
+                <Columns  isCentered isVCentered className="mt-1" >
                   <Column>
                     <Text className="ml-1" size="md" weight="medium">
                       <input 
-                        className="ml-1 mr-1" 
+                        className="ml-1 mr-1 mt-2" 
                         type="radio" 
                         value={ 2 }
                         onChange={ () => this.handleMultiplier( 2 ) }
@@ -260,7 +260,7 @@ class DiscountsForm extends Component {
                   <Column >
                     <Text className="ml-1" size="md" weight="medium">
                       <input 
-                        className="ml-1 mr-1" 
+                        className="ml-1 mr-1 mt-2" 
                         type="radio" 
                         value={ 3 }
                         onChange={ () => this.handleMultiplier( 3 ) }
@@ -271,7 +271,7 @@ class DiscountsForm extends Component {
                   <Column >
                     <Text className="ml-1" size="md" weight="medium">
                       <input 
-                        className="ml-1 mr-1" 
+                        className="ml-1 mr-1 mt-2" 
                         type="radio" 
                         value={ 4 } 
                         onChange={ () => this.handleMultiplier( 4 ) }
@@ -282,7 +282,7 @@ class DiscountsForm extends Component {
                   <Column >
                     <Text className="ml-1" size="md" weight="medium">
                       <input 
-                        className="ml-1 mr-1" 
+                        className="ml-1 mr-1 mt-2" 
                         type="radio" 
                         value={ 5 } 
                         onChange={ () => this.handleMultiplier( 5 ) }
