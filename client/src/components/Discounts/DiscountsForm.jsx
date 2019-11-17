@@ -8,9 +8,7 @@ import {
   TextInput,
   Text,
   DateTimePicker,
-  Panel,
-  Radio,
-  RadioGroup
+  Panel
 } from 'shipnow-mercurio';
 
 import {
@@ -108,6 +106,10 @@ class DiscountsForm extends Component {
 
   areDatesValid(){
     return moment(this.state.startingDate).isBefore(moment(this.state.endingDate))
+  }
+
+  renderServices(){
+    
   }
 
   renderSkeleton() {
@@ -293,7 +295,7 @@ class DiscountsForm extends Component {
               </Column>
             </Columns>
             </Field>
-            <Field label={ this.getText('¿Qué servicios incluye?') } labelNote={ this.getText('Seleccioná los servicios') }>
+            <Field label={ this.getText('¿Qué servicios incluye?') } labelNote={ this.getText('Seleccioná los servicios') }></Field>
               {services.toArray().map(serv => (
                 <Checkbox 
                   className="pt-1 ml-1" 
@@ -302,7 +304,6 @@ class DiscountsForm extends Component {
                   onCheck={ this.handleServices }>
                   {this.getText(startCase(serv.name))}
                 </Checkbox> ))}
-            </Field>
       </React.Fragment> )
   }
 }
