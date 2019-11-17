@@ -242,7 +242,8 @@ class AppointmentsForm extends Component {
     return(
       <React.Fragment>
         {list}
-        <Text className="has-text-centered ml-2" weight="medium" color="primaryDark"><hr id="subtotalLine"/>Subtotal: ${discountedSubtotal}</Text>
+        {list.length > 0 ? <Text className="has-text-right mr-3" weight="medium" color="primaryDark"><hr id="subtotalDiscountedLine"/>Subtotal: ${discountedSubtotal}</Text> :
+          <Text className="has-text-centered ml-2" weight="medium" color="primaryDark"><hr id="subtotalLine"/>Subtotal: ${discountedSubtotal}</Text>}
       </React.Fragment>
     )
   }

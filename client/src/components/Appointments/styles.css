@@ -49,12 +49,20 @@
 }
 
 #subtotalLine {
-  /* color: #520000; */
   width: 35%;
   border: 0;
   height: 1px;
   margin: 3% 0 1% 24%;
   background-image: linear-gradient(to left, #520000, #FFFFFF);
 }
+
+#subtotalDiscountedLine {
+  width: 55%;
+  border: 0;
+  height: 1px;
+  margin: 3% 0 1% 50%;
+  background-image: linear-gradient(to left, #520000, #FFFFFF);
+}
+
 
 
