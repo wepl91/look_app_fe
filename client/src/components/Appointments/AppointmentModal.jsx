@@ -82,6 +82,7 @@ class AppointmentModal extends Component {
       showTicketModal: false,
       buttonDisabled: true,
       showPaymentModal: false,
+      isSending: false,
       confirmationData: {
         accept: null,
         cancel: null,
@@ -111,6 +112,8 @@ class AppointmentModal extends Component {
     this.handleCancel        = this.handleCancel.bind(this);
     this.handleMiss          = this.handleMiss.bind(this);
     this.handleCancelAdvice  = this.handleCancelAdvice.bind(this);
+
+    this.reSendEmail = this.reSendEmail.bind(this);
   }
 
   handlePay( name, response ) {
@@ -381,22 +384,32 @@ class AppointmentModal extends Component {
 
   reSendEmail( appointment ) {
     const { toastManager } = this.props;
-    appointment.sendCreationEmail().then( response => {
-      if (response.results && response.results.status && response.results.status == 200) {
-        toastManager.add(this.getText('Email enviado!'), {
-          appearance: 'success',
-          autoDismiss: true,
-          pauseOnHover: false,
-        });
-      }
-      else {
-        toastManager.add(this.getText('Ups! Parece que hubo un problema al reenviar el email.'), {
-          appearance: 'error',
-          autoDismiss: true,
-          pauseOnHover: false,
-        });
-      }
-    });
+    this.setState({
+      isSending: true,
+    }, () => {
+      appointment.sendCreationEmail().then( response => {
+        if (response.results && response.results.status && response.results.status == 200) {
+          toastManager.add(this.getText('Email enviado!'), {
+            appearance: 'success',
+            autoDismiss: true,
+            pauseOnHover: false,
+          });
+          this.setState({
+            isSending: false,
+          })
+        }
+        else {
+          toastManager.add(this.getText('Ups! Parece que hubo un problema al reenviar el email.'), {
+            appearance: 'error',
+            autoDismiss: true,
+            pauseOnHover: false,
+          });
+          this.setState({
+            isSending: false,
+          })
+        }
+      });
+    })
   }
 
   renderPaymentModal() {
@@ -476,7 +489,14 @@ class AppointmentModal extends Component {
         <Column isSize={ 2 }></Column>
         <Column isSize={ 4 }>
         { appointment.isOpen && 
-          <Button kind="outline" onClick={ () => ( this.reSendEmail(appointment) ) }>{ this.getText('Reenviar email de reserva') }</Button> }
+          <Button 
+            disabled={ this.state.isSending } 
+            icon={ this.state.isSending ? faSpinner : null } 
+            kind="outline" 
+            pulse={ this.state.isSending }
+            onClick={ () => ( this.reSendEmail(appointment) ) }>
+              { this.getText('Reenviar email de reserva') }
+            </Button> }
         <Title size="md">{ this.getText('Comprobantes')}</Title>
         { (appointment.isOpen || 
           appointment.isPartialPaid )  && appoinmentTicket }
