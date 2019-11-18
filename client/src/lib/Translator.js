@@ -292,7 +292,19 @@ export const translate = (str, lang) => {
     'Base de datos' : 'Database',
     'Total restante: $' : 'Remaining total: $',
     'Total abonado: $' : 'Paid for: $',
-    'Cuentas corrientes' : 'Payments balance'
+    'Cuentas corrientes' : 'Payments balance',
+    'Descargar Backup': 'Download Backup',
+    'Se descargará un archivo de texto con toda la información de la base de datos': 'A text file with all the information in the database will be downloaded',
+    'Descargar': 'Download',
+    'Importar Backup': 'Import Backup',
+    'Se cargará la información del archivo que se cargue a la base de datos': 'The information of the file that is uploaded to the database will be loaded',
+    'Arrastrá acá el archivo': 'Drag the file here',
+    'La información se importó exitosamente!': 'The information was imported successfully!',
+    'Ups! Parece que hubo un error al importar la información!': 'Ups! It seems that there was an error importing the information!',
+    'Recuerda que luego de importar información, deberás iniciar sesión nuevamente.': 'Remember that after importing information, you must log in again.',
+    'Email enviado!': 'Email sent!',
+    'Reenviar email de reserva': 'Resend booking Email',
+    'Ups! Parece que hubo un problema al reenviar el email.': 'Ups! It seems that there was a problem resending the email.' 
   }
 
   /**

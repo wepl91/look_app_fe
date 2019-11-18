@@ -37,7 +37,7 @@ class ClientSuggest extends Component {
   }
 
   handleInput( sender, value, name ) {
-    const filtered = value == '' ? this.clients : this.clients.filter( client => client.fullName.toLowerCase().includes(value.toLowerCase())) 
+    const filtered = value == '' || !value ? this.clients : this.clients.filter( client => client.fullName.toLowerCase().includes(value.toLowerCase())) 
     this.setState({
       suggest: filtered,
       value: value,
@@ -46,7 +46,7 @@ class ClientSuggest extends Component {
 
   handleSelect( client ) {
     this.setState({
-      value: client.fullName,
+      value: client == 'null' ? '- Cliente no registrado -' : client.fullName,
       showPanel: false,
     })
     this.props.onChange && this.props.onChange(client);

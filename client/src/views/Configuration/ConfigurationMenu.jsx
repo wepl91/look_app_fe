@@ -9,7 +9,6 @@ import {
   faDatabase,
   faCoins,
 } from "@fortawesome/free-solid-svg-icons";
-import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
 import { translate } from '../../lib/Translator';
 

@@ -151,7 +151,7 @@ class ConfigurationPointsView extends Component {
               kind="outline"
               disabled>
                 { this.getText('Guardar') }
-            </Button> :
+            </Button>
           </Column>
           <Column isSize={ 8 }>
             <SvgDraw style={{width: '40%', position: 'absolute', right: '12.5%', top:'-15%'}}/>

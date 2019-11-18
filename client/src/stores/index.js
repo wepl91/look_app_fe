@@ -12,3 +12,4 @@ export { default as ReportsStore       } from './ReportsStore';
 export { default as AccountanciesStore } from './AccountanciesStore';
 export { default as MovementsStore     } from './MovementsStore';
 export { default as DiscountsStore     } from './DiscountsStore';
+export { default as BackupsStore       } from './BackupsStore';

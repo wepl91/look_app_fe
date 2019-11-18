@@ -84,7 +84,7 @@ class HourSelector extends Component {
   }
 
   getCleanedAppointment(){
-    if(this.availableHours().includes(this.props.value)){
+    if(this.availableHours() && this.availableHours().includes(this.props.value)){
       return this.props.value
     }
     return null

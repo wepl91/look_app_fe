@@ -93,6 +93,9 @@ class AppointmentCreation extends Component {
           } 
         }
         else {
+          if(savedAppointment.client) {
+            savedAppointment.sendCreationEmail();
+          }
           toastManager.add(this.getText('El turno se reservó exitosamente!'), {
             appearance: 'success',
             autoDismiss: true,

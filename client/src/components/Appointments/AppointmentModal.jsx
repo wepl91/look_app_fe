@@ -132,7 +132,11 @@ class AppointmentModal extends Component {
   }
 
   handleCancel() {
-    this.state.appointment.cancel().then(() =>{
+    const { appointment } = this.state;
+    if (appointment.client) {
+      appointment.sendCancellEmail();
+    }
+    appointment.cancel().then(() =>{
       this.props.onClose && this.props.onClose(true)
     });
   }
@@ -160,24 +164,29 @@ class AppointmentModal extends Component {
 
   sendGCInvite( appointment ) {
     const { toastManager } = this.props;
-    appointment.sendInvite()
-      .then( res => res.json())
-      .then( response => {
-        if (response.status == 'ok') {
-          toastManager.add(this.getText('Se ha enviado la reserva del turno a través de Google Calendar'), {
-            appearance: 'success',
-            autoDismiss: true,
-            pauseOnHover: false,
-          }); 
-        }
-        else {
-          toastManager.add(this.getText('No se ha podido enviar la reserva del turno a través de Google Calendar'), {
-            appearance: 'warning',
-            autoDismiss: true,
-            pauseOnHover: false,
-          });
-        }
-    });
+    if (appointment.client && appointment.client.email && appointment.client.email.includes('gmail.com')) {
+      appointment.sendInvite()
+        .then( res => res.json())
+        .then( response => {
+          if (response.status == 'ok') {
+            toastManager.add(this.getText('Se ha enviado la reserva del turno a través de Google Calendar'), {
+              appearance: 'success',
+              autoDismiss: true,
+              pauseOnHover: false,
+            }); 
+          }
+          else {
+            toastManager.add(this.getText('No se ha podido enviar la reserva del turno a través de Google Calendar'), {
+              appearance: 'warning',
+              autoDismiss: true,
+              pauseOnHover: false,
+            });
+          }
+      });
+    }
+    else {
+      return;
+    }
   }
 
   save( appointment, edit=false ) {
@@ -238,8 +247,14 @@ class AppointmentModal extends Component {
           });
           if (isNew) {
             this.sendGCInvite(savedAppointment);
+            if(savedAppointment.client) {
+              savedAppointment.sendCreationEmail();
+            }
           }
           if (edit) {
+            if(savedAppointment.client) {
+              savedAppointment.sendEditionEmail();
+            }
             this.setState({
               showTicketModal: true,
               isSaving: false,
@@ -364,6 +379,26 @@ class AppointmentModal extends Component {
     });
   }
 
+  reSendEmail( appointment ) {
+    const { toastManager } = this.props;
+    appointment.sendCreationEmail().then( response => {
+      if (response.results && response.results.status && response.results.status == 200) {
+        toastManager.add(this.getText('Email enviado!'), {
+          appearance: 'success',
+          autoDismiss: true,
+          pauseOnHover: false,
+        });
+      }
+      else {
+        toastManager.add(this.getText('Ups! Parece que hubo un problema al reenviar el email.'), {
+          appearance: 'error',
+          autoDismiss: true,
+          pauseOnHover: false,
+        });
+      }
+    });
+  }
+
   renderPaymentModal() {
     const { appointment } = this.state;
     const { date } = this.props;
@@ -440,6 +475,8 @@ class AppointmentModal extends Component {
         </Column>
         <Column isSize={ 2 }></Column>
         <Column isSize={ 4 }>
+        { appointment.isOpen && 
+          <Button kind="outline" onClick={ () => ( this.reSendEmail(appointment) ) }>{ this.getText('Reenviar email de reserva') }</Button> }
         <Title size="md">{ this.getText('Comprobantes')}</Title>
         { (appointment.isOpen || 
           appointment.isPartialPaid )  && appoinmentTicket }
