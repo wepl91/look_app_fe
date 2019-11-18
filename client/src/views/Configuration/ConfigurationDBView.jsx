@@ -54,7 +54,6 @@ class ConfigurationDBView extends Component {
 
   handleFileRead( e ) {
     const content = this.reader.result;
-    debugger
     const jsonContent = JSON.parse(content);
     this.props.store.backups.sendImport(jsonContent).then( response => {
       if(response.ok) {
