@@ -42,7 +42,7 @@ app.post('/api/google_invite/send', (req, res) => {
   console.dir(req.body.from_date);
   event.when = { start_time: req.body.from_hour, end_time: req.body.to_hour };
  
-  event.title = "Reserva de turno en Look App!";
+  event.title = "Reserva de turno en Hair&Head!";
   event.owner = "look.app.ok@gmail.com";
   event.location = req.body.location;
   event.participants = req.body.participants;
