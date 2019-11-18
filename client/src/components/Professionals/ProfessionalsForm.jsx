@@ -193,7 +193,7 @@ class ProfessionalsForm extends Component {
                 name="branch" 
                 borderless 
                 icon={ faChevronDown } 
-                options={ this.state.branches.toArray().map(branch => ({key: branch.name || branch.cookedAddress, value: branch.id})) } 
+                options={ this.state.branches.toArray().map(branch => (branch.isActive && {key: branch.name || branch.cookedAddress, value: branch.id})) } 
                 onChange={ this.handleChange } />
             </Field> 
             <Field className="pl-4 pr-4" label={ this.getText('¿En qué días y horarios va a trabajar?') } labelNote={ this.getText('Seleccioná los horarios semanales') }>

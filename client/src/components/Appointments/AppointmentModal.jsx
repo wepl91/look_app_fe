@@ -83,6 +83,7 @@ class AppointmentModal extends Component {
       buttonDisabled: true,
       showPaymentModal: false,
       isSending: false,
+      edited: false,
       confirmationData: {
         accept: null,
         cancel: null,
@@ -139,8 +140,14 @@ class AppointmentModal extends Component {
     if (appointment.client) {
       appointment.sendCancellEmail();
     }
-    appointment.cancel().then(() =>{
-      this.props.onClose && this.props.onClose(true)
+    appointment.cancel().then(response =>{
+      this.setState({
+        showTicketModal: true,
+        isSaving: false,
+        confirmation: false,
+        edited: true,
+        appointment: new Appointment(response.results, this.props.store.appointments)
+      });
     });
   }
 
@@ -261,6 +268,7 @@ class AppointmentModal extends Component {
             this.setState({
               showTicketModal: true,
               isSaving: false,
+              edited: true,
               appointment: savedAppointment
             });
           }
@@ -353,7 +361,7 @@ class AppointmentModal extends Component {
   }
 
   handleClose() {
-    this.props.onClose && this.props.onClose()
+    this.props.onClose && this.props.onClose(this.state.edited)
   }
 
   handleCancelAdvice() {

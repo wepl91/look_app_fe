@@ -225,14 +225,14 @@ class AppointmentsForm extends Component {
             if(discount.type == 'DISCOUNT'){
               discountedSubtotal = discountedSubtotal - ((discountedService.price * discount.discount)/100)
               list.push(
-                <Panel className="has-text-centered mr-3 ml-3 mt-1" invert color="success" style={{ padding: '2px' }}>
-                  <Text size="md" weight="medium">{ `${this.getText('Promoción ')} "${ discount.name }" (${ discount.discount }${ this.getText('% de descuento en ')} ${discountedService.name})` }</Text>
+                <Panel className="has-text-centered mr-3 ml-3 mt-1 has-text-left" invert color="success" style={{ padding: '2px' }}>
+                  <Text size="md" weight="medium" multiline>{ `${this.getText('Promoción ')} "${ discount.name }" (${ discount.discount }${ this.getText('% de descuento en ')} ${discountedService.name})` }</Text>
                 </Panel>)
             }
             if(discount.type == 'POINT'){
               list.push(
-                <Panel className="has-text-centered mr-3 ml-3 mt-1" invert color="success" style={{ padding: '2px' }}>
-                  <Text size="md" weight="medium">{ `${this.getText('Promoción ')} "${ discount.name }": ${ this.getText('los puntos del turno se multiplican por ') } ${ discount.pointFactor}` }</Text>
+                <Panel className="has-text-centered mr-3 ml-3 mt-1 has-text-left" invert color="success" style={{ padding: '2px' }}>
+                  <Text size="md" weight="medium" multiline>{ `${this.getText('Promoción ')} "${ discount.name }": ${ this.getText('los puntos del turno se multiplican por ') } ${ discount.pointFactor}` }</Text>
                 </Panel>)
             }
           }

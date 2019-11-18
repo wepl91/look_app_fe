@@ -80,11 +80,6 @@ class PaymentHistoryModal extends Component {
         size: 'is-1',
       },
       {
-        label: '',
-        content: null,
-        size: 'is-1',
-      },
-      {
         label: this.getText('Monto'),
         content: (data) => (<Text>{ `$ ${ parseFloat(data.amount) }` }</Text>),
         size: 'is-2',
@@ -101,15 +96,9 @@ class PaymentHistoryModal extends Component {
         size: 'is-1',
       },
       {
-        label: '',
-        content: null,
-        size: 'is-1',
-      },
-      {
         label: this.getText('Fecha de pago'),
-        content: (data) => (<Text>{ moment(data.dateCreated).format('DD-MM-YYYY HH:mm') }</Text>),
-        size: 'is-2',
-        align: 'center',
+        content: (data) => (<Text>{ `${moment(data.dateCreated).format('DD-MM-YYYY')} ${this.getText('a las')} ${moment(data.dateCreated).format('HH:mm')}` }</Text>),
+        size: 'is-5',
       },
     ];
     return <Table columns={ columns } data={ data } striped={ false }/>
