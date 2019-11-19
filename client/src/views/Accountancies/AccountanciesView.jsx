@@ -22,6 +22,7 @@ import {
   Button,
   Loader,
   SelectableIcon,
+  Panel,
 } from 'shipnow-mercurio';
 
 import { 
@@ -164,6 +165,22 @@ class AccountanciesView extends Component {
     return <Table data={data} columns={columns} striped={ false }/> 
   }
 
+  renderStatus() {
+    const { accountancy } = this.state;
+    let total = 0;
+    if (!accountancy) return null;
+    if (accountancy && !accountancy.movements.length) return null;
+
+    accountancy.movements.forEach(mov => {
+      total += parseInt(mov.amount)
+    });
+
+    return(
+    <Panel className="mt-4"  invert color={ total < 0 ? 'danger' : 'success' }>
+      <Text size="lg" weight="medium">{ total < 0 ? `El cliente presenta una deuda de $${ total.toString().split('-')[1] }` : 'El cliente no presenta deudas' }</Text>
+    </Panel>) 
+  }
+
   render() {
     const isClientsLoaded = this.state.clients && this.state.clients.isOk();
     if (!isClientsLoaded) { 
@@ -178,7 +195,7 @@ class AccountanciesView extends Component {
         </Level>
         <hr/>
         <Columns className="pt-4">
-          <Column isSize={ 3 } className="pl-5">
+          <Column isSize={ 4 } className="pl-5">
             <Field label={ this.getText("Cliente") } 
                    labelNote={ this.getText('Selecciona un cliente') }>
               <ClientSuggest
@@ -187,10 +204,11 @@ class AccountanciesView extends Component {
                 client={ this.state.client }
                 onChange={ this.handleChangeClient } />
             </Field>
+          { this.renderStatus() }
           </Column>
-          <Column isSize={ 3 }></Column>
+          <Column isSize={ 2 }></Column>
           <Column isSize={ 6 } className="has-text-centered">
-            { this.renderTable() }
+            { this.renderTable()  }
           </Column>
         </Columns>
         { this.state.showModal && this.renderModal() }
