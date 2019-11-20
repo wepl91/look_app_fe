@@ -108,6 +108,11 @@ class AppointmentCreation extends Component {
   }
   
   handleChange( name, value ) {
+    if (name == 'professional'){
+      this.setState({
+        areHoursSelected: false
+      }) 
+    }
     if (name == 'hour') {
       this.newAppointment.dayHour.hour(value.substring(0, 2));
       this.newAppointment.dayHour.minute(0);
@@ -122,11 +127,6 @@ class AppointmentCreation extends Component {
       this.setState({
         areHoursSelected: false
       })  
-    }
-    if (name == 'professional'){
-      this.setState({
-        areHoursSelected: false
-      }) 
     }
     else {
       this.newAppointment[name] = value
