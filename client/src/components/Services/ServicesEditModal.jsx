@@ -49,10 +49,7 @@ class ServicesEditModal extends Component {
   handleSave() {
     const { toastManager } = this.props;
     const service = this.getService();
-    service.name = this.state.name;
-    service.price = this.state.price;
-    service.duration = this.state.duration;
-    
+
     service.save().andThen( (savedService, responseError) => {
       if (responseError) {
         toastManager.add("Ups! Parece que hubo un error al guardar los cambios!", {

@@ -61,9 +61,9 @@ class ServicesForm extends Component {
     const { service } = this.props
     return(
       <React.Fragment>
-        <Field className="pl-5 pr-5" label={ this.getText('¿En cuál sucursal querés ofrecer este servicio?') }>
+{/*         <Field className="pl-5 pr-5" label={ this.getText('¿En cuál sucursal querés ofrecer este servicio?') }>
           <Select className="is-fullwidth" icon={ faChevronDown } borderless placeholder={ this.getText('Sucursales') } />
-        </Field>
+        </Field> */}
         <Field className="pl-5 pr-5" label={ this.getText('¿Cómo se llama el servicio que querés ofrecer?') }>
           <TextInput value={ service && service.name } name="name" className="is-fullwidth" validate={ (value) => (nameRegex.test(value)) } onChange={ this.handleChange }/>
         </Field>
