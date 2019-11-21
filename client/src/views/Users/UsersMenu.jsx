@@ -31,6 +31,7 @@ class UsersMenu extends Component {
 
   render() {
     const path = this.props.match.path;   
+    if (!this.props.store.loggedInUser.canSeeUsers()) return null;
     return(
       <LayoutMenuLinkGroup icon={ faUsers } label={ this.getText('Usuarios') } basePath={ `${path}/users` }>
         <LayoutMenuLink icon={ faUsers } to={ `${path}/users/list` }>{ this.getText('Listado') }</LayoutMenuLink>

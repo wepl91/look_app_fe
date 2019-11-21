@@ -29,7 +29,7 @@ class ProfessionalsMenu extends Component {
 
   render() {
     const path = this.props.match.path;
-
+    if (!this.props.store.loggedInUser.canSeeProffesionals()) return null;
     return(
       <LayoutMenuLinkGroup icon={ faBriefcase } label={ this.getText('Profesionales') } basePath={ `${path}/professionals` }>
         <LayoutMenuLink icon={ faBriefcase } to={ `${path}/professionals/list`  }>{ this.getText('Listado') }</LayoutMenuLink>

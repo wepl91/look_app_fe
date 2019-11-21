@@ -58,6 +58,10 @@ class UsersForm extends Component {
       });
     }
     else {
+      if (name == 'role') {
+        const newRole = this.state.roles.toArray().find(rol => rol.id == value);
+        this.props.onChange && this.props.onChange(name, newRole, valid);
+      }
       this.props.onChange && this.props.onChange(name, value, valid);
     }
   }

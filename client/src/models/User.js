@@ -118,7 +118,7 @@ export default class User extends Model {
 
     return levels[role];
   }
-
+  
   canSeeAppointments() {
     return this.rolLevel >= 1;
   }
