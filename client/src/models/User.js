@@ -70,6 +70,11 @@ export default class User extends Model {
     return this.status.name == 'ACTIVE';
   }
 
+  @computed
+  get cookedRole() {
+    return this.roles[0].name || this.role;
+  }
+
   @action
   activate() {
     this.status = 'ACTIVE';
@@ -98,5 +103,87 @@ export default class User extends Model {
     });
 
     return this;
+  }
+
+  @computed
+  get rolLevel() {
+    let role = this.cookedRole || '';
+    role = role.toLowerCase();
+    const levels = {
+      'recepcionista': 1,
+      'contador': 2,
+      'supervisor': 3,
+      'administrador': 4,
+    }
+
+    return levels[role];
+  }
+
+  canSeeAppointments() {
+    return this.rolLevel >= 1;
+  }
+
+  canEditAppointment() {
+    return this.rolLevel >= 1;
+  }
+
+  canSeeBranches() {
+    return this.rolLevel >= 3
+  }
+
+  canEditBranches() {
+    return this.rolLevel >= 3
+  }
+
+  canSeeServices() {
+    return this.rolLevel >= 3
+  }
+
+  canEditServices() {
+    return this.rolLevel >= 3;
+  }
+
+  canSeeProffesionals() {
+    return this.rolLevel >= 3;
+  }
+
+  canEditProfessional() {
+    return this.rolLevel >= 3;
+  }
+
+  canSeeUsers() {
+    return this.rolLevel >= 3;
+  }
+
+  canEditUsers() {
+    return this.rolLevel == 4;
+  }
+
+  canSeeClients() {
+    return this.rolLevel >= 1;
+  }
+
+  canEditClients() {
+    return this.rolLevel >= 1;
+  }
+
+  canSeePromotions() {
+    return this.rolLevel >= 2;
+  }
+
+  canEditPromotions() {
+    return this.rolLevel >= 2;
+  }
+
+  canSeeReports() {
+    return this.rolLevel >= 3;
+  }
+
+  canSeeDBConfig() {
+    return this.rolLevel == 4;
+  }
+  
+  canSeePointsConfig() {
+    return this.rolLevel >= 2;
   }
 }

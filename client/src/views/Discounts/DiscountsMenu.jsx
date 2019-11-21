@@ -29,7 +29,7 @@ class DiscountsMenu extends Component {
 
   render() {
     const path = this.props.match.path;
-
+    if (!this.props.store.loggedInUser.canSeePromotions()) return null;
     return(
       <LayoutMenuLinkGroup icon={ faPercent } label={ this.getText('Promociones') } basePath={ `${path}/discounts` }>
         <LayoutMenuLink icon={ faPercent } to={ `${path}/discounts/list`  }>{ this.getText('Listado') }</LayoutMenuLink>
