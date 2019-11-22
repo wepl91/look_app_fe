@@ -161,7 +161,7 @@ class UsersList extends Component {
       },
       {
         label: this.getText('Activo'),
-        content: (data) => (<Toggle checked={data.isActive} checkedColor="success" unCheckedColor="delete" onChange={() => (data.isActive ? this.handleInactivate(data) : this.handleActivate(data))} />),
+        content: (data) => (<Toggle disable={ !this.props.store.loggedInUser.canEditUsers() } checked={data.isActive} checkedColor="success" unCheckedColor="delete" onChange={() => (data.isActive ? this.handleInactivate(data) : this.handleActivate(data))} />),
         size: 'is-1',
         align: 'left'
       },
@@ -173,7 +173,7 @@ class UsersList extends Component {
       },
       {
         label: '',
-        content: (data) => (<Button icon={faPencilAlt} kind="link" onClick={() => (this.handleShowModal(data))} />),
+        content: (data) => (!this.props.store.loggedInUser.canEditUsers() && <Button icon={faPencilAlt} kind="link" onClick={() => (this.handleShowModal(data))} />),
         size: 'is-1',
         align: 'center'
       },

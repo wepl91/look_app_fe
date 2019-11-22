@@ -30,7 +30,7 @@ class ClientsMenu extends Component {
 
   render() {
     const path = this.props.match.path;
-
+    if (!this.props.store.loggedInUser.canSeeClients()) return null;
     return(
       <LayoutMenuLinkGroup icon={ faChild } label={ this.getText('Clientes') } basePath={ `${path}/clients` }>
         <LayoutMenuLink icon={ faChild } to={ `${path}/clients/list` }>{ this.getText('Listado') }</LayoutMenuLink>

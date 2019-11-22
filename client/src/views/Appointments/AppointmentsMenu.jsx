@@ -31,7 +31,7 @@ class AppointmentsMenu extends Component {
 
   render() {
     const path = this.props.match.path;
-
+    if (!this.props.store.loggedInUser.canSeeAppointments()) return null;
     return(
       <LayoutMenuLinkGroup icon={ faCalendarAlt } label={ this.getText('Turnos') } basePath={ `${path}/appointments` }>
         <LayoutMenuLink icon={ faCalendarAlt } to={ `${path}/appointments/list`   }>{ this.getText('Listado') }</LayoutMenuLink>

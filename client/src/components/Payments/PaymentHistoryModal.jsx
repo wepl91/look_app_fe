@@ -59,8 +59,12 @@ class PaymentHistoryModal extends Component {
     return translate(text, this.props.store.ui.language)
   }
 
+  sortData( data ) {
+    return data.sort((a, b) => moment(a.dateCreated).isBefore(moment(b.dateCreated)));
+  }
+
   renderTable() {
-    const data = this.props.appointment.payments;
+    const data = this.sortData(this.props.appointment.payments);
 
     if (this.props.appointment.isTrustworthy && data.length < 1) {
       return (

@@ -58,6 +58,10 @@ class UsersForm extends Component {
       });
     }
     else {
+      if (name == 'role') {
+        const newRole = this.state.roles.toArray().find(rol => rol.id == value);
+        this.props.onChange && this.props.onChange(name, newRole, valid);
+      }
       this.props.onChange && this.props.onChange(name, value, valid);
     }
   }
@@ -104,13 +108,14 @@ class UsersForm extends Component {
           />
         </Field>
         <Field label={this.getText("Rol")}>
-        <Select 
+        { this.props.store.loggedInUser.canEditUsers() &&
+          <Select 
           maxHeight="110px"
           name="role"
           placeholder="Roles" 
           borderless 
           icon={ faChevronDown } 
-          disabled />
+          disabled />}
         </Field>
         { withPassword &&
           <React.Fragment>
@@ -162,17 +167,18 @@ class UsersForm extends Component {
             options={ this.state.branches.toArray().map( branch => ({ key: branch.name || branch.cookedAddress, value: branch.id })) }
           />
         </Field>
-        <Field label={this.getText("Rol")}>
-        <Select 
-          key={ this.state.roles } 
-          value={ user && user.roleID }
-          name="role"
-          placeholder="Roles" 
-          borderless 
-          icon={ faChevronDown } 
-          options={ this.getRolesList() }
-          onChange={ this.handleChange } />
-        </Field>
+        { !this.props.withoutRole || true && 
+          <Field label={this.getText("Rol")}>
+            <Select 
+              key={ this.state.roles } 
+              value={ user && user.roleID }
+              name="role"
+              placeholder="Roles" 
+              borderless 
+              icon={ faChevronDown } 
+              options={ this.getRolesList() }
+              onChange={ this.handleChange } />
+        </Field>}
         { withPassword &&
           <React.Fragment>
             <Field label={ this.getText('Contraseña') }>
@@ -191,12 +197,14 @@ UsersForm.PropTypes = {
   user: PropTypes.object,
   onChange: PropTypes.func,
   withPassword: PropTypes.bool,
+  withoutRole: PropTypes.bool,
 }
 
 UsersForm.defaultProps = {
   user: null,
   onChange: null,
   withPassword: false,
+  withoutRole: false,
 }
 
 export default withStore(UsersForm);

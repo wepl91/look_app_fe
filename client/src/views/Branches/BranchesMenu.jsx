@@ -30,7 +30,7 @@ class BranchesMenu extends Component {
 
   render() {
     const path = this.props.match.path;
-
+    if (!this.props.store.loggedInUser.canSeeBranches()) return null;
     return(
       <LayoutMenuLinkGroup icon={ faStoreAlt } label={ this.getText('Sucursales') } basePath={ `${path}/branches` }>
         <LayoutMenuLink icon={ faStoreAlt } to={ `${path}/branches/list`   }>{ this.getText('Listado') }</LayoutMenuLink>

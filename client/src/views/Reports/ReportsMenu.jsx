@@ -34,7 +34,7 @@ class ReportsMenu extends Component {
 
   render() {
     const path = this.props.match.path;
-
+    if (!this.props.store.loggedInUser.canSeeReports()) return null;
     return(
       <LayoutMenuLinkGroup icon={ faChartLine } label={ this.getText('Reportes')    } basePath={ `${path}/reports` }>
         <LayoutMenuLink icon={ faBriefcase } to={ `${path}/reports/professionals`   }>{ this.getText('Profesionales') }</LayoutMenuLink>

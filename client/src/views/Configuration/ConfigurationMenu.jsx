@@ -32,13 +32,25 @@ class ConfigurationMenu extends Component {
     return translate(text, this.props.store.ui.language)
   }
 
+  renderLinks() {
+    const path = this.props.match.path;
+    const ret = [];
+    if (this.props.store.loggedInUser.canSeePointsConfig()) {
+      ret.push(<LayoutMenuLink key="1" icon={ faCoins } to={ `${path}/configuration/points` }>{ this.getText('Puntos promocionales') }</LayoutMenuLink>)
+    }
+    if (this.props.store.loggedInUser.canSeeDBConfig()) {
+      ret.push(<LayoutMenuLink key="2" icon={ faDatabase } to={ `${path}/configuration/data_base`  }>{ this.getText('Base de datos') }</LayoutMenuLink>)
+    }
+    return ret;
+  }
+
   render() {
     const path = this.props.match.path;
-
+    
+    if (!this.props.store.loggedInUser.canSeePointsConfig() && !this.props.store.loggedInUser.canSeeDBConfig()) return null;
     return(
       <LayoutMenuLinkGroup icon={ faCogs } label={ this.getText('Configuración') } basePath={ `${path}/configuration` }>
-        <LayoutMenuLink icon={ faCoins } to={ `${path}/configuration/points` }>{ this.getText('Puntos promocionales') }</LayoutMenuLink>
-        <LayoutMenuLink icon={ faDatabase } to={ `${path}/configuration/data_base`  }>{ this.getText('Base de datos') }</LayoutMenuLink>
+        { this.renderLinks() }
       </LayoutMenuLinkGroup> )
   };
 
