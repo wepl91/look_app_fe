@@ -138,9 +138,7 @@ class UserEdit extends Component {
           <hr />
           <Columns>
             <Column isSize={4} className="pl-4 pr-4 ml-5 mt-3">
-              <UsersForm user={ this.state.user } onChange={this.handleChange} withPassword />
-              <br />
-              <br />
+              <UsersForm user={ this.state.user } onChange={this.handleChange} withPassword withoutRole />
               <br />
               {this.state.isSaving ?
                 <Button kind="outline" disabled pulse icon={faSpinner}>Guardando</Button> :
@@ -151,9 +149,6 @@ class UserEdit extends Component {
               <SvgDraw style={{ height: '75%', width: '75%' }} />
             </Column>
           </Columns>
-          {this.state.isSaving ?
-            <Button kind="outline" className="ml-6" disabled pulse icon={faSpinner}>{this.getText("Guardando")}</Button> :
-            <Button kind="outline" className="ml-6" onClick={this.handleSave} disabled={ this.getDisabled() }>{this.getText("Guardar")}</Button>}
         </React.Fragment>)
   }
 }

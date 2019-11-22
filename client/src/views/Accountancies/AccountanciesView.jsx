@@ -121,6 +121,10 @@ class AccountanciesView extends Component {
     return <AppointmentDetailsModal appointment={ this.state.appointment } onClose={ this.handleCloseModal }/>
   }
 
+  sortData( data ) {
+    return data.sort((a, b) => moment(a.dateCreated).isBefore(moment(b.dateCreated)));
+  }
+
   renderTable() {
     const { accountancy } = this.state;
     if (!accountancy) {
@@ -130,7 +134,7 @@ class AccountanciesView extends Component {
           <SvgDraw style={{width: '85%', marginTop: '-10%', marginRight: '-10%'}}/>
         </React.Fragment> )
     }
-    const data = this.state.accountancy.movements;
+    const data = this.sortData(this.state.accountancy.movements);
     const columns = [
       {
         label: '',
