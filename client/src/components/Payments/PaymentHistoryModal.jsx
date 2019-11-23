@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { withStore } from '../../hocs';
+import { withToastManager } from 'react-toast-notifications';
 
 import {
   Modal,
@@ -34,7 +35,8 @@ import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 
 import { 
   faTimes,
-  faDollarSign
+  faDollarSign,
+  faSpinner
 } from "@fortawesome/free-solid-svg-icons";
 
 import moment from 'moment';
@@ -46,9 +48,55 @@ class PaymentHistoryModal extends Component {
 
     this.state = {
       appointment: props.appointment,
+      isSending: false,
     }
 
     this.handleClose = this.handleClose.bind(this);
+    this.handleSendEmail = this.handleSendEmail.bind(this);
+
+    this.successToast = this.successToast.bind(this);
+    this.errorToast = this.errorToast.bind(this);
+  }
+
+  successToast() {
+    const { toastManager } = this.props;
+    toastManager.add(this.getText('El email ha sido enviado exitosamente!'), {
+      appearance: 'success',
+      autoDismiss: true,
+      pauseOnHover: true,
+    });
+  }
+
+  errorToast() {
+    const { toastManager } = this.props;
+    toastManager.add(this.getText('Ups! Parece que hubo un error al enviar el email!'), {
+      appearance: 'error',
+      autoDismiss: true,
+      pauseOnHover: true,
+    });
+  }
+
+  handleSendEmail( data ) {
+    const { appointment } = this.props;
+    const paymentId = data.id;
+    this.setState({
+      isSending: true,
+    }, () => {
+      appointment.sendPaymentEmail(paymentId).then( response => {
+        if (response.results && response.results.status && response.results.status == 200) {
+          this.successToast();
+          this.setState({
+            isSending: false,
+          });
+        }
+        else {
+          this.errorToast();
+          this.setState({
+            isSending: false,
+          });
+        }
+      });
+    });
   }
 
   handleClose() {
@@ -87,22 +135,16 @@ class PaymentHistoryModal extends Component {
         label: this.getText('Monto'),
         content: (data) => (<Text>{ `$ ${ parseFloat(data.amount) }` }</Text>),
         size: 'is-2',
-        align: 'center',
-      },
-      {
-        label: '',
-        content: null,
-        size: 'is-1',
-      },
-      {
-        label: '',
-        content: null,
-        size: 'is-1',
       },
       {
         label: this.getText('Fecha de pago'),
         content: (data) => (<Text>{ `${moment(data.dateCreated).format('DD-MM-YYYY')} ${this.getText('a las')} ${moment(data.dateCreated).format('HH:mm')}` }</Text>),
-        size: 'is-5',
+        size: 'is-4',
+      },
+      {
+        label: '',
+        content: (data) => (this.props.appointment.client && <Button disabled={ this.state.isSending } pulse={ this.state.isSending } icon={ this.state.isSending ? faSpinner : null } kind="link" onClick={ () => this.handleSendEmail(data) }>{ this.state.isSending ? this.getText('Enviando email') : this.getText('Email de comprobante') }</Button>),
+        size: 'is-4',
       },
     ];
     return <Table columns={ columns } data={ data } striped={ false }/>
@@ -142,4 +184,4 @@ PaymentHistoryModal.defaultProps = {
   onClose: null,
 }
 
-export default withStore(PaymentHistoryModal);
+export default withStore(withToastManager(PaymentHistoryModal));

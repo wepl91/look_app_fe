@@ -79,7 +79,12 @@ class PaymentsModal extends Component {
     }else if(this.state.paymentType == 'cashAndPoints' && this.state.cash == 0 && this.state.points == 0){
       this.state.appointment.loan().then( response =>{ this.props.onPay && this.props.onPay('paid', response) });
     }else{
-      this.state.appointment.pay(this.state.cash,this.state.points).then( response =>{ this.props.onPay && this.props.onPay('paid', response) });
+      this.state.appointment.pay(this.state.cash,this.state.points).then( response => {
+        const appointment = this.state.appointment;
+        const paymentId = response.results.id;
+        appointment.sendPaymentEmail(paymentId);
+        this.props.onPay && this.props.onPay('paid', response) 
+      });
     }
   }
 

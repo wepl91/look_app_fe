@@ -282,6 +282,17 @@ export default class Appointment extends Model {
   }
 
   @action
+  sendPaymentEmail( paymentId ) {
+    const data = {};
+    data['id'] = 4;
+    data['appointmentId'] = this.id;
+    data['clientId'] = this.client.id;
+    data['paymentId'] = paymentId;
+
+    return this.appStore.APIClient.post('/email', data);
+  }
+
+  @action
   sendInvite() {
     //If there is no client or client has no email or email client is not gmail domain, we do not send invite
     if (!this.client || !this.client.email || !this.client.email.includes('gmail.com')) {
