@@ -624,6 +624,11 @@ class AppointmentModal extends Component {
   }
 
   getAppointment() {
+    if (this.state.renderCreate){
+      if(this.newAppointment){
+        return this.newAppointment;
+      }
+    }
     if (this.modifiedAppointment) {
       return this.modifiedAppointment;
     }
@@ -659,7 +664,7 @@ class AppointmentModal extends Component {
             <Level>
               <LevelLeft>
                 { this.state.renderCreate && 
-                <Button kind="outline" onClick={ this.handleSave }>{ this.getText('Reservar turno') }</Button> }
+                <Button kind="outline" onClick={ this.handleSave } disabled={ this.getDisabled() }>{ this.getText('Reservar turno') }</Button> }
                 { this.state.renderDetails &&
                   ( this.state.isSaving ? 
                     <Button kind="outline" disable icon={ faSpinner } pulse>{ this.getText('Guardando..') }</Button> : 
