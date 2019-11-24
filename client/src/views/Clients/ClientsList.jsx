@@ -85,12 +85,12 @@ class ClientsList extends Component {
       },
       {
         label: this.getText('Teléfono'),
-        content: (data) => (<Text>{ data.primaryPhone || '- sin teléfono -' }</Text>),
+        content: (data) => (<Text>{ data.primaryPhone && data.primaryPhone == 0 ? '- sin teléfono -' : data.primaryPhone }</Text>),
         size: 'is-1'
       },
       {
         label: this.getText('Teléfono secundario'),
-        content: (data) => (<Text>{ data.secondPhone || '- sin teléfono -' }</Text>),
+        content: (data) => (<Text>{ data.secondPhone && data.secondPhone == 0 ? '- sin teléfono -' : data.secondPhone }</Text>),
         size: 'is-2'
       },
       {
