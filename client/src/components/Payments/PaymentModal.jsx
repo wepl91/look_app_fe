@@ -82,7 +82,7 @@ class PaymentsModal extends Component {
       this.state.appointment.pay(this.state.cash,this.state.points).then( response => {
         const appointment = this.state.appointment;
         const paymentId = response.results.id;
-        appointment.sendPaymentEmail(paymentId);
+        appointment.client !== null && appointment.sendPaymentEmail(paymentId);
         this.props.onPay && this.props.onPay('paid', response) 
       });
     }
@@ -221,14 +221,14 @@ class PaymentsModal extends Component {
     let list = [];
     appointment.promotions.forEach( discount => {
       discount.services.forEach( discountedService =>{
-        if(discount.type.name == 'DISCOUNT'){
+        if(discount.type.name == 'DISCOUNT' && appointment.servicesIds.includes(discountedService.id)){
           let savings = (discount.discount * discountedService.price) /100
           list.push(
             <Panel className="has-text-centered mr-3 ml-3 mb-1" invert color="success" style={{ padding: '2px' }}>
               <Text size="md" weight="medium">{ `${this.getText('Ahorrados ')} $${ savings } ${ this.getText('en ')} ${discountedService.name} ${this.getText('con la promo: ')} "${ discount.name }"` }</Text>
             </Panel>)
         }
-        if(discount.type.name == 'POINT'){
+        if(discount.type.name == 'POINT' && appointment.servicesIds.includes(discountedService.id)){
           list.push(
             <Panel className="has-text-centered mr-3 ml-3 mb-1" invert color="success" style={{ padding: '2px' }}>
               <Text size="md" weight="medium">{ `${this.getText('Multiplicados los puntos por ')} ${ discount.pointFactor } ${this.getText('con la promo: ')} "${ discount.name }"` }</Text>
