@@ -133,9 +133,6 @@ class AppointmentsList extends Component {
                     <LevelLeft style={{ paddingRight: '6px' }}>
                         <Title>{ this.getText('Calendario de turnos') }</Title>
                     </LevelLeft>
-                    <LevelRight>
-                        <Button disabled>{ this.getText('Cancelar turno de hoy') }</Button>
-                    </LevelRight>
                 </Level>
                 <hr />
                 <Columns className="pl-4 pr-3">

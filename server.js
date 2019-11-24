@@ -27,10 +27,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/api/google_calendar/events', (req, res) => {
   nylas.events.list().then(events => {
     res.send({
-      events: events
-    })
+      events: events,
+    });
   });
-})
+});
 
 /**
  * Create an event
@@ -38,9 +38,10 @@ app.get('/api/google_calendar/events', (req, res) => {
 app.post('/api/google_invite/send', (req, res) => {
   let event = nylas.events.build();
 
-  console.dir(req.body.to_date);
-  console.dir(req.body.from_date);
-  event.when = { start_time: req.body.from_hour, end_time: req.body.to_hour };
+  event.when = { 
+    start_time: req.body.from_hour, 
+    end_time: req.body.to_hour 
+  };
  
   event.title = "Reserva de turno en Hair&Head!";
   event.owner = "look.app.ok@gmail.com";
@@ -54,7 +55,7 @@ app.post('/api/google_invite/send', (req, res) => {
       res.send({
         event: event.id,
         status: 'ok',
-      })
+      });
     })
     .catch(error => {
       res.send({

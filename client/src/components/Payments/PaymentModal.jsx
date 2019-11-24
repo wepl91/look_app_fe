@@ -40,6 +40,8 @@ import { observer } from 'mobx-react';
 
 import { translate } from '../../lib/Translator';
 
+import debounce from 'lodash/debounce';
+
 import { ReactComponent as SvgDraw } from '../../assets/undraw_Savings_dwkw.svg';
 
 @observer
@@ -69,6 +71,15 @@ class PaymentsModal extends Component {
     this.handleCancelConfirm = this.handleCancelConfirm.bind(this);
     this.handlePay           = this.handlePay.bind(this);
     this.handlePaymentData   = this.handlePaymentData.bind(this);
+
+    this.handleSendEmail     = debounce(this.handleSendEmail.bind(this), 1000);
+  }
+
+  handleSendEmail(paymentId) {
+    const { appointment } = this.state;
+    if (!paymentId || !appointment.client) return;
+
+    appointment.sendPaymentEmail(paymentId)
   }
 
   handlePay( name ) {
@@ -80,9 +91,8 @@ class PaymentsModal extends Component {
       this.state.appointment.loan().then( response =>{ this.props.onPay && this.props.onPay('paid', response) });
     }else{
       this.state.appointment.pay(this.state.cash,this.state.points).then( response => {
-        const appointment = this.state.appointment;
         const paymentId = response.results.id;
-        appointment.client !== null && appointment.sendPaymentEmail(paymentId);
+        this.handleSendEmail(paymentId);
         this.props.onPay && this.props.onPay('paid', response) 
       });
     }
