@@ -210,7 +210,7 @@ class PaymentsModal extends Component {
       ret.push(<Title size="md" className="mt-1 mb-1">{ `${ this.getText('Total restante: $') } ${appointment.totalToPay - paid}` }</Title>)
     }
     else{
-      ret.push(<Title size="md" className="mt-1 mb-1">{ `${ this.getText('Total a abonar: $') } ${appointment.totalToPay}` }</Title>)
+      ret.push(<Title size="md" className="mt-1 mb-1">{ `${ this.getText('Total a abonar: $') } ${Math.round(appointment.totalToPay)}` }</Title>)
     }
 
     return ret
