@@ -304,7 +304,9 @@ export const translate = (str, lang) => {
     'Recuerda que luego de importar información, deberás iniciar sesión nuevamente.': 'Remember that after importing information, you must log in again.',
     'Email enviado!': 'Email sent!',
     'Reenviar email de reserva': 'Resend booking Email',
-    'Ups! Parece que hubo un problema al reenviar el email.': 'Ups! It seems that there was a problem resending the email.' 
+    'Ups! Parece que hubo un problema al reenviar el email.': 'Ups! It seems that there was a problem resending the email.',
+    'con el servicio: ' : 'with service: ',
+    'por la promo: ' : 'with the discount: '
   }
 
   /**
