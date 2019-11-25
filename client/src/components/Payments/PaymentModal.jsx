@@ -91,8 +91,9 @@ class PaymentsModal extends Component {
       this.state.appointment.loan().then( response =>{ this.props.onPay && this.props.onPay('paid', response) });
     }else{
       this.state.appointment.pay(this.state.cash,this.state.points).then( response => {
-        const paymentId = response.results.id;
-        this.handleSendEmail(paymentId);
+        const payments = response.results.payments;
+        payments.sort((a,b) => (a.id < b.id) ? 1 : ((b.id < a.id) ? -1 : 0));
+        this.handleSendEmail(payments[0].id);
         this.props.onPay && this.props.onPay('paid', response) 
       });
     }
