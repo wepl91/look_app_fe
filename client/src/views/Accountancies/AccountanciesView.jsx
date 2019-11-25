@@ -178,7 +178,6 @@ class AccountanciesView extends Component {
     accountancy.movements.forEach(mov => {
       total += parseInt(mov.amount)
     });
-
     return(
     <Panel className="mt-4"  invert color={ total < 0 ? 'error' : 'success' }>
       <Text size="lg" weight="medium">{ total < 0 ? `El cliente presenta una deuda de $${ total.toString().split('-')[1] }` : 'El cliente no presenta deudas' }</Text>

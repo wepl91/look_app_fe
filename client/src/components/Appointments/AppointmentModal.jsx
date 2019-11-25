@@ -565,7 +565,7 @@ class AppointmentModal extends Component {
       },
       {
         label: this.getText('Precio'),
-        content: (data) => (<Text>{ `$${ data.totalPrice }` }</Text>),
+        content: (data) => (<Text>{ `$${ data.totalToPay }` }</Text>),
         size: 'is-1',
         align: 'center',
       },
@@ -642,7 +642,7 @@ class AppointmentModal extends Component {
     const { date } = this.props
     return(
       <React.Fragment>
-        <Modal width="70%" height="95%" show>
+        <Modal width="80%" height="95%" show>
           <ModalHeader>
             <Level>
               <LevelLeft>

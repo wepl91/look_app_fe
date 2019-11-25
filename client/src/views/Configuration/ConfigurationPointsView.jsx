@@ -77,6 +77,7 @@ class ConfigurationPointsView extends Component {
             this.errorToast();
           }
           else {
+            this.props.store.ui.getPointsConfig();
             this.successToast();
             this.reload();
           }
