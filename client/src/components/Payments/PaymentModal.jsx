@@ -235,13 +235,13 @@ class PaymentsModal extends Component {
           let savings = (discount.discount * discountedService.price) /100
           list.push(
             <Panel className="has-text-centered mr-3 ml-3 mb-1" invert color="success" style={{ padding: '2px' }}>
-              <Text multiline size="md" weight="medium">{ `${this.getText('Ahorrados ')} $${ savings } ${ this.getText('en ')} ${discountedService.name} ${this.getText('con la promo: ')} "${ discount.name }"` }</Text>
+              <Text size="md" weight="medium" multiline>{ `${this.getText('Ahorrados ')} $${ savings } ${ this.getText('en ')} ${discountedService.name} ${this.getText('con la promo: ')} "${ discount.name }"` }</Text>
             </Panel>)
         }
         if(discount.type.name == 'POINT' && appointment.servicesIds.includes(discountedService.id)){
           list.push(
             <Panel className="has-text-centered mr-3 ml-3 mb-1" invert color="success" style={{ padding: '2px' }}>
-              <Text multiline size="md" weight="medium">{ `${this.getText('Multiplicados los puntos por ')} ${ discount.pointFactor } ${this.getText('por la promo: ')} "${ discount.name }" ${this.getText('con el servicio: ')} ${discountedService.name}` }</Text>
+              <Text size="md" weight="medium" multiline>{ `${this.getText('Multiplicados los puntos por ')} ${ discount.pointFactor } ${this.getText('por la promo: ')} "${ discount.name }" ${this.getText('con el servicio: ')} ${discountedService.name}` }</Text>
             </Panel>)
         }
       })
